@@ -29,15 +29,16 @@ class main(gtk.Window):
 		self.set_title(title)
 		self.set_size_request(width, heigth)
 		self.set_border_width(border)
-		self.set_resizable(gtk.FALSE)
+		self.set_resizable(False)
 		self.connect("destroy", gtk.main_quit)
+
 class win(gtk.Window):
 	def __init__(self, width, heigth, title, border):
 		gtk.Window.__init__(self)
 		self.set_title(title)
 		self.set_size_request(width, heigth)
 		self.set_border_width(border)
-		self.set_resizable(gtk.FALSE)
+		self.set_resizable(False)
 		#self.connect("destroy", self.chiudi)#gtk.main_quit)
 		self.connect("delete_event", self.delete_event)
 		
@@ -58,7 +59,7 @@ class file(gtk.FileSelection):
 		self.cancel_button.connect_object("clicked", gtk.Widget.destroy, self)
 		self.ok_button.connect("clicked", self.get_name)
 		self.show()
-	
+		
 	def delete_event(self, widget, event, data=None):
 		widget.hide()
 		
