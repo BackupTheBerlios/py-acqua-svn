@@ -20,10 +20,11 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
+import os
+import impostazioni
 
-from data import *
 from inserisci import *
-from finestre import *
+from pysqlite2 import dbapi2 as sqlite
 
 class Allarmi(gtk.Window):
 	def __init__(self):
@@ -50,6 +51,11 @@ class Allarmi(gtk.Window):
 
 		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
 		btn.connect('clicked', self.exit)
+
+		bb.pack_start(btn)
+
+		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
+		btn.connect('clicked', self.refresh)
 		
 		bb.pack_start(btn)
 
@@ -57,13 +63,117 @@ class Allarmi(gtk.Window):
 		
 		self.add(vbox)
 		self.show_all()
+
+		self.set_size_request(400, 300)
+		self.refresh(None)
+		
+	def refresh(self, widget):
+		
+		impostazioni.refresh()
+		
+		con = sqlite.connect(os.path.join('Data', 'db'))
+		cur = con.cursor()
+		cur.execute('select * from test')
+		
+		for x in cur.fetchall():
+			if x[1] < float(impostazioni.minph): self.ph.set_label('Ph basso')
+			if x[1] > float(impostazioni.maxph): self.ph.set_label('Ph alto')
+			else: self.ph.set_label('Ph ok')
+
+			if x[1] < float(impostazioni.minkh): self.kh.set_label('Kh basso')
+			if x[1] > float(impostazioni.maxkh): self.kh.set_label('Kh alto')
+			else: self.kh.set_label('Kh ok')
+
+			if x[1] < float(impostazioni.mingh): self.gh.set_label('Gh basso')
+			if x[1] > float(impostazioni.maxgh): self.gh.set_label('Gh alto')
+			else: self.gh.set_label('Gh ok')
+
+			if x[1] < float(impostazioni.minno2): self.no2.set_label('No2 bassi')
+			if x[1] > float(impostazioni.maxno2): self.no2.set_label('No2 alti')
+			else: self.no2.set_label('No2 ok')
+
+			if x[1] < float(impostazioni.minno3): self.no3.set_label('No3 bassi')
+			if x[1] > float(impostazioni.maxno3): self.no3.set_label('No3 alti')
+			else: self.no3.set_label('No3 ok')
+
+			if x[1] < float(impostazioni.mincon): self.cond.set_label('Conducibilita\' bassa')
+			if x[1] > float(impostazioni.maxcon): self.cond.set_label('Conducibilita\' alta')
+			else: self.cond.set_label('Conducibilita\' ok')
+
+			if x[1] < float(impostazioni.minam):	self.ammoniaca.set_label('Ammoniaca bassa')
+			if x[1] > float(impostazioni.maxam): self.ammoniaca.set_label('Ammoniaca alta')
+			else: self.ammoniaca.set_label('Ammoniaca ok')
+
+			if x[1] < float(impostazioni.minfe): self.ferro.set_label('Ferro basso')
+			if x[1] > float(impostazioni.maxfe): self.ferro.set_label('Ferro alto')
+			else: self.ferro.set_label('Ferro ok')
+
+			if x[1] < float(impostazioni.minra): self.rame.set_label('Rame basso')
+			if x[1] > float(impostazioni.maxra): self.rame.set_label('Rame alto')
+			else: self.rame.set_label('Rame ok')
+
+			if x[1] < float(impostazioni.minfo): self.fosfati.set_label('Fosfati bassi')
+			if x[1] > float(impostazioni.maxfo): self.fosfati.set_label('Fosfati alti')
+			else: self.fosfati.set_label('Fosfati ok')
+		
+		# Popoliamo i fertilizzanti
+		cur.execute('select * from fertilizzante')
+
+		for i in cur.fetchall():
+			self.fert_store.append([i[0], i[1], i[2], i[3], i[4]])
+
+		# Popoliamo i filtri
+		cur.execute('select * from filtro')
+
+		for i in cur.fetchall():
+			self.filt_store.append([i[0], i[1], i[2]])
+
 	def make_filt_page(self):
-		return gtk.Label('Not yet implemented')
+		sw = gtk.ScrolledWindow()
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+
+		self.filt_store = gtk.ListStore(int, str, str, float, str)
+		view = gtk.TreeView(self.filt_store)
+		
+		lst = ['Id', 'Data', 'Prossima volta']
+		renderer = gtk.CellRendererText()
+
+		for i in lst:
+			id = lst.index(i)
+			col = gtk.TreeViewColumn(i, renderer, text=id)
+			col.set_sort_column_id(id+1)
+			col.set_clickable(True)
+			col.set_resizable(True)
+			view.append_column(col)
+
+		sw.add(view)
+
+		return sw
+		
 	def make_fert_page(self):
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+
+		self.fert_store = gtk.ListStore(int, str, str, float, str)
+		view = gtk.TreeView(self.fert_store)
+		
+		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
+		renderer = gtk.CellRendererText()
+
+		for i in lst:
+			id = lst.index(i)
+			col = gtk.TreeViewColumn(i, renderer, text=id)
+			col.set_sort_column_id(id+1)
+			col.set_clickable(True)
+			col.set_resizable(True)
+			view.append_column(col)
+
+		sw.add(view)
+
 		return sw
+		
 	def make_test_page(self):
 		# Pagina Test
 		tbl = gtk.Table(10, 2)
