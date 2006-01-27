@@ -23,7 +23,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import finestre
-#from pysqlite2 import dbapi2 as sqlite
+from pysqlite2 import dbapi2 as sqlite
 
 
 class win20:
