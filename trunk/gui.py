@@ -189,9 +189,9 @@ class Gui(gtk.Window):
 		return files.piante.win5()
 		
 	def vasca_apri(self, widget, data=None):
-		import files.vasca
-		return files.vasca.win6()
-		
+		import files.vasca1
+		#return files.vasca.win6()
+		return files.vasca1.Vasca()
 	def tips_apri(self, widget, data=None):
 		import files.tips
 		return files.tips.win7()
@@ -211,7 +211,7 @@ class Gui(gtk.Window):
 		dialog = gtk.AboutDialog()
 		
 		dialog.set_name("PyAcqua")
-		dialog.set_copyright("\302\251 Copyright 2005 the PyAcqua Team")
+		dialog.set_copyright("\302\251 Copyright (C) 2005, 2006 Luca Sanna - Italy")
 		dialog.set_website("http://pyacqua.altervista.org")
 		
 		text = "Py-Acqua is free software; you can redistribute it and/or modify it under\n"
