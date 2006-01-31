@@ -88,6 +88,21 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
 		
 		tbl.attach(entry, 1, 2, 0, 1)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 1, 2)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 2, 3)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 3, 4)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 4, 5)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 5, 6)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 6, 7)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 7, 8)
+		
 		
 		return tbl
 	def visualizza_vasche(self):
@@ -127,7 +142,24 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label('Illuminazione'), 0, 1, 6, 7)
 		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
 		
+		
 		tbl.attach(entry, 1, 2, 0, 1)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 1, 2)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 2, 3)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 3, 4)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 4, 5)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 5, 6)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 6, 7)
+		entry = gtk.Entry()
+		tbl.attach(entry, 1, 2, 7, 8)
+		
+		
 		
 		return tbl
 		
