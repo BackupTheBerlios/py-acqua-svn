@@ -33,6 +33,8 @@ class Allarmi(gtk.Window):
 		self.set_title('Allarmi')
 
 		vbox = gtk.VBox()
+		vbox.set_spacing(4)
+		vbox.set_border_width(4)
 
 		nb = gtk.Notebook()
 
@@ -48,6 +50,7 @@ class Allarmi(gtk.Window):
 
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(4)
 
 		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
 		btn.connect('clicked', self.exit)
@@ -115,6 +118,10 @@ class Allarmi(gtk.Window):
 			if x[1] < float(impostazioni.minfo): self.fosfati.set_label('Fosfati bassi')
 			if x[1] > float(impostazioni.maxfo): self.fosfati.set_label('Fosfati alti')
 			else: self.fosfati.set_label('Fosfati ok')
+		
+		# Puliamo le righe
+		self.fert_store.clear()
+		self.filt_store.clear()
 		
 		# Popoliamo i fertilizzanti
 		cur.execute('select * from fertilizzante')

@@ -65,6 +65,10 @@ class Vasca(gtk.Window):
 		connessione=sqlite.connect(os.path.join('Data', 'db'))
 		cursore=connessione.cursor()
 		cursore.execute("select * from vasca")
+
+		# Eliminiamo le vecchie righe
+		self.vasca_store.clear()
+		
 		for y in cursore.fetchall():
 			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8]])
 		
@@ -84,7 +88,6 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
 		
 		tbl.attach(entry, 1, 2, 0, 1)
-		tbl.attach(entry, 1, 2, 1, 2)
 		
 		return tbl
 	def visualizza_vasche(self):
@@ -125,7 +128,6 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
 		
 		tbl.attach(entry, 1, 2, 0, 1)
-		tbl.attach(entry, 1, 2, 1, 2)
 		
 		return tbl
 		
