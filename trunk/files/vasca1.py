@@ -103,8 +103,14 @@ class Vasca(gtk.Window):
 		entry = gtk.Entry()
 		tbl.attach(entry, 1, 2, 7, 8)
 		
+		btn = gtk.Button(stock=gtk.STOCK_NEW)
+		tbl.attach(btn, 0, 1, 8, 9)
+		
+		
 		
 		return tbl
+		
+		
 	def visualizza_vasche(self):
 	
 		sw = gtk.ScrolledWindow()
