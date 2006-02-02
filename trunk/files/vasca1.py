@@ -74,6 +74,7 @@ class Vasca(gtk.Window):
 		
 		
 	def inserisci_vasche(self):
+		box = gtk.VBox()
 		entry = gtk.Entry()
 		tbl = gtk.Table(10, 2)
 		tbl.set_border_width(5)
@@ -103,8 +104,17 @@ class Vasca(gtk.Window):
 		entry = gtk.Entry()
 		tbl.attach(entry, 1, 2, 7, 8)
 		
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
 		btn = gtk.Button(stock=gtk.STOCK_NEW)
-		tbl.attach(btn, 0, 1, 8, 9)
+		bb.pack_start(btn)
+		box.pack_start(tbl)
+		# Packa senza l'expanding..
+		# Non influenza le dimensioni durante il ridimensionamento
+		box.pack_start(bb, False, False, 0)
+		return box
+		
 		
 		
 		
