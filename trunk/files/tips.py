@@ -19,36 +19,52 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pygtk
-pygtk.require('2.0')
 import gtk
-import finestre
 import random
-import string
-import os
-import sys
-class win7:
+import os.path
+
+class TipsDialog(gtk.Dialog):
 	def __init__(self):
-		self.win = finestre.win(370, 180, "Py-Acqua Tips Tricks", 5)
+		gtk.Dialog.__init__(self, "Tips of the Day", None, gtk.DIALOG_NO_SEPARATOR,
+			(gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_GO_FORWARD, gtk.RESPONSE_NONE))
 		
 		
 		self.textview = gtk.TextView()
 		self.textview.set_wrap_mode(gtk.WRAP_WORD)
 		self.textbuffer = self.textview.get_buffer()
-		self.win.add(self.textview)
-		self.win.show_all()
-	#def tip():
+
+		sw = gtk.ScrolledWindow()
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+
+		sw.add(self.textview)
+		
+		self.vbox.pack_start(sw)
+
+		self.connect('response', self.on_response)
+		self.tip()
+		
+		self.set_size_request(400, 250)
+		self.show_all()
 	
-		tip_file = open("files/tip_of_the_day.txt","r")
+	def on_response(self, dialog, rsp_id):
+		if rsp_id == gtk.RESPONSE_NONE:
+			self.tip()
+		if rsp_id == gtk.RESPONSE_OK:
+			self.hide()
+			self.destroy()
+	
+	def tip(self):
+	
+		tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
 	
 		testo = tip_file.read()
+		
 		tip_file.close()
-		lista_tips = []
-		lista_tips = string.split(testo,"&")
-		lunghezza_lista = len(lista_tips)
-		x = random.randint(0,lunghezza_lista-1)
-		lista = gtk.TextBuffer()
-		lista.set_text(lista_tips[x])
-		lista.set_text(lista_tips[x] + "\n\n" + "Dalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm" )	
+		
+		lista_tips = testo.split('&')
+		x = random.randint(0, len(lista_tips) - 1)
+		
+		testo = lista_tips[x] + '\n\nDalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm'
 		
 		self.textbuffer.set_text(testo)

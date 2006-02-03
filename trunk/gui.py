@@ -194,7 +194,7 @@ class Gui(gtk.Window):
 		return files.vasca1.Vasca()
 	def tips_apri(self, widget, data=None):
 		import files.tips
-		return files.tips.win7()
+		files.tips.TipsDialog()
 		
 	def calendario_apri(self,widget, data=None):
 		import files.calendario
