@@ -6,7 +6,7 @@ class Vasca(gtk.Window):
 	def __init__(self): 
 
 		gtk.Window.__init__(self)
-		self.set_name("Asdasso")
+		self.set_name("Vasche")
 		box = gtk.VBox()
 		
 		
@@ -60,11 +60,21 @@ class Vasca(gtk.Window):
 		box.pack_start(exp, False, False, 0)
 		# Creiamo la table che verra contenuta nell'expander
 		tbl = gtk.Table(3, 2)
-		tbl.attach(gtk.Label("Nome:"), 0, 1, 0, 1)
-		tbl.attach(gtk.Label("Descrizione:"), 0, 1, 1, 2)
-		self.e_name, self.e_desc = gtk.Entry(), gtk.Entry()
-		tbl.attach(self.e_name, 1, 2, 0, 1)
-		tbl.attach(self.e_desc, 1, 2, 1, 2)
+		tbl.attach(gtk.Label("Vasca:"), 0, 1, 0, 1)
+		tbl.attach(gtk.Label("Data:"), 0, 1, 1, 2)
+		tbl.attach(gtk.Label("Nome:"), 0, 1, 2, 3)
+		tbl.attach(gtk.Label("Tipo Acquario:"), 0, 1, 3, 4)
+		tbl.attach(gtk.Label("Tipo Filtro:"), 0, 1, 4, 5)
+		tbl.attach(gtk.Label("Impianto Co2:"), 0, 1, 5, 6)
+		tbl.attach(gtk.Label("Illuminazione:"), 0, 1, 6, 7)
+		self.e_vasca, self.e_data, self.e_nome, self.e_tipo, self.e_filtro, self.e_co2, self.e_il = gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry()
+		tbl.attach(self.e_vasca, 1, 2, 0, 1)
+		tbl.attach(self.e_data, 1, 2, 1, 2)
+		tbl.attach(self.e_nome, 1, 2, 2, 3)
+		tbl.attach(self.e_tipo, 1, 2, 3, 4)
+		tbl.attach(self.e_filtro, 1, 2, 4, 5)
+		tbl.attach(self.e_co2, 1, 2, 5, 6)
+		tbl.attach(self.e_il, 1, 2, 6, 7)
 		exp.add(tbl)
 		self.add(box)
 		self.show_all()
