@@ -22,9 +22,19 @@
 import gtk
 import random
 import os.path
+import impostazioni
 
 class TipsDialog(gtk.Dialog):
+	exist = False
 	def __init__(self):
+
+		# Controlliamo l'esistenza di un'altra istanza
+		
+		if TipsDialog.exist == False:
+			TipsDialog.exist = True
+		else:
+			return
+		
 		gtk.Dialog.__init__(self, "Tips of the Day", None, gtk.DIALOG_NO_SEPARATOR,
 			(gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_GO_FORWARD, gtk.RESPONSE_NONE))
 		
@@ -41,6 +51,15 @@ class TipsDialog(gtk.Dialog):
 		
 		self.vbox.pack_start(sw)
 
+		self.check = gtk.CheckButton('Non mostrare al prossimo avvio')
+		
+		if impostazioni.show_tips == "1":
+			self.check.set_active(False)
+		else:
+			self.check.set_active(True)
+		
+		self.vbox.pack_start(self.check, False, False, 0)
+
 		self.connect('response', self.on_response)
 		self.tip()
 		
@@ -52,7 +71,17 @@ class TipsDialog(gtk.Dialog):
 			self.tip()
 		if rsp_id == gtk.RESPONSE_OK:
 			self.hide()
+			
+			if self.check.get_active():
+				impostazioni.show_tips = "0"
+			else:
+				impostazioni.show_tips = "1"
+
+			impostazioni.save()
+			
 			self.destroy()
+
+			TipsDialog.exist = False
 	
 	def tip(self):
 	

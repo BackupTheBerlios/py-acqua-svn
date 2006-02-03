@@ -168,6 +168,11 @@ class Gui(gtk.Window):
 		self.add(vbox)
 		self.show_all()
 		self.connect('destroy', self.exit)
+		
+		import files.impostazioni
+		if files.impostazioni.show_tips == "1":
+			import files.tips
+			files.tips.TipsDialog()
   
 	def exit(*w):
 		gtk.main_quit()
