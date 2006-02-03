@@ -55,7 +55,7 @@ minfe = maxfe = 0
 minra = maxra = 0
 minfe = maxfe = 0
 minfo = maxfo = 0
-show_tips = 1
+show_tips = "1"
 
 def save():
 	print "Salvo le impostazioni..."

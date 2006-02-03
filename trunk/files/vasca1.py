@@ -25,15 +25,15 @@ from pysqlite2 import dbapi2 as sqlite
 
 class Vasca(gtk.Window):
 	def __init__(self): 
-
 		gtk.Window.__init__(self)
-		self.set_name("Vasche")
+		self.set_title("Vasche")
+		
 		box = gtk.VBox()
 		
-		
-		
 		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, str)
-		view = gtk.TreeView(self.vasca_store)
+		
+		self.view = view = gtk.TreeView(self.vasca_store)
+		
 		lst = ['Id', 'Vasca', 'Data', 'Nome', 'Tipo Acquario', 'Tipo Filtro', 'Impianto Co2', 'Illuminazione']
 		renderer = gtk.CellRendererText()
 		
@@ -44,16 +44,21 @@ class Vasca(gtk.Window):
 			col.set_clickable(True)
 			col.set_resizable(True)
 			view.append_column(col)
-		view.get_selection().connect('changed', self.on_clicked)
-		box.pack_start(view)
+		
+		view.get_selection().connect('changed', self.on_selection_changed)
+		
+		sw = gtk.ScrolledWindow()
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+		
+		sw.add(view)
+		
+		box.pack_start(sw)
 		
 		connessione=sqlite.connect(os.path.join('Data', 'db'))
 		cursore=connessione.cursor()
 		cursore.execute("select * from vasca")
 
-		# Eliminiamo le vecchie righe
-		self.vasca_store.clear()
-		
 		for y in cursore.fetchall():
 			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8]])
 		
@@ -62,25 +67,32 @@ class Vasca(gtk.Window):
 		self.exp = exp = gtk.Expander("<b>Editing</b>")
 		# Facciamo in modo che riconosca i tag di formattazione (<b>)
 		exp.set_use_markup(True)
+		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
-		btn = gtk.Button("Aggiungi")
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
 		btn.connect('clicked', self.on_add)
 		bb.pack_start(btn)
-		btn = gtk.Button("Save")
+		
+		btn = gtk.Button(stock=gtk.STOCK_SAVE)
 		btn.connect('clicked', self.on_save)
 		bb.pack_start(btn)
-		btn = gtk.Button("Rimuovi")
+		
+		btn = gtk.Button(gtk.STOCK_REMOVE)
 		btn.connect('clicked', self.on_del)
 		bb.pack_start(btn)
+		
 		# Attacchiamo alla box expander e buttonbox
 		# in modo da non farli allargare durante il
 		# ridimensionamento :)
 		box.pack_start(bb, False, False, 0)
 		box.pack_start(exp, False, False, 0)
+		
 		# Creiamo la table che verra contenuta nell'expander
-		tbl = gtk.Table(3, 2)
+		tbl = gtk.Table(7, 2)
+		
 		tbl.attach(gtk.Label("Vasca:"), 0, 1, 0, 1)
 		tbl.attach(gtk.Label("Data:"), 0, 1, 1, 2)
 		tbl.attach(gtk.Label("Nome:"), 0, 1, 2, 3)
@@ -88,7 +100,11 @@ class Vasca(gtk.Window):
 		tbl.attach(gtk.Label("Tipo Filtro:"), 0, 1, 4, 5)
 		tbl.attach(gtk.Label("Impianto Co2:"), 0, 1, 5, 6)
 		tbl.attach(gtk.Label("Illuminazione:"), 0, 1, 6, 7)
-		self.e_vasca, self.e_data, self.e_nome, self.e_tipo, self.e_filtro, self.e_co2, self.e_il = gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry(), gtk.Entry()
+		
+		self.e_vasca, self.e_data, self.e_nome = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
+		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
+		
 		tbl.attach(self.e_vasca, 1, 2, 0, 1)
 		tbl.attach(self.e_data, 1, 2, 1, 2)
 		tbl.attach(self.e_nome, 1, 2, 2, 3)
@@ -96,43 +112,70 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_filtro, 1, 2, 4, 5)
 		tbl.attach(self.e_co2, 1, 2, 5, 6)
 		tbl.attach(self.e_il, 1, 2, 6, 7)
+		
 		exp.add(tbl)
+		
 		self.add(box)
 		self.show_all()
-		gtk.main()
 
 	def on_save(self, widget): 
-# Prendiamo l'iter e il modello dalla selezione
+		# Prendiamo l'iter e il modello dalla selezione
 		mod, it = self.view.get_selection().get_selected()
+		
 		# Se esiste una selezione aggiorniamo la row
 		# in base al contenuto delle entry
-	#if it != None:
-		#mod.set_value(it, 0, self.e_name.get_text())
-		#mod.set_value(it, 1, self.e_desc.get_text())
+		
+		if it != None:
+			self.vasca_store.set_value(it, 1, self.e_vasca.get_text())
+			self.vasca_store.set_value(it, 2, self.e_data.get_text())
+			self.vasca_store.set_value(it, 3, self.e_nome.get_text())
+			self.vasca_store.set_value(it, 4, self.e_tipo.get_text())
+			self.vasca_store.set_value(it, 5, self.e_filtro.get_text())
+			self.vasca_store.set_value(it, 6, self.e_co2.get_text())
+			self.vasca_store.set_value(it, 7, self.e_il.get_text())
 
-	def on_add(self, widget): 
-# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
-# dall'utente
-		it = self.store.append()
-		self.store.set(it, 0, "EDIT ME")
-		self.store.set(it, 1, "EDIT ME")
+	def on_add(self, widget):
+		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
+		# dall'utente
+		
+		it = self.vasca_store.append()
+
+		self.vasca_store.set_value(it, 1, "EDIT ME")
+		self.vasca_store.set_value(it, 2, "EDIT ME")
+		self.vasca_store.set_value(it, 3, "EDIT ME")
+		self.vasca_store.set_value(it, 4, "EDIT ME")
+		self.vasca_store.set_value(it, 5, "EDIT ME")
+		self.vasca_store.set_value(it, 6, "EDIT ME")
+		self.vasca_store.set_value(it, 7, "EDIT ME")
+		
 	def on_del(self, widget): 
-# prendiamo l'iter selezionato e elimianiamolo dalla store
+		# prendiamo l'iter selezionato e elimianiamolo dalla store
 		mod, it = self.view.get_selection().get_selected()
+		
+		if it != None:
+			self.vasca_store.remove(it)
 
-	#if it != None:
-		#self.store.remove(it)     
-
-	def on_clicked(self, sel):
-#Aggiorniamo il contenuto delle entry in base alla selezione
+	def on_selection_changed(self, sel):
+		# Aggiorniamo il contenuto delle entry in base alla selezione
 		mod, it = sel.get_selected()
-	#if it != None:
-		#self.e_name.set_text(mod.get_value(it, 0))
-		#self.e_desc.set_text(mod.get_value(it, 1))
-		#self.exp.set_expanded(True)
-	#else:
-		#self.e_name.set_text('')
-		#self.e_desc.set_text('')
-		#self.exp.set_expanded(False)
-#if __name__ == "__main__":
- # Example()
+		
+		if it != None:
+			self.e_vasca.set_text(mod.get_value(it, 1))
+			self.e_data.set_text(mod.get_value(it, 2))
+			self.e_nome.set_text(mod.get_value(it, 3))
+			self.e_tipo.set_text(mod.get_value(it, 4))
+			self.e_filtro.set_text(mod.get_value(it, 5))
+			self.e_co2.set_text(mod.get_value(it, 6))
+			self.e_il.set_text(mod.get_value(it, 7))
+			
+			self.exp.set_expanded(True)
+		else:
+			self.e_vasca.set_text('')
+			self.e_data.set_text('')
+			self.e_nome.set_text('')
+			self.e_tipo.set_text('')
+			self.e_filtro.set_text('')
+			self.e_co2.set_text('')
+			self.e_il.set_text('')
+
+			self.exp.set_expanded(False)
