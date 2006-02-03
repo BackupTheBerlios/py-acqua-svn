@@ -1,132 +1,16 @@
-#!/usr/bin/env python
-# -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
-#email: pyacqua@gmail.com  
-#
-#   
-#Py-Acqua is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#    (at your option) any later version.
-#
-#Py-Acqua is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with Py-Acqua; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 import gtk
 import os
 from pysqlite2 import dbapi2 as sqlite
 
 class Vasca(gtk.Window):
-	def __init__(self):
+	def __init__(self): 
+
 		gtk.Window.__init__(self)
-		
-		self.set_title('Vasche')
-		
-		vbox = gtk.VBox()
-		
-		nb = gtk.Notebook()
-		
-		nb.append_page(self.inserisci_vasche(), gtk.Label('Inserisci'))
-		nb.append_page(self.visualizza_vasche(), gtk.Label('Visualizza'))
-		nb.append_page(self.modifica_vasche(), gtk.Label('Modifica'))
-		
-		vbox.pack_start(nb)
-		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		btn.connect('clicked', self.exit)
-		
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		btn.connect('clicked', self.refresh)
-		
-		bb.pack_start(btn)
-		
-		vbox.pack_start(bb, False, False, 0)
-		
-		self.add(vbox)
-		self.show_all()
-		
-		self.set_size_request(400, 300)
-		self.refresh(None)
-		
-	def refresh(self,widget):
-		
-		connessione=sqlite.connect(os.path.join('Data', 'db'))
-		cursore=connessione.cursor()
-		cursore.execute("select * from vasca")
-
-		# Eliminiamo le vecchie righe
-		self.vasca_store.clear()
-		
-		for y in cursore.fetchall():
-			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8]])
-		
-		
-	def inserisci_vasche(self):
+		self.set_name("Asdasso")
 		box = gtk.VBox()
-		entry = gtk.Entry()
-		tbl = gtk.Table(10, 2)
-		tbl.set_border_width(5)
-		
-		tbl.attach(self.new_label('Vasca'), 0, 1, 0, 1)
-		tbl.attach(self.new_label('Data di avvio'), 0, 1, 1, 2)
-		tbl.attach(self.new_label('Nome'), 0, 1, 2, 3)
-		tbl.attach(self.new_label('Tipo di acquario'), 0, 1, 3, 4)
-		tbl.attach(self.new_label('Tipo di filtro'), 0, 1, 4, 5)
-		tbl.attach(self.new_label('Impianto co2'), 0, 1, 5, 6)
-		tbl.attach(self.new_label('Illuminazione'), 0, 1, 6, 7)
-		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
-		
-		tbl.attach(entry, 1, 2, 0, 1)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 1, 2)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 2, 3)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 3, 4)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 4, 5)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 5, 6)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 6, 7)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 7, 8)
-		
-		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		btn = gtk.Button(stock=gtk.STOCK_NEW)
-		bb.pack_start(btn)
-		box.pack_start(tbl)
-		# Packa senza l'expanding..
-		# Non influenza le dimensioni durante il ridimensionamento
-		box.pack_start(bb, False, False, 0)
-		return box
 		
 		
 		
-		
-		return tbl
-		
-		
-	def visualizza_vasche(self):
-	
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-
 		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, str)
 		view = gtk.TreeView(self.vasca_store)
 		lst = ['Id', 'Vasca', 'Data', 'Nome', 'Tipo Acquario', 'Tipo Filtro', 'Impianto Co2', 'Illuminazione']
@@ -139,61 +23,85 @@ class Vasca(gtk.Window):
 			col.set_clickable(True)
 			col.set_resizable(True)
 			view.append_column(col)
+		view.get_selection().connect('changed', self.on_clicked)
+		box.pack_start(view)
+		
+		connessione=sqlite.connect(os.path.join('Data', 'db'))
+		cursore=connessione.cursor()
+		cursore.execute("select * from vasca")
 
-		sw.add(view)
+		# Eliminiamo le vecchie righe
+		self.vasca_store.clear()
 		
-		return sw
-		
-	def modifica_vasche(self):
-		entry = gtk.Entry()
-		tbl = gtk.Table(10, 2)
-		tbl.set_border_width(5)
-		
-		tbl.attach(self.new_label('Vasca'), 0, 1, 0, 1)
-		tbl.attach(self.new_label('Data di avvio'), 0, 1, 1, 2)
-		tbl.attach(self.new_label('Nome'), 0, 1, 2, 3)
-		tbl.attach(self.new_label('Tipo di acquario'), 0, 1, 3, 4)
-		tbl.attach(self.new_label('Tipo di filtro'), 0, 1, 4, 5)
-		tbl.attach(self.new_label('Impianto co2'), 0, 1, 5, 6)
-		tbl.attach(self.new_label('Illuminazione'), 0, 1, 6, 7)
-		tbl.attach(self.new_label('Foto'), 0, 1, 7, 8)
+		for y in cursore.fetchall():
+			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], y[8]])
 		
 		
-		tbl.attach(entry, 1, 2, 0, 1)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 1, 2)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 2, 3)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 3, 4)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 4, 5)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 5, 6)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 6, 7)
-		entry = gtk.Entry()
-		tbl.attach(entry, 1, 2, 7, 8)
-		
-		
-		
-		return tbl
-		
-		
-		
-		
-		
-	def new_label(self, txt, bold=True):
-		lbl = gtk.Label()
-		if bold:
-			lbl.set_use_markup(True)
-			lbl.set_label('<b>' + txt + '</b>')
-			lbl.set_alignment(0, 0.5)
-		else:
-			lbl.set_label(txt)
-			lbl.set_alignment(0.5, 0)
-		
-		return lbl	
-		
-	def exit(self, *w):
-		self.hide()
+		# Usiamo un expander per rendere tutto piu' appetibile
+		self.exp = exp = gtk.Expander("<b>Editing</b>")
+		# Facciamo in modo che riconosca i tag di formattazione (<b>)
+		exp.set_use_markup(True)
+		# Creiamo una buttonbox per contenere i bottoni di modifica
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		btn = gtk.Button("Aggiungi")
+		btn.connect('clicked', self.on_add)
+		bb.pack_start(btn)
+		btn = gtk.Button("Save")
+		btn.connect('clicked', self.on_save)
+		bb.pack_start(btn)
+		btn = gtk.Button("Rimuovi")
+		btn.connect('clicked', self.on_del)
+		bb.pack_start(btn)
+		# Attacchiamo alla box expander e buttonbox
+		# in modo da non farli allargare durante il
+		# ridimensionamento :)
+		box.pack_start(bb, False, False, 0)
+		box.pack_start(exp, False, False, 0)
+		# Creiamo la table che verra contenuta nell'expander
+		tbl = gtk.Table(3, 2)
+		tbl.attach(gtk.Label("Nome:"), 0, 1, 0, 1)
+		tbl.attach(gtk.Label("Descrizione:"), 0, 1, 1, 2)
+		self.e_name, self.e_desc = gtk.Entry(), gtk.Entry()
+		tbl.attach(self.e_name, 1, 2, 0, 1)
+		tbl.attach(self.e_desc, 1, 2, 1, 2)
+		exp.add(tbl)
+		self.add(box)
+		self.show_all()
+		gtk.main()
+
+	def on_save(self, widget): 
+# Prendiamo l'iter e il modello dalla selezione
+		mod, it = self.view.get_selection().get_selected()
+		# Se esiste una selezione aggiorniamo la row
+		# in base al contenuto delle entry
+	#if it != None:
+		#mod.set_value(it, 0, self.e_name.get_text())
+		#mod.set_value(it, 1, self.e_desc.get_text())
+
+	def on_add(self, widget): 
+# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
+# dall'utente
+		it = self.store.append()
+		self.store.set(it, 0, "EDIT ME")
+		self.store.set(it, 1, "EDIT ME")
+	def on_del(self, widget): 
+# prendiamo l'iter selezionato e elimianiamolo dalla store
+		mod, it = self.view.get_selection().get_selected()
+
+	#if it != None:
+		#self.store.remove(it)     
+
+	def on_clicked(self, sel):
+#Aggiorniamo il contenuto delle entry in base alla selezione
+		mod, it = sel.get_selected()
+	#if it != None:
+		#self.e_name.set_text(mod.get_value(it, 0))
+		#self.e_desc.set_text(mod.get_value(it, 1))
+		#self.exp.set_expanded(True)
+	#else:
+		#self.e_name.set_text('')
+		#self.e_desc.set_text('')
+		#self.exp.set_expanded(False)
+#if __name__ == "__main__":
+ # Example()
