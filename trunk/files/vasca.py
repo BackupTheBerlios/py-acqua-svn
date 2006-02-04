@@ -123,7 +123,9 @@ class Vasca(gtk.Window):
 		self.show_all()
 
 	def on_refresh(self, widget): 
+		
 		# Prendiamo l'iter e il modello dalla selezione
+		
 		mod, it = self.view.get_selection().get_selected()
 		
 		# Se esiste una selezione aggiorniamo la row
