@@ -62,7 +62,7 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table filtro (id integer primary key,d DATE, q FLOAT)")
 	cursore.execute("create table datapesci (nome TEXT, cara TEXT)")
 	cursore.execute("create table datapiante (nome TEXT, cara TEXT)")
-	cursore.execute("create table vasca (id integer primary key, t TEXT, da DATE, a TEXT, aa TEXT, b TEXT, c TEXT, d TEXT, im TEXT)")
+	cursore.execute("create table vasca (id integer, t TEXT, da DATE, a TEXT, aa TEXT, b TEXT, c TEXT, d TEXT, im TEXT)")
 	connessione.commit()
 	
 def fix_actions(actions, instance):
@@ -194,9 +194,8 @@ class Gui(gtk.Window):
 		return files.piante.win5()
 		
 	def vasca_apri(self, widget, data=None):
-		import files.vasca1
-		#return files.vasca.win6()
-		return files.vasca1.Vasca()
+		import files.vasca
+		return files.vasca.Vasca()
 	def tips_apri(self, widget, data=None):
 		import files.tips
 		files.tips.TipsDialog()
