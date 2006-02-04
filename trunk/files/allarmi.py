@@ -221,7 +221,7 @@ class Allarmi(gtk.Window):
 		if bold:
 			lbl.set_use_markup(True)
 			lbl.set_label('<b>' + txt + '</b>')
-			lbl.set_alignment(0, 0.5)
+			lbl.set_alignment(0, 1.0)
 		else:
 			lbl.set_label(txt)
 			lbl.set_alignment(0.5, 0)
