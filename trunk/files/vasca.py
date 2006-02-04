@@ -155,11 +155,21 @@ class Vasca(gtk.Window):
 		self.vasca_store.set_value(it, 7, "EDIT ME")
 	def on_save(self, widget):
 		#come fai a prelevare i dati dal row????
+		vasca = self.e_vasca.get_text()
+		data = self.e_data.get_text()
+		self.e_nome.get_text()
+		self.e_tipo.get_text()
+		self.e_filtro.get_text()
+		self.e_co2.get_text()
+		self.e_il.get_text()
+		print vasca
+		print data
 		
-		connessione=sqlite.connect(os.path.join('Data', 'db'))
-		cursore=connessione.cursor()
-		cursore.execute("insert into vasca values (?,?,?,?,?,?,?,?,?)",(id, vasca, data, nome, tipo, filtro, co, illuminazione, immagine))
-		connessione.commit()
+		
+		#connessione=sqlite.connect(os.path.join('Data', 'db'))
+		#cursore=connessione.cursor()
+		#cursore.execute("insert into vasca values (?,?,?,?,?,?,?,?,?)",(id, vasca, data, nome, tipo, filtro, co, illuminazione, immagine))
+		#connessione.commit()
 
 
 
