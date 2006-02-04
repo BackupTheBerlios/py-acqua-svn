@@ -24,77 +24,39 @@ pygtk.require('2.0')
 import gtk
 import finestre
 
-class win2:
-	#def delete_event(self, widget, event):
-		#widget.hide()
-	def __init__(self):
+class win2(gtk.Window):
+	def __init__(self): 
+		gtk.Window.__init__(self)
+		self.set_title("Calcoli")
 		
-		self.win = finestre.win(600, 250, "Py-Acqua Calcoli", 5)
+		vbox = gtk.VBox()
+		vbox.set_spacing(4)
+		vbox.set_border_width(4)
 		
-		self.fixed = gtk.Fixed()
-		self.win.add(self.fixed)
-		####
-		#self.win.connect("delete_event", delete_event)
+		tbl = gtk.Table(8, 2)
 		
-		self.win
-		self.label1 = gtk.Label("Inserisci la larghezza in cm:")
-		self.fixed.put(self.label1, 2, 2)
-		self.label2 =  gtk.Label("Inserisci la lunghezza in cm:")
-		self.fixed.put(self.label2, 200, 2)
-		self.label3 = gtk.Label("Inserisci l'altezza in cm:")
-		##
-		self.fixed.put(self.label3, 400, 2)
-		self.entry1 = gtk.Entry(30)
-		self.fixed.put(self.entry1, 2, 30)
-		self.entry2 = gtk.Entry(30)
-		self.fixed.put(self.entry2, 200, 30)
-		self.entry3 = gtk.Entry(30)
-		self.fixed.put(self.entry3, 400, 30)
-		####
-		self.label4 = gtk.Label("Volume:")
-		self.fixed.put(self.label4, 50, 80)
-		self.label5 = gtk.Label("Piante inseribili:")
-		self.fixed.put(self.label5, 230, 80)
-		self.label6 = gtk.Label("Numero di pesci da 3-4 cm:")
-		self.fixed.put(self.label6, 390, 80)
-		##
-		self.label7 = gtk.Label(0)
-		self.fixed.put(self.label7, 70, 105)
-		self.label8 = gtk.Label(0)
-		self.fixed.put(self.label8, 270, 105)
-		self.label9 = gtk.Label(0)
-		self.fixed.put(self.label9, 470, 105)
-		####
-		self.label10 = gtk.Label("Numero pesci da 5-6 cm:")
-		self.fixed.put(self.label10, 2, 140)
-		self.label11 = gtk.Label("Watt per piante esigenti:")
-		self.fixed.put(self.label11, 200, 140) 
-		self.label12 = gtk.Label("Watt per piante poco esigenti:")
-		self.fixed.put(self.label12, 388, 140)
-		##
-		self.label13 = gtk.Label(0)
-		self.fixed.put(self.label13, 70, 165)
-		self.label14 = gtk.Label(0)
-		self.fixed.put(self.label14, 270, 165)
-		self.label15 = gtk.Label(0)
-		self.fixed.put(self.label15, 470, 165)
-		####
-		self.button1 = gtk.Button("Calcola")
-		self.button1.connect("clicked", self.calcola)
-		self.fixed.put(self.button1, 150, 210)
-		self.button2 = gtk.Button("Pulisci")
-		self.button2.connect("clicked", self.pulisci_calcoli)
-		self.fixed.put(self.button2, 250, 210)
-		self.button3 = gtk.Button("Chiudi")
-		#self.button3.connect("clicked", gtk.main_quit)
-		self.button3.connect_object("clicked", gtk.Widget.destroy, self.win)
-		self.fixed.put(self.button3, 350, 210)
-		self.win.show_all()
+		tbl.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
+		tbl.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
 		
-	def delete_event(self, widget, event, data=None):
-		return True
 	
-	#Funzioni del file
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		
+		
+		
+		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
+		#btn.connect('clicked', self.on_refresh)
+		bb.pack_start(btn)
+		
+		
+		
+		vbox.pack_start(bb, False, False, 0)
+		
+		self.add(vbox)
+		self.show_all()
+		
 	def calcola(self, obj):
 		try:
 			a = int(self.entry1.get_text())
@@ -126,3 +88,10 @@ class win2:
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		self.entry3.set_text("")
+	def new_label(self, txt):
+		lbl = gtk.Label()
+		lbl.set_use_markup(True)
+		lbl.set_label('<b>' + txt + '</b>')
+		lbl.set_alignment(0.0, 0.5)
+		
+		return lbl
