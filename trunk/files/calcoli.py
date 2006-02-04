@@ -38,6 +38,9 @@ class win2(gtk.Window):
 		tbl.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
 		tbl.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
 		tbl.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
+		vbox.pack_start(tbl)
+
+		
 		
 	
 		
@@ -55,6 +58,7 @@ class win2(gtk.Window):
 		vbox.pack_start(bb, False, False, 0)
 		
 		self.add(vbox)
+		
 		self.show_all()
 		
 	def calcola(self, obj):
