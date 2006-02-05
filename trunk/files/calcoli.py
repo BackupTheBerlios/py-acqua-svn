@@ -44,6 +44,19 @@ class win2(gtk.Window):
 		tbl.attach(self.e_lunghezza, 1, 2, 1, 2)
 		tbl.attach(self.e_larghezza, 2, 3, 1, 2)
 		
+		tbl.attach(self.new_label("Volume:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Piante Inseribili:"), 1, 2, 2, 3)
+		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 2 ,3, 2, 3)
+		tbl.attach(self.new_label("0"), 0, 1, 3, 4)
+		tbl.attach(self.new_label("0"), 1, 2, 3, 4)
+		tbl.attach(self.new_label("0"), 2, 3, 3, 4)
+		
+		tbl.attach(self.new_label("Numero di pesci 5-6 cm:"), 0, 1, 4, 5)
+		tbl.attach(self.new_label("Watt per piante esigenti:"), 1, 2, 4, 5)
+		tbl.attach(self.new_label("Watt per piante poco esigenti:"), 2, 3, 4, 5)
+		tbl.attach(self.new_label("0"), 0, 1, 5, 6)
+		tbl.attach(self.new_label("0"), 1, 2, 5, 6)
+		tbl.attach(self.new_label("0"), 2, 3, 5, 6)
 		
 		
 		vbox.pack_start(tbl)
