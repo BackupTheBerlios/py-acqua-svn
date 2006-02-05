@@ -112,11 +112,11 @@ class win2(gtk.Window):
 		l = e*0.35
 
 		self.volume.set_text(str(e))
-		#self.label8.set_text(str(f))
-		#self.label9.set_text(str(g))
-		#self.label13.set_text(str(h))
-		#self.label14.set_text(str(i))
-		#self.label15.set_text(str(l))
+		self.piante_inseribili.set_text(str(f))
+		self.num_pesci_3_4.set_text(str(g))
+		self.num_pesci_5_6.set_text(str(h))
+		self.watt_esigenti.set_text(str(i))
+		self.watt_poco_esigenti.set_text(str(l))
 	
 	def pulisci_calcoli(self, obj):
 		self.entry1.set_text("")
