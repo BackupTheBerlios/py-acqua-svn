@@ -36,8 +36,16 @@ class win2(gtk.Window):
 		tbl = gtk.Table(8, 2)
 		
 		tbl.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Lunghezza:"), 1, 2, 0, 1)
+		tbl.attach(self.new_label("Larghezza:"), 2, 3, 0, 1)
+		
+		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		tbl.attach(self.e_altezza, 0, 1, 1, 2)
+		tbl.attach(self.e_lunghezza, 1, 2, 1, 2)
+		tbl.attach(self.e_larghezza, 2, 3, 1, 2)
+		
+		
+		
 		vbox.pack_start(tbl)
 
 		
