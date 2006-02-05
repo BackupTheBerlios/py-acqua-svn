@@ -91,7 +91,7 @@ class win2(gtk.Window):
 		
 		self.show_all()
 		
-	def on_refresh(self):
+	def on_refresh(self, widget):
 		try:
 			a = int(self.e_larghezza.get_text())
 			b = int(self.e_lunghezza.get_text())
@@ -111,12 +111,12 @@ class win2(gtk.Window):
 		i = e*0.5
 		l = e*0.35
 
-		self.label7.set_text(str(e))
-		self.label8.set_text(str(f))
-		self.label9.set_text(str(g))
-		self.label13.set_text(str(h))
-		self.label14.set_text(str(i))
-		self.label15.set_text(str(l))
+		self.volume.set_text(str(e))
+		#self.label8.set_text(str(f))
+		#self.label9.set_text(str(g))
+		#self.label13.set_text(str(h))
+		#self.label14.set_text(str(i))
+		#self.label15.set_text(str(l))
 	
 	def pulisci_calcoli(self, obj):
 		self.entry1.set_text("")
