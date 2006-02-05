@@ -47,16 +47,25 @@ class win2(gtk.Window):
 		tbl.attach(self.new_label("Volume:"), 0, 1, 2, 3)
 		tbl.attach(self.new_label("Piante Inseribili:"), 1, 2, 2, 3)
 		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 2 ,3, 2, 3)
-		tbl.attach(self.new_label("0"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("0"), 1, 2, 3, 4)
-		tbl.attach(self.new_label("0"), 2, 3, 3, 4)
+		self.volume = self.new_label('0', False)
+		self.piante_inseribili = self.new_label('0', False)
+		self.num_pesci_3_4 = self.new_label('0', False)
+		
+		tbl.attach(self.volume, 0, 1, 3, 4)
+		tbl.attach(self.piante_inseribili, 1, 2, 3, 4)
+		tbl.attach(self.num_pesci_3_4, 2, 3, 3, 4)
 		
 		tbl.attach(self.new_label("Numero di pesci 5-6 cm:"), 0, 1, 4, 5)
 		tbl.attach(self.new_label("Watt per piante esigenti:"), 1, 2, 4, 5)
 		tbl.attach(self.new_label("Watt per piante poco esigenti:"), 2, 3, 4, 5)
-		tbl.attach(self.new_label("0"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("0"), 1, 2, 5, 6)
-		tbl.attach(self.new_label("0"), 2, 3, 5, 6)
+		self.num_pesci_5_6 = self.new_label('0', False)
+		self.watt_esigenti = self.new_label('0', False)
+		self.watt_poco_esigenti = self.new_label('0', False)
+		
+		
+		tbl.attach(self.num_pesci_5_6, 0, 1, 5, 6)
+		tbl.attach(self.watt_esigenti, 1, 2, 5, 6)
+		tbl.attach(self.watt_poco_esigenti, 2, 3, 5, 6)
 		
 		
 		vbox.pack_start(tbl)
@@ -71,7 +80,7 @@ class win2(gtk.Window):
 		
 		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		#btn.connect('clicked', self.on_refresh)
+		btn.connect('clicked', self.on_refresh)
 		bb.pack_start(btn)
 		
 		
@@ -82,11 +91,11 @@ class win2(gtk.Window):
 		
 		self.show_all()
 		
-	def calcola(self, obj):
+	def on_refresh(self):
 		try:
-			a = int(self.entry1.get_text())
-			b = int(self.entry2.get_text())
-			c = int(self.entry3.get_text())
+			a = int(self.e_larghezza.get_text())
+			b = int(self.e_lunghezza.get_text())
+			c = int(self.e_altezza.get_text())
 			
 			
 		except ValueError:
@@ -113,7 +122,7 @@ class win2(gtk.Window):
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		self.entry3.set_text("")
-	def new_label(self, txt):
+	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
 		lbl.set_use_markup(True)
 		lbl.set_label('<b>' + txt + '</b>')
