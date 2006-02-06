@@ -29,48 +29,58 @@ class win2(gtk.Window):
 		gtk.Window.__init__(self)
 		self.set_title("Calcoli")
 		
+		#f1 = gtk.Frame('Valori'); f2 = gtk.Frame('Risultati')
+		#main_vbox.pack_start(f1); main_vbox.pack_start(f2);
+		#tbl_valori = gtk.Table(...); tbl_risultati = gtk.Table(...)
+		#f1.add(tbl_valori); f2.add(tbl_risultati)
+		
+		
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
 		
-		tbl = gtk.Table(8, 2)
+		f1 = gtk.Frame('Valori'); f2 = gtk.Frame('Risultati')
+		vbox.pack_start(f1); vbox.pack_start(f2);
 		
-		tbl.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Lunghezza:"), 1, 2, 0, 1)
-		tbl.attach(self.new_label("Larghezza:"), 2, 3, 0, 1)
+		tbl_valori = gtk.Table(8, 2)
+		
+		tbl_valori.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
+		tbl_valori.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
+		tbl_valori.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
 		
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
-		tbl.attach(self.e_altezza, 0, 1, 1, 2)
-		tbl.attach(self.e_lunghezza, 1, 2, 1, 2)
-		tbl.attach(self.e_larghezza, 2, 3, 1, 2)
+		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1)
+		tbl_valori.attach(self.e_lunghezza, 1, 2, 1, 2)
+		tbl_valori.attach(self.e_larghezza, 1, 2, 2, 3)
 		
+		tbl = gtk.Table(8, 2)
 		tbl.attach(self.new_label("Volume:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Piante Inseribili:"), 1, 2, 2, 3)
-		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 2 ,3, 2, 3)
+		tbl.attach(self.new_label("Piante Inseribili:"), 0, 1, 3, 4)
+		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 0 ,1, 4, 5)
 		self.volume = self.new_label('0', False)
 		self.piante_inseribili = self.new_label('0', False)
 		self.num_pesci_3_4 = self.new_label('0', False)
 		
-		tbl.attach(self.volume, 0, 1, 3, 4)
+		tbl.attach(self.volume, 1, 2, 2, 3)
 		tbl.attach(self.piante_inseribili, 1, 2, 3, 4)
-		tbl.attach(self.num_pesci_3_4, 2, 3, 3, 4)
+		tbl.attach(self.num_pesci_3_4, 1, 2, 4, 5)
 		
-		tbl.attach(self.new_label("Numero di pesci 5-6 cm:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Watt per piante esigenti:"), 1, 2, 4, 5)
-		tbl.attach(self.new_label("Watt per piante poco esigenti:"), 2, 3, 4, 5)
+		tbl.attach(self.new_label("Numero di pesci 5-6 cm:"), 0, 1, 5, 6)
+		tbl.attach(self.new_label("Watt per piante esigenti:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label("Watt per piante poco esigenti:"), 0, 1, 8, 9)
 		self.num_pesci_5_6 = self.new_label('0', False)
 		self.watt_esigenti = self.new_label('0', False)
 		self.watt_poco_esigenti = self.new_label('0', False)
 		
 		
-		tbl.attach(self.num_pesci_5_6, 0, 1, 5, 6)
-		tbl.attach(self.watt_esigenti, 1, 2, 5, 6)
-		tbl.attach(self.watt_poco_esigenti, 2, 3, 5, 6)
+		tbl.attach(self.num_pesci_5_6, 1, 2, 5, 6)
+		tbl.attach(self.watt_esigenti, 1, 2, 6, 7)
+		tbl.attach(self.watt_poco_esigenti, 1, 2, 8, 9)
 		
 		
-		vbox.pack_start(tbl)
+		#vbox.pack_start(tbl)
 
-		
+		f1.add(tbl_valori); f2.add(tbl)
 		
 	
 		
