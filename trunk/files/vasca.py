@@ -19,8 +19,10 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk, gobject
+import gtk
+import gobject
 import os
+import sys
 from pysqlite2 import dbapi2 as sqlite
 
 class Vasca(gtk.Window):
@@ -111,6 +113,8 @@ class Vasca(gtk.Window):
 		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
 		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
 		self.e_path = gtk.Entry()
+
+		self.e_path.set_property('editable', False)
 		
 		tbl.attach(self.e_vasca, 1, 2, 0, 1)
 		tbl.attach(self.e_data, 1, 2, 1, 2)
@@ -124,7 +128,7 @@ class Vasca(gtk.Window):
 
 		btn = gtk.Button(stock=gtk.STOCK_OPEN)
 		btn.set_relief(gtk.RELIEF_NONE)
-		#btn.connect('clicked', self.on_browse)
+		btn.connect('clicked', self.on_browse)
 		
 		hbox.pack_start(self.e_path)
 		hbox.pack_start(btn, False, False, 0)
@@ -194,26 +198,47 @@ class Vasca(gtk.Window):
 	def on_add(self, widget):
 		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
 		# dall'utente
+		mod = self.view.get_model()
+		it = mod.get_iter_first()
+		id = 0
 		
+		while it != None:
+			tmp = int(self.vasca_store.get_value(it, 0))
+			
+			if tmp > id: id = tmp
+
+			it = mod.iter_next(it)
+		
+		id += 1		
 		it = self.vasca_store.append()
 
 		# Settiamo il campo ID
-		id = int(self.view.get_model().get_string_from_iter(it))
 		self.vasca_store.set_value(it, 0, id)
 
-		# TODO: Prendi i valori dalle entry
-		self.vasca_store.set_value(it, 1, "EDIT ME")
-		self.vasca_store.set_value(it, 2, "EDIT ME")
-		self.vasca_store.set_value(it, 3, "EDIT ME")
-		self.vasca_store.set_value(it, 4, "EDIT ME")
-		self.vasca_store.set_value(it, 5, "EDIT ME")
-		self.vasca_store.set_value(it, 6, "EDIT ME")
-		self.vasca_store.set_value(it, 7, "EDIT ME")
+		text = self.e_vasca.get_text()
+		date = self.e_data.get_text()
+		name = self.e_nome.get_text()
+		tacq = self.e_tipo.get_text()
+		tflt = self.e_filtro.get_text()
+		ico2 = self.e_co2.get_text()
+		illu = self.e_il.get_text()
+		img = self.e_path.get_text()
+		
+		self.vasca_store.set_value(it, 1, text)
+		self.vasca_store.set_value(it, 2, date)
+		self.vasca_store.set_value(it, 3, name)
+		self.vasca_store.set_value(it, 4, tacq)
+		self.vasca_store.set_value(it, 5, tflt)
+		self.vasca_store.set_value(it, 6, ico2)
+		self.vasca_store.set_value(it, 7, illu)
+		self.vasca_store.set_value(it, 8, self.make_image(img))
+		self.vasca_store.set_value(it, 9, img)
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?)', tuple([id] + ["EDIT ME"] * 8))
+		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?)',
+			(id, text, date, name, tacq, tflt, ico2, illu, img))
 		conn.commit()
 
 		self.update_status(1, "Row aggiunta (ID: %d)" % id)
@@ -261,21 +286,74 @@ class Vasca(gtk.Window):
 			self.e_filtro.set_text(mod.get_value(it, 5))
 			self.e_co2.set_text(mod.get_value(it, 6))
 			self.e_il.set_text(mod.get_value(it, 7))
-		else:
-			self.e_vasca.set_text('')
-			self.e_data.set_text('')
-			self.e_nome.set_text('')
-			self.e_tipo.set_text('')
-			self.e_filtro.set_text('')
-			self.e_co2.set_text('')
-			self.e_il.set_text('')
+			self.e_path.set_text(mod.get_value(it, 9))
 			
 	def on_row_activated(self, tree, path, col):
 		mod = self.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 
 		InfoDialog(self, mod, it)
+	
+	def on_browse(self, widget):
+		dialog = gtk.FileChooserDialog("Aggiungi foto", self,
+			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
+			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+		dialog.set_use_preview_label(False)
 
+		img = gtk.Image()
+		
+		dialog.set_preview_widget(img)
+		dialog.set_size_request(128, -1)
+
+		# Creiamo i filtri
+
+		filter = gtk.FileFilter()
+		filter.set_name("Immagini")
+		filter.add_mime_type("image/png")
+		filter.add_mime_type("image/jpeg")
+		filter.add_mime_type("image/gif")
+		filter.add_pattern("*.png")
+		filter.add_pattern("*.jpg")
+		filter.add_pattern("*.gif")
+		dialog.add_filter(filter)
+		
+		dialog.connect('update-preview', self.on_update_preview)
+
+		id = dialog.run()
+
+		dialog.hide()
+
+		if id == gtk.RESPONSE_OK:
+			name = dialog.get_filename()
+
+			img_dir = os.path.join(os.path.abspath(os.getcwd()), "Immagini")
+			img_dir = os.path.join(img_dir, os.path.basename(name))
+
+			if img_dir != name:
+				try:
+					import shutil
+					shutil.copy(name, 'Immagini/')
+				except:
+					print "Errore mentre copiavo (%s)" % sys.exc_value
+			self.e_path.set_text(os.path.basename(name))
+
+		dialog.destroy()
+
+	def on_update_preview(self, chooser):
+		uri = chooser.get_uri()
+		try:
+			pixbuf = gtk.gdk.pixbuf_new_from_file(uri[7:])
+			
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			pixbuf = pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR)
+			
+			chooser.get_preview_widget().set_from_pixbuf(pixbuf)
+		except:
+			chooser.get_preview_widget().set_from_stock(gtk.STOCK_DIALOG_QUESTION,
+				gtk.ICON_SIZE_DIALOG)
+		
+		chooser.set_preview_widget_active(True)
+	
 	def new_label(self, txt):
 		lbl = gtk.Label()
 		lbl.set_use_markup(True)
@@ -286,11 +364,9 @@ class Vasca(gtk.Window):
 		
 	def make_image(self, name):
 		try:
-			print "Making image for file %s..." % name
 			pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join('Immagini', name))
-
-			# Facciamo lo scaling
-			return pixbuf.scale_simple(50, 50, gtk.gdk.INTERP_HYPER)
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
 		except:
 			return None
 	
@@ -304,11 +380,11 @@ class Vasca(gtk.Window):
 		if type == 2:
 			self.img.set_from_stock(gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
 		
-		self.status.pop(0)
-		self.status.push(0, txt)
-
 		if self.timeoutid != None:
 			gobject.source_remove(self.timeoutid)
+			self.status.pop(0)
+
+		self.status.push(0, txt)
 
 		self.timeoutid = gobject.timeout_add(2000, self.callback)
 	
@@ -384,3 +460,15 @@ class InfoDialog(gtk.Dialog):
 		if id == gtk.RESPONSE_OK:
 			self.hide()
 			self.destroy()
+
+def make_thumb(twh, w, h):
+	if w == h:
+		return twh, twh
+	if w < h:
+		y = twh
+		x = int(float(y*w)/float(h))
+		return x, y
+	if w > h:
+		x = twh
+		y = int(float(x*h)/float(w))
+		return x, y
