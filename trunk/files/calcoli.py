@@ -27,36 +27,40 @@ import finestre
 class win2(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
+		
 		self.set_title("Calcoli")
-		
-		#f1 = gtk.Frame('Valori'); f2 = gtk.Frame('Risultati')
-		#main_vbox.pack_start(f1); main_vbox.pack_start(f2);
-		#tbl_valori = gtk.Table(...); tbl_risultati = gtk.Table(...)
-		#f1.add(tbl_valori); f2.add(tbl_risultati)
-		
+		self.set_resizable(False)
 		
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
 		
 		f1 = gtk.Frame('Valori'); f2 = gtk.Frame('Risultati')
-		vbox.pack_start(f1); vbox.pack_start(f2);
 		
-		tbl_valori = gtk.Table(8, 2)
+		vbox.pack_start(f1, False, False, 0)
+		vbox.pack_start(f2, False, False, 0)
+		
+		tbl_valori = gtk.Table(3, 2)
+		tbl_valori.set_border_width(4)
+		tbl_valori.set_row_spacings(4)
 		
 		tbl_valori.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
 		tbl_valori.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
 		tbl_valori.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
 		
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
-		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1)
-		tbl_valori.attach(self.e_lunghezza, 1, 2, 1, 2)
-		tbl_valori.attach(self.e_larghezza, 1, 2, 2, 3)
+		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1, yoptions=0)
+		tbl_valori.attach(self.e_lunghezza, 1, 2, 1, 2, yoptions=0)
+		tbl_valori.attach(self.e_larghezza, 1, 2, 2, 3, yoptions=0)
 		
-		tbl = gtk.Table(8, 2)
+		tbl = gtk.Table(6, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
+		
 		tbl.attach(self.new_label("Volume:"), 0, 1, 2, 3)
 		tbl.attach(self.new_label("Piante Inseribili:"), 0, 1, 3, 4)
 		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 0 ,1, 4, 5)
+		
 		self.volume = self.new_label('0', False)
 		self.piante_inseribili = self.new_label('0', False)
 		self.num_pesci_3_4 = self.new_label('0', False)
@@ -72,28 +76,18 @@ class win2(gtk.Window):
 		self.watt_esigenti = self.new_label('0', False)
 		self.watt_poco_esigenti = self.new_label('0', False)
 		
-		
 		tbl.attach(self.num_pesci_5_6, 1, 2, 5, 6)
 		tbl.attach(self.watt_esigenti, 1, 2, 6, 7)
 		tbl.attach(self.watt_poco_esigenti, 1, 2, 8, 9)
-		
-		
-		#vbox.pack_start(tbl)
 
 		f1.add(tbl_valori); f2.add(tbl)
-		
-	
 		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		
-		
-		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
 		btn.connect('clicked', self.on_refresh)
 		bb.pack_start(btn)
-		
-		
 		
 		vbox.pack_start(bb, False, False, 0)
 		
@@ -106,7 +100,6 @@ class win2(gtk.Window):
 			a = int(self.e_larghezza.get_text())
 			b = int(self.e_lunghezza.get_text())
 			c = int(self.e_altezza.get_text())
-			
 			
 		except ValueError:
 			a = 0
@@ -132,10 +125,16 @@ class win2(gtk.Window):
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		self.entry3.set_text("")
+		
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
 		lbl.set_use_markup(True)
-		lbl.set_label('<b>' + txt + '</b>')
+		
+		if bold:
+			lbl.set_label('<b>' + txt + '</b>')
+		else:
+			lbl.set_label(txt)
+		
 		lbl.set_alignment(0.0, 0.5)
 		
 		return lbl
