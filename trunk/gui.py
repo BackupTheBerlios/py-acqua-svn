@@ -187,11 +187,11 @@ class Gui(gtk.Window):
 		
 	def pesci_apri(self, widget, data=None):
 		import files.pesci
-		return files.pesci.win4()
+		return files.pesci.Pesci()
 		
 	def piante_apri(self, widget, data=None):
 		import files.piante
-		return files.piante.win5()
+		return files.piante.Piante()
 		
 	def vasca_apri(self, widget, data=None):
 		import files.vasca
