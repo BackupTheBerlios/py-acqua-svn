@@ -218,7 +218,7 @@ class Piante(gtk.Window):
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into piante values(?,?,?,?,?,?,?,?,?)',
+		cur.execute('insert into piante values(?,?,?,?,?,?)',
 			(id, date, vasca, quantita, nome, img))
 		conn.commit()
 
@@ -414,9 +414,7 @@ class InfoDialog(gtk.Dialog):
 		attach(mod.get_value(it, 2), 1, 2)
 		attach(mod.get_value(it, 3), 2, 3)
 		attach(mod.get_value(it, 4), 3, 4)
-		attach(mod.get_value(it, 5), 4, 5)
-		attach(mod.get_value(it, 6), 5, 6)
-		attach(mod.get_value(it, 7), 6, 7)
+		
 		
 		self.vbox.pack_start(tbl, False, False, 0)
 		self.show_all()

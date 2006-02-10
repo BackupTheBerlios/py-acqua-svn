@@ -103,7 +103,7 @@ class Pesci(gtk.Window):
 		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
 		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
 		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
+		tbl.attach(self.new_label("Immagine:"), 0, 1, 4, 5)
 		
 		self.e_data, self.e_vasca, self.e_quantita = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		self.e_nome = gtk.Entry()
@@ -411,9 +411,7 @@ class InfoDialog(gtk.Dialog):
 		attach(mod.get_value(it, 2), 1, 2)
 		attach(mod.get_value(it, 3), 2, 3)
 		attach(mod.get_value(it, 4), 3, 4)
-		attach(mod.get_value(it, 5), 4, 5)
-		attach(mod.get_value(it, 6), 5, 6)
-		attach(mod.get_value(it, 7), 6, 7)
+		
 		
 		self.vbox.pack_start(tbl, False, False, 0)
 		self.show_all()
