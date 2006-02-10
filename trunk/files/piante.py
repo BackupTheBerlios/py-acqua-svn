@@ -111,13 +111,11 @@ class Piante(gtk.Window):
 
 		self.e_path.set_property('editable', False)
 		
-		tbl.attach(self.e_vasca, 1, 2, 0, 1)
-		tbl.attach(self.e_data, 1, 2, 1, 2)
-		tbl.attach(self.e_nome, 1, 2, 2, 3)
-		tbl.attach(self.e_tipo, 1, 2, 3, 4)
-		tbl.attach(self.e_filtro, 1, 2, 4, 5)
-		tbl.attach(self.e_co2, 1, 2, 5, 6)
-		tbl.attach(self.e_il, 1, 2, 6, 7)
+		tbl.attach(self.e_data, 1, 2, 0, 1)
+		tbl.attach(self.e_vasca, 1, 2, 1, 2)
+		tbl.attach(self.e_quantita, 1, 2, 2, 3)
+		tbl.attach(self.e_nome, 1, 2, 3, 4)
+		
 
 		hbox = gtk.HBox()
 
