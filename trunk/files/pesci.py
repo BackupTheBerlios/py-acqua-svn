@@ -168,7 +168,7 @@ class Pesci(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update pesci set da='%(date)s', vasca='%(vasca)s', d='%(quantita)s', testo='%(nome)s', im='%(img)s' where id = %(id)s" %vars())
+			cur.execute("update pesci set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', img='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
 			self.vasca_store.set_value(it, 1, date)

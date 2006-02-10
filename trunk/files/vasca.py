@@ -182,7 +182,7 @@ class Vasca(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update vasca set t='%(text)s', da='%(date)s', a='%(name)s', aa='%(tacq)s', b='%(tflt)s', c='%(ico2)s', d='%(illu)s', im='%(img)s' where id = %(id)s" %vars())
+			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', im='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
 			self.vasca_store.set_value(it, 1, text)
