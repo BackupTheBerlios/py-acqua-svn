@@ -206,7 +206,7 @@ class Gui(gtk.Window):
 		
 	def inserisci_apri(self,widget, data=None):
 		import files.inserisci
-		return files.inserisci.win9()
+		return files.inserisci.Inserisci()
 	def allarmi_apri(self, widget, data=None):
 		import files.allarmi
 		files.allarmi.Allarmi()

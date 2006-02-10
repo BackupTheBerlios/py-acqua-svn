@@ -19,252 +19,152 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pygtk
-pygtk.require('2.0')
 import gtk
-from data import *
-import finestre
-#from pysqlite2 import dbapi2 as sqlite
-#from sqlite import *
-#data1 = data()
+import os
+#import impostazioni
 
-class win9:
+#from inserisci import *
+from pysqlite2 import dbapi2 as sqlite
+
+class Inserisci(gtk.Window):
 	def __init__(self):
-		self.win = finestre.win(620, 610, "Py-Acqua Inserisci", 5)
+		gtk.Window.__init__(self)
 		
-		self.table = gtk.Table(2, 2, gtk.FALSE)
-		self.win.add(self.table)
-		
-		self.notebook = gtk.Notebook()
-		self.notebook.set_tab_pos(gtk.POS_TOP)
-		self.table.attach(self.notebook, 0, 2, 0, 1)
-		self.notebook.show()
-		
-		#Pagina pulizia filtro
-		self.label16 = gtk.Label("Cancella")
-		self.fixed1 = gtk.Fixed()
-		self.notebook.prepend_page(self.fixed1)
-		self.spinbutton2 = gtk.SpinButton(None)
-		self.spinbutton2.set_value(0)
-		self.fixed1.put(self.spinbutton2, 100, 13)
-		self.label400 = gtk.Label("Data gg/mm/aaaa")
-		self.fixed1.put(self.label400, 20, 50)
-		self.entry400 = gtk.Entry(30)
-		self.fixed1.put(self.entry400, 150, 50)
-		self.label401 = gtk.Label("Ogni quanti giorni?")
-		self.fixed1.put(self.label401, 20, 80)
-		self.entry401 = gtk.Entry(30)
-		self.fixed1.put(self.entry401, 150, 80)
-		#pulsanti per pulizia filtro
-		
-		self.button400 = gtk.Button("Inserisci")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed1.put(self.button400, 50, 150)
-		
-		self.button401 = gtk.Button("Pulisci")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed1.put(self.button401, 150, 150)
-		self.button402 = gtk.Button("Chiudi")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed1.put(self.button402, 250, 150)
-		
-		
-		
-		
-		#Pagina fertilizzante
-		self.label17 = gtk.Label("Visualizza")
-		#self.scrolled = gtk.ScrolledWindow()
-		#self.scrolled.set_policy(gtk.POLICY_ALWAYS, gtk.POLICY_ALWAYS)
-		self.fixed2 = gtk.Fixed()
-		self.notebook.prepend_page(self.fixed2)
-		self.spinbutton3 = gtk.SpinButton(None)
-		self.spinbutton3.set_value(0)
-		self.fixed2.put(self.spinbutton3, 100, 13)
-		self.checkbutton1 = gtk.CheckButton("Data di oggi")
-		#self.checkbutton1.connect("toggled", self.data, "Data di oggi")
-		self.fixed2.put(self.checkbutton1, 200, 13)
-		self.label300 = gtk.Label("Data gg/mm/aaaa")
-		self.fixed2.put(self.label300, 20, 50)
-		self.entry300 = gtk.Entry(30)
-		self.fixed2.put(self.entry300, 170, 50)
-		self.label301 = gtk.Label("Nome")
-		self.fixed2.put(self.label301, 20, 80)
-		self.entry301 = gtk.Entry(30)
-		self.fixed2.put(self.entry301, 170, 80)
-		self.label302 = gtk.Label("Quantita fertilizzante")
-		self.fixed2.put(self.label302, 20, 120)
-		self.entry302 = gtk.Entry(30)
-		self.fixed2.put(self.entry302, 170, 120)
-		self.label303 = gtk.Label("Ogni quanti giorni?")
-		self.fixed2.put(self.label303, 20, 150)
-		self.entry303 = gtk.Entry(30)
-		self.fixed2.put(self.entry303, 170, 150)
-		
-		#pulsanti fertilizzanti
-		
-		self.button300 = gtk.Button("Inserisci")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed2.put(self.button300, 50, 200)
-		
-		self.button301 = gtk.Button("Pulisci")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed2.put(self.button301, 150, 200)
-		self.button302 = gtk.Button("Chiudi")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed2.put(self.button302, 250, 200)
-		
-		
-		
-		
-		#Pagina Inserisci test
-		self.label18 = gtk.Label("Inserisci")
-		self.fixed3 = gtk.Fixed()
-		self.notebook.prepend_page(self.fixed3)
-		self.label19 = gtk.Label("Ph")
-		self.fixed3.put(self.label19, 90, 13)
-		self.label100 = gtk.Label("Alto")
-		self.fixed3.put(self.label100, 20, 45)
-		#self.spinbutton1 = gtk.SpinButton(None)
-		#self.spinbutton1.set_value(0)
-		#self.fixed3.put(self.spinbutton1, 210, 10)
-		#self.checkbutton1 = gtk.CheckButton("Data di oggi")
-		#self.checkbutton1.connect("toggled", self.data, "Data di oggi")
-		#self.fixed3.put(self.checkbutton1, 280, 13)
-		#self.label20 = gtk.Label("Inserisci la data gg/mm/aaaa")
-		#self.fixed3.put(self.label20, 3, 45)
-		self.entry4 = gtk.Entry(30)
-		self.fixed3.put(self.entry4, 70, 40)
-		self.label21 = gtk.Label("Basso")
-		self.fixed3.put(self.label21, 20, 85)
-		self.entry40 = gtk.Entry(30)
-		self.fixed3.put(self.entry40, 70, 80)
-		#self.comboentry1 = gtk.ComboBoxEntry(model=None, column=-1)
-		#self.fixed3.put(self.comboentry1, 210, 77)
-		self.label22 = gtk.Label("Kh")
-		self.fixed3.put(self.label22, 90, 120)
-		
-		self.label23 = gtk.Label("Alto")
-		self.fixed3.put(self.label23, 20, 160)
-		self.entry7 = gtk.Entry(30)
-		self.fixed3.put(self.entry7, 70, 155)
-		self.label24 = gtk.Label("Basso")
-		self.fixed3.put(self.label24, 20, 190)
-		self.entry8 = gtk.Entry(30)
-		self.fixed3.put(self.entry8, 70, 190)
-		self.label25 = gtk.Label("Gh")
-		self.fixed3.put(self.label25, 90, 220)
-		self.entry9 = gtk.Entry(30)
-		self.fixed3.put(self.entry9, 70, 250)
-		self.label26 = gtk.Label("Alto")
-		self.fixed3.put(self.label26, 20, 250)
-		#self.entry10 = gtk.Entry(30)
-		#self.fixed3.put(self.entry10, 70, 237)
-		self.label27 = gtk.Label("Basso")
-		self.fixed3.put(self.label27, 20, 280)
-		self.entry11 = gtk.Entry(30)
-		self.fixed3.put(self.entry11, 70, 280)
-		self.label28 = gtk.Label("No2")
-		self.fixed3.put(self.label28, 90, 310)
-		#self.entry12 = gtk.Entry(30)
-		#self.fixed3.put(self.entry12, 210, 301)
-		self.label29 = gtk.Label("Alto")
-		self.fixed3.put(self.label29, 20, 340)
-		self.entry13 = gtk.Entry(30)
-		self.fixed3.put(self.entry13, 70, 340)
-		self.label30 = gtk.Label("Basso")
-		self.fixed3.put(self.label30, 20, 365)
-		self.entry14 = gtk.Entry(30)
-		self.fixed3.put(self.entry14, 70, 365)
-		self.label31 = gtk.Label("No3")
-		self.fixed3.put(self.label31, 90, 397)
-		self.label200 = gtk.Label("Alto")
-		self.fixed3.put(self.label200, 20, 420)
-		self.entry15 = gtk.Entry(30)
-		self.fixed3.put(self.entry15, 70, 420)
-		self.label201 = gtk.Label("Basso")
-		self.fixed3.put(self.label201, 20, 450)
-		self.entry200 = gtk.Entry(30)
-		self.fixed3.put(self.entry200, 70, 450)
-		self.label202 = gtk.Label("Conducibilità")
-		self.fixed3.put(self.label202, 350, 13)
-		self.label203 = gtk.Label("Alto")
-		self.fixed3.put(self.label203, 280, 45)
-		self.entry201 = gtk.Entry(30)
-		self.fixed3.put(self.entry201, 340, 40)
-		self.label204 = gtk.Label("Basso")
-		self.fixed3.put(self.label204, 280, 85)
-		self.entry202 = gtk.Entry(30)
-		self.fixed3.put(self.entry202, 340, 80)
-		self.label205 = gtk.Label("Ammoniaca")
-		self.fixed3.put(self.label205, 350, 120)
-		self.label206 = gtk.Label("Alto")
-		self.fixed3.put(self.label206, 280, 160)
-		self.entry203 = gtk.Entry(30)
-		self.fixed3.put(self.entry203, 340, 155)
-		self.label207 = gtk.Label("Basso")
-		self.fixed3.put(self.label207, 280, 190)
-		self.entry204 = gtk.Entry(30)
-		self.fixed3.put(self.entry204, 340, 190)
-		self.label208 = gtk.Label("Ferro")
-		self.fixed3.put(self.label208, 350, 220)
-		self.label209 = gtk.Label("Alto")
-		self.fixed3.put(self.label209, 280, 250)
-		self.entry205 = gtk.Entry(30)
-		self.fixed3.put(self.entry205, 340, 250)
-		self.label210 = gtk.Label("Basso")
-		self.fixed3.put(self.label210, 280, 280)
-		self.entry206 = gtk.Entry(30)
-		self.fixed3.put(self.entry206, 340, 280)
-		self.label208 = gtk.Label("Rame")
-		self.fixed3.put(self.label208, 350, 310)
-		self.label209 = gtk.Label("Alto")
-		self.fixed3.put(self.label209, 280, 340)
-		self.entry205 = gtk.Entry(30)
-		self.fixed3.put(self.entry205, 340, 340)
-		self.label210 = gtk.Label("Basso")
-		self.fixed3.put(self.label210, 280, 365)
-		self.entry206 = gtk.Entry(30)
-		self.fixed3.put(self.entry206, 340, 365)
-		
-		self.label208 = gtk.Label("Fosfati")
-		self.fixed3.put(self.label208, 350, 397)
-		self.label209 = gtk.Label("Alto")
-		self.fixed3.put(self.label209, 280, 420)
-		self.entry205 = gtk.Entry(30)
-		self.fixed3.put(self.entry205, 340, 420)
-		self.label210 = gtk.Label("Basso")
-		self.fixed3.put(self.label210, 280, 450)
-		self.entry206 = gtk.Entry(30)
-		self.fixed3.put(self.entry206, 340, 450)
-		#Bottoni
-		self.button4 = gtk.Button("Inserisci")
-		#self.button4.connect("clicked", self.inserisci_test)
-		self.fixed3.put(self.button4, 100, 550)
-		self.button5 = gtk.Button("Pulisci")
-		self.button5.connect("clicked", self.pulisci_test)
-		self.fixed3.put(self.button5, 300, 550)
-		self.button6 = gtk.Button("Chiudi")
-		self.button6.connect_object("clicked", gtk.Widget.destroy, self.win)
-		self.fixed3.put(self.button6, 500, 550)
-		
-		self.notebook.set_current_page(1)
-		
-		self.table.show()
-		self.win.show_all()
-		
-##########Funzioni per Inserisci################################################
-		
-	
+		self.set_title('Inserisci')
 
+		vbox = gtk.VBox()
+		vbox.set_spacing(4)
+		vbox.set_border_width(4)
+
+		nb = gtk.Notebook()
+
+		# Aggiungiamo i tab
+		#self.ph = self.gh = self.no2 = self.no3 = self.cond = None
+		#self.ammoniaca = self.ferro = self.rame = self.fosfati = None
+
+		nb.append_page(self.make_test_page(), gtk.Label('Test'))
+		nb.append_page(self.make_fert_page(), gtk.Label('Fertilizzante'))
+		nb.append_page(self.make_filt_page(), gtk.Label('Filtro'))
+		
+		vbox.pack_start(nb)
+
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(4)
+
+		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn.connect('clicked', self.exit)
+
+		bb.pack_start(btn)
+
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		#btn.connect('clicked', self.refresh)
+		
+		bb.pack_start(btn)
+
+		vbox.pack_start(bb, False, False, 0)
+		
+		self.add(vbox)
+		self.show_all()
+
+		self.set_size_request(400, 300)
+		#self.refresh(None)
+		
+	def add(self, widget):
+		
+		
+
+		print ""
+	def make_filt_page(self):
 	
-	def pulisci_test(self, obj):
-		self.entry6.set_text("")
-		self.entry7.set_text("")
-		self.entry8.set_text("")
-		self.entry9.set_text("")
-		self.entry10.set_text("")
-		self.entry11.set_text("")
-		self.entry12.set_text("")
-		self.entry13.set_text("")
-		self.entry14.set_text("")
-		self.entry15.set_text("")
+		# Pagina filtro
+		
+		tbl = gtk.Table(2, 2)
+		tbl.set_border_width(5)
+		
+		tbl.attach(self.new_label('Data'), 0, 1, 0, 1)
+		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 1, 2)
+		
+		
+		self.data = gtk.Entry()
+		self.giorni = gtk.Entry()
+		
+		tbl.attach(self.data, 1, 2, 0, 1)
+		tbl.attach(self.giorni, 1, 2, 1, 2)
+		
+
+		return tbl
+		
+	def make_fert_page(self):
+	
+		# Pagina fertilizzante
+		
+		tbl = gtk.Table(4, 2)
+		tbl.set_border_width(5)
+		
+		tbl.attach(self.new_label('Data'), 0, 1, 0, 1)
+		tbl.attach(self.new_label('Nome'), 0, 1, 1, 2)
+		tbl.attach(self.new_label('Quantita'), 0, 1, 2, 3)
+		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 3, 4)
+		
+		
+		self.data = gtk.Entry(); self.nome = gtk.Entry()
+		self.quantita = gtk.Entry(); self.giorni = gtk.Entry()
+		
+		tbl.attach(self.data, 1, 2, 0, 1)
+		tbl.attach(self.nome, 1, 2, 1, 2)
+		tbl.attach(self.quantita, 1, 2, 2, 3)
+		tbl.attach(self.giorni, 1, 2, 3, 4)
+		
+
+		return tbl
+		
+	def make_test_page(self):
+		# Pagina Test
+		tbl = gtk.Table(10, 2)
+		tbl.set_border_width(5)
+		
+		tbl.attach(self.new_label('Ph'), 0, 1, 0, 1)
+		tbl.attach(self.new_label('Kh'), 0, 1, 1, 2)
+		tbl.attach(self.new_label('Gh'), 0, 1, 2, 3)
+		tbl.attach(self.new_label('No2'), 0, 1, 3, 4)
+		tbl.attach(self.new_label('No3'), 0, 1, 4, 5)
+		tbl.attach(self.new_label('Conducibilità'), 0, 1, 5, 6)
+		tbl.attach(self.new_label('Ammoniaca'), 0, 1, 6, 7)
+		tbl.attach(self.new_label('Ferro'), 0, 1, 7, 8)
+		tbl.attach(self.new_label('Rame'), 0, 1, 8, 9)
+		tbl.attach(self.new_label('Fosfati'), 0, 1, 9, 10)
+		
+		self.ph = gtk.Entry(); self.kh = gtk.Entry()
+		self.gh = gtk.Entry(); self.no2 = gtk.Entry()
+		self.no3 = gtk.Entry(); self.cond = gtk.Entry()
+		self.rame = gtk.Entry(); self.fosfati = gtk.Entry()
+		self.ammoniaca = gtk.Entry(); self.ferro = gtk.Entry()
+
+		tbl.attach(self.ph, 1, 2, 0, 1)
+		tbl.attach(self.kh, 1, 2, 1, 2)
+		tbl.attach(self.gh, 1, 2, 2, 3)
+		tbl.attach(self.no2, 1, 2, 3, 4)
+		tbl.attach(self.no3, 1, 2, 4, 5)
+		tbl.attach(self.cond, 1, 2, 5, 6)
+		tbl.attach(self.ammoniaca, 1, 2, 6, 7)
+		tbl.attach(self.ferro, 1, 2, 7, 8)
+		tbl.attach(self.rame, 1, 2, 8, 9)
+		tbl.attach(self.fosfati, 1, 2, 9, 10)
+
+		return tbl
+		
+	def new_label(self, txt, bold=True):
+		lbl = gtk.Label()
+		if bold:
+			lbl.set_use_markup(True)
+			lbl.set_label('<b>' + txt + '</b>')
+			lbl.set_alignment(0, 1.0)
+		else:
+			lbl.set_label(txt)
+			lbl.set_alignment(0.5, 0)
+		
+		return lbl
+		
+	def exit(self, *w):
+		self.hide()
