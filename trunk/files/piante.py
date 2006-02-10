@@ -34,9 +34,9 @@ class Piante(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str, gtk.gdk.Pixbuf)
+		self.piante_store = gtk.ListStore(int, str, str, str, str, gtk.gdk.Pixbuf)
 		
-		self.view = view = gtk.TreeView(self.vasca_store)
+		self.view = view = gtk.TreeView(self.piante_store)
 		
 		lst = ['Id', 'Data', 'Vasca', 'Quantita', 'Nome']
 		renderer = gtk.CellRendererText()
@@ -72,8 +72,7 @@ class Piante(gtk.Window):
 
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
-			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4],
-			y[5], y[6], y[7], self.make_image(y[8]), y[8]])
+			self.piante_store.append([y[0], y[1], y[2], y[3], y[4], self.make_image(y[8]), y[8]])
 		
 		
 		frm = gtk.Frame("Editing:")
@@ -100,18 +99,14 @@ class Piante(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
+		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
 		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
 		
-		self.e_vasca, self.e_data, self.e_nome = gtk.Entry(), gtk.Entry(), gtk.Entry()
-		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
-		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
+		self.e_data, self.e_vasca, self.e_quantita = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		self.e_nome = gtk.Entry()
 		self.e_path = gtk.Entry()
 
 		self.e_path.set_property('editable', False)
@@ -166,32 +161,26 @@ class Piante(gtk.Window):
 		# in base al contenuto delle entry
 		
 		if it != None:
-			id = int(self.vasca_store.get_value(it, 0))
+			id = int(self.piante_store.get_value(it, 0))
 			
-			text = self.e_vasca.get_text()
 			date = self.e_data.get_text()
-			name = self.e_nome.get_text()
-			tacq = self.e_tipo.get_text()
-			tflt = self.e_filtro.get_text()
-			ico2 = self.e_co2.get_text()
-			illu = self.e_il.get_text()
+			vasca = self.e_vasca.get_text()
+			quantita = self.e_quantita.get_text()
+			nome = self.e_nome.get_text()
 			img = self.e_path.get_text()
 			
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update piante set t='%(text)s', da='%(date)s', a='%(name)s', aa='%(tacq)s', b='%(tflt)s', c='%(ico2)s', d='%(illu)s', im='%(img)s' where id = %(id)s" %vars())
+			cur.execute("update piante set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', img='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
-			self.vasca_store.set_value(it, 1, text)
-			self.vasca_store.set_value(it, 2, date)
-			self.vasca_store.set_value(it, 3, name)
-			self.vasca_store.set_value(it, 4, tacq)
-			self.vasca_store.set_value(it, 5, tflt)
-			self.vasca_store.set_value(it, 6, ico2)
-			self.vasca_store.set_value(it, 7, illu)
-			self.vasca_store.set_value(it, 8, self.make_image(img))
-			self.vasca_store.set_value(it, 9, img)
+			self.piante_store.set_value(it, 1, date)
+			self.piante_store.set_value(it, 2, vasca)
+			self.piante_store.set_value(it, 3, quantita)
+			self.piante_store.set_value(it, 4, nome)
+			self.piante_store.set_value(it, 5, self.make_image(img))
+			self.piante_store.set_value(it, 6, img)
 
 			self.update_status(0, "Row aggiornata (ID: %d)" % id)
 
@@ -203,42 +192,36 @@ class Piante(gtk.Window):
 		id = 0
 		
 		while it != None:
-			tmp = int(self.vasca_store.get_value(it, 0))
+			tmp = int(self.piante_store.get_value(it, 0))
 			
 			if tmp > id: id = tmp
 
 			it = mod.iter_next(it)
 		
 		id += 1		
-		it = self.vasca_store.append()
+		it = self.piante_store.append()
 
 		# Settiamo il campo ID
-		self.vasca_store.set_value(it, 0, id)
-
-		text = self.e_vasca.get_text()
+		self.piante_store.set_value(it, 0, id)
+		
 		date = self.e_data.get_text()
-		name = self.e_nome.get_text()
-		tacq = self.e_tipo.get_text()
-		tflt = self.e_filtro.get_text()
-		ico2 = self.e_co2.get_text()
-		illu = self.e_il.get_text()
+		vasca = self.e_vasca.get_text()
+		quantita = self.e_quantita.get_text()
+		nome = self.e_nome.get_text()
 		img = self.e_path.get_text()
 		
-		self.vasca_store.set_value(it, 1, text)
-		self.vasca_store.set_value(it, 2, date)
-		self.vasca_store.set_value(it, 3, name)
-		self.vasca_store.set_value(it, 4, tacq)
-		self.vasca_store.set_value(it, 5, tflt)
-		self.vasca_store.set_value(it, 6, ico2)
-		self.vasca_store.set_value(it, 7, illu)
-		self.vasca_store.set_value(it, 8, self.make_image(img))
-		self.vasca_store.set_value(it, 9, img)
+		self.piante_store.set_value(it, 1, date)
+		self.piante_store.set_value(it, 2, vasca)
+		self.piante_store.set_value(it, 3, quantita)
+		self.piante_store.set_value(it, 4, nome)
+		self.piante_store.set_value(it, 5, self.make_image(img))
+		self.piante_store.set_value(it, 6, img)
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
 		cur.execute('insert into piante values(?,?,?,?,?,?,?,?,?)',
-			(id, text, date, name, tacq, tflt, ico2, illu, img))
+			(id, date, vasca, quantita, nome, img))
 		conn.commit()
 
 		self.update_status(1, "Row aggiunta (ID: %d)" % id)
@@ -249,7 +232,7 @@ class Piante(gtk.Window):
 
 		if it != None:
 			# Questo Ã¨ il valore da confrontare
-			value = int(self.vasca_store.get_value(it, 0))
+			value = int(self.piante_store.get_value(it, 0))
 
 			# Rimuoviamo dal database
 			conn = sqlite.connect(os.path.join('Data', 'db'))
@@ -259,17 +242,17 @@ class Piante(gtk.Window):
 			conn.commit()
 
 			# Rimuoviamo la riga selezionata
-			self.vasca_store.remove(it)
+			self.piante_store.remove(it)
 
 			# Iteriamo tutte le righe per trovarne una con campo id
 			# maggiore di value e modifichiamolo
 			it = mod.get_iter_first()
 
 			while it != None:
-				tmp = int(self.vasca_store.get_value(it, 0))
+				tmp = int(self.piante_store.get_value(it, 0))
 
 				if value < tmp:
-					self.vasca_store.set_value(it, 0, tmp-1)
+					self.piante_store.set_value(it, 0, tmp-1)
 				it = mod.iter_next(it)
 
 			self.update_status(2, "Row eliminata (ID: %d)" % value)
@@ -279,14 +262,11 @@ class Piante(gtk.Window):
 		mod, it = sel.get_selected()
 		
 		if it != None:
-			self.e_vasca.set_text(mod.get_value(it, 1))
-			self.e_data.set_text(mod.get_value(it, 2))
-			self.e_nome.set_text(mod.get_value(it, 3))
-			self.e_tipo.set_text(mod.get_value(it, 4))
-			self.e_filtro.set_text(mod.get_value(it, 5))
-			self.e_co2.set_text(mod.get_value(it, 6))
-			self.e_il.set_text(mod.get_value(it, 7))
-			self.e_path.set_text(mod.get_value(it, 9))
+			self.e_data.set_text(mod.get_value(it, 1))
+			self.e_vasca.set_text(mod.get_value(it, 2))
+			self.e_quantita.set_text(mod.get_value(it, 3))
+			self.e_nome.set_text(mod.get_value(it, 4))
+			self.e_path.set_text(mod.get_value(it, 5))
 			
 	def on_row_activated(self, tree, path, col):
 		mod = self.view.get_model()
@@ -425,13 +405,10 @@ class InfoDialog(gtk.Dialog):
 
 		self.vbox.pack_start(sw)
 		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
+		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
 
 		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
 		

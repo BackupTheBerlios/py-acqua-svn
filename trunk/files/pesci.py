@@ -34,9 +34,9 @@ class Pesci(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, gtk.gdk.Pixbuf)
+		self.pesci_store = gtk.ListStore(int, str, str, str, str, str, gtk.gdk.Pixbuf)
 		
-		self.view = view = gtk.TreeView(self.vasca_store)
+		self.view = view = gtk.TreeView(self.pesci_store)
 		
 		lst = ['Id', 'Data', 'Vasca', 'Quantita', 'Nome']
 		renderer = gtk.CellRendererText()
@@ -72,7 +72,7 @@ class Pesci(gtk.Window):
 
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
-			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4], self.make_image(y[8]), y[8]])
+			self.pesci_store.append([y[0], y[1], y[2], y[3], y[4], self.make_image(y[8]), y[8]])
 		
 		
 		frm = gtk.Frame("Editing:")
@@ -157,7 +157,7 @@ class Pesci(gtk.Window):
 		# in base al contenuto delle entry
 		
 		if it != None:
-			id = int(self.vasca_store.get_value(it, 0))
+			id = int(self.pesci_store.get_value(it, 0))
 			
 			date = self.e_data.get_text()
 			vasca = self.e_vasca.get_text()
@@ -171,12 +171,12 @@ class Pesci(gtk.Window):
 			cur.execute("update pesci set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', img='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
-			self.vasca_store.set_value(it, 1, date)
-			self.vasca_store.set_value(it, 2, vasca)
-			self.vasca_store.set_value(it, 3, quantita)
-			self.vasca_store.set_value(it, 4, nome)
-			self.vasca_store.set_value(it, 5, self.make_image(img))
-			self.vasca_store.set_value(it, 6, img)
+			self.pesci_store.set_value(it, 1, date)
+			self.pesci_store.set_value(it, 2, vasca)
+			self.pesci_store.set_value(it, 3, quantita)
+			self.pesci_store.set_value(it, 4, nome)
+			self.pesci_store.set_value(it, 5, self.make_image(img))
+			self.pesci_store.set_value(it, 6, img)
 
 			self.update_status(0, "Row aggiornata (ID: %d)" % id)
 
@@ -186,17 +186,17 @@ class Pesci(gtk.Window):
 		id = 0
 		
 		while it != None:
-			tmp = int(self.vasca_store.get_value(it, 0))
+			tmp = int(self.pesci_store.get_value(it, 0))
 			
 			if tmp > id: id = tmp
 
 			it = mod.iter_next(it)
 		
 		id += 1		
-		it = self.vasca_store.append()
+		it = self.pesci_store.append()
 
 		# Settiamo il campo ID
-		self.vasca_store.set_value(it, 0, id)
+		self.pesci_store.set_value(it, 0, id)
 
 		date = self.e_data.get_text()
 		vasca = self.e_vasca.get_text()
@@ -204,12 +204,12 @@ class Pesci(gtk.Window):
 		nome = self.e_nome.get_text()
 		img = self.e_path.get_text()
 		
-		self.vasca_store.set_value(it, 1, date)
-		self.vasca_store.set_value(it, 2, vasca)
-		self.vasca_store.set_value(it, 3, quantita)
-		self.vasca_store.set_value(it, 4, nome)
-		self.vasca_store.set_value(it, 5, img)
-		self.vasca_store.set_value(it, 6, self.make_image(img))
+		self.pesci_store.set_value(it, 1, date)
+		self.pesci_store.set_value(it, 2, vasca)
+		self.pesci_store.set_value(it, 3, quantita)
+		self.pesci_store.set_value(it, 4, nome)
+		self.pesci_store.set_value(it, 5, img)
+		self.pesci_store.set_value(it, 6, self.make_image(img))
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
@@ -226,7 +226,7 @@ class Pesci(gtk.Window):
 
 		if it != None:
 			# Questo Ã¨ il valore da confrontare
-			value = int(self.vasca_store.get_value(it, 0))
+			value = int(self.pesci_store.get_value(it, 0))
 
 			# Rimuoviamo dal database
 			conn = sqlite.connect(os.path.join('Data', 'db'))
@@ -236,17 +236,17 @@ class Pesci(gtk.Window):
 			conn.commit()
 
 			# Rimuoviamo la riga selezionata
-			self.vasca_store.remove(it)
+			self.pesci_store.remove(it)
 
 			# Iteriamo tutte le righe per trovarne una con campo id
 			# maggiore di value e modifichiamolo
 			it = mod.get_iter_first()
 
 			while it != None:
-				tmp = int(self.vasca_store.get_value(it, 0))
+				tmp = int(self.pesci_store.get_value(it, 0))
 
 				if value < tmp:
-					self.vasca_store.set_value(it, 0, tmp-1)
+					self.pesci_store.set_value(it, 0, tmp-1)
 				it = mod.iter_next(it)
 
 			self.update_status(2, "Row eliminata (ID: %d)" % value)
