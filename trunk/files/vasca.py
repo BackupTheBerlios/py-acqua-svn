@@ -150,6 +150,8 @@ class Vasca(gtk.Window):
 		
 		self.add(box)
 		self.show_all()
+		
+		self.connect('delete-event', self.on_delete_event)
 
 		self.img.hide()
 		self.timeoutid = None
@@ -270,6 +272,8 @@ class Vasca(gtk.Window):
 
 				if value < tmp:
 					self.vasca_store.set_value(it, 0, tmp-1)
+					cur.execute("update vasca set id=%d where id=%d" % (tmp-1, tmp))
+					conn.commit()
 				it = mod.iter_next(it)
 
 			self.update_status(2, "Row eliminata (ID: %d)" % value)
@@ -353,6 +357,10 @@ class Vasca(gtk.Window):
 				gtk.ICON_SIZE_DIALOG)
 		
 		chooser.set_preview_widget_active(True)
+	
+	def on_delete_event(self, widget, event):
+		if self.timeoutid != None:
+			gobject.source_remove(self.timeoutid)
 	
 	def new_label(self, txt):
 		lbl = gtk.Label()

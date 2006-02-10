@@ -34,7 +34,7 @@ class Pesci(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str, gtk.gdk.Pixbuf)
+		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, gtk.gdk.Pixbuf)
 		
 		self.view = view = gtk.TreeView(self.vasca_store)
 		
@@ -50,7 +50,7 @@ class Pesci(gtk.Window):
 			view.append_column(col)
 		
 		# Aggiungiamo la colonna per le immagini della vasca
-		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=8)
+		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=6)
 		col.set_resizable(True)
 		col.set_clickable(False)
 		view.append_column(col)
@@ -181,8 +181,6 @@ class Pesci(gtk.Window):
 			self.update_status(0, "Row aggiornata (ID: %d)" % id)
 
 	def on_add(self, widget):
-		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
-		# dall'utente
 		mod = self.view.get_model()
 		it = mod.get_iter_first()
 		id = 0
@@ -210,8 +208,8 @@ class Pesci(gtk.Window):
 		self.vasca_store.set_value(it, 2, vasca)
 		self.vasca_store.set_value(it, 3, quantita)
 		self.vasca_store.set_value(it, 4, nome)
-		self.vasca_store.set_value(it, 5, self.make_image(img))
-		self.vasca_store.set_value(it, 6, img)
+		self.vasca_store.set_value(it, 5, img)
+		self.vasca_store.set_value(it, 6, self.make_image(img))
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()

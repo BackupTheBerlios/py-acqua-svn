@@ -183,7 +183,7 @@ class Gui(gtk.Window):
 	
 	def test_apri(self, widget, data=None):
 		import files.test
-		return files.test.win3()
+		return files.test.Test()
 		
 	def pesci_apri(self, widget, data=None):
 		import files.pesci
