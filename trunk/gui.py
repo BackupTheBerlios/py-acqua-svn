@@ -88,12 +88,12 @@ class Gui(gtk.Window):
 	def create_menu(self):
 		w = [
 		('Acquario', None, '_Acquario'),
-			('Calcoli',	None,		'_Calcoli',	'<control>N',	'Calcoli...',		'calcoli_apri'),
-			('Vasche',	None,		'_Vasche',	'<control>O',	'Vasche...',		'vasca_apri'),
-			('Test',	None,		'_Test',	'<control>S',	'Test',			'test_apri'),
-			('Pesci',	None,		'_Pesci',	None,		'Pesci...',		'pesci_apri'),
-			('Piante',	None,		'_Piante',	None,		'Piante...',		'piante_apri'),
-			('Database',	None,		'_Database',	None,		'Database...'),
+			('Calcoli',	None,		'_Calcoli',	'<control>C',	'Calcoli...',		'calcoli_apri'),
+			('Vasche',	None,		'_Vasche',	'<control>V',	'Vasche...',		'vasca_apri'),
+			('Test',	None,		'_Test',	'<control>T',	'Test',			'test_apri'),
+			('Pesci',	None,		'_Pesci',	'<control>P',		'Pesci...',		'pesci_apri'),
+			('Piante',	None,		'_Piante',	'<control>I',		'Piante...',		'piante_apri'),
+			('Database',	None,		'_Database',	'<control>D',		'Database...'),
 			('Quit',	gtk.STOCK_QUIT,	'_Quit',	None,		'Esci da Py-Acqua',	'exit'),
 			
 		('Impostazioni', None, '_Impostazioni'),
