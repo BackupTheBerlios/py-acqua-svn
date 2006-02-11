@@ -58,7 +58,7 @@ class Inserisci(gtk.Window):
 		bb.pack_start(btn)
 
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.add)
+		btn.connect('clicked', self.inserisci)
 		
 		bb.pack_start(btn)
 
@@ -70,11 +70,9 @@ class Inserisci(gtk.Window):
 		self.set_size_request(400, 300)
 		#self.refresh(None)
 		
-	def add(self, widget):
-		
-		
-
+	def inserisci(self, widget):
 		print ""
+		
 	def make_filt_page(self):
 	
 		# Pagina filtro
