@@ -53,7 +53,6 @@ class Test(gtk.Window):
 			view.append_column(col)
 		
 		view.get_selection().connect('changed', self.on_selection_changed)
-		view.connect('row-activated', self.on_row_activated)
 		
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -95,7 +94,8 @@ class Test(gtk.Window):
 		box.pack_start(frm, False, False, 0)
 		
 		# Creiamo la table che verra contenuta nel frame
-		tbl = gtk.Table(11, 2)
+		tbl = gtk.Table(6, 4)
+		tbl.set_col_spacings(4)
 		
 		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
 		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
@@ -103,12 +103,13 @@ class Test(gtk.Window):
 		tbl.attach(self.new_label("Kh:"), 0, 1, 3, 4)
 		tbl.attach(self.new_label("Gh:"), 0, 1, 4, 5)
 		tbl.attach(self.new_label("No:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("No2:"), 0, 1, 6, 7)
-		tbl.attach(self.new_label("Conducibilita':"), 0, 1, 7, 8)
-		tbl.attach(self.new_label("Ammoniaca:"), 0, 1, 8, 9)
-		tbl.attach(self.new_label("Ferro"), 0, 1, 9, 10)
-		tbl.attach(self.new_label("Rame"), 0, 1, 10, 11)
-		tbl.attach(self.new_label("Fosfati"), 0, 1, 11, 12)
+		
+		tbl.attach(self.new_label("No2:"), 2, 3, 0, 1)
+		tbl.attach(self.new_label("Conducibilita':"), 2, 3, 1, 2)
+		tbl.attach(self.new_label("Ammoniaca:"), 2, 3, 2, 3)
+		tbl.attach(self.new_label("Ferro"), 2, 3, 3, 4)
+		tbl.attach(self.new_label("Rame"), 2, 3, 4, 5)
+		tbl.attach(self.new_label("Fosfati"), 2, 3, 5, 6)
 
 		def make_inst(num):
 			a = list()
@@ -116,10 +117,9 @@ class Test(gtk.Window):
 				a.append(gtk.Entry())
 			return a
 
-		#FIXME
-		self.e_data, self.e_vasca, self.e_ph, self.e_gh = make_inst(4)
-		self.e_no, self.e_no2, self.e_cond, self.e_ammo = make_inst(4)
-		self.e_ferro, self.e_rame, self.e_fosfati, self.e_kh = make_inst(4)
+		self.e_data, self.e_vasca, self.e_ph, self.e_kh = make_inst(4)
+		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
+		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
 
 		attach = lambda x, y, z: tbl.attach(x, 1, 2, y, z)
 
@@ -129,12 +129,15 @@ class Test(gtk.Window):
 		attach(self.e_kh, 3, 4)
 		attach(self.e_gh, 4, 5)
 		attach(self.e_no, 5, 6)
-		attach(self.e_no2, 6, 7)
-		attach(self.e_cond, 7, 8)
-		attach(self.e_ammo, 8, 9)
-		attach(self.e_ferro, 9, 10)
-		attach(self.e_rame, 10, 11)
-		attach(self.e_fosfati, 11, 12)
+		
+		attach = lambda x, y, z: tbl.attach(x, 3, 4, y, z)
+		
+		attach(self.e_no2, 0, 1)
+		attach(self.e_cond, 1, 2)
+		attach(self.e_ammo, 2, 3)
+		attach(self.e_ferro, 3, 4)
+		attach(self.e_rame, 4, 5)
+		attach(self.e_fosfati, 5, 6)
 
 		tbl.set_border_width(10)
 		
