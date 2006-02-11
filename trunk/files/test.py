@@ -89,6 +89,10 @@ class Test(gtk.Window):
 		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
 		btn.connect('clicked', self.on_del)
 		bb.pack_start(btn)
+
+		btn = gtk.Button('Grafico')
+		btn.connect('clicked', self.on_draw_graph)
+		bb.pack_start(btn)
 		
 		box.pack_start(bb, False, False, 0)
 		box.pack_start(frm, False, False, 0)
@@ -314,7 +318,48 @@ class Test(gtk.Window):
 			self.e_ferro.set_text(mod.get_value(it, 10))
 			self.e_rame.set_text(mod.get_value(it, 11))
 			self.e_fosfati.set_text(mod.get_value(it, 12))
+	def on_draw_graph(self, widget):
+		try:
+			from pychart import *
+		except:
+			# FIXME: Una dialog qui
+			print "Pychart non presente.. installalo!! :P"
+		else:
+			data = self.e_data.get_text()
+			vasca = self.e_vasca.get_text()
+			ph = float(self.e_ph.get_text())
+			kh = float(self.e_kh.get_text())
+			gh = int(self.e_gh.get_text())
+			no = int(self.e_no.get_text())
+			no2 = int(self.e_no2.get_text())
+			cond = int(self.e_cond.get_text())
+			ammo = int(self.e_ammo.get_text())
+			ferro = int(self.e_ferro.get_text())
+			rame = int(self.e_rame.get_text())
+			fosfati = int(self.e_fosfati.get_text())
 			
+			can = canvas.init("Immagini/grafico.png")
+			
+			theme.use_color = 2
+			theme.reinitialize()
+			
+			data = [
+				['Ph', ph], ['Kh', kh],
+				['Gh', gh], ['No', no],
+				['No2', no2], ['Cond.', cond],
+				['Ammon.', ammo], ['Ferro', ferro],
+				['Rame', rame], ['Fosf.', fosfati]
+				]
+			ar = area.T(x_coord = category_coord.T(data, 0),
+				y_range = (0, None),
+				size = (400, 250),
+
+				x_axis = axis.X(label='Test'),
+				y_axis = axis.Y(label='Valori'))
+			ar.add_plot(bar_plot.T(data = data, label = "Leggenda"))
+			ar.draw(can)
+			can.close()
+
 	def on_delete_event(self, widget, event):
 		if self.timeoutid != None:
 			gobject.source_remove(self.timeoutid)
