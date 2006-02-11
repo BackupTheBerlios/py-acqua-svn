@@ -19,260 +19,466 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pygtk
-pygtk.require('2.0')
 import gtk
-from data import *
-import finestre
-#from pysqlite2 import dbapi2 as sqlite
-#from sqlite import *
-#data1 = data()
+import gobject
+import os
+import sys
+from pysqlite2 import dbapi2 as sqlite
 
-class Test(gtk.Window):
-	def __init__(self):
+class Vasca(gtk.Window):
+	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Test")
-		#self.set_size_request(420, 610)
+		self.set_title("Vasche")
+		self.set_size_request(600, 400)
 		
-		mbox = gtk.VBox()
-		self.add(mbox)
+		box = gtk.VBox()
+		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
+		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
+		# NUMERIC, ra NUMERIC, fo NUMERIC
+		self.test_store = gtk.ListStore(int, str, str, str, str, str, str, str, str, str, str, str, str)
 		
-		self.notebook = gtk.Notebook()
-		mbox.pack_start(self.notebook)
+		self.view = view = gtk.TreeView(self.test_store)
 		
-		# Pagina Inserisci
+		lst = ['Id', 'Vasca', 'Data', 'Nome', 'Tipo Acquario', 'Tipo Filtro', 'Impianto Co2', 'Illuminazione']
+		renderer = gtk.CellRendererText()
+		
+		for i in lst:
+			id = lst.index(i)
+			col = gtk.TreeViewColumn(i, renderer, text=id)
+			col.set_sort_column_id(id)
+			col.set_clickable(True)
+			col.set_resizable(True)
+			view.append_column(col)
+		
+		# Aggiungiamo la colonna per le immagini della vasca
+		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=8)
+		col.set_resizable(True)
+		col.set_clickable(False)
+		view.append_column(col)
+		
+		view.get_selection().connect('changed', self.on_selection_changed)
+		view.connect('row-activated', self.on_row_activated)
+		
+		sw = gtk.ScrolledWindow()
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+		
+		sw.add(view)
+		
+		box.pack_start(sw)
+		
+		connessione=sqlite.connect(os.path.join('Data', 'db'))
+		cursore=connessione.cursor()
+		cursore.execute("select * from vasca")
 
-		tbl = gtk.Table(12, 3)
+		# Costruisci l'immagine..
+		for y in cursore.fetchall():
+			self.test_store.append([y[0], y[1], y[2], y[3], y[4],
+			y[5], y[6], y[7], self.make_image(y[8]), y[8]])
 		
-		attach = lambda x, y, z: tbl.attach(x, 0, 1, y, z)
 		
-		attach(self.new_label('Data: (gg/mm/aa)'), 0, 1)
-		attach(self.new_label('Vasca:'), 1, 2)
-		attach(self.new_label('Ph:'), 2, 3)
-		attach(self.new_label('Kh:'), 3, 4)
-		attach(self.new_label('Gh:'), 4, 5)
-		attach(self.new_label('No2:'), 5, 6)
-		attach(self.new_label('No3:'), 6, 7)
-		attach(self.new_label('Conducibilita\':'), 7, 8)
-		attach(self.new_label('Ammoniaca:'), 8, 9)
-		attach(self.new_label('Ferro:'), 9, 10)
-		attach(self.new_label('Rame:'), 10, 11)
-		attach(self.new_label('Fosfati:'), 11, 12)
+		frm = gtk.Frame("Editing:")
+		
+		# Creiamo una buttonbox per contenere i bottoni di modifica
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		btn.connect('clicked', self.on_add)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
+		btn.connect('clicked', self.on_refresh)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
+		btn.connect('clicked', self.on_del)
+		bb.pack_start(btn)
+		
+		box.pack_start(bb, False, False, 0)
+		box.pack_start(frm, False, False, 0)
+		
+		# Creiamo la table che verra contenuta nel frame
+		tbl = gtk.Table(8, 2)
+		
+		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
+		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
+		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
+		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
+		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
+		
+		self.e_vasca, self.e_data, self.e_nome = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
+		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
+		self.e_path = gtk.Entry()
 
-		def make_inst(num):
-			a = list()
-			for i in range(num):
-				a.append(gtk.Entry())
-			return a
+		self.e_path.set_property('editable', False)
 		
-		self.e_data, self.e_vasca = make_inst(2)
-		self.e_ph, self.e_kh, self.e_gh = make_inst(3)
-		self.e_no2, self.e_no3, self.e_cond = make_inst(3)
-		self.e_ammo, self.e_fe, self.e_rame, self.e_fosf = make_inst(4)
-		
-		attach = lambda x, y, z: tbl.attach(x, 1, 2, y, z)
-		
-		attach(self.e_data, 0, 1)
-		attach(self.e_vasca, 1, 2)
-		attach(self.e_ph, 2, 3)
-		attach(self.e_kh, 3, 4)
-		attach(self.e_gh, 4, 5)
-		attach(self.e_no2, 5, 6)
-		attach(self.e_no3, 6, 7)
-		attach(self.e_cond, 7, 8)
-		attach(self.e_ammo, 8, 9)
-		attach(self.e_fe, 9, 10)
-		attach(self.e_rame, 10, 11)
-		attach(self.e_fosf, 11, 12)
+		tbl.attach(self.e_vasca, 1, 2, 0, 1)
+		tbl.attach(self.e_data, 1, 2, 1, 2)
+		tbl.attach(self.e_nome, 1, 2, 2, 3)
+		tbl.attach(self.e_tipo, 1, 2, 3, 4)
+		tbl.attach(self.e_filtro, 1, 2, 4, 5)
+		tbl.attach(self.e_co2, 1, 2, 5, 6)
+		tbl.attach(self.e_il, 1, 2, 6, 7)
 
-		self.notebook.append_page(tbl, gtk.Label('Inserisci'))
+		hbox = gtk.HBox()
 
+		btn = gtk.Button(stock=gtk.STOCK_OPEN)
+		btn.set_relief(gtk.RELIEF_NONE)
+		btn.connect('clicked', self.on_browse)
+		
+		hbox.pack_start(self.e_path)
+		hbox.pack_start(btn, False, False, 0)
+		
+		tbl.attach(hbox, 1, 2, 7, 8)
+
+		tbl.set_border_width(10)
+		
+		frm.add(tbl)
+
+		self.status = gtk.Statusbar()
+		self.img = gtk.Image()
+		
+		hbox = gtk.HBox()
+		hbox.pack_start(self.img, False, False, 0)
+		hbox.pack_start(self.status)
+		
+		box.pack_start(hbox, False, False, 0)
+		
+		self.add(box)
 		self.show_all()
-	def new_label(self, txt, bold=True):
-		lbl = gtk.Label()
 		
+		self.connect('delete-event', self.on_delete_event)
+
+		self.img.hide()
+		self.timeoutid = None
+
+		box.set_border_width(4)
+
+	def on_refresh(self, widget):
+		
+		# Prendiamo l'iter e il modello dalla selezione
+		
+		mod, it = self.view.get_selection().get_selected()
+		
+		# Se esiste una selezione aggiorniamo la row
+		# in base al contenuto delle entry
+		
+		if it != None:
+			id = int(self.test_store.get_value(it, 0))
+			
+			text = self.e_vasca.get_text()
+			date = self.e_data.get_text()
+			name = self.e_nome.get_text()
+			tacq = self.e_tipo.get_text()
+			tflt = self.e_filtro.get_text()
+			ico2 = self.e_co2.get_text()
+			illu = self.e_il.get_text()
+			img = self.e_path.get_text()
+			
+			conn = sqlite.connect(os.path.join('Data', 'db'))
+			cur = conn.cursor()
+
+			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', img='%(img)s' where id = %(id)s" %vars())
+			conn.commit()
+			
+			self.test_store.set_value(it, 1, text)
+			self.test_store.set_value(it, 2, date)
+			self.test_store.set_value(it, 3, name)
+			self.test_store.set_value(it, 4, tacq)
+			self.test_store.set_value(it, 5, tflt)
+			self.test_store.set_value(it, 6, ico2)
+			self.test_store.set_value(it, 7, illu)
+			self.test_store.set_value(it, 8, self.make_image(img))
+			self.test_store.set_value(it, 9, img)
+
+			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+
+	def on_add(self, widget):
+		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
+		# dall'utente
+		mod = self.view.get_model()
+		it = mod.get_iter_first()
+		id = 0
+		
+		while it != None:
+			tmp = int(self.test_store.get_value(it, 0))
+			
+			if tmp > id: id = tmp
+
+			it = mod.iter_next(it)
+		
+		id += 1		
+		it = self.test_store.append()
+
+		# Settiamo il campo ID
+		self.test_store.set_value(it, 0, id)
+
+		text = self.e_vasca.get_text()
+		date = self.e_data.get_text()
+		name = self.e_nome.get_text()
+		tacq = self.e_tipo.get_text()
+		tflt = self.e_filtro.get_text()
+		ico2 = self.e_co2.get_text()
+		illu = self.e_il.get_text()
+		img = self.e_path.get_text()
+		
+		self.test_store.set_value(it, 1, text)
+		self.test_store.set_value(it, 2, date)
+		self.test_store.set_value(it, 3, name)
+		self.test_store.set_value(it, 4, tacq)
+		self.test_store.set_value(it, 5, tflt)
+		self.test_store.set_value(it, 6, ico2)
+		self.test_store.set_value(it, 7, illu)
+		self.test_store.set_value(it, 8, self.make_image(img))
+		self.test_store.set_value(it, 9, img)
+		
+		conn = sqlite.connect(os.path.join('Data', 'db'))
+		cur = conn.cursor()
+
+		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?)',
+			(id, text, date, name, tacq, tflt, ico2, illu, img))
+		conn.commit()
+
+		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		
+	def on_del(self, widget): 
+		# prendiamo l'iter selezionato e elimianiamolo dalla store
+		mod, it = self.view.get_selection().get_selected()
+
+		if it != None:
+			# Questo Ã¨ il valore da confrontare
+			value = int(self.test_store.get_value(it, 0))
+
+			# Rimuoviamo dal database
+			conn = sqlite.connect(os.path.join('Data', 'db'))
+			cur = conn.cursor()
+
+			cur.execute('delete from vasca where id=%d' % value)
+			conn.commit()
+
+			# Rimuoviamo la riga selezionata
+			self.test_store.remove(it)
+
+			# Iteriamo tutte le righe per trovarne una con campo id
+			# maggiore di value e modifichiamolo
+			it = mod.get_iter_first()
+
+			while it != None:
+				tmp = int(self.test_store.get_value(it, 0))
+
+				if value < tmp:
+					self.test_store.set_value(it, 0, tmp-1)
+					cur.execute("update vasca set id=%d where id=%d" % (tmp-1, tmp))
+					conn.commit()
+				it = mod.iter_next(it)
+
+			self.update_status(2, "Row eliminata (ID: %d)" % value)
+
+	def on_selection_changed(self, sel):
+		# Aggiorniamo il contenuto delle entry in base alla selezione
+		mod, it = sel.get_selected()
+		
+		if it != None:
+			self.e_vasca.set_text(mod.get_value(it, 1))
+			self.e_data.set_text(mod.get_value(it, 2))
+			self.e_nome.set_text(mod.get_value(it, 3))
+			self.e_tipo.set_text(mod.get_value(it, 4))
+			self.e_filtro.set_text(mod.get_value(it, 5))
+			self.e_co2.set_text(mod.get_value(it, 6))
+			self.e_il.set_text(mod.get_value(it, 7))
+			self.e_path.set_text(mod.get_value(it, 9))
+			
+	def on_row_activated(self, tree, path, col):
+		mod = self.view.get_model()
+		it = mod.get_iter_from_string(str(path[0]))
+
+		InfoDialog(self, mod, it)
+	
+	def on_browse(self, widget):
+		dialog = gtk.FileChooserDialog("Aggiungi foto", self,
+			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
+			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+		dialog.set_use_preview_label(False)
+
+		img = gtk.Image()
+		
+		dialog.set_preview_widget(img)
+		dialog.set_size_request(128, -1)
+
+		# Creiamo i filtri
+
+		filter = gtk.FileFilter()
+		filter.set_name("Immagini")
+		filter.add_mime_type("image/png")
+		filter.add_mime_type("image/jpeg")
+		filter.add_mime_type("image/gif")
+		filter.add_pattern("*.png")
+		filter.add_pattern("*.jpg")
+		filter.add_pattern("*.gif")
+		dialog.add_filter(filter)
+		
+		dialog.connect('update-preview', self.on_update_preview)
+
+		id = dialog.run()
+
+		dialog.hide()
+
+		if id == gtk.RESPONSE_OK:
+			name = dialog.get_filename()
+
+			img_dir = os.path.join(os.path.abspath(os.getcwd()), "Immagini")
+			img_dir = os.path.join(img_dir, os.path.basename(name))
+
+			if img_dir != name:
+				try:
+					import shutil
+					shutil.copy(name, 'Immagini/')
+				except:
+					print "Errore mentre copiavo (%s)" % sys.exc_value
+			self.e_path.set_text(os.path.basename(name))
+
+		dialog.destroy()
+
+	def on_update_preview(self, chooser):
+		uri = chooser.get_uri()
+		try:
+			pixbuf = gtk.gdk.pixbuf_new_from_file(uri[7:])
+			
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			pixbuf = pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR)
+			
+			chooser.get_preview_widget().set_from_pixbuf(pixbuf)
+		except:
+			chooser.get_preview_widget().set_from_stock(gtk.STOCK_DIALOG_QUESTION,
+				gtk.ICON_SIZE_DIALOG)
+		
+		chooser.set_preview_widget_active(True)
+	
+	def on_delete_event(self, widget, event):
+		if self.timeoutid != None:
+			gobject.source_remove(self.timeoutid)
+	
+	def new_label(self, txt):
+		lbl = gtk.Label()
 		lbl.set_use_markup(True)
 		lbl.set_label('<b>' + txt + '</b>')
 		lbl.set_alignment(0.0, 0.5)
 		
 		return lbl
 		
-##########Funzioni per Inserisci################################################
-		
-	def inserisci_test(self, obj):
-		id = self.spinbutton1.get_value()
-		data = self.entry4.get_text()
-		campi = data.split('/')
-		
-		if len(campi)<>3:
-			#errore()
-			print "errore"
-		else:
-			print ""
-					
-		gg,mm,aa = campi					
-		
-		if (1 <= int(gg) <=31) and (1 <= int(mm) <= 12) and (int(aa) >= 1900):
-			print ""
-		else:
-			#errore()
-			print "errore"
-		
-		self.ph = float(self.entry6.get_text())
-		self.kh = float(self.entry7.get_text())
-		self.gh = float(self.entry8.get_text())
-		self.no = float(self.entry9.get_text())
-		self.noo = float(self.entry10.get_text())
-		self.con = float(self.entry11.get_text())
-		self.am = float(self.entry12.get_text())
-		self.fe = float(self.entry13.get_text())
-		self.ra = float(self.entry14.get_text())
-		self.fo = float(self.entry15.get_text())
-					
-		connessione = sqlite.connect("Data/db")
-		cursore = connessione.cursor()
-		cursore.execute("insert into test values (?,?,?,?,?,?,?,?,?,?,?,?)",(id, data, ph, kh, gh, no, noo, con, am, fe, ra, fo))
-		connessione.commit()
-		#Finestra dialog con dati inseriti
-		window = finestre("Dati inseriti", "I dati sono stati inseriti con successo  ", "Chiudi")		
-		
-		self.spinbutton1.set_value(id+1)	
-		
-	def inserisci_2(self, obj):
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-		cursore.execute("select * from test")
-		for x in cursore.fetchall():
-			self.spinbutton1.set_value(x[0]+1)
+	def make_image(self, name):
+		try:
+			pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join('Immagini', name))
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
+		except:
+			return None
 	
-		self.menu_test_nomi()
-	
-	def pulisci_test(self, obj):
-		self.entry6.set_text("")
-		self.entry7.set_text("")
-		self.entry8.set_text("")
-		self.entry9.set_text("")
-		self.entry10.set_text("")
-		self.entry11.set_text("")
-		self.entry12.set_text("")
-		self.entry13.set_text("")
-		self.entry14.set_text("")
-		self.entry15.set_text("")
+	def update_status(self, type, txt):
+		self.img.show()
 		
-	def data(self, widget, data=None):
-		data1.giorno()
-		self.entry4.set_text(data1.wine)
+		if type == 0:
+			self.img.set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_MENU)
+		if type == 1:
+			self.img.set_from_stock(gtk.STOCK_ADD, gtk.ICON_SIZE_MENU)
+		if type == 2:
+			self.img.set_from_stock(gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
 		
-################################################################################
-#########Funzioni per Visualizza################################################
+		if self.timeoutid != None:
+			gobject.source_remove(self.timeoutid)
+			self.status.pop(0)
 
-	def funziona_test(self, obj, notebookpage, page_number):
-		if page_number == 0:
-			print ""
-		elif page_number == 1: 
-			print ""
-			self.tree_test()
+		self.status.push(0, txt)
 
+		self.timeoutid = gobject.timeout_add(2000, self.callback)
 	
-		
-	def tree_test(self):
-		self.renderer = gtk.CellRendererText()
-		
-		i = 0
-		for c in ['Id', 'Data', 'Vasca', 'Ph', 'Kh', 'Gh', 'No2', 'No3', 'Conducibilità', 'Ammoniaca', 'Ferro', 'Rame', 'Fosfati']:
-			self.column = gtk.TreeViewColumn(c, renderer, text=i)
-			i += 1
-			self.column.set_sort_column_id(i)
-			self.column.set_clickable(True)
-			self.column.set_resizable(True)
-			self.listview1.append_column(column)
-		
-	
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-		cursore.execute("select * from test")
-		for y in cursore.fetchall():
-		
-			connessione=sqlite.connect("Data/db")
-			cursore=connessione.cursor()
-			cursore.execute("select * from vasca")
-			for a in cursore.fetchall():
-				self.listore.append([y[0], y[1], a[3], y[2], y[3], y[4], y[5], y[6], y[7], y[8], y[9], y[10], y[11]])
-################################################################################		
-#########Funzioni per Cancella##################################################
-	def visualizza_test(self, obj):
-		
-		cercatest = self.spinbutton2.get_value()
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-		cursore.execute("select * from test")
-		for a in cursore.fetchall(): 
-		
-			if (a[0]==cercatest):
-				self.entry32.set_text(str(a[0]))
-				self.entry33.set_text(str(a[1]))
-				self.entry34.set_text(str(a[2]))
-				self.entry35.set_text(str(a[3]))
-				self.entry36.set_text(str(a[4]))
-				self.entry37.set_text(str(a[5]))
-				self.entry38.set_text(str(a[6]))
-				self.entry39.set_text(str(a[7]))
-				self.entry40.set_text(str(a[8]))
-				self.entry41.set_text(str(a[9]))
-				self.entry42.set_text(str(a[10]))
-				self.entry43.set_text(str(a[11]))
-		
-			else:
-				#Dire che c'è un errore e di riprovare (Finestra Dialog)
-				print ""
-			
-	def modifica_test(self, obj):
-		id = self.entry32.get_text()
-		data = self.entry33.get_text()
-		ph = self.entry34.get_text()
-		kh = self.entry35.get_text()
-		gh = self.entry36.get_text()
-		no = self.entry37.get_text()
-		noo = self.entry38.get_text()
-		con = self.entry39.get_text()
-		am = self.entry40.get_text()
-		fe = self.entry41.get_text()
-		ra = self.entry42.get_text()
-		fo = self.entry43.get_text()
-	
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-		cursore.execute("update test set ph= %(ph)s, kh = %(kh)s, gh = %(gh)s, no = %(no)s, noo = %(noo)s, con = %(con)s, amm = %(am)s, fe = %(fe)s, ra = %(ra)s, fo = %(fo)s" %vars())
-		connessione.commit()
+	def callback(self):
+		self.img.hide()
+		self.status.pop(0)
 
-	def cancella_nuovo_test(self, obj):
-		id1 = self.spinbutton2.get_value()
-		connessione=sqlite.connect("db")
-		cursore=connessione.cursor()
-		cursore.execute("delete from test where id= %(id1)s" %vars())
-		connessione.commit()
-		self.spinbutton2.set_value(id1-1)
+		self.timeoutid = None
+		
+		return False
+
+class InfoDialog(gtk.Dialog):
+	def __init__(self, parent, mod, it):
+		gtk.Dialog.__init__(self, "Riepilogo", parent,
+			gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
+
+		self.set_size_request(400, 300)
+		self.vbox.set_border_width(10)
+
+		self.set_has_separator(False)
+		
+		tbl = gtk.Table(7, 2)
+		tbl.set_border_width(4)
+		
+		img = gtk.Image();
+		
+		try:
+			img.set_from_file(os.path.join('Immagini',
+				str(mod.get_value(it, 9))))
+		except:
+			img.set_from_stock(gtk.STOCK_IMAGE_MISSING,
+				gtk.ICON_SIZE_DIALOG)
+		
+		sw = gtk.ScrolledWindow()
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+
+		sw.add_with_viewport(img)
+
+		self.vbox.pack_start(sw)
+		
+		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
+		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
+		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
+		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
+		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
+		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+
+		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
+		
+		attach(mod.get_value(it, 1), 0, 1)
+		attach(mod.get_value(it, 2), 1, 2)
+		attach(mod.get_value(it, 3), 2, 3)
+		attach(mod.get_value(it, 4), 3, 4)
+		attach(mod.get_value(it, 5), 4, 5)
+		attach(mod.get_value(it, 6), 5, 6)
+		attach(mod.get_value(it, 7), 6, 7)
+		
+		self.vbox.pack_start(tbl, False, False, 0)
+		self.show_all()
+
+		self.connect('response', self.on_response)
 	
-	def cancella_attenzione_test(self, obj):
-		#Visualizza finestra dialog di conferma
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-		cursore.execute("delete from test")
-		connessione.commit()
-		self.spinbutton2.set_value(0)
-		#Visualizzare finestra di cancellazione avvenuta
-	
-		def menu_test_nomi():
-			data = []
-			connessione=sqlite.connect("Data/db")
-			cursore=connessione.cursor()
-			cursore.execute("select * from vasca")
-			for a in cursore.fetchall():
-				data.append(a[3])
-				
-			self.store = gtk.ListStore(gobject.TYPE_STRING)
-			for d in data: store.append([d])
-			
-			self.comboentry1.set_model(self.store)
-			self.comboentry1.set_text_column(0)
+	def new_label(self, txt):
+		lbl = gtk.Label()
+		lbl.set_use_markup(True)
+		lbl.set_label('<b>' + txt + '</b>')
+		lbl.set_alignment(0.0, 0.5)
+		
+		return lbl
+		
+	def on_response(self, dial, id):
+		if id == gtk.RESPONSE_OK:
+			self.hide()
+			self.destroy()
+
+def make_thumb(twh, w, h):
+	if w == h:
+		return twh, twh
+	if w < h:
+		y = twh
+		x = int(float(y*w)/float(h))
+		return x, y
+	if w > h:
+		x = twh
+		y = int(float(x*h)/float(w))
+		return x, y

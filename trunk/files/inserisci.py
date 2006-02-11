@@ -76,6 +76,8 @@ class Inserisci(gtk.Window):
 	def make_filt_page(self):
 	
 		# Pagina filtro
+
+		box = gtk.VBox()
 		
 		tbl = gtk.Table(2, 2)
 		tbl.set_border_width(5)
@@ -83,19 +85,20 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.new_label('Data'), 0, 1, 0, 1)
 		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 1, 2)
 		
-		
 		self.data = gtk.Entry()
 		self.giorni = gtk.Entry()
 		
 		tbl.attach(self.data, 1, 2, 0, 1)
 		tbl.attach(self.giorni, 1, 2, 1, 2)
 		
-
-		return tbl
+		box.pack_start(tbl, False, False, 0)
+		return box
 		
 	def make_fert_page(self):
 	
 		# Pagina fertilizzante
+
+		box = gtk.VBox()
 		
 		tbl = gtk.Table(4, 2)
 		tbl.set_border_width(5)
@@ -105,7 +108,6 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.new_label('Quantita'), 0, 1, 2, 3)
 		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 3, 4)
 		
-		
 		self.data = gtk.Entry(); self.nome = gtk.Entry()
 		self.quantita = gtk.Entry(); self.giorni = gtk.Entry()
 		
@@ -114,14 +116,16 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.quantita, 1, 2, 2, 3)
 		tbl.attach(self.giorni, 1, 2, 3, 4)
 		
-
-		return tbl
+		box.pack_start(tbl, False, False, 0)
+		return box
 		
 	def make_test_page(self):
 		# Pagina Test
+
+		box = gtk.VBox()
+		
 		tbl = gtk.Table(11, 3)
 		tbl.set_border_width(5)
-		
 		
 		tbl.attach(self.new_label('Minimo'), 1, 2, 0, 1)
 		tbl.attach(self.new_label('Massimo'), 2, 3, 0, 1)
@@ -168,17 +172,18 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.fosfati_minimo, 1, 2, 10, 11)
 		tbl.attach(self.fosfati_massimo, 2, 3, 10, 11)
 
-		return tbl
+		box.pack_start(tbl, False, False, 0)
+		return box
 		
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
 		if bold:
 			lbl.set_use_markup(True)
 			lbl.set_label('<b>' + txt + '</b>')
-			lbl.set_alignment(0, 1.0)
+			lbl.set_alignment(0, 0.5)
 		else:
 			lbl.set_label(txt)
-			lbl.set_alignment(0.5, 0)
+			lbl.set_alignment(0.5, 0.5)
 		
 		return lbl
 		
