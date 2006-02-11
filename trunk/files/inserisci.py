@@ -18,13 +18,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
+import pygtk
 import gtk
 import os
 #import impostazioni
 
 #from inserisci import *
-from pysqlite2 import dbapi2 as sqlite
+#from pysqlite2 import dbapi2 as sqlite
 
 class Inserisci(gtk.Window):
 	def __init__(self):
@@ -58,7 +58,7 @@ class Inserisci(gtk.Window):
 		bb.pack_start(btn)
 
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		#btn.connect('clicked', self.refresh)
+		btn.connect('clicked', self.add)
 		
 		bb.pack_start(btn)
 

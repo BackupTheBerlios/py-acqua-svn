@@ -4,24 +4,6 @@
 #http://pyacqua.altervista.org
 #email: pyacqua@gmail.com  
 #
-#Team Members: 
-#
-#	LUCA SANNA -  	Founder and lead developer - pyacqua@gmail.com 
-#	ENRICO GIUBERTONI  - Web Site Manager - enrico.giubertoni@gmail.com 
-#	FEDERICO DEGRANDIS - Package Manager - danger90@gmail.com 
-#	MASSIMILIANO SIST - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com
-#	PIETRO GRASSI - Release Tester - gnatophillum@gmail.com
-#	PIERO MUSU	 - Graphic Designer - admin@irk.it
-#	
-#	
-#Please Refer to AUTHORS file for more Information
-#
-#Py-Acqua refers to the following libraries under GPL or other Free Licenses:
-#PYTHON (http://www.python.org/psf/license.html)
-#PYGTK (http://www.pygtk.org/about.html),
-#PYSQLITE2 (http://initd.org/pub/software/pysqlite/)
-#GTK (http://gladewin32.sourceforge.net/) 
-#PYCHART (http://home.gna.org/pychart/)
 #   
 #Py-Acqua is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -36,8 +18,6 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-
 
 import os
 import sys
