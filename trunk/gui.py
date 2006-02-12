@@ -38,7 +38,7 @@ except:
 	print "You need to install pysqlite"
 
 import os
-import files.finestre
+#import files.finestre
 
 ### creiamo la directory che contiene le immagini
 
