@@ -99,8 +99,6 @@ class Inserisci(gtk.Window):
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		
-		
 		fer_date = self.fe_data.get_text()
 		fer_nome = self.fe_nome.get_text()
 		fer_quantita = self.fe_quantita.get_text()

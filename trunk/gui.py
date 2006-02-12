@@ -99,6 +99,8 @@ class Gui(gtk.Window):
 		('Impostazioni', None, '_Impostazioni'),
 			('Grafico',	None,		'_Grafico',	None,		'Grafico...'),
 			('Tips Tricks',	None,		'_Tips Tricks',	None,		'Tips and Tricks...',	'tips_apri'),
+			('Fertilizzante',	None,		'_Fertilizzante',	None,		'fertilizzante...',	'fertilizzante_apri'),
+			('Filtro',	None,		'_Filtro',	None,		'filtro...',	'filtro_apri'),
 			('Calendario',	None,		'_Calendario',	None,		'Calendario...',	'calendario_apri'),
 			('Inserisci',	None,		'_Inserisci',	None,		'Inserisci...',		'inserisci_apri'),
 			('Allarmi',	None,		'_Allarmi',	None,		'Allarmi...',		'allarmi_apri'),
@@ -122,6 +124,8 @@ class Gui(gtk.Window):
 		<menu action='Impostazioni'>
 			<menuitem action='Grafico'/>
 			<menuitem action='Tips Tricks'/>
+			<menuitem action='Fertilizzante'/>
+			<menuitem action='Filtro'/>
 			<menuitem action='Calendario'/>
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
@@ -210,6 +214,12 @@ class Gui(gtk.Window):
 	def allarmi_apri(self, widget, data=None):
 		import files.allarmi
 		files.allarmi.Allarmi()
+	def fertilizzante_apri(self, widget, data=None):
+		import files.fertilizzante
+		files.fertilizzante.Fertilizzante()
+	def filtro_apri(self, widget, data=None):
+		import files.filtro
+		files.filtro.Filtro()	
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
