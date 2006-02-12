@@ -23,6 +23,7 @@ import gtk
 import gobject
 import os
 import sys
+import utils
 from pysqlite2 import dbapi2 as sqlite
 
 class Piante(gtk.Window):
@@ -105,7 +106,7 @@ class Piante(gtk.Window):
 		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
 		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
 		
-		self.e_data, self.e_vasca, self.e_quantita = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		self.e_data, self.e_vasca, self.e_quantita = utils.DataButton(), gtk.Entry(), gtk.Entry()
 		self.e_nome = gtk.Entry()
 		self.e_path = gtk.Entry()
 

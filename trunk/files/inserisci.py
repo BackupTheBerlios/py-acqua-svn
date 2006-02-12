@@ -21,7 +21,7 @@
 import pygtk
 import gtk
 import os
-#import impostazioni
+import utils
 
 #from inserisci import *
 #from pysqlite2 import dbapi2 as sqlite
@@ -85,7 +85,7 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.new_label('Data'), 0, 1, 0, 1)
 		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 1, 2)
 		
-		self.data = gtk.Entry()
+		self.data = utils.DataButton()
 		self.giorni = gtk.Entry()
 		
 		tbl.attach(self.data, 1, 2, 0, 1)
@@ -108,7 +108,7 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.new_label('Quantita'), 0, 1, 2, 3)
 		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 3, 4)
 		
-		self.data = gtk.Entry(); self.nome = gtk.Entry()
+		self.data = utils.DataButton(); self.nome = gtk.Entry()
 		self.quantita = gtk.Entry(); self.giorni = gtk.Entry()
 		
 		tbl.attach(self.data, 1, 2, 0, 1)
