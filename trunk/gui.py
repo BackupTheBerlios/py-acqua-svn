@@ -55,7 +55,7 @@ if not os.path.exists('Data'):
 if not os.path.exists("Data/db"):
 	connessione=sqlite.connect("Data/db")
 	cursore=connessione.cursor()
-	cursore.execute("create table test(id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe NUMERIC, ra NUMERIC, fo NUMERIC)")
+	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT)")
 	cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni FLOAT)")

@@ -36,12 +36,56 @@ class DataButton(gtk.Button):
 			self.update_label(self.get_date())
 		diag.hide()
 		diag.destroy()
+
 class FloatEntry(gtk.SpinButton):
-	def __init__(self, min=0, max=99):
-		gtk.SpinButton.__init__(self)
+	def __init__(self, min=0, max=99, inc=0.1, page=1):
+		gtk.SpinButton.__init__(self, digits=2)
+		self.set_range(min, max)
+		self.set_increments(inc, page)
+		self.set_wrap(True)
+	
+	def set_text(self, value):
+		try:
+			value = float(value)
+		except:
+			value = 0
+
+		self.set_value(value)
+	
+	def get_text(self):
+		return self.get_value()
+
+class IntEntry(FloatEntry):
+	def set_text(self, value):
+		try:
+			value = int(value)
+		except:
+			value = 0
+		self.set_value(value)
+	
+	def get_text(self):
+		return self.get_value_as_int()
+		
+class Test:
+	def __init__(self, i):
+		w = gtk.Window()
+		w.set_title("Testing")
+		
+		if i == 0:
+			self.e = e = FloatEntry()
+		else:
+			self.e = e = IntEntry()
+		box = gtk.VBox()
+		box.pack_start(e)
+		btn = gtk.Button('a')
+		btn.connect('clicked', self.a)
+		box.pack_start(btn)
+		w.add(box)
+		w.show_all()
+	def a(self, w):
+		print self.e.get_text()
+		
 if __name__ == "__main__":
-	w = gtk.Window()
-	w.set_title("Testing")
-	w.add(DataButton("Prova"))
-	w.show_all()
+	Test(0)
+	Test(1)
 	gtk.main()

@@ -26,7 +26,13 @@ import sys
 import utils
 from pysqlite2 import dbapi2 as sqlite
 
+try:
+	from pychart import *
+except:
+	Test.PyChart = False
+
 class Test(gtk.Window):
+	PyChart = True
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
@@ -37,12 +43,24 @@ class Test(gtk.Window):
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
 		# NUMERIC, ra NUMERIC, fo NUMERIC
-		self.test_store = gtk.ListStore(int, str, str, str, str, str, str, str, str, str, str, str, str)
+		self.test_store = gtk.ListStore(
+			int,	# ID
+			str,	# DATA
+			str,	# VASCA
+			float,	# PH
+			float,	# KH
+			float,	# GH
+			float,	# NO
+			float,	# NO2
+			float,	# COND
+			float,	# AMMO
+			float,	# FERRO
+			float,	# RAME
+			float)	# FOSFATI
 		
 		self.view = view = gtk.TreeView(self.test_store)
 		
-		lst = ['Id', 'Data', 'Vasca', 'Ph', 'Kh', 'Gh', 'No', 'No2',
-		'Conducibilita\'', 'Ammoniaca', 'Ferro', 'Rame', 'Fosfati']
+		lst = ['Id', 'Data', 'Vasca']
 		renderer = gtk.CellRendererText()
 		
 		for i in lst:
@@ -52,6 +70,12 @@ class Test(gtk.Window):
 			col.set_clickable(True)
 			col.set_resizable(True)
 			view.append_column(col)
+		
+		lst = ['Ph', 'Kh', 'Gh', 'No', 'No2',
+		'Conducibilita\'', 'Ammoniaca', 'Ferro', 'Rame', 'Fosfati']
+		for i in lst:
+			id = lst.index(i)
+			view.insert_column_with_data_func(-1, i, renderer, self.row_func, id+3)
 		
 		view.get_selection().connect('changed', self.on_selection_changed)
 		
@@ -119,11 +143,12 @@ class Test(gtk.Window):
 		def make_inst(num):
 			a = list()
 			for i in range(num):
-				a.append(gtk.Entry())
+				a.append(utils.FloatEntry())
 			return a
 
 		self.e_data = utils.DataButton()
-		self.e_vasca, self.e_ph, self.e_kh = make_inst(3)
+		self.e_vasca = gtk.Entry()
+		self.e_ph, self.e_kh = make_inst(2)
 		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
 		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
 
@@ -167,6 +192,10 @@ class Test(gtk.Window):
 		self.timeoutid = None
 
 		box.set_border_width(4)
+		
+	def row_func(self, col, cell, model, iter, id):
+		value = model.get_value(iter, id)
+		cell.set_property("text", "%.2f" % value)
 
 	def on_refresh(self, widget):
 		
@@ -196,9 +225,6 @@ class Test(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
-		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
-		# NUMERIC, ra NUMERIC, fo NUMERIC
 			cur.execute("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s' where id=%(id)s" %vars())
 			conn.commit()
 
@@ -320,27 +346,33 @@ class Test(gtk.Window):
 			self.e_ferro.set_text(mod.get_value(it, 10))
 			self.e_rame.set_text(mod.get_value(it, 11))
 			self.e_fosfati.set_text(mod.get_value(it, 12))
+	
 	def on_draw_graph(self, widget):
-		try:
-			from pychart import *
-		except:
-			# FIXME: Una dialog qui
-			print "Pychart non presente.. installalo!! :P"
-		else:
-			data = self.e_data.get_text()
-			vasca = self.e_vasca.get_text()
-			ph = float(self.e_ph.get_text())
-			kh = float(self.e_kh.get_text())
-			gh = int(self.e_gh.get_text())
-			no = int(self.e_no.get_text())
-			no2 = int(self.e_no2.get_text())
-			cond = int(self.e_cond.get_text())
-			ammo = int(self.e_ammo.get_text())
-			ferro = int(self.e_ferro.get_text())
-			rame = int(self.e_rame.get_text())
-			fosfati = int(self.e_fosfati.get_text())
+		if not Test.PyChart:
+			dialog = gtk.MessageDialog(self, gtk.DIALOG_MODAL,
+			gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+			"PyChart non installato.\nScaricalo da http://home.gna.org/pychart/")
 			
-			can = canvas.init("Immagini/grafico.png")
+			dialog.run()
+			dialog.hide()
+			dialog.destroy()
+			
+		else:
+			date = self.e_data.get_text()
+			vasca = self.e_vasca.get_text()
+			
+			ph = self.e_ph.get_text()
+			kh = self.e_kh.get_text()
+			gh = self.e_gh.get_text()
+			no = self.e_no.get_text()
+			no2 = self.e_no2.get_text()
+			cond = self.e_cond.get_text()
+			ammo = self.e_ammo.get_text()
+			ferro = self.e_ferro.get_text()
+			rame = self.e_rame.get_text()
+			fosfati = self.e_fosfati.get_text()
+			
+			can = canvas.init(os.path.join('Immagini', 'grafico.png'))
 			
 			theme.use_color = 2
 			theme.reinitialize()
@@ -361,6 +393,30 @@ class Test(gtk.Window):
 			ar.add_plot(bar_plot.T(data = data, label = "Leggenda"))
 			ar.draw(can)
 			can.close()
+
+			# InfoDialog
+			d = gtk.MessageDialog(self, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+			d.set_markup("<span size=\"large\"><b>PyAcqua Graph</b></span>\n\n<b>Tipo Vasca:</b> %s\n<b>Data:</b> %s" % (vasca, date))
+			
+			img = gtk.Image(); img.set_from_file(os.path.join('Immagini', 'grafico.png'))
+			
+			sw = gtk.ScrolledWindow()
+			sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+			#sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+			
+			sw.add_with_viewport(img)
+			
+			d.vbox.pack_start(sw)
+			d.vbox.show_all()
+			d.set_border_width(4)
+			
+			d.set_size_request(600, 450)
+			
+			d.run()
+			d.hide(); d.destroy()
+			
+			if os.path.isfile(os.path.join('Immagini', 'grafico.png')):
+				os.remove(os.path.join('Immagini', 'grafico.png'))
 
 	def on_delete_event(self, widget, event):
 		if self.timeoutid != None:
