@@ -48,21 +48,21 @@ class Inserisci(gtk.Window):
 		
 		vbox.pack_start(nb)
 
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		bb.set_spacing(4)
+		#bb = gtk.HButtonBox()
+		#bb.set_layout(gtk.BUTTONBOX_END)
+		#bb.set_spacing(4)
 
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		btn.connect('clicked', self.exit)
+		#btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		#btn.connect('clicked', self.exit)
 
-		bb.pack_start(btn)
+		#bb.pack_start(btn)
 
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.inserisci)
+		#btn = gtk.Button(stock=gtk.STOCK_ADD)
+		#btn.connect('clicked', self.inserisci)
 		
-		bb.pack_start(btn)
+		#bb.pack_start(btn)
 
-		vbox.pack_start(bb, False, False, 0)
+		#vbox.pack_start(bb, False, False, 0)
 		
 		self.add(vbox)
 		self.show_all()
@@ -70,7 +70,7 @@ class Inserisci(gtk.Window):
 		self.set_size_request(400, 300)
 		#self.refresh(None)
 		
-	def inserisci(self, widget):
+	def inserisci_test(self, widget):
 	
 		impostazioni.minph = self.ph_minimo
 		impostazioni.maxph = self.ph_massimo
@@ -95,6 +95,11 @@ class Inserisci(gtk.Window):
 		
 		impostazioni.save()
 		
+	def inserisci_fertilizzante(self, widget):
+		print "fertilizzante"
+	def inserisci_filtro(self, widget):
+		print "filtro"
+		
 	def make_filt_page(self):
 	
 		# Pagina filtro
@@ -112,23 +117,23 @@ class Inserisci(gtk.Window):
 		
 		tbl.attach(self.data, 1, 2, 0, 1)
 		tbl.attach(self.giorni, 1, 2, 1, 2)
-		
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		btn.connect('clicked', self.exit)
-
-		#bb.pack_start(btn)
-		
+	
 		box.pack_start(tbl, False, False, 0)
-		return box
+		
 		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(4)
+		
+		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn.connect('clicked', self.exit)
+		bb.pack_start(btn)
 		
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		#btn.connect('clicked', self.on_add)
+		btn.connect('clicked', self.inserisci_filtro)
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
-		
+		return box
 		
 		
 	def make_fert_page(self):
@@ -154,6 +159,21 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.giorni, 1, 2, 3, 4)
 		
 		box.pack_start(tbl, False, False, 0)
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(4)
+		
+		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn.connect('clicked', self.exit)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		btn.connect('clicked', self.inserisci_fertilizzante)
+		bb.pack_start(btn)
+		box.pack_start(bb, False, False, 0)
+		
+		
 		return box
 		
 	def make_test_page(self):
@@ -212,6 +232,20 @@ class Inserisci(gtk.Window):
 		
 
 		box.pack_start(tbl, False, False, 0)
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(4)
+		
+		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn.connect('clicked', self.exit)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		btn.connect('clicked', self.inserisci_test)
+		bb.pack_start(btn)
+		box.pack_start(bb, False, False, 0)
+		
 		return box
 		
 	def new_label(self, txt, bold=True):
