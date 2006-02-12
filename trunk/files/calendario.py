@@ -22,11 +22,11 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
-import finestre
+#import finestre
 from pysqlite2 import dbapi2 as sqlite
 
 
-class win20:
+class Calendario:
 	
 	def calendar_set_flags(self):
 		options = 0

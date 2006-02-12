@@ -111,6 +111,11 @@ class Inserisci(gtk.Window):
 		conn.commit()
 		
 	def inserisci_filtro(self, widget):
+		conn = sqlite.connect(os.path.join('Data', 'db'))
+		cur = conn.cursor()
+		
+		self.data = utils.DataButton()
+		self.giorni = gtk.Entry()
 		print "filtro"
 		
 	def make_filt_page(self):

@@ -179,7 +179,7 @@ class Gui(gtk.Window):
 		
 	def calcoli_apri(self, widget, data=None):
 		import files.calcoli
-		return files.calcoli.win2()
+		return files.calcoli.Calcoli()
 	
 	def test_apri(self, widget, data=None):
 		import files.test
@@ -202,7 +202,7 @@ class Gui(gtk.Window):
 		
 	def calendario_apri(self,widget, data=None):
 		import files.calendario
-		return files.calendario.win20()
+		return files.calendario.Calendario()
 		
 	def inserisci_apri(self,widget, data=None):
 		import files.inserisci
