@@ -113,8 +113,23 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.data, 1, 2, 0, 1)
 		tbl.attach(self.giorni, 1, 2, 1, 2)
 		
+		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn.connect('clicked', self.exit)
+
+		#bb.pack_start(btn)
+		
 		box.pack_start(tbl, False, False, 0)
 		return box
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		#btn.connect('clicked', self.on_add)
+		bb.pack_start(btn)
+		box.pack_start(bb, False, False, 0)
+		
+		
 		
 	def make_fert_page(self):
 	
