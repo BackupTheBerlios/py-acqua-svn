@@ -23,6 +23,7 @@ import gtk
 import gobject
 import os
 import sys
+import utils
 from pysqlite2 import dbapi2 as sqlite
 
 class Test(gtk.Window):
@@ -121,7 +122,8 @@ class Test(gtk.Window):
 				a.append(gtk.Entry())
 			return a
 
-		self.e_data, self.e_vasca, self.e_ph, self.e_kh = make_inst(4)
+		self.e_data = utils.DataButton()
+		self.e_vasca, self.e_ph, self.e_kh = make_inst(3)
 		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
 		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
 
