@@ -76,6 +76,23 @@ class Inserisci(gtk.Window):
 		impostazioni.maxph = self.ph_massimo
 		impostazioni.minkh = self.kh_minimo
 		impostazioni.maxkh = self.kh_massimo
+		impostazioni.mingh = self.gh_minimo
+		impostazioni.maxgh = self.gh_massimo
+		impostazioni.minno2 = self.no2_minimo
+		impostazioni.maxno2 = self.no2_massimo
+		impostazioni.minno3 = self.no3_minimo
+		impostazioni.maxno3 = self.no3_massimo
+		impostazioni.mincon = self.cond_minimo
+		impostazioni.maxcon = self.cond_massimo
+		impostazioni.minam = self.ammoniaca_minimo
+		impostazioni.maxam = self.ammoniaca_massimo
+		impostazioni.minfe = self.ferro_minimo
+		impostazioni.maxfe = self.ferro_massimo
+		impostazioni.minra = self.rame_minimo
+		impostazioni.maxra = self.rame_massimo
+		impostazioni.minfo = self.fosfati_minimo
+		impostazioni.maxfo = self.fosfati_massimo
+		
 		impostazioni.save()
 		
 	def make_filt_page(self):
