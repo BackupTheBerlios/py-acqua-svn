@@ -22,7 +22,7 @@ import pygtk
 import gtk
 import os
 import utils
-
+import impostazioni
 #from inserisci import *
 #from pysqlite2 import dbapi2 as sqlite
 
@@ -71,7 +71,12 @@ class Inserisci(gtk.Window):
 		#self.refresh(None)
 		
 	def inserisci(self, widget):
-		print ""
+	
+		impostazioni.minph = self.ph_minimo
+		impostazioni.maxph = self.ph_massimo
+		impostazioni.minkh = self.kh_minimo
+		impostazioni.maxkh = self.kh_massimo
+		impostazioni.save()
 		
 	def make_filt_page(self):
 	
@@ -171,6 +176,8 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.rame_massimo, 2, 3, 9, 10)
 		tbl.attach(self.fosfati_minimo, 1, 2, 10, 11)
 		tbl.attach(self.fosfati_massimo, 2, 3, 10, 11)
+		
+		
 
 		box.pack_start(tbl, False, False, 0)
 		return box
