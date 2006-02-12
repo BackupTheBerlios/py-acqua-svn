@@ -97,7 +97,7 @@ class Gui(gtk.Window):
 			('Quit',	gtk.STOCK_QUIT,	'_Quit',	None,		'Esci da Py-Acqua',	'exit'),
 			
 		('Impostazioni', None, '_Impostazioni'),
-			('Grafico',	None,		'_Grafico',	None,		'Grafico...'),
+			#('Grafico',	None,		'_Grafico',	None,		'Grafico...'),
 			('Tips Tricks',	None,		'_Tips Tricks',	None,		'Tips and Tricks...',	'tips_apri'),
 			('Fertilizzante',	None,		'_Fertilizzante',	None,		'fertilizzante...',	'fertilizzante_apri'),
 			('Filtro',	None,		'_Filtro',	None,		'filtro...',	'filtro_apri'),
@@ -122,7 +122,6 @@ class Gui(gtk.Window):
 			<menuitem action='Quit'/>
 		</menu>
 		<menu action='Impostazioni'>
-			<menuitem action='Grafico'/>
 			<menuitem action='Tips Tricks'/>
 			<menuitem action='Fertilizzante'/>
 			<menuitem action='Filtro'/>
