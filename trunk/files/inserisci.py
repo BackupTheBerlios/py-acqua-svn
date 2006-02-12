@@ -24,7 +24,7 @@ import os
 import utils
 import impostazioni
 #from inserisci import *
-#from pysqlite2 import dbapi2 as sqlite
+from pysqlite2 import dbapi2 as sqlite
 
 class Inserisci(gtk.Window):
 	def __init__(self):
@@ -96,7 +96,20 @@ class Inserisci(gtk.Window):
 		impostazioni.save()
 		
 	def inserisci_fertilizzante(self, widget):
-		print "fertilizzante"
+		conn = sqlite.connect(os.path.join('Data', 'db'))
+		cur = conn.cursor()
+
+		
+		
+		fer_date = self.fe_data.get_text()
+		fer_nome = self.fe_nome.get_text()
+		fer_quantita = self.fe_quantita.get_text()
+		fer_giorni = self.fe_giorni.get_text()
+		
+		cur.execute('insert into fertilizzante values(?,?,?,?)',
+			(fer_date, fer_nome, fer_quantita, fer_giorni))
+		conn.commit()
+		
 	def inserisci_filtro(self, widget):
 		print "filtro"
 		
@@ -150,13 +163,13 @@ class Inserisci(gtk.Window):
 		tbl.attach(self.new_label('Quantita'), 0, 1, 2, 3)
 		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 3, 4)
 		
-		self.data = utils.DataButton(); self.nome = gtk.Entry()
-		self.quantita = gtk.Entry(); self.giorni = gtk.Entry()
+		self.fe_data = utils.DataButton(); self.fe_nome = gtk.Entry()
+		self.fe_quantita = gtk.Entry(); self.fe_giorni = gtk.Entry()
 		
-		tbl.attach(self.data, 1, 2, 0, 1)
-		tbl.attach(self.nome, 1, 2, 1, 2)
-		tbl.attach(self.quantita, 1, 2, 2, 3)
-		tbl.attach(self.giorni, 1, 2, 3, 4)
+		tbl.attach(self.fe_data, 1, 2, 0, 1)
+		tbl.attach(self.fe_nome, 1, 2, 1, 2)
+		tbl.attach(self.fe_quantita, 1, 2, 2, 3)
+		tbl.attach(self.fe_giorni, 1, 2, 3, 4)
 		
 		box.pack_start(tbl, False, False, 0)
 		
