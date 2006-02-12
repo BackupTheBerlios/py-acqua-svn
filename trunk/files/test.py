@@ -147,7 +147,16 @@ class Test(gtk.Window):
 			return a
 
 		self.e_data = utils.DataButton()
-		self.e_vasca = gtk.Entry()
+		
+		liststore = gtk.ListStore(str)
+		self.e_vasca = gtk.ComboBox(liststore)
+		cell = gtk.CellRendererText()
+		self.e_vasca.pack_start(cell, True)
+		self.e_vasca.add_attribute(cell, 'text', 0)
+
+		# TODO: popola con i nomi delle vasche
+		liststore.append(["Dolce"])
+		
 		self.e_ph, self.e_kh = make_inst(2)
 		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
 		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
