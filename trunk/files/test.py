@@ -36,7 +36,7 @@ class Test(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Vasche")
+		self.set_title("Test")
 		self.set_size_request(600, 400)
 		
 		box = gtk.VBox()
