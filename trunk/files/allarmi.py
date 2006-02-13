@@ -35,18 +35,41 @@ class Allarmi(gtk.Window):
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
-
-		nb = gtk.Notebook()
-
-		# Aggiungiamo i tab
-		self.ph = self.gh = self.no2 = self.no3 = self.cond = None
-		self.ammoniaca = self.ferro = self.rame = self.fosfati = None
-
-		nb.append_page(self.make_test_page(), gtk.Label('Test'))
-		nb.append_page(self.make_fert_page(), gtk.Label('Fertilizzante'))
-		nb.append_page(self.make_filt_page(), gtk.Label('Filtro'))
 		
-		vbox.pack_start(nb)
+		
+		# Pagina Test
+		tbl = gtk.Table(10, 2)
+		tbl.set_border_width(5)
+		
+		tbl.attach(self.new_label('Ph'), 0, 1, 0, 1)
+		tbl.attach(self.new_label('Kh'), 0, 1, 1, 2)
+		tbl.attach(self.new_label('Gh'), 0, 1, 2, 3)
+		tbl.attach(self.new_label('No2'), 0, 1, 3, 4)
+		tbl.attach(self.new_label('No3'), 0, 1, 4, 5)
+		tbl.attach(self.new_label('Conducibilità'), 0, 1, 5, 6)
+		tbl.attach(self.new_label('Ammoniaca'), 0, 1, 6, 7)
+		tbl.attach(self.new_label('Ferro'), 0, 1, 7, 8)
+		tbl.attach(self.new_label('Rame'), 0, 1, 8, 9)
+		tbl.attach(self.new_label('Fosfati'), 0, 1, 9, 10)
+		
+		self.ph = self.new_label('0', False); self.kh = self.new_label('0', False)
+		self.gh = self.new_label('0', False); self.no2 = self.new_label('0', False)
+		self.no3 = self.new_label('0', False); self.cond = self.new_label('0', False)
+		self.rame = self.new_label('0', False); self.fosfati = self.new_label('0', False)
+		self.ammoniaca = self.new_label('0', False); self.ferro = self.new_label('0', False)
+
+		tbl.attach(self.ph, 1, 2, 0, 1)
+		tbl.attach(self.kh, 1, 2, 1, 2)
+		tbl.attach(self.gh, 1, 2, 2, 3)
+		tbl.attach(self.no2, 1, 2, 3, 4)
+		tbl.attach(self.no3, 1, 2, 4, 5)
+		tbl.attach(self.cond, 1, 2, 5, 6)
+		tbl.attach(self.ammoniaca, 1, 2, 6, 7)
+		tbl.attach(self.ferro, 1, 2, 7, 8)
+		tbl.attach(self.rame, 1, 2, 8, 9)
+		tbl.attach(self.fosfati, 1, 2, 9, 10)
+		
+		vbox.pack_start(tbl)
 
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
@@ -135,51 +158,9 @@ class Allarmi(gtk.Window):
 		for i in cur.fetchall():
 			self.filt_store.append([i[0], i[1], i[2]])
 
-	def make_filt_page(self):
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-
-		self.filt_store = gtk.ListStore(int, str, str, float, str)
-		view = gtk.TreeView(self.filt_store)
+	
 		
-		lst = ['Id', 'Data', 'Prossima volta']
-		renderer = gtk.CellRendererText()
-
-		for i in lst:
-			id = lst.index(i)
-			col = gtk.TreeViewColumn(i, renderer, text=id)
-			col.set_sort_column_id(id+1)
-			col.set_clickable(True)
-			col.set_resizable(True)
-			view.append_column(col)
-
-		sw.add(view)
-
-		return sw
-		
-	def make_fert_page(self):
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-
-		self.fert_store = gtk.ListStore(int, str, str, float, str)
-		view = gtk.TreeView(self.fert_store)
-		
-		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
-		renderer = gtk.CellRendererText()
-
-		for i in lst:
-			id = lst.index(i)
-			col = gtk.TreeViewColumn(i, renderer, text=id)
-			col.set_sort_column_id(id+1)
-			col.set_clickable(True)
-			col.set_resizable(True)
-			view.append_column(col)
-
-		sw.add(view)
-
-		return sw
+	
 		
 	def make_test_page(self):
 		# Pagina Test

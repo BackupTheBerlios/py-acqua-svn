@@ -30,172 +30,11 @@ class Inserisci(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__(self)
 		
-		self.set_title('Inserisci')
-
-		vbox = gtk.VBox()
-		vbox.set_spacing(4)
-		vbox.set_border_width(4)
-
-		nb = gtk.Notebook()
-
-		# Aggiungiamo i tab
-		#self.ph = self.gh = self.no2 = self.no3 = self.cond = None
-		#self.ammoniaca = self.ferro = self.rame = self.fosfati = None
-
-		nb.append_page(self.make_test_page(), gtk.Label('Test'))
-		nb.append_page(self.make_fert_page(), gtk.Label('Fertilizzante'))
-		nb.append_page(self.make_filt_page(), gtk.Label('Filtro'))
-		
-		vbox.pack_start(nb)
-
-		#bb = gtk.HButtonBox()
-		#bb.set_layout(gtk.BUTTONBOX_END)
-		#bb.set_spacing(4)
-
-		#btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		#btn.connect('clicked', self.exit)
-
-		#bb.pack_start(btn)
-
-		#btn = gtk.Button(stock=gtk.STOCK_ADD)
-		#btn.connect('clicked', self.inserisci)
-		
-		#bb.pack_start(btn)
-
-		#vbox.pack_start(bb, False, False, 0)
-		
-		self.add(vbox)
-		self.show_all()
-
-		self.set_size_request(400, 300)
-		#self.refresh(None)
-		
-	def inserisci_test(self, widget):
-	
-		impostazioni.minph = self.ph_minimo
-		impostazioni.maxph = self.ph_massimo
-		impostazioni.minkh = self.kh_minimo
-		impostazioni.maxkh = self.kh_massimo
-		impostazioni.mingh = self.gh_minimo
-		impostazioni.maxgh = self.gh_massimo
-		impostazioni.minno2 = self.no2_minimo
-		impostazioni.maxno2 = self.no2_massimo
-		impostazioni.minno3 = self.no3_minimo
-		impostazioni.maxno3 = self.no3_massimo
-		impostazioni.mincon = self.cond_minimo
-		impostazioni.maxcon = self.cond_massimo
-		impostazioni.minam = self.ammoniaca_minimo
-		impostazioni.maxam = self.ammoniaca_massimo
-		impostazioni.minfe = self.ferro_minimo
-		impostazioni.maxfe = self.ferro_massimo
-		impostazioni.minra = self.rame_minimo
-		impostazioni.maxra = self.rame_massimo
-		impostazioni.minfo = self.fosfati_minimo
-		impostazioni.maxfo = self.fosfati_massimo
-		
-		impostazioni.save()
-		
-	def inserisci_fertilizzante(self, widget):
-		conn = sqlite.connect(os.path.join('Data', 'db'))
-		cur = conn.cursor()
-
-		fer_date = self.fe_data.get_text()
-		fer_nome = self.fe_nome.get_text()
-		fer_quantita = self.fe_quantita.get_text()
-		fer_giorni = self.fe_giorni.get_text()
-		
-		cur.execute('insert into fertilizzante values(?,?,?,?)',
-			(fer_date, fer_nome, fer_quantita, fer_giorni))
-		conn.commit()
-		
-	def inserisci_filtro(self, widget):
-		conn = sqlite.connect(os.path.join('Data', 'db'))
-		cur = conn.cursor()
-		
-		self.data = utils.DataButton()
-		self.giorni = gtk.Entry()
-		print "filtro"
-		
-	def make_filt_page(self):
-	
-		# Pagina filtro
+		self.set_title('Inserisci Test')
 
 		box = gtk.VBox()
-		
-		tbl = gtk.Table(2, 2)
-		tbl.set_border_width(5)
-		
-		tbl.attach(self.new_label('Data'), 0, 1, 0, 1, yoptions=gtk.SHRINK)
-		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 1, 2, yoptions=gtk.SHRINK)
-		
-		self.data = utils.DataButton()
-		self.giorni = gtk.Entry()
-		
-		tbl.attach(self.data, 1, 2, 0, 1, yoptions=gtk.SHRINK)
-		tbl.attach(self.giorni, 1, 2, 1, 2, yoptions=gtk.SHRINK)
-	
-		box.pack_start(tbl)
-		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		bb.set_spacing(4)
-		
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		btn.connect('clicked', self.exit)
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.inserisci_filtro)
-		bb.pack_start(btn)
-		box.pack_start(bb, False, False, 0)
-		
-		return box
-		
-		
-	def make_fert_page(self):
-	
-		# Pagina fertilizzante
-
-		box = gtk.VBox()
-		
-		tbl = gtk.Table(4, 2)
-		tbl.set_border_width(5)
-		
-		tbl.attach(self.new_label('Data'), 0, 1, 0, 1, yoptions=gtk.SHRINK)
-		tbl.attach(self.new_label('Nome'), 0, 1, 1, 2, yoptions=gtk.SHRINK)
-		tbl.attach(self.new_label('Quantita'), 0, 1, 2, 3, yoptions=gtk.SHRINK)
-		tbl.attach(self.new_label('Ogni quanti giorni'), 0, 1, 3, 4, yoptions=gtk.SHRINK)
-		
-		self.fe_data = utils.DataButton(); self.fe_nome = gtk.Entry()
-		self.fe_quantita = gtk.Entry(); self.fe_giorni = gtk.Entry()
-		
-		tbl.attach(self.fe_data, 1, 2, 0, 1, yoptions=gtk.SHRINK)
-		tbl.attach(self.fe_nome, 1, 2, 1, 2, yoptions=gtk.SHRINK)
-		tbl.attach(self.fe_quantita, 1, 2, 2, 3, yoptions=gtk.SHRINK)
-		tbl.attach(self.fe_giorni, 1, 2, 3, 4, yoptions=gtk.SHRINK)
-		
-		box.pack_start(tbl)
-		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		bb.set_spacing(4)
-		
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
-		btn.connect('clicked', self.exit)
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.inserisci_fertilizzante)
-		bb.pack_start(btn)
-		box.pack_start(bb, False, False, 0)
-		
-		
-		return box
-		
-	def make_test_page(self):
-		# Pagina Test
-
-		box = gtk.VBox()
+		box.set_spacing(4)
+		box.set_border_width(4)
 		
 		tbl = gtk.Table(11, 3)
 		tbl.set_border_width(5)
@@ -260,7 +99,36 @@ class Inserisci(gtk.Window):
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
 		
-		return box
+		
+		self.add(box)
+		self.show_all()
+		
+	
+	def inserisci_test(self, widget):
+	
+		impostazioni.minph = self.ph_minimo
+		impostazioni.maxph = self.ph_massimo
+		impostazioni.minkh = self.kh_minimo
+		impostazioni.maxkh = self.kh_massimo
+		impostazioni.mingh = self.gh_minimo
+		impostazioni.maxgh = self.gh_massimo
+		impostazioni.minno2 = self.no2_minimo
+		impostazioni.maxno2 = self.no2_massimo
+		impostazioni.minno3 = self.no3_minimo
+		impostazioni.maxno3 = self.no3_massimo
+		impostazioni.mincon = self.cond_minimo
+		impostazioni.maxcon = self.cond_massimo
+		impostazioni.minam = self.ammoniaca_minimo
+		impostazioni.maxam = self.ammoniaca_massimo
+		impostazioni.minfe = self.ferro_minimo
+		impostazioni.maxfe = self.ferro_massimo
+		impostazioni.minra = self.rame_minimo
+		impostazioni.maxra = self.rame_massimo
+		impostazioni.minfo = self.fosfati_minimo
+		impostazioni.maxfo = self.fosfati_massimo
+		
+		impostazioni.save()
+	
 		
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
