@@ -106,7 +106,19 @@ class Pesci(gtk.Window):
 		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
 		tbl.attach(self.new_label("Immagine:"), 0, 1, 4, 5)
 		
-		self.e_data, self.e_vasca, self.e_quantita = utils.DataButton(), gtk.Entry(), gtk.Entry()
+		liststore = gtk.ListStore(str)
+		self.e_vasca = gtk.ComboBox(liststore)
+		cell = gtk.CellRendererText()
+		self.e_vasca.pack_start(cell, True)
+		self.e_vasca.add_attribute(cell, 'text', 0)
+
+		# TODO: popola con i nomi delle vasche
+		liststore.append(["Deve prendere il nome della vasca dal db"])
+		
+		
+		
+		self.e_data = utils.DataButton()
+		self.e_quantita = gtk.Entry()
 		self.e_nome = gtk.Entry()
 		self.e_path = gtk.Entry()
 
