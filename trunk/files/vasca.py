@@ -120,7 +120,9 @@ class Vasca(gtk.Window):
 		liststore.append(["Dolce"])
 		liststore.append(["Dolce Tropicale"])
 		liststore.append(["Marino"])
-		liststore.append(["Marino Tropicale"])
+		liststore.append(["Marino Mediterraneo"])
+		liststore.append(["Paludario"])
+		liststore.append(["Salmastro"])
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
 		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
