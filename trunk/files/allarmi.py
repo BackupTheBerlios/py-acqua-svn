@@ -36,7 +36,6 @@ class Allarmi(gtk.Window):
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
 		
-		
 		# Pagina Test
 		tbl = gtk.Table(10, 2)
 		tbl.set_border_width(5)
@@ -96,7 +95,7 @@ class Allarmi(gtk.Window):
 	def refresh(self, widget):
 		
 		impostazioni.refresh()
-		
+
 		con = sqlite.connect(os.path.join('Data', 'db'))
 		cur = con.cursor()
 		cur.execute('select * from test')
@@ -141,26 +140,6 @@ class Allarmi(gtk.Window):
 			if x[1] < float(impostazioni.minfo): self.fosfati.set_label('Fosfati bassi')
 			if x[1] > float(impostazioni.maxfo): self.fosfati.set_label('Fosfati alti')
 			else: self.fosfati.set_label('Fosfati ok')
-		
-		# Puliamo le righe
-		self.fert_store.clear()
-		self.filt_store.clear()
-		
-		# Popoliamo i fertilizzanti
-		cur.execute('select * from fertilizzante')
-
-		for i in cur.fetchall():
-			self.fert_store.append([i[0], i[1], i[2], i[3], i[4]])
-
-		# Popoliamo i filtri
-		cur.execute('select * from filtro')
-
-		for i in cur.fetchall():
-			self.filt_store.append([i[0], i[1], i[2]])
-
-	
-		
-	
 		
 	def make_test_page(self):
 		# Pagina Test
