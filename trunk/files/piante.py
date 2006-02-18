@@ -35,7 +35,7 @@ class Piante(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.piante_store = gtk.ListStore(int, str, str, str, str, gtk.gdk.Pixbuf)
+		self.piante_store = gtk.ListStore(int, str, str, str, str, str, gtk.gdk.Pixbuf)
 		
 		self.view = view = gtk.TreeView(self.piante_store)
 		
@@ -51,7 +51,7 @@ class Piante(gtk.Window):
 			view.append_column(col)
 		
 		# Aggiungiamo la colonna per le immagini della vasca
-		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=8)
+		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=6)
 		col.set_resizable(True)
 		col.set_clickable(False)
 		view.append_column(col)
@@ -73,8 +73,7 @@ class Piante(gtk.Window):
 
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
-			self.piante_store.append([y[0], y[1], y[2], y[3], y[4], self.make_image(y[8]), y[8]])
-		
+			self.piante_store.append([y[0], y[1], y[2], y[3], y[4], y[5], self.make_image(y[5])])
 		
 		frm = gtk.Frame("Editing:")
 		
@@ -185,8 +184,8 @@ class Piante(gtk.Window):
 			self.piante_store.set_value(it, 2, vasca)
 			self.piante_store.set_value(it, 3, quantita)
 			self.piante_store.set_value(it, 4, nome)
-			self.piante_store.set_value(it, 5, self.make_image(img))
-			self.piante_store.set_value(it, 6, img)
+			self.piante_store.set_value(it, 5, img)
+			self.piante_store.set_value(it, 6, self.make_image(img))
 
 			self.update_status(0, "Row aggiornata (ID: %d)" % id)
 
@@ -221,8 +220,8 @@ class Piante(gtk.Window):
 		self.piante_store.set_value(it, 2, vasca)
 		self.piante_store.set_value(it, 3, quantita)
 		self.piante_store.set_value(it, 4, nome)
-		self.piante_store.set_value(it, 5, self.make_image(img))
-		self.piante_store.set_value(it, 6, img)
+		self.piante_store.set_value(it, 5, img)
+		self.piante_store.set_value(it, 6, self.make_image(img))
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
@@ -382,66 +381,6 @@ class Piante(gtk.Window):
 		self.timeoutid = None
 		
 		return False
-
-class InfoDialog(gtk.Dialog):
-	def __init__(self, parent, mod, it):
-		gtk.Dialog.__init__(self, "Riepilogo", parent,
-			gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
-
-		self.set_size_request(400, 300)
-		self.vbox.set_border_width(10)
-
-		self.set_has_separator(False)
-		
-		tbl = gtk.Table(7, 2)
-		tbl.set_border_width(4)
-		
-		img = gtk.Image();
-		
-		try:
-			img.set_from_file(os.path.join('Immagini',
-				str(mod.get_value(it, 9))))
-		except:
-			img.set_from_stock(gtk.STOCK_IMAGE_MISSING,
-				gtk.ICON_SIZE_DIALOG)
-		
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-
-		sw.add_with_viewport(img)
-
-		self.vbox.pack_start(sw)
-		
-		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
-
-		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
-		
-		attach(mod.get_value(it, 1), 0, 1)
-		attach(mod.get_value(it, 2), 1, 2)
-		attach(mod.get_value(it, 3), 2, 3)
-		attach(mod.get_value(it, 4), 3, 4)
-		
-		
-		self.vbox.pack_start(tbl, False, False, 0)
-		self.show_all()
-
-		self.connect('response', self.on_response)
-	
-	def new_label(self, txt):
-		lbl = gtk.Label()
-		lbl.set_use_markup(True)
-		lbl.set_label('<b>' + txt + '</b>')
-		lbl.set_alignment(0.0, 0.5)
-		
-		return lbl
-		
-	def on_response(self, dial, id):
-		if id == gtk.RESPONSE_OK:
-			self.hide()
-			self.destroy()
 
 def make_thumb(twh, w, h):
 	if w == h:

@@ -100,7 +100,8 @@ class Combo(gtk.ComboBox):
 		it = self.get_active_iter()
 		mod = self.get_model()
 
-		return str(mod.get_value(it, 0))
+		if it != None: return str(mod.get_value(it, 0))
+		else: return None
 	def set_text(self, txt):
 		mod = self.get_model()
 		it = mod.get_iter_first()
