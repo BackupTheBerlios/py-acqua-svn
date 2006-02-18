@@ -155,7 +155,12 @@ class Test(gtk.Window):
 		self.e_vasca.add_attribute(cell, 'text', 0)
 
 		# TODO: popola con i nomi delle vasche
-		liststore.append(["Deve prendere il nome della vasca dal db"])
+		
+		connessione=sqlite.connect(os.path.join('Data', 'db'))
+		cursore=connessione.cursor()
+		cursore.execute("select * from vasca")
+		for v in cursore.fetchall():
+			liststore.append([v[3]])
 		
 		self.e_ph, self.e_kh = make_inst(2)
 		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
