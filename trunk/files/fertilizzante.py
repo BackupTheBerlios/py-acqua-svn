@@ -35,7 +35,8 @@ class Fertilizzante(gtk.Window):
 		
 		box = gtk.VBox()
 
-		self.fert_store = gtk.ListStore(int, str, str, float, str)
+		# id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC
+		self.fert_store = gtk.ListStore(int, str, str, float, int)
 		self.view = view = gtk.TreeView(self.fert_store)
 		
 		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
@@ -43,11 +44,17 @@ class Fertilizzante(gtk.Window):
 
 		for i in lst:
 			id = lst.index(i)
-			col = gtk.TreeViewColumn(i, renderer, text=id)
-			col.set_sort_column_id(id+1)
-			col.set_clickable(True)
-			col.set_resizable(True)
-			view.append_column(col)
+			
+			if id == 3:
+				view.insert_column_with_data_func(-1, i, renderer, self.row_func, id)
+			else:
+				col = gtk.TreeViewColumn(i, renderer, text=id)
+				col.set_sort_column_id(id+1)
+				col.set_clickable(True)
+				col.set_resizable(True)
+				view.append_column(col)
+				
+		self.view.get_selection().connect('changed', self.on_selection_changed)
 		
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -96,7 +103,7 @@ class Fertilizzante(gtk.Window):
 		
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
-		self.fe_quantita, self.fe_prossima = gtk.Entry(), utils.DataButton()
+		self.fe_quantita, self.fe_prossima = utils.FloatEntry(), utils.IntEntry()
 		
 		tbl.attach(self.fe_data, 1, 2, 0, 1)
 		tbl.attach(self.fe_nome, 1, 2, 1, 2)
@@ -123,6 +130,10 @@ class Fertilizzante(gtk.Window):
 		self.timeoutid = None
 
 		box.set_border_width(4)
+	
+	def row_func(self, col, cell, model, iter, id):
+		value = model.get_value(iter, id)
+		cell.set_property("text", "%.2f" % value)
 
 	def on_refresh(self, widget):
 		
@@ -145,7 +156,7 @@ class Fertilizzante(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s" %vars())
+			cur.execute("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s where id=%(id)s" %vars())
 			conn.commit()
 			
 			self.fert_store.set_value(it, 1, date)
@@ -240,16 +251,8 @@ class Fertilizzante(gtk.Window):
 			self.fe_data.set_text(mod.get_value(it, 1))
 			self.fe_nome.set_text(mod.get_value(it, 2))
 			self.fe_quantita.set_text(mod.get_value(it, 3))
-			self.fe_giorni.set_text(mod.get_value(it, 4))
+			self.fe_prossima.set_text(mod.get_value(it, 4))
 			
-			
-	def on_row_activated(self, tree, path, col):
-		mod = self.view.get_model()
-		it = mod.get_iter_from_string(str(path[0]))
-
-		InfoDialog(self, mod, it)
-	
-
 	def on_update_preview(self, chooser):
 		uri = chooser.get_uri()
 		try:
@@ -303,80 +306,3 @@ class Fertilizzante(gtk.Window):
 		self.timeoutid = None
 		
 		return False
-
-class InfoDialog(gtk.Dialog):
-	def __init__(self, parent, mod, it):
-		gtk.Dialog.__init__(self, "Riepilogo", parent,
-			gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
-
-		self.set_size_request(400, 300)
-		self.vbox.set_border_width(10)
-
-		self.set_has_separator(False)
-		
-		tbl = gtk.Table(7, 2)
-		tbl.set_border_width(4)
-		
-		img = gtk.Image();
-		
-		try:
-			img.set_from_file(os.path.join('Immagini',
-				str(mod.get_value(it, 9))))
-		except:
-			img.set_from_stock(gtk.STOCK_IMAGE_MISSING,
-				gtk.ICON_SIZE_DIALOG)
-		
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-
-		sw.add_with_viewport(img)
-
-		self.vbox.pack_start(sw)
-		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
-
-		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
-		
-		attach(mod.get_value(it, 1), 0, 1)
-		attach(mod.get_value(it, 2), 1, 2)
-		attach(mod.get_value(it, 3), 2, 3)
-		attach(mod.get_value(it, 4), 3, 4)
-		attach(mod.get_value(it, 5), 4, 5)
-		attach(mod.get_value(it, 6), 5, 6)
-		attach(mod.get_value(it, 7), 6, 7)
-		
-		self.vbox.pack_start(tbl, False, False, 0)
-		self.show_all()
-
-		self.connect('response', self.on_response)
-	
-	def new_label(self, txt):
-		lbl = gtk.Label()
-		lbl.set_use_markup(True)
-		lbl.set_label('<b>' + txt + '</b>')
-		lbl.set_alignment(0.0, 0.5)
-		
-		return lbl
-		
-	def on_response(self, dial, id):
-		if id == gtk.RESPONSE_OK:
-			self.hide()
-			self.destroy()
-
-def make_thumb(twh, w, h):
-	if w == h:
-		return twh, twh
-	if w < h:
-		y = twh
-		x = int(float(y*w)/float(h))
-		return x, y
-	if w > h:
-		x = twh
-		y = int(float(x*h)/float(w))
-		return x, y

@@ -78,6 +78,11 @@ class FloatEntry(gtk.SpinButton):
 		return self.get_value()
 
 class IntEntry(FloatEntry):
+	def __init__(self):
+		FloatEntry.__init__(self)
+		self.set_digits(0)
+		self.set_increments(1, 2)
+		
 	def set_text(self, value):
 		try:
 			value = int(value)
