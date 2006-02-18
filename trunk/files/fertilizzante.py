@@ -34,14 +34,9 @@ class Fertilizzante(gtk.Window):
 		self.set_size_request(600, 400)
 		
 		box = gtk.VBox()
-		
-		
-		#sw = gtk.ScrolledWindow()
-		#sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		#sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
 
 		self.fert_store = gtk.ListStore(int, str, str, float, str)
-		view = gtk.TreeView(self.fert_store)
+		self.view = view = gtk.TreeView(self.fert_store)
 		
 		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
 		renderer = gtk.CellRendererText()
@@ -53,7 +48,6 @@ class Fertilizzante(gtk.Window):
 			col.set_clickable(True)
 			col.set_resizable(True)
 			view.append_column(col)
-
 		
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -69,10 +63,8 @@ class Fertilizzante(gtk.Window):
 
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
-			self.fertilizzante_store.append([y[0], y[1], y[2], y[3], y[4]])
+			self.fert_store.append([y[0], y[1], y[2], y[3], y[4]])
 			
-		
-		
 		frm = gtk.Frame("Editing:")
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
@@ -104,10 +96,7 @@ class Fertilizzante(gtk.Window):
 		
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
-		self.fe_quantita, self.fe_prossima = gtk.Entry(), gtk.Entry()
-		
-
-		
+		self.fe_quantita, self.fe_prossima = gtk.Entry(), utils.DataButton()
 		
 		tbl.attach(self.fe_data, 1, 2, 0, 1)
 		tbl.attach(self.fe_nome, 1, 2, 1, 2)
@@ -145,7 +134,7 @@ class Fertilizzante(gtk.Window):
 		# in base al contenuto delle entry
 		
 		if it != None:
-			id = int(self.fertilizzante_store.get_value(it, 0))
+			id = int(self.fert_store.get_value(it, 0))
 			
 			date = self.fe_data.get_text()
 			nome = self.fe_nome.get_text()
@@ -159,10 +148,10 @@ class Fertilizzante(gtk.Window):
 			cur.execute("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s" %vars())
 			conn.commit()
 			
-			self.fertilizzante_store.set_value(it, 1, date)
-			self.fertilizzante_store.set_value(it, 2, nome)
-			self.fertilizzante_store.set_value(it, 3, quantita)
-			self.fertilizzante_store.set_value(it, 4, giorni)
+			self.fert_store.set_value(it, 1, date)
+			self.fert_store.set_value(it, 2, nome)
+			self.fert_store.set_value(it, 3, quantita)
+			self.fert_store.set_value(it, 4, giorni)
 			
 
 			self.update_status(0, "Row aggiornata (ID: %d)" % id)
@@ -175,17 +164,17 @@ class Fertilizzante(gtk.Window):
 		id = 0
 		
 		while it != None:
-			tmp = int(self.fertilizzante_store.get_value(it, 0))
+			tmp = int(self.fert_store.get_value(it, 0))
 			
 			if tmp > id: id = tmp
 
 			it = mod.iter_next(it)
 		
 		id += 1		
-		it = self.fertilizzante_store.append()
+		it = self.fert_store.append()
 
 		# Settiamo il campo ID
-		self.fertilizzante_store.set_value(it, 0, id)
+		self.fert_store.set_value(it, 0, id)
 		
 		date = self.fe_data.get_text()
 		nome = self.fe_nome.get_text()
@@ -194,10 +183,10 @@ class Fertilizzante(gtk.Window):
 
 		
 		
-		self.fertilizzante_store.set_value(it, 1, date)
-		self.fertilizzante_store.set_value(it, 2, nome)
-		self.fertilizzante_store.set_value(it, 3, quantita)
-		self.fertilizzante_store.set_value(it, 4, giorni)
+		self.fert_store.set_value(it, 1, date)
+		self.fert_store.set_value(it, 2, nome)
+		self.fert_store.set_value(it, 3, quantita)
+		self.fert_store.set_value(it, 4, giorni)
 		
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
@@ -215,7 +204,7 @@ class Fertilizzante(gtk.Window):
 
 		if it != None:
 			# Questo Ã¨ il valore da confrontare
-			value = int(self.fertilizzante_store.get_value(it, 0))
+			value = int(self.fert_store.get_value(it, 0))
 
 			# Rimuoviamo dal database
 			conn = sqlite.connect(os.path.join('Data', 'db'))
@@ -225,17 +214,17 @@ class Fertilizzante(gtk.Window):
 			conn.commit()
 
 			# Rimuoviamo la riga selezionata
-			self.fertilizzante_store.remove(it)
+			self.fert_store.remove(it)
 
 			# Iteriamo tutte le righe per trovarne una con campo id
 			# maggiore di value e modifichiamolo
 			it = mod.get_iter_first()
 
 			while it != None:
-				tmp = int(self.fertilizzante_store.get_value(it, 0))
+				tmp = int(self.fert_store.get_value(it, 0))
 
 				if value < tmp:
-					self.fertilizzante_store.set_value(it, 0, tmp-1)
+					self.fert_store.set_value(it, 0, tmp-1)
 					cur.execute("update fertilizzante set id=%d where id=%d" % (tmp-1, tmp))
 					conn.commit()
 				it = mod.iter_next(it)
