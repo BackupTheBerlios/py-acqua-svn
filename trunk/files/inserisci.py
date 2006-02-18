@@ -106,26 +106,26 @@ class Inserisci(gtk.Window):
 	
 	def inserisci_test(self, widget):
 	
-		impostazioni.minph = self.ph_minimo
-		impostazioni.maxph = self.ph_massimo
-		impostazioni.minkh = self.kh_minimo
-		impostazioni.maxkh = self.kh_massimo
-		impostazioni.mingh = self.gh_minimo
-		impostazioni.maxgh = self.gh_massimo
-		impostazioni.minno2 = self.no2_minimo
-		impostazioni.maxno2 = self.no2_massimo
-		impostazioni.minno3 = self.no3_minimo
-		impostazioni.maxno3 = self.no3_massimo
-		impostazioni.mincon = self.cond_minimo
-		impostazioni.maxcon = self.cond_massimo
-		impostazioni.minam = self.ammoniaca_minimo
-		impostazioni.maxam = self.ammoniaca_massimo
-		impostazioni.minfe = self.ferro_minimo
-		impostazioni.maxfe = self.ferro_massimo
-		impostazioni.minra = self.rame_minimo
-		impostazioni.maxra = self.rame_massimo
-		impostazioni.minfo = self.fosfati_minimo
-		impostazioni.maxfo = self.fosfati_massimo
+		impostazioni.minph = self.ph_minimo.get_text()
+		impostazioni.maxph = self.ph_massimo.get_text()
+		impostazioni.minkh = self.kh_minimo.get_text()
+		impostazioni.maxkh = self.kh_massimo.get_text()
+		impostazioni.mingh = self.gh_minimo.get_text()
+		impostazioni.maxgh = self.gh_massimo.get_text()
+		impostazioni.minno2 = self.no2_minimo.get_text()
+		impostazioni.maxno2 = self.no2_massimo.get_text()
+		impostazioni.minno3 = self.no3_minimo.get_text()
+		impostazioni.maxno3 = self.no3_massimo.get_text()
+		impostazioni.mincon = self.cond_minimo.get_text()
+		impostazioni.maxcon = self.cond_massimo.get_text()
+		impostazioni.minam = self.ammoniaca_minimo.get_text()
+		impostazioni.maxam = self.ammoniaca_massimo.get_text()
+		impostazioni.minfe = self.ferro_minimo.get_text()
+		impostazioni.maxfe = self.ferro_massimo.get_text()
+		impostazioni.minra = self.rame_minimo.get_text()
+		impostazioni.maxra = self.rame_massimo.get_text()
+		impostazioni.minfo = self.fosfati_minimo.get_text()
+		impostazioni.maxfo = self.fosfati_massimo.get_text()
 		
 		impostazioni.save()
 	
