@@ -28,7 +28,8 @@ class DataButton(gtk.Button):
 		return "%02d/%02d/%02d" % (date[2], date[1]+1, date[0])
 	def set_text(self, date):
 		# Per adesso aggiustiamo solo la label senza controlli
-		self.set_label(date)
+		if date != None:
+			self.set_label(date)
 	
 	def callback(self, diag):
 		id = diag.run()
