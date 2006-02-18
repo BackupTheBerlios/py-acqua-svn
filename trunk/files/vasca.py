@@ -110,19 +110,14 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
 		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
 		
-		liststore = gtk.ListStore(str)
-		self.e_vasca = gtk.ComboBox(liststore)
-		cell = gtk.CellRendererText()
-		self.e_vasca.pack_start(cell, True)
-		self.e_vasca.add_attribute(cell, 'text', 0)
+		self.e_vasca = utils.Combo()
 
-		# TODO: popola con i nomi delle vasche
-		liststore.append(["Dolce"])
-		liststore.append(["Dolce Tropicale"])
-		liststore.append(["Marino"])
-		liststore.append(["Marino Mediterraneo"])
-		liststore.append(["Paludario"])
-		liststore.append(["Salmastro"])
+		self.e_vasca.append_text("Dolce")
+		self.e_vasca.append_text("Dolce Tropicale")
+		self.e_vasca.append_text("Marino")
+		self.e_vasca.append_text("Marino Mediterraneo")
+		self.e_vasca.append_text("Paludario")
+		self.e_vasca.append_text("Salmastro")
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
 		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()

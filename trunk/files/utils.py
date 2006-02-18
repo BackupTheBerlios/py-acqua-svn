@@ -65,6 +65,29 @@ class IntEntry(FloatEntry):
 	
 	def get_text(self):
 		return self.get_value_as_int()
+class Combo(gtk.ComboBox):
+	def __init__(self):
+		liststore = gtk.ListStore(str)
+		gtk.ComboBox.__init__(self, liststore)
+		
+		cell = gtk.CellRendererText()
+		self.pack_start(cell, True)
+		self.add_attribute(cell, 'text', 0)
+		
+	def get_text(self):
+		it = self.get_active_iter()
+		mod = self.get_model()
+
+		return str(mod.get_value(it, 0))
+	def set_text(self, txt):
+		mod = self.get_model()
+		it = mod.get_iter_first()
+
+		while it != None:
+			if str(mod.get_value(it, 0)) == txt:
+				self.set_active_iter(it)
+				return
+			it = mod.iter_next(it)
 		
 class Test:
 	def __init__(self, i):
