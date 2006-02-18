@@ -36,7 +36,7 @@ class Fertilizzante(gtk.Window):
 		box = gtk.VBox()
 
 		# id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC
-		self.fert_store = gtk.ListStore(int, str, str, float, int)
+		self.fert_store = gtk.ListStore(int, str, str, float, str)
 		self.view = view = gtk.TreeView(self.fert_store)
 		
 		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
@@ -103,7 +103,7 @@ class Fertilizzante(gtk.Window):
 		
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
-		self.fe_quantita, self.fe_prossima = utils.FloatEntry(), utils.IntEntry()
+		self.fe_quantita, self.fe_prossima = utils.FloatEntry(), utils.DataButton()
 		
 		tbl.attach(self.fe_data, 1, 2, 0, 1)
 		tbl.attach(self.fe_nome, 1, 2, 1, 2)

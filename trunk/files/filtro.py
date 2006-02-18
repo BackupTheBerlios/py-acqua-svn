@@ -41,10 +41,10 @@ class Filtro(gtk.Window):
 		#sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
 
 		self.fert_store = gtk.ListStore(int, str, str, float, str)
-		view = gtk.TreeView(self.fert_store)
+		self.view = view = gtk.TreeView(self.fert_store)
 		
-		self.filt_store = gtk.ListStore(int, str, str, float, str)
-		view = gtk.TreeView(self.filt_store)
+		self.filtro_store = gtk.ListStore(int, str, str)
+		self.view = view = gtk.TreeView(self.filtro_store)
 		
 		lst = ['Id', 'Data', 'Prossima volta']
 		renderer = gtk.CellRendererText()
@@ -104,7 +104,7 @@ class Filtro(gtk.Window):
 		tbl.attach(self.new_label("Prossima volta:"), 0, 1, 1, 2)
 		
 		
-		self.fi_data, self.fi_giorni = utils.DataButton(), gtk.Entry()
+		self.fi_data, self.fi_giorni = utils.DataButton(), utils.DataButton()
 		
 		tbl.attach(self.fi_data, 1, 2, 0, 1)
 		tbl.attach(self.fi_giorni, 1, 2, 1, 2)
@@ -190,8 +190,8 @@ class Filtro(gtk.Window):
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into filtro values(?,?,?,?,?)',
-			(id, date, nome, quantita, giorni))
+		cur.execute('insert into filtro values(?,?,?)',
+			(id, date, giorni))
 		conn.commit()
 
 		self.update_status(1, "Row aggiunta (ID: %d)" % id)
