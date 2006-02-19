@@ -22,11 +22,13 @@
 import gtk
 
 class DataButton(gtk.Button):
-	def __init__(self, label=None):
+	def __init__(self, label=None, set_cb=None, get_cb=None):
 		gtk.Button.__init__(self, label)
 		self.set_relief(gtk.RELIEF_NONE)
 		self.connect('clicked', self.on_change_date)
 		self.cal = gtk.Calendar()
+		
+		self.set_cb = set_cb; self.get_cb = get_cb
 		
 		if label == None:
 			self.update_label(self.cal.get_date())
@@ -45,13 +47,19 @@ class DataButton(gtk.Button):
 		return self.cal.get_date()
 	
 	def get_text(self):
-		date = self.cal.get_date()
-		return "%02d/%02d/%02d" % (date[2], date[1]+1, date[0])
+		if self.get_cb == None:
+			date = self.cal.get_date()
+			return "%02d/%02d/%02d" % (date[2], date[1]+1, date[0])
+		else:
+			return self.get_cb()
 	def set_text(self, date):
-		# Per adesso aggiustiamo solo la label senza controlli
-		if date != None:
-			self.set_label(date)
-	
+		if self.set_cb == None:
+			# Per adesso aggiustiamo solo la label senza controlli
+			if date != None:
+				self.set_label(date)
+		else:
+			self.set_cb(date)
+
 	def callback(self, diag):
 		id = diag.run()
 		if id == gtk.RESPONSE_OK:

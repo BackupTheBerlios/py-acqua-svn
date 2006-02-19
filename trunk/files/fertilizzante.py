@@ -24,6 +24,7 @@ import gobject
 import os
 import sys
 import utils
+import datetime
 from pysqlite2 import dbapi2 as sqlite
 
 class Fertilizzante(gtk.Window):
@@ -103,7 +104,8 @@ class Fertilizzante(gtk.Window):
 		
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
-		self.fe_quantita, self.fe_prossima = utils.FloatEntry(), utils.DataButton()
+		self.fe_quantita = utils.FloatEntry()
+		self.fe_prossima = utils.DataButton(set_cb=self.set_prossima, get_cb=self.get_prossima)
 		
 		tbl.attach(self.fe_data, 1, 2, 0, 1)
 		tbl.attach(self.fe_nome, 1, 2, 1, 2)
@@ -130,6 +132,26 @@ class Fertilizzante(gtk.Window):
 		self.timeoutid = None
 
 		box.set_border_width(4)
+	
+	def set_prossima(self, days):
+		try:
+			data = self.fe_data.get_date()
+			data = datetime.datetime(data[0], data[1], data[2])
+			data = data + datetime.timedelta(int(days))
+			self.fe_prossima.set_label("%02d/%02d/%04d" % (data.day, data.month, data.year))
+		except:
+			pass
+	
+	def get_prossima(self):
+		data_o = self.fe_data.get_date()
+		data = self.fe_prossima.get_date()
+		
+		data_o = datetime.datetime(data_o[0], data_o[1], data_o[2])
+		data = datetime.datetime(data[0], data[1], data[2])
+
+		delta = data - data_o
+
+		return delta.days
 	
 	def row_func(self, col, cell, model, iter, id):
 		value = model.get_value(iter, id)
