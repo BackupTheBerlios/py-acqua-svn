@@ -398,7 +398,7 @@ class Test(gtk.Window):
 
 				x_axis = axis.X(label='Test'),
 				y_axis = axis.Y(label='Valori'))
-			ar.add_plot(bar_plot.T(data = data, label = "Leggenda"))
+			ar.add_plot(bar_plot.T(data = data, label = "Legenda"))
 			ar.draw(can)
 			can.close()
 
