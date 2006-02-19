@@ -26,11 +26,6 @@ import sys
 import utils
 from pysqlite2 import dbapi2 as sqlite
 
-try:
-	from pychart import *
-except:
-	Test.PyChart = False
-
 class Test(gtk.Window):
 	PyChart = True
 	def __init__(self): 
@@ -463,3 +458,7 @@ class Test(gtk.Window):
 		self.timeoutid = None
 		
 		return False
+try:
+	from pychart import *
+except:
+	Test.PyChart = False
