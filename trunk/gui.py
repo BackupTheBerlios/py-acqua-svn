@@ -255,7 +255,7 @@ class Gui(gtk.Window):
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
 	def aiuto_apri(self, widget, data=None):
-		webbrowser.open('www.google.it')
+		webbrowser.open('http://pyacqua.netsons.org/wiki/index.php/Wikipedia')
 		
 	def main(self):
 		gtk.main()
