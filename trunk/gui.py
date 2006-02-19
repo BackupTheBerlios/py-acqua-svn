@@ -19,6 +19,7 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import webbrowser
+
 try:
 	# Richiediamo gtk2
 	import pygtk
@@ -39,6 +40,8 @@ except:
 
 import os
 #import files.finestre
+
+os.environ['PATH'] += r";lib;etc;bin;ghost\gs8.53\bin"
 
 ### creiamo la directory che contiene le immagini
 
