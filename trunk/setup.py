@@ -9,7 +9,7 @@ setup(
  
     windows = [ 
                   { 
-                      'script': 'gui.py', 
+                      'script': 'acqua.py', 
                       'icon_resources': [(1, "pyacqua.ico")], 
                   } 
               ], 
