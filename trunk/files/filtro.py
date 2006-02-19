@@ -32,7 +32,7 @@ class Filtro(gtk.Window):
 		
 		self.set_title("Filtro")
 		self.set_size_request(600, 400)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
 		
 		

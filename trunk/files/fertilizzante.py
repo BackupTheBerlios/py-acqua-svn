@@ -33,7 +33,7 @@ class Fertilizzante(gtk.Window):
 		
 		self.set_title("Fertilizzante")
 		self.set_size_request(600, 400)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
 
 		# id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC

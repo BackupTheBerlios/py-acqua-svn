@@ -32,7 +32,7 @@ class Piante(gtk.Window):
 		
 		self.set_title("Piante")
 		self.set_size_request(600, 400)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
 		
 		self.piante_store = gtk.ListStore(int, str, str, str, str, str, gtk.gdk.Pixbuf)

@@ -30,7 +30,7 @@ class Calcoli(gtk.Window):
 		
 		self.set_title("Calcoli")
 		self.set_resizable(False)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)

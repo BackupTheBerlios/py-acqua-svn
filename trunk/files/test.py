@@ -33,7 +33,7 @@ class Test(gtk.Window):
 		
 		self.set_title("Test")
 		self.set_size_request(600, 400)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe

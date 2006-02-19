@@ -158,7 +158,7 @@ class Gui(gtk.Window):
 		self.set_title('Py-Acqua')
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
 		image.set_from_file("pixmaps/main.png")
 		

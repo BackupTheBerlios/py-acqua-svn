@@ -38,7 +38,7 @@ class Vasca(gtk.Window):
 		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		
 		self.view = view = gtk.TreeView(self.vasca_store)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		lst = ['Id', 'Vasca', 'Data', 'Nome', 'Tipo Acquario', 'Tipo Filtro', 'Impianto Co2', 'Illuminazione']
 		renderer = gtk.CellRendererText()
 		

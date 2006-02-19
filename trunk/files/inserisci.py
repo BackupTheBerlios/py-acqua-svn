@@ -31,7 +31,7 @@ class Inserisci(gtk.Window):
 		gtk.Window.__init__(self)
 		
 		self.set_title('Inserisci Test')
-
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
 		box.set_spacing(4)
 		box.set_border_width(4)

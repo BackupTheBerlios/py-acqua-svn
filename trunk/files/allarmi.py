@@ -31,7 +31,7 @@ class Allarmi(gtk.Window):
 		gtk.Window.__init__(self)
 		
 		self.set_title('Allarmi')
-
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)

@@ -30,7 +30,7 @@ class win8:
 		self.win = finestre.win(570, 250, "py-Acqua Informazioni", 0)
 		self.table = gtk.Table(2, 2, gtk.FALSE)
 		self.win.add(self.table)
-		
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		self.notebook = gtk.Notebook()
 		self.notebook.set_tab_pos(gtk.POS_TOP)
 		self.table.attach(self.notebook, 0, 2, 0, 1)
