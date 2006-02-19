@@ -156,7 +156,7 @@ class Fertilizzante(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s where id=%(id)s" %vars())
+			cur.execute("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s' where id=%(id)s" %vars())
 			conn.commit()
 			
 			self.fert_store.set_value(it, 1, date)

@@ -149,7 +149,7 @@ class Filtro(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update fertilizzante set date='%(date)s', giorni='%(giorni)s" %vars())
+			cur.execute("update fertilizzante set date='%(date)s', giorni='%(giorni)s'" %vars())
 			conn.commit()
 			
 			self.filtro_store.set_value(it, 1, date)
