@@ -19,12 +19,7 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pygtk
-pygtk.require('2.0')
 import gtk
-
-
-
 
 class Calendario:
 	
