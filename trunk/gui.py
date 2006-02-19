@@ -107,7 +107,7 @@ class Gui(gtk.Window):
 			
 		('Aiuto', None, '_Aiuto'),
 			('Info',	gtk.STOCK_ABOUT,'_Informazioni',None,		'Riguardo Py-Acqua',	'informazioni_apri'),
-			('Aiuto',	None,	'_Aiuto',		None,	'Aiuto...',	'aiuto_apri'),
+			('Help',	None,	'_Aiuto',		None,	'Aiuto...',	'aiuto_apri'),
 		]
 		
 		ui = """<ui>
@@ -132,7 +132,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
-			<menuitem action='Aiuto'/>
+			<menuitem action='Help'/>
 		</menu>
 		</menubar></ui>"""
 		
