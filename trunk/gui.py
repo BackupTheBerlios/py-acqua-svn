@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
+import webbrowser
 try:
 	# Richiediamo gtk2
 	import pygtk
@@ -107,6 +107,7 @@ class Gui(gtk.Window):
 			
 		('Aiuto', None, '_Aiuto'),
 			('Info',	gtk.STOCK_ABOUT,'_Informazioni',None,		'Riguardo Py-Acqua',	'informazioni_apri'),
+			('Aiuto',	None,	'_Aiuto',		None,	'Aiuto...',	'aiuto_apri'),
 		]
 		
 		ui = """<ui>
@@ -131,6 +132,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
+			<menuitem action='Aiuto'/>
 		</menu>
 		</menubar></ui>"""
 		
@@ -153,7 +155,7 @@ class Gui(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__(self)
 		
-		self.set_title('py-Acqua')
+		self.set_title('Py-Acqua')
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
 		
@@ -252,6 +254,8 @@ class Gui(gtk.Window):
 		dialog.set_authors(text)
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
+	def aiuto_apri(self, widget, data=None):
+		webbrowser.open('www.google.it')
 		
 	def main(self):
 		gtk.main()
