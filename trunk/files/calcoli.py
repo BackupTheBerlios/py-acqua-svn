@@ -44,9 +44,9 @@ class Calcoli(gtk.Window):
 		tbl_valori.set_border_width(4)
 		tbl_valori.set_row_spacings(4)
 		
-		tbl_valori.attach(self.new_label("Altezza:"), 0, 1, 0, 1)
-		tbl_valori.attach(self.new_label("Lunghezza:"), 0, 1, 1, 2)
-		tbl_valori.attach(self.new_label("Larghezza:"), 0, 1, 2, 3)
+		tbl_valori.attach(self.new_label("Altezza in cm:"), 0, 1, 0, 1)
+		tbl_valori.attach(self.new_label("Lunghezza in cm:"), 0, 1, 1, 2)
+		tbl_valori.attach(self.new_label("Larghezza in cm:"), 0, 1, 2, 3)
 		
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1, yoptions=0)
