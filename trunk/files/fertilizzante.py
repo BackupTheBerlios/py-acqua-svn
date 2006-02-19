@@ -105,7 +105,7 @@ class Fertilizzante(gtk.Window):
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
 		self.fe_quantita = utils.FloatEntry()
-		self.fe_prossima = utils.DataButton(set_cb=self.set_prossima, get_cb=self.get_prossima)
+		self.fe_prossima = utils.DataButton()
 		
 		tbl.attach(self.fe_data, 1, 2, 0, 1)
 		tbl.attach(self.fe_nome, 1, 2, 1, 2)
