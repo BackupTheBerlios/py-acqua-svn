@@ -68,7 +68,7 @@ class DataButton(gtk.Button):
 		diag.destroy()
 
 class FloatEntry(gtk.SpinButton):
-	def __init__(self, min=0, max=99, inc=0.1, page=1):
+	def __init__(self, min=0, max=9999, inc=0.1, page=1):
 		gtk.SpinButton.__init__(self, digits=2)
 		self.set_range(min, max)
 		self.set_increments(inc, page)
