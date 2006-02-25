@@ -19,6 +19,18 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 import webbrowser
+import locale
+import gettext
+
+APP = 'Gui'
+DIR = 'locale'
+
+locale.setlocale(locale.LC_ALL, '')
+gettext.bindtextdomain(APP, DIR)
+gettext.textdomain(APP)
+
+
+
 
 try:
 	# Richiediamo gtk2
@@ -31,12 +43,12 @@ except:
 try:
 	import gtk
 except:
-	print "You need to install pyGTK or GTKv2"
+	print _("You need to install pyGTK or GTKv2")
 
 try:
 	from pysqlite2 import dbapi2 as sqlite
 except:
-	print "You need to install pysqlite"
+	print _("You need to install pysqlite")
 
 import os
 #import files.finestre
