@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-26 16:35+0100\n"
+"PO-Revision-Date: 2006-02-26 16:46+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Iron"
 #: files/allarmi.py:51 files/allarmi.py:157 files/inserisci.py:52
 #: files/test.py:70 files/test.py:136 files/test.py:389
 msgid "Rame"
-msgstr "Rame"
+msgstr "Branch"
 
 #: files/allarmi.py:52 files/allarmi.py:158 files/inserisci.py:53
 #: files/test.py:70 files/test.py:137
