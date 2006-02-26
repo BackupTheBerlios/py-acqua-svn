@@ -31,7 +31,7 @@ class Test(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Test")
+		self.set_title(_("Test"))
 		self.set_size_request(600, 400)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
@@ -55,7 +55,7 @@ class Test(gtk.Window):
 		
 		self.view = view = gtk.TreeView(self.test_store)
 		
-		lst = ['Id', 'Data', 'Vasca']
+		lst = [_('Id'), _('Data'), _('Vasca')]
 		renderer = gtk.CellRendererText()
 		
 		for i in lst:
@@ -66,8 +66,9 @@ class Test(gtk.Window):
 			col.set_resizable(True)
 			view.append_column(col)
 		
-		lst = ['Ph', 'Kh', 'Gh', 'No', 'No2',
-		'Conducibilita\'', 'Ammoniaca', 'Ferro', 'Rame', 'Fosfati']
+		lst = [_('Ph'), _('Kh'), _('Gh'), _('No'), _('No2'),
+			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati')]
+			
 		for i in lst:
 			id = lst.index(i)
 			view.insert_column_with_data_func(-1, i, renderer, self.row_func, id+3)
@@ -92,7 +93,7 @@ class Test(gtk.Window):
 			y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12]])
 		
 		
-		frm = gtk.Frame("Editing:")
+		frm = gtk.Frame(_("Editing:"))
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -110,7 +111,7 @@ class Test(gtk.Window):
 		btn.connect('clicked', self.on_del)
 		bb.pack_start(btn)
 
-		btn = gtk.Button('Grafico')
+		btn = gtk.Button(_('Grafico'))
 		btn.connect('clicked', self.on_draw_graph)
 		bb.pack_start(btn)
 		
@@ -121,19 +122,19 @@ class Test(gtk.Window):
 		tbl = gtk.Table(6, 4)
 		tbl.set_col_spacings(4)
 		
-		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Ph:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Kh:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Gh:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("No:"), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Ph:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Kh:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Gh:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("No:")), 0, 1, 5, 6)
 		
-		tbl.attach(self.new_label("No2:"), 2, 3, 0, 1)
-		tbl.attach(self.new_label("Conducibilita':"), 2, 3, 1, 2)
-		tbl.attach(self.new_label("Ammoniaca:"), 2, 3, 2, 3)
-		tbl.attach(self.new_label("Ferro"), 2, 3, 3, 4)
-		tbl.attach(self.new_label("Rame"), 2, 3, 4, 5)
-		tbl.attach(self.new_label("Fosfati"), 2, 3, 5, 6)
+		tbl.attach(self.new_label(_("No2:")), 2, 3, 0, 1)
+		tbl.attach(self.new_label(_("Conducibilita':")), 2, 3, 1, 2)
+		tbl.attach(self.new_label(_("Ammoniaca:")), 2, 3, 2, 3)
+		tbl.attach(self.new_label(_("Ferro")), 2, 3, 3, 4)
+		tbl.attach(self.new_label(_("Rame")), 2, 3, 4, 5)
+		tbl.attach(self.new_label(_("Fosfati")), 2, 3, 5, 6)
 
 		def make_inst(num):
 			a = list()
@@ -244,7 +245,7 @@ class Test(gtk.Window):
 			self.test_store.set_value(it, 11, rame)
 			self.test_store.set_value(it, 12, fosfati)
 			
-			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
 	def on_add(self, widget):
 		mod = self.view.get_model()
@@ -297,7 +298,7 @@ class Test(gtk.Window):
 			(id, data, vasca, ph, kh, gh, no, no2, cond, ammo, ferro, rame, fosfati))
 		conn.commit()
 
-		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
 		
 	def on_del(self, widget): 
 		# prendiamo l'iter selezionato e elimianiamolo dalla store
@@ -330,7 +331,7 @@ class Test(gtk.Window):
 					conn.commit()
 				it = mod.iter_next(it)
 
-			self.update_status(2, "Row eliminata (ID: %d)" % value)
+			self.update_status(2, _("Row eliminata (ID: %d)") % value)
 
 	def on_selection_changed(self, sel):
 		# Aggiorniamo il contenuto delle entry in base alla selezione
@@ -353,8 +354,8 @@ class Test(gtk.Window):
 	def on_draw_graph(self, widget):
 		if not Test.PyChart:
 			dialog = gtk.MessageDialog(self, gtk.DIALOG_MODAL,
-			gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-			"PyChart non installato.\nScaricalo da http://home.gna.org/pychart/")
+				gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
+				_("PyChart non installato.\nScaricalo da http://home.gna.org/pychart/"))
 			
 			dialog.run()
 			dialog.hide()
@@ -381,25 +382,25 @@ class Test(gtk.Window):
 			theme.reinitialize()
 			
 			data = [
-				['Ph', ph], ['Kh', kh],
-				['Gh', gh], ['No', no],
-				['No2', no2], ['Cond.', cond],
-				['Ammon.', ammo], ['Ferro', ferro],
-				['Rame', rame], ['Fosf.', fosfati]
+				[_('Ph'), ph], [_('Kh'), kh],
+				[_('Gh'), gh], [_('No'), no],
+				[_('No2'), no2], [_('Cond.'), cond],
+				[_('Ammon.'), ammo], [_('Ferro'), ferro],
+				[_('Rame'), rame], [_('Fosf.'), fosfati]
 				]
 			ar = area.T(x_coord = category_coord.T(data, 0),
 				y_range = (0, None),
 				size = (400, 250),
 
-				x_axis = axis.X(label='Test'),
-				y_axis = axis.Y(label='Valori'))
-			ar.add_plot(bar_plot.T(data = data, label = "Legenda"))
+				x_axis = axis.X(label=_('Test')),
+				y_axis = axis.Y(label=_('Valori')))
+			ar.add_plot(bar_plot.T(data = data, label = _("Legenda")))
 			ar.draw(can)
 			can.close()
 
 			# InfoDialog
 			d = gtk.MessageDialog(self, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-			d.set_markup("<span size=\"large\"><b>PyAcqua Graph</b></span>\n\n<b>Tipo Vasca:</b> %s\n<b>Data:</b> %s" % (vasca, date))
+			d.set_markup(_("<span size=\"large\"><b>PyAcqua Graph</b></span>\n\n<b>Tipo Vasca:</b> %s\n<b>Data:</b> %s") % (vasca, date))
 			
 			img = gtk.Image(); img.set_from_file(os.path.join('Immagini', 'grafico.png'))
 			

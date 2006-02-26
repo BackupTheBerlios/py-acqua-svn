@@ -37,8 +37,6 @@ minfo = maxfo = 0
 show_tips = "1"
 
 def save():
-	print "Salvo le impostazioni..."
-	
 	try:
 		par = open(os.path.join('files', 'config.cfg'), 'w')
 		
@@ -100,7 +98,7 @@ def save():
 		par.flush()
 		par.close()
 	except:
-		print "Errore nel salvataggio del file di configurazione (%s)" % sys.exc_value
+		print _("Errore nel salvataggio del file di configurazione (%s)") % sys.exc_value
 		
 def refresh():
 	par = os.path.join('files', 'config.cfg')
@@ -140,8 +138,8 @@ def refresh():
 			maxfo = cfg.get("fosfati","max")
 			show_tips = cfg.get("GUI", "show_tips")
 		except:
-			print "Errore nel caricamento dei valori.. uso quelli di default"
+			print _("Errore nel caricamento dei valori.. uso quelli di default")
 	else:
-		print "File config.cfg non trovato.. salvo la configurazione di default"
+		print _("File config.cfg non trovato.. salvo la configurazione di default")
 		save()
 refresh()

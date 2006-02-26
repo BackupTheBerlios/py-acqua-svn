@@ -21,16 +21,20 @@
 import webbrowser
 import locale
 import gettext
+import sys
 
-APP = 'Gui'
+APP = 'pyacqua'
 DIR = 'locale'
 
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP, DIR)
-gettext.textdomain(APP)
-
-
-
+try:
+	locale.setlocale(locale.LC_ALL, '')
+	gettext.bindtextdomain(APP, DIR)
+	gettext.textdomain(APP)
+	gettext.install("meld", DIR, unicode=1)
+except (IOError, locale.Error), e:
+	print "(%s): WARNING **: %s" % (APP, e)
+	__builtins__.__dict__["_"] = lambda x : x
+	__builtins__.__dict__["ngettext"] = gettext.ngettext
 
 try:
 	# Richiediamo gtk2

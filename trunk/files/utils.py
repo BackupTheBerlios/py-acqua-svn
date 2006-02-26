@@ -37,7 +37,7 @@ class DataButton(gtk.Button):
 		self.set_label("%02d/%02d/%04d" % (date[2], date[1]+1, date[0]))
 	
 	def on_change_date(self, widget):
-		d = gtk.Dialog("Seleziona una data", None, gtk.DIALOG_MODAL,
+		d = gtk.Dialog(_("Seleziona una data"), None, gtk.DIALOG_MODAL,
 		(gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		d.vbox.pack_start(self.cal, False, False, 0)
 		d.vbox.show_all()

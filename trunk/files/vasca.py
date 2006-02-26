@@ -30,7 +30,7 @@ class Vasca(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Vasche")
+		self.set_title(_("Vasche"))
 		self.set_size_request(600, 400)
 		
 		box = gtk.VBox()
@@ -39,7 +39,11 @@ class Vasca(gtk.Window):
 		
 		self.view = view = gtk.TreeView(self.vasca_store)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
-		lst = ['Id', 'Vasca', 'Data', 'Nome', 'Tipo Acquario', 'Tipo Filtro', 'Impianto Co2', 'Illuminazione']
+		
+		lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'),
+			_('Tipo Acquario'), _('Tipo Filtro'),
+			_('Impianto Co2'), _('Illuminazione')]
+			
 		renderer = gtk.CellRendererText()
 		
 		for i in lst:
@@ -51,7 +55,7 @@ class Vasca(gtk.Window):
 			view.append_column(col)
 		
 		# Aggiungiamo la colonna per le immagini della vasca
-		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=8)
+		col = gtk.TreeViewColumn(_("Immagine"), gtk.CellRendererPixbuf(), pixbuf=8)
 		col.set_resizable(True)
 		col.set_clickable(False)
 		view.append_column(col)
@@ -77,7 +81,7 @@ class Vasca(gtk.Window):
 			y[5], y[6], y[7], self.make_image(y[8]), y[8]])
 		
 		
-		frm = gtk.Frame("Editing:")
+		frm = gtk.Frame(_("Editing:"))
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -101,23 +105,23 @@ class Vasca(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
-		tbl.attach(self.new_label("Immagine:"), 0, 1, 7, 8)
+		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 7, 8)
 		
 		self.e_vasca = utils.Combo()
 
-		self.e_vasca.append_text("Dolce")
-		self.e_vasca.append_text("Dolce Tropicale")
-		self.e_vasca.append_text("Marino")
-		self.e_vasca.append_text("Marino Mediterraneo")
-		self.e_vasca.append_text("Paludario")
-		self.e_vasca.append_text("Salmastro")
+		self.e_vasca.append_text(_("Dolce"))
+		self.e_vasca.append_text(_("Dolce Tropicale"))
+		self.e_vasca.append_text(_("Marino"))
+		self.e_vasca.append_text(_("Marino Mediterraneo"))
+		self.e_vasca.append_text(_("Paludario"))
+		self.e_vasca.append_text(_("Salmastro"))
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
 		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
@@ -205,7 +209,7 @@ class Vasca(gtk.Window):
 			self.vasca_store.set_value(it, 8, self.make_image(img))
 			self.vasca_store.set_value(it, 9, img)
 
-			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
 	def on_add(self, widget):
 		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
@@ -253,14 +257,14 @@ class Vasca(gtk.Window):
 			(id, text, date, name, tacq, tflt, ico2, illu, img))
 		conn.commit()
 
-		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
 		
 	def on_del(self, widget): 
 		# prendiamo l'iter selezionato e elimianiamolo dalla store
 		mod, it = self.view.get_selection().get_selected()
 
 		if it != None:
-			# Questo Ã¨ il valore da confrontare
+			# Questo e' il valore da confrontare
 			value = int(self.vasca_store.get_value(it, 0))
 
 			# Rimuoviamo dal database
@@ -286,7 +290,7 @@ class Vasca(gtk.Window):
 					conn.commit()
 				it = mod.iter_next(it)
 
-			self.update_status(2, "Row eliminata (ID: %d)" % value)
+			self.update_status(2, _("Row eliminata (ID: %d)") % value)
 
 	def on_selection_changed(self, sel):
 		# Aggiorniamo il contenuto delle entry in base alla selezione
@@ -309,7 +313,7 @@ class Vasca(gtk.Window):
 		InfoDialog(self, mod, it)
 	
 	def on_browse(self, widget):
-		dialog = gtk.FileChooserDialog("Aggiungi foto", self,
+		dialog = gtk.FileChooserDialog(_("Aggiungi foto"), self,
 			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
 			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		dialog.set_use_preview_label(False)
@@ -322,7 +326,7 @@ class Vasca(gtk.Window):
 		# Creiamo i filtri
 
 		filter = gtk.FileFilter()
-		filter.set_name("Immagini")
+		filter.set_name(_("Immagini"))
 		filter.add_mime_type("image/png")
 		filter.add_mime_type("image/jpeg")
 		filter.add_mime_type("image/gif")
@@ -348,7 +352,7 @@ class Vasca(gtk.Window):
 					import shutil
 					shutil.copy(name, 'Immagini/')
 				except:
-					print "Errore mentre copiavo (%s)" % sys.exc_value
+					print _("Errore mentre copiavo (%s)") % sys.exc_value
 			self.e_path.set_text(os.path.basename(name))
 
 		dialog.destroy()
@@ -416,7 +420,7 @@ class Vasca(gtk.Window):
 
 class InfoDialog(gtk.Dialog):
 	def __init__(self, parent, mod, it):
-		gtk.Dialog.__init__(self, "Riepilogo", parent,
+		gtk.Dialog.__init__(self, _("Riepilogo"), parent,
 			gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
 
 		self.set_size_request(400, 300)
@@ -443,13 +447,13 @@ class InfoDialog(gtk.Dialog):
 
 		self.vbox.pack_start(sw)
 		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
 
 		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
 		

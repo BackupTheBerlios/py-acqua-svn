@@ -35,7 +35,7 @@ class TipsDialog(gtk.Dialog):
 		else:
 			return
 		
-		gtk.Dialog.__init__(self, "Tips of the Day", None, gtk.DIALOG_NO_SEPARATOR,
+		gtk.Dialog.__init__(self, _("Tips of the Day"), None, gtk.DIALOG_NO_SEPARATOR,
 			(gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_GO_FORWARD, gtk.RESPONSE_NONE))
 		
 		
@@ -51,7 +51,7 @@ class TipsDialog(gtk.Dialog):
 		
 		self.vbox.pack_start(sw)
 
-		self.check = gtk.CheckButton('Non mostrare al prossimo avvio')
+		self.check = gtk.CheckButton(_('Non mostrare al prossimo avvio'))
 		
 		if impostazioni.show_tips == "1":
 			self.check.set_active(False)
@@ -94,6 +94,6 @@ class TipsDialog(gtk.Dialog):
 		lista_tips = testo.split('&')
 		x = random.randint(0, len(lista_tips) - 1)
 		
-		testo = lista_tips[x] + '\n\nDalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm'
+		testo = lista_tips[x] + _('\n\nDalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm')
 		
 		self.textbuffer.set_text(testo)

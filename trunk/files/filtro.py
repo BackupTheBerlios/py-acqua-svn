@@ -30,7 +30,7 @@ class Filtro(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Filtro")
+		self.set_title(_("Filtro"))
 		self.set_size_request(600, 400)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
@@ -46,7 +46,7 @@ class Filtro(gtk.Window):
 		self.filtro_store = gtk.ListStore(int, str, str)
 		self.view = view = gtk.TreeView(self.filtro_store)
 		
-		lst = ['Id', 'Data', 'Prossima volta']
+		lst = [_('Id'), _('Data'), _('Prossima volta')]
 		renderer = gtk.CellRendererText()
 
 		for i in lst:
@@ -76,7 +76,7 @@ class Filtro(gtk.Window):
 			
 		
 		
-		frm = gtk.Frame("Editing:")
+		frm = gtk.Frame(_("Editing:"))
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -100,8 +100,8 @@ class Filtro(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(2, 2)
 		
-		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Prossima volta:"), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Prossima volta:")), 0, 1, 1, 2)
 		
 		
 		self.fi_data, self.fi_giorni = utils.DataButton(), utils.DataButton()
@@ -156,7 +156,7 @@ class Filtro(gtk.Window):
 			self.filtro_store.set_value(it, 2, giorni)
 			
 
-			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
 	def on_add(self, widget):
 		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
@@ -194,7 +194,7 @@ class Filtro(gtk.Window):
 			(id, date, giorni))
 		conn.commit()
 
-		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
 		
 	def on_del(self, widget): 
 		# prendiamo l'iter selezionato e elimianiamolo dalla store
@@ -227,7 +227,7 @@ class Filtro(gtk.Window):
 					conn.commit()
 				it = mod.iter_next(it)
 
-			self.update_status(2, "Row eliminata (ID: %d)" % value)
+			self.update_status(2, _("Row eliminata (ID: %d)") % value)
 
 	def on_selection_changed(self, sel):
 		# Aggiorniamo il contenuto delle entry in base alla selezione
@@ -302,7 +302,7 @@ class Filtro(gtk.Window):
 
 class InfoDialog(gtk.Dialog):
 	def __init__(self, parent, mod, it):
-		gtk.Dialog.__init__(self, "Riepilogo", parent,
+		gtk.Dialog.__init__(self, _("Riepilogo"), parent,
 			gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
 
 		self.set_size_request(400, 300)
@@ -329,13 +329,13 @@ class InfoDialog(gtk.Dialog):
 
 		self.vbox.pack_start(sw)
 		
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Data:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Tipo Acquario:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Tipo Filtro:"), 0, 1, 4, 5)
-		tbl.attach(self.new_label("Impianto Co2:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Illuminazione:"), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
 
 		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
 		

@@ -25,14 +25,14 @@ class Calcoli(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Calcoli")
+		self.set_title(_("Calcoli"))
 		self.set_resizable(False)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
 		
-		f1 = gtk.Frame('Valori'); f2 = gtk.Frame('Risultati')
+		f1 = gtk.Frame(_('Valori')); f2 = gtk.Frame(_('Risultati'))
 		
 		vbox.pack_start(f1, False, False, 0)
 		vbox.pack_start(f2, False, False, 0)
@@ -41,9 +41,9 @@ class Calcoli(gtk.Window):
 		tbl_valori.set_border_width(4)
 		tbl_valori.set_row_spacings(4)
 		
-		tbl_valori.attach(self.new_label("Altezza in cm:"), 0, 1, 0, 1)
-		tbl_valori.attach(self.new_label("Lunghezza in cm:"), 0, 1, 1, 2)
-		tbl_valori.attach(self.new_label("Larghezza in cm:"), 0, 1, 2, 3)
+		tbl_valori.attach(self.new_label(_("Altezza in cm:")), 0, 1, 0, 1)
+		tbl_valori.attach(self.new_label(_("Lunghezza in cm:")), 0, 1, 1, 2)
+		tbl_valori.attach(self.new_label(_("Larghezza in cm:")), 0, 1, 2, 3)
 		
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1, yoptions=0)
@@ -54,9 +54,9 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		tbl.attach(self.new_label("Volume:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Piante Inseribili:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Numero di pesci 3-4 cm:"), 0 ,1, 4, 5)
+		tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
 		
 		self.volume = self.new_label('0', False)
 		self.piante_inseribili = self.new_label('0', False)
@@ -66,9 +66,9 @@ class Calcoli(gtk.Window):
 		tbl.attach(self.piante_inseribili, 1, 2, 3, 4)
 		tbl.attach(self.num_pesci_3_4, 1, 2, 4, 5)
 		
-		tbl.attach(self.new_label("Numero di pesci 5-6 cm:"), 0, 1, 5, 6)
-		tbl.attach(self.new_label("Watt per piante esigenti:"), 0, 1, 6, 7)
-		tbl.attach(self.new_label("Watt per piante poco esigenti:"), 0, 1, 8, 9)
+		tbl.attach(self.new_label(_("Numero di pesci 5-6 cm:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Watt per piante esigenti:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Watt per piante poco esigenti:")), 0, 1, 8, 9)
 		self.num_pesci_5_6 = self.new_label('0', False)
 		self.watt_esigenti = self.new_label('0', False)
 		self.watt_poco_esigenti = self.new_label('0', False)

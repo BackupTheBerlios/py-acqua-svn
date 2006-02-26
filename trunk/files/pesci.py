@@ -30,7 +30,7 @@ class Pesci(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Pesci")
+		self.set_title(_("Pesci"))
 		self.set_size_request(600, 400)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
@@ -39,7 +39,7 @@ class Pesci(gtk.Window):
 		
 		self.view = view = gtk.TreeView(self.pesci_store)
 		
-		lst = ['Id', 'Data', 'Vasca', 'Quantita', 'Nome']
+		lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome')]
 		renderer = gtk.CellRendererText()
 		
 		for i in lst:
@@ -51,7 +51,7 @@ class Pesci(gtk.Window):
 			view.append_column(col)
 		
 		# Aggiungiamo la colonna per le immagini della vasca
-		col = gtk.TreeViewColumn("Immagine", gtk.CellRendererPixbuf(), pixbuf=6)
+		col = gtk.TreeViewColumn(_("Immagine"), gtk.CellRendererPixbuf(), pixbuf=6)
 		col.set_resizable(True)
 		col.set_clickable(False)
 		view.append_column(col)
@@ -77,7 +77,7 @@ class Pesci(gtk.Window):
 			y[5], self.make_image(y[5])])
 		
 		
-		frm = gtk.Frame("Editing:")
+		frm = gtk.Frame(_("Editing:"))
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -101,11 +101,11 @@ class Pesci(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Vasca:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 3, 4)
-		tbl.attach(self.new_label("Immagine:"), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_"Data:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_"Vasca:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_"Quantita:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_"Nome:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_"Immagine:")), 0, 1, 4, 5)
 		
 		self.e_vasca = utils.Combo()
 		
@@ -190,7 +190,7 @@ class Pesci(gtk.Window):
 			self.pesci_store.set_value(it, 5, self.make_image(img))
 			self.pesci_store.set_value(it, 6, img)
 
-			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
 	def on_add(self, widget):
 		mod = self.view.get_model()
@@ -230,7 +230,7 @@ class Pesci(gtk.Window):
 			(id, date, vasca, quantita, nome, img))
 		conn.commit()
 
-		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
 		
 	def on_del(self, widget): 
 		# prendiamo l'iter selezionato e elimianiamolo dalla store
@@ -261,7 +261,7 @@ class Pesci(gtk.Window):
 					self.pesci_store.set_value(it, 0, tmp-1)
 				it = mod.iter_next(it)
 
-			self.update_status(2, "Row eliminata (ID: %d)" % value)
+			self.update_status(2, _("Row eliminata (ID: %d)") % value)
 
 	def on_selection_changed(self, sel):
 		# Aggiorniamo il contenuto delle entry in base alla selezione
@@ -281,7 +281,7 @@ class Pesci(gtk.Window):
 		InfoDialog(self, mod, it)
 	
 	def on_browse(self, widget):
-		dialog = gtk.FileChooserDialog("Aggiungi foto", self,
+		dialog = gtk.FileChooserDialog(_("Aggiungi foto"), self,
 			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
 			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		dialog.set_use_preview_label(False)
@@ -294,7 +294,7 @@ class Pesci(gtk.Window):
 		# Creiamo i filtri
 
 		filter = gtk.FileFilter()
-		filter.set_name("Immagini")
+		filter.set_name(_("Immagini"))
 		filter.add_mime_type("image/png")
 		filter.add_mime_type("image/jpeg")
 		filter.add_mime_type("image/gif")
@@ -320,7 +320,7 @@ class Pesci(gtk.Window):
 					import shutil
 					shutil.copy(name, 'Immagini/')
 				except:
-					print "Errore mentre copiavo (%s)" % sys.exc_value
+					print _("Errore mentre copiavo (%s)") % sys.exc_value
 			self.e_path.set_text(os.path.basename(name))
 
 		dialog.destroy()

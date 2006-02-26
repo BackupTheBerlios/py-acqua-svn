@@ -31,7 +31,7 @@ class Fertilizzante(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
 		
-		self.set_title("Fertilizzante")
+		self.set_title(_("Fertilizzante"))
 		self.set_size_request(600, 400)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		box = gtk.VBox()
@@ -40,7 +40,7 @@ class Fertilizzante(gtk.Window):
 		self.fert_store = gtk.ListStore(int, str, str, float, str)
 		self.view = view = gtk.TreeView(self.fert_store)
 		
-		lst = ['Id', 'Data', 'Nome', 'Quantita\'', 'Prossima volta']
+		lst = [_('Id'), _('Data'), _('Nome'), _('Quantita\''), _('Prossima volta')]
 		renderer = gtk.CellRendererText()
 
 		for i in lst:
@@ -73,7 +73,7 @@ class Fertilizzante(gtk.Window):
 		for y in cursore.fetchall():
 			self.fert_store.append([y[0], y[1], y[2], y[3], y[4]])
 			
-		frm = gtk.Frame("Editing:")
+		frm = gtk.Frame(_("Editing:"))
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -97,10 +97,10 @@ class Fertilizzante(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label("Data:"), 0, 1, 0, 1)
-		tbl.attach(self.new_label("Nome:"), 0, 1, 1, 2)
-		tbl.attach(self.new_label("Quantita:"), 0, 1, 2, 3)
-		tbl.attach(self.new_label("Prossima volta:"), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Quantita:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Prossima volta:")), 0, 1, 3, 4)
 		
 		
 		self.fe_data, self.fe_nome = utils.DataButton(), gtk.Entry()
@@ -187,7 +187,7 @@ class Fertilizzante(gtk.Window):
 			self.fert_store.set_value(it, 4, giorni)
 			
 
-			self.update_status(0, "Row aggiornata (ID: %d)" % id)
+			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
 	def on_add(self, widget):
 		# Aggiungiamo dei valori casuali che andranno subito ad essere modificati
@@ -229,7 +229,7 @@ class Fertilizzante(gtk.Window):
 			(id, date, nome, quantita, giorni))
 		conn.commit()
 
-		self.update_status(1, "Row aggiunta (ID: %d)" % id)
+		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
 		
 	def on_del(self, widget): 
 		# prendiamo l'iter selezionato e elimianiamolo dalla store
@@ -262,7 +262,7 @@ class Fertilizzante(gtk.Window):
 					conn.commit()
 				it = mod.iter_next(it)
 
-			self.update_status(2, "Row eliminata (ID: %d)" % value)
+			self.update_status(2, _("Row eliminata (ID: %d)") % value)
 
 	def on_selection_changed(self, sel):
 		# Aggiorniamo il contenuto delle entry in base alla selezione
