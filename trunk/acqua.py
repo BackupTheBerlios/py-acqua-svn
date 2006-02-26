@@ -23,7 +23,7 @@ import locale
 import gettext
 import sys
 
-APP = 'pyacqua'
+APP = 'acqua'
 DIR = 'locale'
 
 try:
