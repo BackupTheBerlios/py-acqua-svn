@@ -101,11 +101,11 @@ class Pesci(gtk.Window):
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label(_"Data:")), 0, 1, 0, 1)
-		tbl.attach(self.new_label(_"Vasca:")), 0, 1, 1, 2)
-		tbl.attach(self.new_label(_"Quantita:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_"Nome:")), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_"Immagine:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 0, 1)
+		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Quantita:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 4, 5)
 		
 		self.e_vasca = utils.Combo()
 		
