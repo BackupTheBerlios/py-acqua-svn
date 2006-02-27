@@ -27,10 +27,10 @@ APP = 'acqua'
 DIR = 'locale'
 
 try:
-	locale.setlocale(locale.LC_ALL, '')
+	locale.setlocale(locale.LC_ALL, 'en_US')
 	gettext.bindtextdomain(APP, DIR)
 	gettext.textdomain(APP)
-	gettext.install("meld", DIR, unicode=1)
+	gettext.install("pyacqua", DIR, unicode=1)
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
 	__builtins__.__dict__["_"] = lambda x : x
@@ -106,27 +106,40 @@ class Gui(gtk.Window):
 	
 	def create_menu(self):
 		w = [
-		('Acquario', None, '_Acquario'),
-			('Calcoli',	None,		'_Calcoli',	'<control>C',	'Calcoli...',		'calcoli_apri'),
-			('Vasche',	None,		'_Vasche',	'<control>V',	'Vasche...',		'vasca_apri'),
-			('Test',	None,		'_Test',	'<control>T',	'Test',			'test_apri'),
-			('Pesci',	None,		'_Pesci',	'<control>P',		'Pesci...',		'pesci_apri'),
-			('Piante',	None,		'_Piante',	'<control>I',		'Piante...',		'piante_apri'),
-			('Database',	None,		'_Database',	'<control>D',		'Database...'),
-			('Quit',	gtk.STOCK_QUIT,	'_Quit',	None,		'Esci da Py-Acqua',	'exit'),
+		('Acquario', None, _('_Acquario')),
+			('Calcoli', None, _('_Calcoli'), '<control>C', _('Calcoli...'), 'calcoli_apri'),
 			
-		('Impostazioni', None, '_Impostazioni'),
-			#('Grafico',	None,		'_Grafico',	None,		'Grafico...'),
-			('Tips Tricks',	None,		'_Tips Tricks',	None,		'Tips and Tricks...',	'tips_apri'),
-			('Fertilizzante',	None,		'_Fertilizzante',	None,		'fertilizzante...',	'fertilizzante_apri'),
-			('Filtro',	None,		'_Filtro',	None,		'filtro...',	'filtro_apri'),
-			('Calendario',	None,		'_Calendario',	None,		'Calendario...',	'calendario_apri'),
-			('Inserisci',	None,		'_Inserisci',	None,		'Inserisci...',		'inserisci_apri'),
-			('Allarmi',	None,		'_Allarmi',	None,		'Allarmi...',		'allarmi_apri'),
+			('Vasche', None, _('_Vasche'), '<control>V', _('Vasche...'), 'vasca_apri'),
 			
-		('Aiuto', None, '_Aiuto'),
-			('Info',	gtk.STOCK_ABOUT,'_Informazioni',None,		'Riguardo Py-Acqua',	'informazioni_apri'),
-			('Help',	None,	'_Aiuto',		None,	'Aiuto...',	'aiuto_apri'),
+			('Test', None, _('_Test'), '<control>T', _('Test'), 'test_apri'),
+			
+			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci...'), 'pesci_apri'),
+			
+			('Piante', None, _('_Piante'), '<control>I', _('Piante...'), 'piante_apri'),
+			
+			('Database', None, _('_Database'), '<control>D', _('Database...')),
+			
+			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
+			
+		('Impostazioni', None, _('_Impostazioni')),
+		
+			('Tips Tricks',	None, _('_Tips Tricks'), None, _('Tips and Tricks...'), 'tips_apri'),
+			
+			('Fertilizzante', None, _('_Fertilizzante'), None, _('fertilizzante...'), 'fertilizzante_apri'),
+			
+			('Filtro', None, _('_Filtro'), None, _('filtro...'), 'filtro_apri'),
+
+			('Calendario', None, _('_Calendario'), None, _('Calendario...'),'calendario_apri'),
+			
+			('Inserisci', None, _('_Inserisci'), None, _('Inserisci...'), 'inserisci_apri'),
+			
+			('Allarmi', None, _('_Allarmi'), None, _('Allarmi...'), 'allarmi_apri'),
+			
+		('Aiuto', None, _('_Aiuto')),
+		
+			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
+			
+			('Help', None, _('_Aiuto'), None, _('Aiuto...'), 'aiuto_apri'),
 		]
 		
 		ui = """<ui>

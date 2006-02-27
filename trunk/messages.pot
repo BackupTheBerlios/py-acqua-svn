@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< .mine
+"POT-Creation-Date: 2006-02-26 17:22+0100\n"
+=======
 "POT-Creation-Date: 2006-02-26 17:42+0100\n"
+>>>>>>> .r120
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,6 +26,134 @@ msgstr ""
 
 #: acqua.py:55
 msgid "You need to install pysqlite"
+msgstr ""
+
+#: acqua.py:109
+msgid "_Acquario"
+msgstr ""
+
+#: acqua.py:110
+msgid "_Calcoli"
+msgstr ""
+
+#: acqua.py:110
+msgid "Calcoli..."
+msgstr ""
+
+#: acqua.py:112
+msgid "_Vasche"
+msgstr ""
+
+#: acqua.py:112
+msgid "Vasche..."
+msgstr ""
+
+#: acqua.py:114
+msgid "_Test"
+msgstr ""
+
+#: acqua.py:114 files/test.py:34 files/test.py:395
+msgid "Test"
+msgstr ""
+
+#: acqua.py:116
+msgid "_Pesci"
+msgstr ""
+
+#: acqua.py:116
+msgid "Pesci..."
+msgstr ""
+
+#: acqua.py:118
+msgid "_Piante"
+msgstr ""
+
+#: acqua.py:118
+msgid "Piante..."
+msgstr ""
+
+#: acqua.py:120
+msgid "_Database"
+msgstr ""
+
+#: acqua.py:120
+msgid "Database..."
+msgstr ""
+
+#: acqua.py:122
+msgid "_Quit"
+msgstr ""
+
+#: acqua.py:122
+msgid "Esci da Py-Acqua"
+msgstr ""
+
+#: acqua.py:124
+msgid "_Impostazioni"
+msgstr ""
+
+#: acqua.py:126
+msgid "_Tips Tricks"
+msgstr ""
+
+#: acqua.py:126
+msgid "Tips and Tricks..."
+msgstr ""
+
+#: acqua.py:128
+msgid "_Fertilizzante"
+msgstr ""
+
+#: acqua.py:128
+msgid "fertilizzante..."
+msgstr ""
+
+#: acqua.py:130
+msgid "_Filtro"
+msgstr ""
+
+#: acqua.py:130
+msgid "filtro..."
+msgstr ""
+
+#: acqua.py:132
+msgid "_Calendario"
+msgstr ""
+
+#: acqua.py:132
+msgid "Calendario..."
+msgstr ""
+
+#: acqua.py:134
+msgid "_Inserisci"
+msgstr ""
+
+#: acqua.py:134
+msgid "Inserisci..."
+msgstr ""
+
+#: acqua.py:136
+msgid "_Allarmi"
+msgstr ""
+
+#: acqua.py:136
+msgid "Allarmi..."
+msgstr ""
+
+#: acqua.py:138 acqua.py:142
+msgid "_Aiuto"
+msgstr ""
+
+#: acqua.py:140
+msgid "_Informazioni"
+msgstr ""
+
+#: acqua.py:140
+msgid "Riguardo Py-Acqua"
+msgstr ""
+
+#: acqua.py:142
+msgid "Aiuto..."
 msgstr ""
 
 #: files/allarmi.py:33
@@ -402,10 +534,6 @@ msgstr ""
 
 #: files/piante.py:106 files/vasca.py:115
 msgid "Immagine:"
-msgstr ""
-
-#: files/test.py:34 files/test.py:395
-msgid "Test"
 msgstr ""
 
 #: files/test.py:69 files/test.py:386

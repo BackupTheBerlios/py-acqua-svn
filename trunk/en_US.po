@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-26 16:46+0100\n"
+"PO-Revision-Date: 2006-02-27 20:11+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -76,11 +76,11 @@ msgstr "Branch"
 #: files/allarmi.py:52 files/allarmi.py:158 files/inserisci.py:53
 #: files/test.py:70 files/test.py:137
 msgid "Fosfati"
-msgstr "Fosfati"
+msgstr "Phosphates"
 
 #: files/allarmi.py:104
 msgid "Ph basso"
-msgstr "Ph basso"
+msgstr "Ph low"
 
 #: files/allarmi.py:105
 msgid "Ph alto"
@@ -92,7 +92,7 @@ msgstr "Ph ok"
 
 #: files/allarmi.py:108
 msgid "Kh basso"
-msgstr "Kh basso"
+msgstr "Kh low"
 
 #: files/allarmi.py:109
 msgid "Kh alto"
@@ -104,7 +104,7 @@ msgstr "Kh ok"
 
 #: files/allarmi.py:112
 msgid "Gh basso"
-msgstr "Gh basso"
+msgstr "Gh low"
 
 #: files/allarmi.py:113
 msgid "Gh alto"
@@ -116,7 +116,7 @@ msgstr "Gh ok"
 
 #: files/allarmi.py:116
 msgid "No2 bassi"
-msgstr "No2 bassi"
+msgstr "No2 low"
 
 #: files/allarmi.py:117
 msgid "No2 alti"
@@ -128,7 +128,7 @@ msgstr "No2 ok"
 
 #: files/allarmi.py:120
 msgid "No3 bassi"
-msgstr "No3 bassi"
+msgstr "No3 low"
 
 #: files/allarmi.py:121
 msgid "No3 alti"
@@ -140,43 +140,43 @@ msgstr "No3 ok"
 
 #: files/allarmi.py:124
 msgid "Conducibilita' bassa"
-msgstr "Conducibilita' bassa"
+msgstr "Conducibilita' low"
 
 #: files/allarmi.py:125
 msgid "Conducibilita' alta"
-msgstr "Conducibilita' alta"
+msgstr "Conducibilita' high"
 
 #: files/allarmi.py:126
 msgid "Conducibilita' ok"
-msgstr "Conducibilita' ok"
+msgstr "Conductivity ok"
 
 #: files/allarmi.py:128
 msgid "Ammoniaca bassa"
-msgstr "Ammoniaca bassa"
+msgstr "Ammonia low"
 
 #: files/allarmi.py:129
 msgid "Ammoniaca alta"
-msgstr "Ammoniaca alta"
+msgstr "Ammonia high"
 
 #: files/allarmi.py:130
 msgid "Ammoniaca ok"
-msgstr "Ammoniaca ok"
+msgstr "Ammonia ok"
 
 #: files/allarmi.py:132
 msgid "Ferro basso"
-msgstr "Ferro basso"
+msgstr "Iron low"
 
 #: files/allarmi.py:133
 msgid "Ferro alto"
-msgstr "Ferro alto"
+msgstr "Iron high"
 
 #: files/allarmi.py:134
 msgid "Ferro ok"
-msgstr "Ferro ok"
+msgstr "Iron ok"
 
 #: files/allarmi.py:136
 msgid "Rame basso"
-msgstr "Rame basso"
+msgstr "Branch low"
 
 #: files/allarmi.py:137
 msgid "Rame alto"
@@ -258,7 +258,7 @@ msgstr "Id"
 #: files/fertilizzante.py:43 files/filtro.py:49 files/pesci.py:42
 #: files/piante.py:42 files/test.py:58 files/vasca.py:43
 msgid "Data"
-msgstr "Data"
+msgstr "Date"
 
 #: files/fertilizzante.py:43 files/pesci.py:42 files/piante.py:42
 #: files/vasca.py:43
@@ -267,7 +267,7 @@ msgstr "Nome"
 
 #: files/fertilizzante.py:43
 msgid "Quantita'"
-msgstr "Quantita'"
+msgstr "Amount"
 
 #: files/fertilizzante.py:43 files/filtro.py:49
 msgid "Prossima volta"
@@ -281,7 +281,7 @@ msgstr "Editing:"
 #: files/fertilizzante.py:100 files/filtro.py:103 files/filtro.py:333
 #: files/piante.py:102 files/test.py:125 files/vasca.py:109 files/vasca.py:451
 msgid "Data:"
-msgstr "Data:"
+msgstr "Date:"
 
 #: files/fertilizzante.py:101 files/filtro.py:334 files/piante.py:105
 #: files/vasca.py:110 files/vasca.py:452
