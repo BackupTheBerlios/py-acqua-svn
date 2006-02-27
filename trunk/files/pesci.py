@@ -278,7 +278,7 @@ class Pesci(gtk.Window):
 		mod = self.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 
-		InfoDialog(self, mod, it)
+		#InfoDialog(self, mod, it)
 	
 	def on_browse(self, widget):
 		dialog = gtk.FileChooserDialog(_("Aggiungi foto"), self,

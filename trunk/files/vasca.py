@@ -455,7 +455,7 @@ class InfoDialog(gtk.Dialog):
 		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
 		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
 
-		attach = lambda t, x, y: tbl.attach(gtk.Label(str(x)), 1, 2, x, y)
+		attach = lambda t, x, y: tbl.attach(gtk.Label(str(t)), 1, 2, x, y)
 		
 		attach(mod.get_value(it, 1), 0, 1)
 		attach(mod.get_value(it, 2), 1, 2)
