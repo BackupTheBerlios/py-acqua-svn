@@ -30,7 +30,7 @@ try:
 	locale.setlocale(locale.LC_ALL, 'en_US')
 	gettext.bindtextdomain(APP, DIR)
 	gettext.textdomain(APP)
-	gettext.install("pyacqua", DIR, unicode=1)
+	gettext.install("acqua", DIR, unicode=1)
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
 	__builtins__.__dict__["_"] = lambda x : x
