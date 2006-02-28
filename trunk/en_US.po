@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-27 20:11+0100\n"
+"PO-Revision-Date: 2006-02-28 12:11+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr "Ph low"
 
 #: files/allarmi.py:105
 msgid "Ph alto"
-msgstr "Ph alto"
+msgstr "Ph high"
 
 #: files/allarmi.py:106
 msgid "Ph ok"
