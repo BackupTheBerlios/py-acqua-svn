@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-28 12:41+0100\n"
+"PO-Revision-Date: 2006-02-28 12:42+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -263,7 +263,7 @@ msgstr "Date"
 #: files/fertilizzante.py:43 files/pesci.py:42 files/piante.py:42
 #: files/vasca.py:43
 msgid "Nome"
-msgstr "Nome"
+msgstr "Name"
 
 #: files/fertilizzante.py:43
 msgid "Quantita'"
@@ -286,7 +286,7 @@ msgstr "Date:"
 #: files/fertilizzante.py:101 files/filtro.py:334 files/piante.py:105
 #: files/vasca.py:110 files/vasca.py:452
 msgid "Nome:"
-msgstr "Nome:"
+msgstr "Name:"
 
 #: files/fertilizzante.py:102 files/piante.py:104
 msgid "Quantita:"
