@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-28 12:11+0100\n"
+"PO-Revision-Date: 2006-02-28 12:41+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "No3"
 #: files/allarmi.py:48 files/allarmi.py:154 files/inserisci.py:49
 #: files/test.py:70
 msgid "Conducibilita'"
-msgstr "Conducibilita'"
+msgstr "Conductivity"
 
 #: files/allarmi.py:49 files/allarmi.py:155 files/inserisci.py:50
 #: files/test.py:70
@@ -96,7 +96,7 @@ msgstr "Kh low"
 
 #: files/allarmi.py:109
 msgid "Kh alto"
-msgstr "Kh alto"
+msgstr "Kh high"
 
 #: files/allarmi.py:110
 msgid "Kh ok"
@@ -108,7 +108,7 @@ msgstr "Gh low"
 
 #: files/allarmi.py:113
 msgid "Gh alto"
-msgstr "Gh alto"
+msgstr "Gh high"
 
 #: files/allarmi.py:114
 msgid "Gh ok"
@@ -120,7 +120,7 @@ msgstr "No2 low"
 
 #: files/allarmi.py:117
 msgid "No2 alti"
-msgstr "No2 alti"
+msgstr "No2 high"
 
 #: files/allarmi.py:118
 msgid "No2 ok"
@@ -132,7 +132,7 @@ msgstr "No3 low"
 
 #: files/allarmi.py:121
 msgid "No3 alti"
-msgstr "No3 alti"
+msgstr "No3 high"
 
 #: files/allarmi.py:122
 msgid "No3 ok"
@@ -140,11 +140,11 @@ msgstr "No3 ok"
 
 #: files/allarmi.py:124
 msgid "Conducibilita' bassa"
-msgstr "Conducibilita' low"
+msgstr "Conductivity low"
 
 #: files/allarmi.py:125
 msgid "Conducibilita' alta"
-msgstr "Conducibilita' high"
+msgstr "Conductivity high"
 
 #: files/allarmi.py:126
 msgid "Conducibilita' ok"
@@ -180,47 +180,47 @@ msgstr "Branch low"
 
 #: files/allarmi.py:137
 msgid "Rame alto"
-msgstr "Rame alto"
+msgstr "Branch high"
 
 #: files/allarmi.py:138
 msgid "Rame ok"
-msgstr "Rame ok"
+msgstr "Branch ok"
 
 #: files/allarmi.py:140
 msgid "Fosfati bassi"
-msgstr "Fosfati bassi"
+msgstr "Phosphates low"
 
 #: files/allarmi.py:141
 msgid "Fosfati alti"
-msgstr "Fosfati alti"
+msgstr "Phosphates high"
 
 #: files/allarmi.py:142
 msgid "Fosfati ok"
-msgstr "Fosfati ok"
+msgstr "Phosphates ok"
 
 #: files/calcoli.py:28
 msgid "Calcoli"
-msgstr "Calcoli"
+msgstr "Calculates"
 
 #: files/calcoli.py:35 files/test.py:396
 msgid "Valori"
-msgstr "Valori"
+msgstr "Values"
 
 #: files/calcoli.py:35
 msgid "Risultati"
-msgstr "Risultati"
+msgstr "It turns out to you"
 
 #: files/calcoli.py:44
 msgid "Altezza in cm:"
-msgstr "Altezza in cm:"
+msgstr "Height in cm:"
 
 #: files/calcoli.py:45
 msgid "Lunghezza in cm:"
-msgstr "Lunghezza in cm:"
+msgstr "Length in cm:"
 
 #: files/calcoli.py:46
 msgid "Larghezza in cm:"
-msgstr "Larghezza in cm:"
+msgstr "Width in cm:"
 
 #: files/calcoli.py:57
 msgid "Volume:"
@@ -228,7 +228,7 @@ msgstr "Volume:"
 
 #: files/calcoli.py:58
 msgid "Piante Inseribili:"
-msgstr "Piante Inseribili:"
+msgstr "Plants to insert:"
 
 #: files/calcoli.py:59
 msgid "Numero di pesci 3-4 cm:"
