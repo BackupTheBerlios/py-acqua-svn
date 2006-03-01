@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-02-28 12:42+0100\n"
+"PO-Revision-Date: 2006-03-01 20:55+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -232,23 +232,23 @@ msgstr "Plants to insert:"
 
 #: files/calcoli.py:59
 msgid "Numero di pesci 3-4 cm:"
-msgstr "Numero di pesci 3-4 cm:"
+msgstr "Number of fish  3-4 cm:"
 
 #: files/calcoli.py:69
 msgid "Numero di pesci 5-6 cm:"
-msgstr "Numero di pesci 5-6 cm:"
+msgstr "Number of fish  5-6 cm:"
 
 #: files/calcoli.py:70
 msgid "Watt per piante esigenti:"
-msgstr "Watt per piante esigenti:"
+msgstr "Watt for demanding plants:"
 
 #: files/calcoli.py:71
 msgid "Watt per piante poco esigenti:"
-msgstr "Watt per piante poco esigenti:"
+msgstr "Watt for little demanding plants:"
 
 #: files/fertilizzante.py:34
 msgid "Fertilizzante"
-msgstr "Fertilizzante"
+msgstr "Fertilizer"
 
 #: files/fertilizzante.py:43 files/filtro.py:49 files/pesci.py:42
 #: files/piante.py:42 files/test.py:58 files/vasca.py:43
