@@ -61,3 +61,17 @@ class Config(gtk.Window):
 			
 	def exit_save(self, widget):
 		pass
+		
+	def insert_tag_in_buffer(self, buffer, name, *params):
+		tag = gtk.TextTag(name)
+		while params:
+			tag.set_property(params[0], params[1])
+		
+		table = buffer.get_tag_table()
+		table.add(tag)
+
+	def create_tags(self, buffer):
+		self.insert_tag_in_buffer(buffer, "verde_grassetto", "weight", pango.WEIGHT_BOLD, "foreground", "blue")
+
+	def insert_text(self, buffer):
+		iter = buffer.get_iter_at_offset(0)
