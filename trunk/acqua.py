@@ -50,7 +50,8 @@ except:
 	print _("You need to install pyGTK or GTKv2")
 
 try:
-	from pysqlite2 import dbapi2 as sqlite
+	import pysqlite2 as sqlite
+	#from pysqlite2 import dbapi2 as sqlite
 except:
 	print _("You need to install pysqlite")
 
@@ -135,6 +136,12 @@ class Gui(gtk.Window):
 			
 			('Allarmi', None, _('_Allarmi'), None, _('Allarmi...'), 'allarmi_apri'),
 			
+			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
+		
+		('Plug-in', None, '_Plug-in'),
+			
+			('Plug-in',	None,		'_Plug-in',	None,	'Plug-in...',		'plugin_apri'),
+			
 		('Aiuto', None, _('_Aiuto')),
 		
 			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
@@ -161,6 +168,11 @@ class Gui(gtk.Window):
 			<menuitem action='Calendario'/>
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
+			<menuitem action='Configurazione'/>
+		</menu>
+		<menu action='Plug-in'>
+			<menuitem action='Plug-in'/>
+			<separator/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -252,7 +264,15 @@ class Gui(gtk.Window):
 		files.fertilizzante.Fertilizzante()
 	def filtro_apri(self, widget, data=None):
 		import files.filtro
-		files.filtro.Filtro()	
+		files.filtro.Filtro()
+	def plugin_apri(self, widget, data=None):
+		import files.plugin
+		files.plugin.plugin()
+		if not os.path.exists('Plugin'):
+			os.mkdir('Plugin')
+	def config_apri(self, widget, data=None):
+		import files.config
+		files.config.Config()		
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
