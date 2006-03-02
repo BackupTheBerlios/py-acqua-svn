@@ -45,6 +45,20 @@ class Config(gtk.Window):
 		testo = open(os.path.join(self.path, 'config.cfg'), 'r').read()
 		self.textbuffer.set_text(testo)
 		
+		self.tag = gtk.TextTag("color_defualt")
+		self.tag.set_property("weight", pango.WEIGHT_BOLD)
+				
+		table = self.textbuffer.get_tag_table()
+		table.add(self.tag)
+		
+		iter = self.textbuffer.get_iter_at_line(0)
+		iter2 = self.textbuffer.get_iter_at_line(1)
+		iter3 = self.textbuffer.get_iter_at_line(4)
+		iter4 = self.textbuffer.get_iter_at_line(5)
+
+		self.textbuffer.apply_tag_by_name('color_defualt', iter, iter2)
+		self.textbuffer.apply_tag_by_name('color_defualt', iter3, iter4)
+				
 		self.add(vbox)
 		self.show_all()
 		
@@ -61,17 +75,3 @@ class Config(gtk.Window):
 			
 	def exit_save(self, widget):
 		pass
-		
-	def insert_tag_in_buffer(self, buffer, name, *params):
-		tag = gtk.TextTag(name)
-		while params:
-			tag.set_property(params[0], params[1])
-		
-		table = buffer.get_tag_table()
-		table.add(tag)
-
-	def create_tags(self, buffer):
-		self.insert_tag_in_buffer(buffer, "verde_grassetto", "weight", pango.WEIGHT_BOLD, "foreground", "blue")
-
-	def insert_text(self, buffer):
-		iter = buffer.get_iter_at_offset(0)
