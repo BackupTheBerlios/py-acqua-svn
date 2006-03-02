@@ -81,6 +81,7 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table vasca (id integer, vasca TEXT, date DATE, nome TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, img TEXT)")
 	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT)")
 	cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC)")
 	cursore.execute("create table filtro (id integer,date DATE, giorni NUMERIC)")
@@ -121,6 +122,8 @@ class Gui(gtk.Window):
 			
 			('Piante', None, _('_Piante'), '<control>I', _('Piante...'), 'piante_apri'),
 			
+			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), 'invertebrati_apri'),
+			
 			('Database', None, _('_Database'), '<control>D', _('Database...')),
 			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
@@ -160,6 +163,7 @@ class Gui(gtk.Window):
 			<menuitem action='Test'/>
 			<menuitem action='Pesci'/>
 			<menuitem action='Piante'/>
+			<menuitem action='Invertebrati'/>
 			<menuitem action='Database'/>
 			<separator/>
 			<menuitem action='Quit'/>
@@ -244,6 +248,10 @@ class Gui(gtk.Window):
 	def piante_apri(self, widget, data=None):
 		import files.piante
 		return files.piante.Piante()
+		
+	def invertebrati_apri(self, widget, data=None):
+		import files.invertebrati
+		return files.invertebrati.Invertebrati()
 		
 	def vasca_apri(self, widget, data=None):
 		import files.vasca
