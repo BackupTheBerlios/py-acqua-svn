@@ -84,4 +84,4 @@ class Config(gtk.Window):
 				msg1 = msg.run()
 				msg.destroy()
 				if msg1 == gtk.RESPONSE_YES:
-					self.save
+					self.save(widget)
