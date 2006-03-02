@@ -1,14 +1,15 @@
 import pygtk
 pygtk.require('2.0')
-import gtk, os, pango, sys
+import gtk, os, pango, sys, re
 
 class Config(gtk.Window):	
 	def __init__(self):
 		gtk.Window.__init__(self)
 		
+		##Variabili
 		self.path = os.getcwd()+'/files/'
 		self.control_save = ''
-			
+		
 		self.set_title("config.cfg")
 		self.set_size_request(400, 600)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
@@ -33,7 +34,7 @@ class Config(gtk.Window):
 		self.textview = gtk.TextView()
 		self.textview.set_wrap_mode(gtk.WRAP_WORD)
 		self.textbuffer = self.textview.get_buffer()
-		
+			
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
@@ -61,7 +62,8 @@ class Config(gtk.Window):
 
 		self.textbuffer.apply_tag_by_name('color_defualt', iter, iter2)
 		self.textbuffer.apply_tag_by_name('color_defualt', iter3, iter4)
-				
+		
+		self.regex()		
 		self.add(vbox)
 		self.show_all()
 		
@@ -85,3 +87,13 @@ class Config(gtk.Window):
 				msg.destroy()
 				if msg1 == gtk.RESPONSE_YES:
 					self.save(widget)
+	
+	def regex(self):
+		regex = '*(\[)\s+(\])$'
+		start, end = self.textbuffer.get_bounds()
+		text = self.textbuffer.get_text(start, end)
+		p = re.compile("*(\[)\s+(\])$")
+		#iterator = p.finditer(text)
+		match = p.match(text)
+		for iter in match:
+			print match.start(), match.end()
