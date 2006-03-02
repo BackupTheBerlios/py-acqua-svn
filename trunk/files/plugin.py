@@ -25,7 +25,7 @@ import gtk
 
 import os, sys, tarfile, shutil, time
 
-class plugin(gtk.Window):
+class Plugin(gtk.Window):
 	
 	def __init__(self):
 		gtk.Window.__init__(self)

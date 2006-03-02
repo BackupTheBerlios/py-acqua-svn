@@ -278,7 +278,7 @@ class Gui(gtk.Window):
 		files.filtro.Filtro()
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
-		files.plugin.plugin()
+		files.plugin.Plugin()
 		
 	def config_apri(self, widget, data=None):
 		import files.config
