@@ -7,6 +7,7 @@ class Config(gtk.Window):
 		gtk.Window.__init__(self)
 		
 		self.path = os.getcwd()+'/files/'
+		self.control_save = ''
 			
 		self.set_title("config.cfg")
 		self.set_size_request(400, 600)
@@ -51,6 +52,8 @@ class Config(gtk.Window):
 		table = self.textbuffer.get_tag_table()
 		table.add(self.tag)
 		
+		self.textbuffer.set_modified(0)
+		
 		iter = self.textbuffer.get_iter_at_line(0)
 		iter2 = self.textbuffer.get_iter_at_line(1)
 		iter3 = self.textbuffer.get_iter_at_line(4)
@@ -70,8 +73,15 @@ class Config(gtk.Window):
 			testo = open(os.path.join(self.path, 'config.cfg'), 'w').write(text)
 			self.set_title("config.cfg (Salvato)")
 			self.bar.push(1, 'File salvato')
+			self.control_save = True
 		except:
 			self.bar.push(1, 'Errore durante il salvataggio del file: %s') % sys.exc_value()
 			
-	def exit_save(self, widget):
-		pass
+	def exit_save(self, widget, data=None):
+		if self.control_save != True:
+			if self.textbuffer.get_modified() == 1:
+				msg = gtk.MessageDialog(self, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, "Salvare le modifiche prima di uscire?")
+				msg1 = msg.run()
+				msg.destroy()
+				if msg1 == gtk.RESPONSE_YES:
+					self.save
