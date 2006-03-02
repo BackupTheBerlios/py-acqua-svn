@@ -144,7 +144,7 @@ class Gui(gtk.Window):
 			
 			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
 		
-		('Plug-in', None, '_Plug-in'),
+		('Plug-in', None, _('_Plug-in')),
 			
 			('Plug-in',	None,		_('_Plug-in'),	None,	_('Plug-in...'),		'plugin_apri'),
 			
@@ -179,7 +179,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu action='Plug-in'>
 			<menuitem action='Plug-in'/>
-			<separator/>
+			
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -258,12 +258,10 @@ class Gui(gtk.Window):
 		return files.vasca.Vasca()
 	def tips_apri(self, widget, data=None):
 		import files.tips
-		files.tips.TipsDialog()
-		
+		files.tips.TipsDialog()	
 	def calendario_apri(self,widget, data=None):
 		import files.calendario
-		return files.calendario.Calendario()
-		
+		return files.calendario.Calendario()	
 	def inserisci_apri(self,widget, data=None):
 		import files.inserisci
 		return files.inserisci.Inserisci()
