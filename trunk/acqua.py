@@ -64,6 +64,9 @@ os.environ['PATH'] += r";lib;etc;bin;ghost\gs8.53\bin"
 
 if not os.path.exists('Immagini'):
 	os.mkdir('Immagini')
+### creiamo la directory per i plugin ###	
+if not os.path.exists('Plugin'):
+			os.mkdir('Plugin')
 	
 ### creiamo la directory che contiene il database
 
@@ -140,7 +143,7 @@ class Gui(gtk.Window):
 		
 		('Plug-in', None, '_Plug-in'),
 			
-			('Plug-in',	None,		'_Plug-in',	None,	'Plug-in...',		'plugin_apri'),
+			('Plug-in',	None,		_('_Plug-in'),	None,	_('Plug-in...'),		'plugin_apri'),
 			
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -268,8 +271,7 @@ class Gui(gtk.Window):
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
 		files.plugin.plugin()
-		if not os.path.exists('Plugin'):
-			os.mkdir('Plugin')
+		
 	def config_apri(self, widget, data=None):
 		import files.config
 		files.config.Config()		
