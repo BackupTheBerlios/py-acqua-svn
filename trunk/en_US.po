@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Py-Acqua 0.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-02-26 16:18+0100\n"
-"PO-Revision-Date: 2006-03-02 19:42+0100\n"
+"PO-Revision-Date: 2006-03-03 21:50+0100\n"
 "Last-Translator: User & <>\n"
 "Language-Team: English <en@translate.freefriends.org>\n"
 "MIME-Version: 1.0\n"
@@ -300,19 +300,19 @@ msgstr "Next time:"
 #: files/piante.py:190 files/test.py:248 files/vasca.py:212
 #, python-format
 msgid "Row aggiornata (ID: %d)"
-msgstr "Row aggiornata (ID: %d)"
+msgstr "Row dawned (ID: %d)"
 
 #: files/fertilizzante.py:232 files/filtro.py:197 files/pesci.py:233
 #: files/piante.py:233 files/test.py:301 files/vasca.py:260
 #, python-format
 msgid "Row aggiunta (ID: %d)"
-msgstr "Row aggiunta (ID: %d)"
+msgstr "Row adding (ID: %d)"
 
 #: files/fertilizzante.py:265 files/filtro.py:230 files/pesci.py:264
 #: files/piante.py:264 files/test.py:334 files/vasca.py:293
 #, python-format
 msgid "Row eliminata (ID: %d)"
-msgstr "Row eliminata (ID: %d)"
+msgstr "Row eliminated (ID: %d)"
 
 #: files/filtro.py:33
 msgid "Filtro"
@@ -374,36 +374,36 @@ msgstr "Fish"
 
 #: files/pesci.py:42 files/piante.py:42 files/test.py:58 files/vasca.py:43
 msgid "Vasca"
-msgstr "Vasca"
+msgstr "Bathtub"
 
 #: files/pesci.py:42 files/piante.py:42
 msgid "Quantita"
-msgstr "Quantita"
+msgstr "Amount"
 
 #: files/pesci.py:54 files/piante.py:54 files/vasca.py:58
 msgid "Immagine"
-msgstr "Immagine"
+msgstr "Image"
 
 #: files/pesci.py:284 files/piante.py:284 files/vasca.py:316
 msgid "Aggiungi foto"
-msgstr "Aggiungi foto"
+msgstr "You add photo"
 
 #: files/pesci.py:297 files/piante.py:297 files/vasca.py:329
 msgid "Immagini"
-msgstr "Immagini"
+msgstr "Images"
 
 #: files/pesci.py:323 files/piante.py:323 files/vasca.py:355
 #, python-format
 msgid "Errore mentre copiavo (%s)"
-msgstr "Errore mentre copiavo (%s)"
+msgstr "Error while I copied (%s)"
 
 #: files/piante.py:33
 msgid "Piante"
-msgstr "Piante"
+msgstr "Plants"
 
 #: files/piante.py:106 files/vasca.py:115
 msgid "Immagine:"
-msgstr "Immagine:"
+msgstr "Image:"
 
 #: files/test.py:34 files/test.py:395
 msgid "Test"
@@ -415,7 +415,7 @@ msgstr "No"
 
 #: files/test.py:114
 msgid "Grafico"
-msgstr "Grafico"
+msgstr "Diagram"
 
 #: files/test.py:127
 msgid "Ph:"
@@ -439,19 +439,19 @@ msgstr "No2:"
 
 #: files/test.py:133
 msgid "Conducibilita':"
-msgstr "Conducibilita':"
+msgstr "Conductivity:"
 
 #: files/test.py:134
 msgid "Ammoniaca:"
-msgstr "Ammoniaca:"
+msgstr "Ammonia:"
 
 #: files/test.py:358
 msgid ""
 "PyChart non installato.\n"
 "Scaricalo da http://home.gna.org/pychart/"
 msgstr ""
-"PyChart non installato.\n"
-"Scaricalo da http://home.gna.org/pychart/"
+"PyChart not installed.\n"
+"Download da http://home.gna.org/pychart/"
 
 #: files/test.py:387
 msgid "Cond."
@@ -488,7 +488,7 @@ msgstr "Tips of the Day"
 
 #: files/tips.py:54
 msgid "Non mostrare al prossimo avvio"
-msgstr "Non mostrare al prossimo avvio"
+msgstr "Not to show to the next start "
 
 #: files/tips.py:97
 msgid ""
@@ -502,43 +502,43 @@ msgstr ""
 
 #: files/utils.py:40
 msgid "Seleziona una data"
-msgstr "Seleziona una data"
+msgstr "It selects one given "
 
 #: files/vasca.py:33
 msgid "Vasche"
-msgstr "Vasche"
+msgstr "Bathtubs "
 
 #: files/vasca.py:44
 msgid "Tipo Acquario"
-msgstr "Tipo Acquario"
+msgstr "Type Aquarius"
 
 #: files/vasca.py:44
 msgid "Tipo Filtro"
-msgstr "Tipo Filtro"
+msgstr "Type filter"
 
 #: files/vasca.py:45
 msgid "Impianto Co2"
-msgstr "Impianto Co2"
+msgstr "System Co2"
 
 #: files/vasca.py:45
 msgid "Illuminazione"
-msgstr "Illuminazione"
+msgstr "Lighting system"
 
 #: files/vasca.py:119
 msgid "Dolce"
-msgstr "Dolce"
+msgstr "Cake"
 
 #: files/vasca.py:120
 msgid "Dolce Tropicale"
-msgstr "Dolce Tropicale"
+msgstr "Tropical cake"
 
 #: files/vasca.py:121
 msgid "Marino"
-msgstr "Marino"
+msgstr "Marine"
 
 #: files/vasca.py:122
 msgid "Marino Mediterraneo"
-msgstr "Marino Mediterraneo"
+msgstr "The marine Mediterranean"
 
 #: files/vasca.py:123
 msgid "Paludario"
