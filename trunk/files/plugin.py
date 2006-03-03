@@ -23,7 +23,11 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 
-import os, sys, tarfile, shutil, time
+import os
+import sys
+import tarfile
+import shutil
+import time
 
 class Plugin(gtk.Window):
 	

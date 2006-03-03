@@ -146,7 +146,7 @@ class Gui(gtk.Window):
 		
 		('Plug-in', None, _('_Plug-in')),
 			
-			('Plug-in',	None,		_('_Plug-in'),	None,	_('Plug-in...'),		'plugin_apri'),
+			('Plug-in',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
 			
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -178,8 +178,7 @@ class Gui(gtk.Window):
 			<menuitem action='Configurazione'/>
 		</menu>
 		<menu action='Plug-in'>
-			<menuitem action='Plug-in'/>
-			
+			<menuitem action='Plug-in'/>	
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -256,24 +255,31 @@ class Gui(gtk.Window):
 	def vasca_apri(self, widget, data=None):
 		import files.vasca
 		return files.vasca.Vasca()
+		
 	def tips_apri(self, widget, data=None):
 		import files.tips
 		files.tips.TipsDialog()	
+		
 	def calendario_apri(self,widget, data=None):
 		import files.calendario
-		return files.calendario.Calendario()	
+		return files.calendario.Calendario()
+		
 	def inserisci_apri(self,widget, data=None):
 		import files.inserisci
 		return files.inserisci.Inserisci()
+		
 	def allarmi_apri(self, widget, data=None):
 		import files.allarmi
 		files.allarmi.Allarmi()
+		
 	def fertilizzante_apri(self, widget, data=None):
 		import files.fertilizzante
 		files.fertilizzante.Fertilizzante()
+		
 	def filtro_apri(self, widget, data=None):
 		import files.filtro
 		files.filtro.Filtro()
+		
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
 		files.plugin.Plugin()
