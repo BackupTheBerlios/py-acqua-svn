@@ -51,8 +51,8 @@ except:
 	print _("You need to install pyGTK or GTKv2")
 
 try:
-	import pysqlite2 as sqlite
-	#from pysqlite2 import dbapi2 as sqlite
+	#import pysqlite2 as sqlite
+	from pysqlite2 import dbapi2 as sqlite
 except:
 	print _("You need to install pysqlite")
 
