@@ -318,11 +318,11 @@ class Gui(gtk.Window):
 		text = [
 			"Luca Sanna - Founder and lead developer - pyacqua@gmail.com",
 			"Encrico Giubertoni - Web Site Manager - enrico.giubertoni@gmail.com",
-			"Federico Degrandis - Package Manager - danger90@gmail.com",
+			"Federico Degrandis - Developer - danger90@gmail.com",
 			"Massimiliano Sist - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com",
 			"Pietro Grassi - Release Tester - gnatophillum@gmail.com",
 			"Piero Musu - Graphic - admin@irk.it",
-			"Francesco Piccinno - developer - stack@fallasa.it"
+			"Francesco Piccinno - Developer - stack@fallasa.it"
 		]
 		
 		dialog.set_authors(text)
