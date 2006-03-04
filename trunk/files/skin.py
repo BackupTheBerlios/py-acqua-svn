@@ -24,27 +24,41 @@ import os
 import utils
 import impostazioni
 from pysqlite2 import dbapi2 as sqlite
+import Image
 
 class Skin(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__(self)
-		
 		self.set_title(_('Skin'))
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		self.set_resizable(False)
+		
+		path = os.path.join("pixmaps", "skin")
+		
 		box = gtk.VBox()
 		box.set_spacing(4)
 		box.set_border_width(4)
 		
+		i = 0
 		
-		
-	
-
-		self.check = gtk.CheckButton(_('Skin 1 '))
-		self.check1 = gtk.CheckButton(_('Skin 2'))
-		self.check2 = gtk.CheckButton(_('Skin 3'))
-		
-		box.pack_start(self.check)
-		
+		for file in os.listdir(path):
+			i += 1 
+			frm = gtk.Frame("Skin" + str(i))
+			
+			self.check = gtk.CheckButton(file)
+			self.hbox = gtk.HBox()
+			image = gtk.Image()
+			image.set_from_file(os.path.join(path, file))
+			self.hbox.pack_start(self.check)
+			self.hbox.pack_start(image)
+			
+			frm.add(self.hbox)
+			box.pack_start(frm)
+			
+			
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		bb.set_spacing(5)
 		
 		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
 		btn.connect('clicked', self.exit)
@@ -55,31 +69,11 @@ class Skin(gtk.Window):
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
 		
-		
 		self.add(box)
 		self.show_all()
 		
-	def on_response(self, dialog, rsp_id):
-		if rsp_id == gtk.RESPONSE_NONE:
-			self.tip()
-		if rsp_id == gtk.RESPONSE_OK:
-			self.hide()
-			
-			if self.check.get_active():
-				impostazioni.show_tips = "0"
-			else:
-				impostazioni.show_tips = "1"
-
-			impostazioni.save()
-			
-			self.destroy()
-
-			TipsDialog.exist = False
-	
-	
-	
-	
-	
-		
 	def exit(self, *w):
 		self.hide()
+		
+	def insert_skin(self, widget):
+		pass

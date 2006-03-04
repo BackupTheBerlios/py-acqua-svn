@@ -224,7 +224,6 @@ class Gui(gtk.Window):
 		
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
-		#image.set_from_file("pixmaps/main.png")
 		image.set_from_file(files.impostazioni.sfondo)
 		
 		# Menu
