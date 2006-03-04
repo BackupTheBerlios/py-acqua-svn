@@ -23,6 +23,7 @@ import locale
 import gettext
 import sys
 
+
 APP = 'acqua'
 DIR = 'locale'
 
@@ -74,6 +75,8 @@ if not os.path.exists('Data'):
 	os.mkdir('Data')
 	
 ### creiamo il database con sqlite
+
+
 
 if not os.path.exists("Data/db"):
 	connessione=sqlite.connect("Data/db")
@@ -145,6 +148,8 @@ class Gui(gtk.Window):
 			
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
 			
+			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
+			
 			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
 		
 		('Plug-in', None, _('_Plug-in')),
@@ -179,6 +184,7 @@ class Gui(gtk.Window):
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
+			<menuitem action='Skin'/>
 			<menuitem action='Configurazione'/>
 		</menu>
 		<menu action='Plug-in'>
@@ -212,9 +218,14 @@ class Gui(gtk.Window):
 		self.set_title('Py-Acqua')
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
+		
+		import files.impostazioni
+		
+		
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
-		image.set_from_file("pixmaps/main.png")
+		#image.set_from_file("pixmaps/main.png")
+		image.set_from_file(files.impostazioni.sfondo)
 		
 		# Menu
 		self.create_menu()
@@ -279,6 +290,10 @@ class Gui(gtk.Window):
 	def spese_apri(self, widget, data=None):
 		import files.spese
 		files.spese.Spese()
+		
+	def skin_apri(self, widget, data=None):
+		import files.skin
+		files.skin.Skin()
 		
 	def fertilizzante_apri(self, widget, data=None):
 		import files.fertilizzante
