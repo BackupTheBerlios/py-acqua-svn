@@ -84,6 +84,7 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC)")
+	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
 	cursore.execute("create table filtro (id integer,date DATE, giorni NUMERIC)")
 	cursore.execute("create table datapesci (nome TEXT, cara TEXT)")
 	cursore.execute("create table datapiante (nome TEXT, cara TEXT)")
@@ -142,6 +143,8 @@ class Gui(gtk.Window):
 			
 			('Allarmi', None, _('_Allarmi'), None, _('Allarmi...'), 'allarmi_apri'),
 			
+			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
+			
 			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
 		
 		('Plug-in', None, _('_Plug-in')),
@@ -175,6 +178,7 @@ class Gui(gtk.Window):
 			<menuitem action='Calendario'/>
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
+			<menuitem action='Spese'/>
 			<menuitem action='Configurazione'/>
 		</menu>
 		<menu action='Plug-in'>
@@ -271,6 +275,10 @@ class Gui(gtk.Window):
 	def allarmi_apri(self, widget, data=None):
 		import files.allarmi
 		files.allarmi.Allarmi()
+		
+	def spese_apri(self, widget, data=None):
+		import files.spese
+		files.spese.Spese()
 		
 	def fertilizzante_apri(self, widget, data=None):
 		import files.fertilizzante
