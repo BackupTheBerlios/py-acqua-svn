@@ -23,7 +23,7 @@ import gtk
 import os, sys, shutil
 import utils
 import impostazioni
-from pysqlite2 import dbapi2 as sqlite
+#from pysqlite2 import dbapi2 as sqlite
 import Image
 
 class Skin(gtk.Window):
