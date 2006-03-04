@@ -48,10 +48,15 @@ class Skin(gtk.Window):
 			self.hbox = gtk.HBox()
 			#im = Image.open(os.path.join(path, file))
 			#im = im.resize((120, 120))
-			image = gtk.Image()
-			image.set_from_file(os.path.join(path, file))
+			pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join(path, file))
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
+			
+			
+			#image = gtk.Image()
+			#image.set_from_file(os.path.join(path, file))
 			self.hbox.pack_start(self.check)
-			self.hbox.pack_start(image)
+			self.hbox.pack_start(pixbuf)
 			
 			frm.add(self.hbox)
 			box.pack_start(frm)
@@ -102,3 +107,15 @@ class Skin(gtk.Window):
 				shutil.copy(file, 'pixmaps/skin')
 			except:
 				print "E' occorso un errore durante la copia: %s" % sys.exc_value
+				
+def make_thumb(twh, w, h):
+	if w == h:
+		return twh, twh
+	if w < h:
+		y = twh
+		x = int(float(y*w)/float(h))
+		return x, y
+	if w > h:
+		x = twh
+		y = int(float(x*h)/float(w))
+		return x, y
