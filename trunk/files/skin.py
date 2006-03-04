@@ -20,7 +20,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
-import os
+import os, sys, shutil
 import utils
 import impostazioni
 from pysqlite2 import dbapi2 as sqlite
@@ -31,9 +31,9 @@ class Skin(gtk.Window):
 		gtk.Window.__init__(self)
 		self.set_title(_('Skin'))
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
-		self.set_resizable(False)
+		#self.set_resizable(False)
 		
-		path = os.path.join("pixmaps", "skin")
+		path = os.path.join(os.getcwd(), os.path.join("pixmaps", "skin"))
 		
 		box = gtk.VBox()
 		box.set_spacing(4)
@@ -47,6 +47,8 @@ class Skin(gtk.Window):
 			
 			self.check = gtk.CheckButton(file)
 			self.hbox = gtk.HBox()
+			#im = Image.open(os.path.join(path, file))
+			#im = im.resize((120, 120))
 			image = gtk.Image()
 			image.set_from_file(os.path.join(path, file))
 			self.hbox.pack_start(self.check)
@@ -65,7 +67,7 @@ class Skin(gtk.Window):
 		bb.pack_start(btn)
 		
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		#btn.connect('clicked', self.inserisci_test)
+		btn.connect('clicked', self.insert_skin)
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
 		
@@ -76,4 +78,28 @@ class Skin(gtk.Window):
 		self.hide()
 		
 	def insert_skin(self, widget):
-		pass
+		self.dialog = gtk.FileChooserDialog("Carica skin...", self, 
+			buttons = (gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+		
+		filter = gtk.FileFilter()
+		filter.set_name("Skin py-Acqua")
+		filter.add_pattern("*.png")
+		filter.add_pattern("*.jpg")
+		self.dialog.add_filter(filter)
+		
+		self.dialog.connect('response', self.filename)
+		
+		id = self.dialog.run() 
+		self.dialog.hide()		
+		
+		self.dialog.destroy()
+	
+	def filename(self, widget, data=None):
+		file = self.dialog.get_filename()
+		path = os.path.join(os.getcwd(), 'pixmaps/skin')
+		#Copio tutto nella dir Plugin		
+		if self.path != file:
+			try:
+				shutil.copy(file, 'pixmaps/skin')
+			except:
+				print "E' occorso un errore durante la copia: %s" % sys.exc_value
