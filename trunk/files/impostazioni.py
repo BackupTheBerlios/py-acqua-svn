@@ -35,7 +35,7 @@ minfe = maxfe = 0
 minra = maxra = 0
 minfo = maxfo = 0
 show_tips = "1"
-sfondo = "os.path.join('pixmaps', 'main.png')"
+sfondo = os.path.join('pixmaps', 'main.png')
 
 def save():
 	try:
