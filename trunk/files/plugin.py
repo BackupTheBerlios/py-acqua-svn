@@ -79,7 +79,6 @@ class Plugin(gtk.Window):
 		box.pack_start(bb, False, False, 0)
 		
 		self.status = gtk.Statusbar()
-		#self.status.push(0, "Prova")
 		box.pack_start(self.status)
 		
 		self.add(box)

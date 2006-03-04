@@ -73,8 +73,8 @@ class Config(gtk.Window):
 		try:
 			os.rename(os.path.join(self.path, 'config.cfg'), os.path.join(self.path, 'config.cfg~'))
 			testo = open(os.path.join(self.path, 'config.cfg'), 'w').write(text)
-			self.set_title("config.cfg (Salvato)")
 			self.bar.push(1, 'File salvato')
+			self.set_title("config.cfg")
 			self.control_save = True
 		except:
 			self.bar.push(1, 'Errore durante il salvataggio del file: %s') % sys.exc_value()
@@ -89,11 +89,14 @@ class Config(gtk.Window):
 					self.save(widget)
 	
 	def regex(self):
-		regex = '*(\[)\s+(\])$'
+		regex = '\[.*\]'
 		start, end = self.textbuffer.get_bounds()
 		text = self.textbuffer.get_text(start, end)
-		p = re.compile("*(\[)\s+(\])$")
-		#iterator = p.finditer(text)
-		match = p.match(text)
-		for iter in match:
-			print match.start(), match.end()
+		p = re.compile('\[.*\]')
+		iterator = p.finditer(text)
+		for iter in iterator:
+			 iter_start = self.textbuffer.get_iter_at_line(iter.start())
+			 iter_end = self.textbuffer.get_iter_at_line(iter.end())
+			 self.textbuffer.apply_tag_by_name('color_defualt', iter_start, iter_end)
+			 print iter.start() 
+			 print iter.end()
