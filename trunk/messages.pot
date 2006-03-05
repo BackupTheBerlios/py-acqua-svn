@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< .mine
-"POT-Creation-Date: 2006-02-26 17:22+0100\n"
-=======
-"POT-Creation-Date: 2006-02-26 17:42+0100\n"
->>>>>>> .r120
+"POT-Creation-Date: 2006-03-05 18:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,139 +16,179 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: acqua.py:50
+#: acqua.py:51
 msgid "You need to install pyGTK or GTKv2"
 msgstr ""
 
-#: acqua.py:55
+#: acqua.py:57
 msgid "You need to install pysqlite"
 msgstr ""
 
-#: acqua.py:109
+#: acqua.py:118
 msgid "_Acquario"
 msgstr ""
 
-#: acqua.py:110
+#: acqua.py:119
 msgid "_Calcoli"
 msgstr ""
 
-#: acqua.py:110
+#: acqua.py:119
 msgid "Calcoli..."
 msgstr ""
 
-#: acqua.py:112
+#: acqua.py:121
 msgid "_Vasche"
 msgstr ""
 
-#: acqua.py:112
+#: acqua.py:121
 msgid "Vasche..."
 msgstr ""
 
-#: acqua.py:114
+#: acqua.py:123
 msgid "_Test"
 msgstr ""
 
-#: acqua.py:114 files/test.py:34 files/test.py:395
+#: acqua.py:123 files/test.py:34 files/test.py:395
 msgid "Test"
 msgstr ""
 
-#: acqua.py:116
+#: acqua.py:125
 msgid "_Pesci"
 msgstr ""
 
-#: acqua.py:116
+#: acqua.py:125
 msgid "Pesci..."
 msgstr ""
 
-#: acqua.py:118
+#: acqua.py:127
 msgid "_Piante"
 msgstr ""
 
-#: acqua.py:118
+#: acqua.py:127
 msgid "Piante..."
 msgstr ""
 
-#: acqua.py:120
+#: acqua.py:129
+msgid "_Invertebrati"
+msgstr ""
+
+#: acqua.py:129
+msgid "Invertebrati..."
+msgstr ""
+
+#: acqua.py:131
 msgid "_Database"
 msgstr ""
 
-#: acqua.py:120
+#: acqua.py:131
 msgid "Database..."
 msgstr ""
 
-#: acqua.py:122
+#: acqua.py:133
 msgid "_Quit"
 msgstr ""
 
-#: acqua.py:122
+#: acqua.py:133
 msgid "Esci da Py-Acqua"
 msgstr ""
 
-#: acqua.py:124
+#: acqua.py:135
 msgid "_Impostazioni"
 msgstr ""
 
-#: acqua.py:126
+#: acqua.py:137
 msgid "_Tips Tricks"
 msgstr ""
 
-#: acqua.py:126
+#: acqua.py:137
 msgid "Tips and Tricks..."
 msgstr ""
 
-#: acqua.py:128
+#: acqua.py:139
 msgid "_Fertilizzante"
 msgstr ""
 
-#: acqua.py:128
+#: acqua.py:139
 msgid "fertilizzante..."
 msgstr ""
 
-#: acqua.py:130
+#: acqua.py:141
 msgid "_Filtro"
 msgstr ""
 
-#: acqua.py:130
+#: acqua.py:141
 msgid "filtro..."
 msgstr ""
 
-#: acqua.py:132
+#: acqua.py:143
 msgid "_Calendario"
 msgstr ""
 
-#: acqua.py:132
+#: acqua.py:143
 msgid "Calendario..."
 msgstr ""
 
-#: acqua.py:134
+#: acqua.py:145
 msgid "_Inserisci"
 msgstr ""
 
-#: acqua.py:134
+#: acqua.py:145
 msgid "Inserisci..."
 msgstr ""
 
-#: acqua.py:136
+#: acqua.py:147
 msgid "_Allarmi"
 msgstr ""
 
-#: acqua.py:136
+#: acqua.py:147
 msgid "Allarmi..."
 msgstr ""
 
-#: acqua.py:138 acqua.py:142
+#: acqua.py:149
+msgid "_Spese"
+msgstr ""
+
+#: acqua.py:149
+msgid "Spese..."
+msgstr ""
+
+#: acqua.py:151
+msgid "_Skin"
+msgstr ""
+
+#: acqua.py:151
+msgid "Skin..."
+msgstr ""
+
+#: acqua.py:153
+msgid "_Configurazione"
+msgstr ""
+
+#: acqua.py:153
+msgid "Configurazione"
+msgstr ""
+
+#: acqua.py:155 acqua.py:157
+msgid "_Plug-in"
+msgstr ""
+
+#: acqua.py:157
+msgid "Plug-in..."
+msgstr ""
+
+#: acqua.py:159 acqua.py:163
 msgid "_Aiuto"
 msgstr ""
 
-#: acqua.py:140
+#: acqua.py:161
 msgid "_Informazioni"
 msgstr ""
 
-#: acqua.py:140
+#: acqua.py:161
 msgid "Riguardo Py-Acqua"
 msgstr ""
 
-#: acqua.py:142
+#: acqua.py:163
 msgid "Aiuto..."
 msgstr ""
 
@@ -377,22 +413,24 @@ msgstr ""
 msgid "Watt per piante poco esigenti:"
 msgstr ""
 
-#: files/fertilizzante.py:34
+#: files/fertilizzante.py:34 files/spese.py:128
 msgid "Fertilizzante"
 msgstr ""
 
-#: files/fertilizzante.py:43 files/filtro.py:49 files/pesci.py:42
-#: files/piante.py:42 files/test.py:58 files/vasca.py:43
+#: files/fertilizzante.py:43 files/filtro.py:49 files/invertebrati.py:42
+#: files/pesci.py:42 files/piante.py:42 files/spese.py:42 files/test.py:58
+#: files/vasca.py:43
 msgid "Id"
 msgstr ""
 
-#: files/fertilizzante.py:43 files/filtro.py:49 files/pesci.py:42
-#: files/piante.py:42 files/test.py:58 files/vasca.py:43
+#: files/fertilizzante.py:43 files/filtro.py:49 files/invertebrati.py:42
+#: files/pesci.py:42 files/piante.py:42 files/spese.py:42 files/test.py:58
+#: files/vasca.py:43
 msgid "Data"
 msgstr ""
 
-#: files/fertilizzante.py:43 files/pesci.py:42 files/piante.py:42
-#: files/vasca.py:43
+#: files/fertilizzante.py:43 files/invertebrati.py:42 files/pesci.py:42
+#: files/piante.py:42 files/spese.py:42 files/vasca.py:43
 msgid "Nome"
 msgstr ""
 
@@ -404,22 +442,26 @@ msgstr ""
 msgid "Prossima volta"
 msgstr ""
 
-#: files/fertilizzante.py:76 files/filtro.py:79 files/pesci.py:80
-#: files/piante.py:78 files/test.py:96 files/vasca.py:84
+#: files/fertilizzante.py:76 files/filtro.py:79 files/invertebrati.py:80
+#: files/pesci.py:80 files/piante.py:78 files/spese.py:80 files/test.py:96
+#: files/vasca.py:84
 msgid "Editing:"
 msgstr ""
 
 #: files/fertilizzante.py:100 files/filtro.py:103 files/filtro.py:333
-#: files/piante.py:102 files/test.py:125 files/vasca.py:109 files/vasca.py:451
+#: files/invertebrati.py:104 files/pesci.py:104 files/piante.py:102
+#: files/spese.py:104 files/test.py:125 files/vasca.py:109 files/vasca.py:451
 msgid "Data:"
 msgstr ""
 
-#: files/fertilizzante.py:101 files/filtro.py:334 files/piante.py:105
+#: files/fertilizzante.py:101 files/filtro.py:334 files/invertebrati.py:107
+#: files/pesci.py:107 files/piante.py:105 files/spese.py:108
 #: files/vasca.py:110 files/vasca.py:452
 msgid "Nome:"
 msgstr ""
 
-#: files/fertilizzante.py:102 files/piante.py:104
+#: files/fertilizzante.py:102 files/invertebrati.py:106 files/pesci.py:106
+#: files/piante.py:104 files/spese.py:107
 msgid "Quantita:"
 msgstr ""
 
@@ -427,25 +469,28 @@ msgstr ""
 msgid "Prossima volta:"
 msgstr ""
 
-#: files/fertilizzante.py:190 files/filtro.py:159 files/pesci.py:193
-#: files/piante.py:190 files/test.py:248 files/vasca.py:212
+#: files/fertilizzante.py:190 files/filtro.py:159 files/invertebrati.py:193
+#: files/pesci.py:193 files/piante.py:190 files/spese.py:213 files/test.py:248
+#: files/vasca.py:212
 #, python-format
 msgid "Row aggiornata (ID: %d)"
 msgstr ""
 
-#: files/fertilizzante.py:232 files/filtro.py:197 files/pesci.py:233
-#: files/piante.py:233 files/test.py:301 files/vasca.py:260
+#: files/fertilizzante.py:232 files/filtro.py:197 files/invertebrati.py:233
+#: files/pesci.py:233 files/piante.py:233 files/spese.py:257 files/test.py:301
+#: files/vasca.py:260
 #, python-format
 msgid "Row aggiunta (ID: %d)"
 msgstr ""
 
-#: files/fertilizzante.py:265 files/filtro.py:230 files/pesci.py:264
-#: files/piante.py:264 files/test.py:334 files/vasca.py:293
+#: files/fertilizzante.py:265 files/filtro.py:230 files/invertebrati.py:264
+#: files/pesci.py:264 files/piante.py:264 files/spese.py:288 files/test.py:334
+#: files/vasca.py:293
 #, python-format
 msgid "Row eliminata (ID: %d)"
 msgstr ""
 
-#: files/filtro.py:33
+#: files/filtro.py:33 files/spese.py:129
 msgid "Filtro"
 msgstr ""
 
@@ -453,8 +498,9 @@ msgstr ""
 msgid "Riepilogo"
 msgstr ""
 
-#: files/filtro.py:332 files/piante.py:103 files/test.py:126
-#: files/vasca.py:108 files/vasca.py:450
+#: files/filtro.py:332 files/invertebrati.py:105 files/pesci.py:105
+#: files/piante.py:103 files/spese.py:105 files/test.py:126 files/vasca.py:108
+#: files/vasca.py:450
 msgid "Vasca:"
 msgstr ""
 
@@ -474,16 +520,16 @@ msgstr ""
 msgid "Illuminazione:"
 msgstr ""
 
-#: files/impostazioni.py:101
+#: files/impostazioni.py:104
 #, python-format
 msgid "Errore nel salvataggio del file di configurazione (%s)"
 msgstr ""
 
-#: files/impostazioni.py:141
+#: files/impostazioni.py:146
 msgid "Errore nel caricamento dei valori.. uso quelli di default"
 msgstr ""
 
-#: files/impostazioni.py:143
+#: files/impostazioni.py:148
 msgid "File config.cfg non trovato.. salvo la configurazione di default"
 msgstr ""
 
@@ -499,41 +545,92 @@ msgstr ""
 msgid "Massimo"
 msgstr ""
 
-#: files/pesci.py:33
-msgid "Pesci"
+#: files/invertebrati.py:33
+msgid "Invertebrati"
 msgstr ""
 
-#: files/pesci.py:42 files/piante.py:42 files/test.py:58 files/vasca.py:43
+#: files/invertebrati.py:42 files/pesci.py:42 files/piante.py:42
+#: files/spese.py:42 files/spese.py:124 files/test.py:58 files/vasca.py:43
 msgid "Vasca"
 msgstr ""
 
-#: files/pesci.py:42 files/piante.py:42
+#: files/invertebrati.py:42 files/pesci.py:42 files/piante.py:42
+#: files/spese.py:42
 msgid "Quantita"
 msgstr ""
 
-#: files/pesci.py:54 files/piante.py:54 files/vasca.py:58
+#: files/invertebrati.py:54 files/pesci.py:54 files/piante.py:54
+#: files/spese.py:54 files/vasca.py:58
 msgid "Immagine"
 msgstr ""
 
-#: files/pesci.py:284 files/piante.py:284 files/vasca.py:316
+#: files/invertebrati.py:108 files/pesci.py:108 files/piante.py:106
+#: files/spese.py:110 files/vasca.py:115
+msgid "Immagine:"
+msgstr ""
+
+#: files/invertebrati.py:284 files/pesci.py:284 files/piante.py:284
+#: files/spese.py:310 files/vasca.py:316
 msgid "Aggiungi foto"
 msgstr ""
 
-#: files/pesci.py:297 files/piante.py:297 files/vasca.py:329
+#: files/invertebrati.py:297 files/pesci.py:297 files/piante.py:297
+#: files/spese.py:323 files/vasca.py:329
 msgid "Immagini"
 msgstr ""
 
-#: files/pesci.py:323 files/piante.py:323 files/vasca.py:355
+#: files/invertebrati.py:323 files/pesci.py:323 files/piante.py:323
+#: files/spese.py:349 files/vasca.py:355
 #, python-format
 msgid "Errore mentre copiavo (%s)"
+msgstr ""
+
+#: files/pesci.py:33
+msgid "Pesci"
 msgstr ""
 
 #: files/piante.py:33
 msgid "Piante"
 msgstr ""
 
-#: files/piante.py:106 files/vasca.py:115
-msgid "Immagine:"
+#: files/skin.py:32
+msgid "Skin"
+msgstr ""
+
+#: files/spese.py:33
+msgid "Spese"
+msgstr ""
+
+#: files/spese.py:42
+msgid "Tipologia"
+msgstr ""
+
+#: files/spese.py:42
+msgid "Soldi"
+msgstr ""
+
+#: files/spese.py:106
+msgid "Tipologia:"
+msgstr ""
+
+#: files/spese.py:109
+msgid "Soldi:"
+msgstr ""
+
+#: files/spese.py:125
+msgid "Pesce"
+msgstr ""
+
+#: files/spese.py:126
+msgid "Pianta"
+msgstr ""
+
+#: files/spese.py:127
+msgid "Invertebrato"
+msgstr ""
+
+#: files/spese.py:130
+msgid "Varie"
 msgstr ""
 
 #: files/test.py:69 files/test.py:386
