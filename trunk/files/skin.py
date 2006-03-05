@@ -48,15 +48,17 @@ class Skin(gtk.Window):
 			self.hbox = gtk.HBox()
 			#im = Image.open(os.path.join(path, file))
 			#im = im.resize((120, 120))
-			pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join(path, file))
-			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
-			return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
 			
 			
-			#image = gtk.Image()
-			#image.set_from_file(os.path.join(path, file))
+			#pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join(path, file))
+			#w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			#return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
+			
+			
+			image = gtk.Image()
+			image.set_from_file(os.path.join(path, file))
 			self.hbox.pack_start(self.check)
-			self.hbox.pack_start(pixbuf)
+			self.hbox.pack_start(image)
 			
 			frm.add(self.hbox)
 			box.pack_start(frm)
@@ -65,6 +67,10 @@ class Skin(gtk.Window):
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		bb.set_spacing(5)
+		
+		btn = gtk.Button(stock=gtk.STOCK_OK)
+		btn.connect('clicked', self.on_skin_ok)
+		bb.pack_start(btn)
 		
 		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
 		btn.connect('clicked', self.exit)
@@ -97,6 +103,14 @@ class Skin(gtk.Window):
 		self.dialog.hide()		
 		
 		self.dialog.destroy()
+		
+	def on_skin_ok(self):
+		if self.check.get_active():
+			impostazioni.sfondo = file
+		else:
+			impostazioni.sfondo = file
+
+		impostazioni.save()
 	
 	def filename(self, widget, data=None):
 		file = self.dialog.get_filename()
