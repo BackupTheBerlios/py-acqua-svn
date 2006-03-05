@@ -29,41 +29,53 @@ import impostazioni
 class Skin(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__(self)
-		self.set_title(_('Skin'))
+		self.set_title(_("Skin"))
+		
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
-		#self.set_resizable(False)
+		self.set_resizable(False)
 		
 		path = os.path.join(os.getcwd(), os.path.join("pixmaps", "skin"))
 		
 		box = gtk.VBox()
 		box.set_spacing(4)
 		box.set_border_width(4)
+
+		# Hbox per contenere una scrolled e un image
+		hbox = gtk.HBox()
 		
-		i = 0
+		# Una Scrolled Window per contenere
+		# la Treeview
+		
+		sw = gtk.ScrolledWindow()
+		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		
+		# Due colonne una per il nome dello skin
+		# l'altra per il percorso al file main.png
+		
+		list = gtk.ListStore(str, str)
+		self.view = view = gtk.TreeView(list)
+		
+		view.append_column(gtk.TreeViewColumn(_("Skin"), gtk.CellRendererText(), text=0))
+		view.get_selection().connect('changed', self.on_selection_changed)
+
+		sw.add(view)
+
+		# Creiamo self.image
+		
+		self.image = gtk.Image()
+		
+		# Pacchiamo
+		
+		hbox.pack_start(sw, False, False, 0)
+		hbox.pack_start(self.image)
+
+		box.pack_start(hbox)
 		
 		for file in os.listdir(path):
-			i += 1 
-			frm = gtk.Frame("Skin" + str(i))
-			
-			self.check = gtk.CheckButton(file)
-			self.hbox = gtk.HBox()
-			#im = Image.open(os.path.join(path, file))
-			#im = im.resize((120, 120))
-			
-			
-			#pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join(path, file))
-			#w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
-			#return pixbuf.scale_simple(w, h, gtk.gdk.INTERP_HYPER)
-			
-			
-			image = gtk.Image()
-			image.set_from_file(os.path.join(path, file))
-			self.hbox.pack_start(self.check)
-			self.hbox.pack_start(image)
-			
-			frm.add(self.hbox)
-			box.pack_start(frm)
-			
+			current = os.path.join(path, file)
+			if os.path.isdir(current):
+				self.add_skin(current, list)
 			
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
@@ -85,44 +97,62 @@ class Skin(gtk.Window):
 		self.add(box)
 		self.show_all()
 		
+	def add_skin(self, path, list):
+		back = os.path.join(path, "main.png")
+		print back
+		
+		if not os.path.exists(back):
+			return
+
+		list.append([os.path.basename(path), back])
+	
+	def on_selection_changed(self, selection):
+		mod, it = selection.get_selected()
+		self.update_image(mod.get_value(it, 1))
+	
+	def update_image(self, path):
+		self.image.set_from_file(path)
+		
 	def exit(self, *w):
 		self.hide()
 		
 	def insert_skin(self, widget):
-		self.dialog = gtk.FileChooserDialog("Carica skin...", self, 
+		dialog = gtk.FileChooserDialog(_("Inserisci skin..."), self,
 			buttons = (gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		
 		filter = gtk.FileFilter()
-		filter.set_name("Skin py-Acqua")
+		filter.set_name(_("Skin py-Acqua"))
 		filter.add_pattern("*.png")
 		filter.add_pattern("*.jpg")
-		self.dialog.add_filter(filter)
-		
-		self.dialog.connect('response', self.filename)
+		dialog.add_filter(filter)
 		
 		id = self.dialog.run() 
-		self.dialog.hide()		
+
+		if id == gtk.RESPONSE_OK:
+			file = self.dialog.get_filename()
+			path = os.path.join(os.getcwd(), 'pixmaps/skin')
+			
+			#Copio tutto nella dir skin
+			if self.path != file:
+				try:
+					shutil.copy(file, 'pixmaps/skin')
+				except:
+					print _("E' occorso un errore durante la copia: %s") % sys.exc_value
 		
-		self.dialog.destroy()
+		dialog.hide()
+		dialog.destroy()
 		
-	def on_skin_ok(self):
-		if self.check.get_active():
-			impostazioni.sfondo = file
+	def on_skin_ok(self, widget):
+		mod, it = self.view.get_selection().get_selected()
+		
+		if it == None:
+			return
 		else:
-			impostazioni.sfondo = file
+			impostazioni.sfondo = mod.get_value(it, 1)
 
 		impostazioni.save()
-	
-	def filename(self, widget, data=None):
-		file = self.dialog.get_filename()
-		path = os.path.join(os.getcwd(), 'pixmaps/skin')
-		#Copio tutto nella dir Plugin		
-		if self.path != file:
-			try:
-				shutil.copy(file, 'pixmaps/skin')
-			except:
-				print "E' occorso un errore durante la copia: %s" % sys.exc_value
-				
+		self.exit()
+		
 def make_thumb(twh, w, h):
 	if w == h:
 		return twh, twh

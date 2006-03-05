@@ -124,6 +124,8 @@ class Combo(gtk.ComboBox):
 				self.set_active_iter(it)
 				return
 			it = mod.iter_next(it)
+#class InputDialog(gtk.Dialog):
+#	def __init__(
 		
 class Test:
 	def __init__(self, i):
