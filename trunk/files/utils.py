@@ -146,6 +146,74 @@ class InputDialog(gtk.MessageDialog):
 		
 		return self.entry.get_text()
 
+class FileChooser(gtk.FileChooserDialog):
+	def __init__(self, text, parent):
+		gtk.FileChooserDialog.__init__(
+			self,
+			text,
+			parent,
+			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
+			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+		
+		self.set_use_preview_label(False)
+
+		img = gtk.Image()
+		
+		self.set_preview_widget(img)
+		self.set_size_request(128, -1)
+
+		# Creiamo i filtri
+
+		filter = gtk.FileFilter()
+		filter.set_name("Immagini")
+		filter.add_mime_type("image/png")
+		filter.add_mime_type("image/jpeg")
+		filter.add_mime_type("image/gif")
+		filter.add_pattern("*.png")
+		filter.add_pattern("*.jpg")
+		filter.add_pattern("*.gif")
+		self.add_filter(filter)
+		
+		self.connect('update-preview', self.on_update_preview)
+	
+	def run(self):
+		gtk.Dialog.run(self)
+
+		self.hide()
+		self.destroy()
+
+		if id == gtk.RESPONSE_OK:
+			return self.get_filename()
+		else:
+			return None
+
+	def on_update_preview(self, chooser):
+		uri = chooser.get_uri()
+		try:
+			pixbuf = gtk.gdk.pixbuf_new_from_file(uri[7:])
+			
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			pixbuf = pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR)
+			
+			chooser.get_preview_widget().set_from_pixbuf(pixbuf)
+		except:
+			chooser.get_preview_widget().set_from_stock(gtk.STOCK_DIALOG_QUESTION,
+				gtk.ICON_SIZE_DIALOG)
+		
+		chooser.set_preview_widget_active(True)
+
+def make_thumb(twh, w, h):
+	if w == h:
+		return twh, twh
+	if w < h:
+		y = twh
+		x = int(float(y*w)/float(h))
+		return x, y
+	if w > h:
+		x = twh
+		y = int(float(x*h)/float(w))
+		return x, y
+
 class Test:
 	def __init__(self, i):
 		w = gtk.Window()
@@ -162,11 +230,10 @@ class Test:
 		box.pack_start(btn)
 		w.add(box)
 		w.show_all()
-		b = InputDialog(None, "asdasso")
-		print b.run()
 	def a(self, w):
 		print self.e.get_text()
 		
 if __name__ == "__main__":
-	Test(0)
+	#Test(0)
+	FileChooser("asd", None)
 	gtk.main()
