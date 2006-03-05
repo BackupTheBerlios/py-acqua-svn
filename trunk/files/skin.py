@@ -25,7 +25,6 @@ import sys
 import shutil
 import utils
 import impostazioni
-import Image
 
 class Skin(gtk.Window):
 	def __init__(self):

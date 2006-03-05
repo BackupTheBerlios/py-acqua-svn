@@ -49,21 +49,19 @@ class Config(gtk.Window):
 		
 		self.tag = gtk.TextTag("color_defualt")
 		self.tag.set_property("weight", pango.WEIGHT_BOLD)
+		self.tag.set_property("editable", False)
 				
 		table = self.textbuffer.get_tag_table()
 		table.add(self.tag)
 		
 		self.textbuffer.set_modified(0)
 		
-		iter = self.textbuffer.get_iter_at_line(0)
-		iter2 = self.textbuffer.get_iter_at_line(1)
-		iter3 = self.textbuffer.get_iter_at_line(4)
-		iter4 = self.textbuffer.get_iter_at_line(5)
+		# Facciamo il matching di cose tipo [asd]
+		self.regex(r'^(\[).*?(\])$')
 
-		self.textbuffer.apply_tag_by_name('color_defualt', iter, iter2)
-		self.textbuffer.apply_tag_by_name('color_defualt', iter3, iter4)
-		
-		self.regex()		
+		# Qui dei valori tipo max = asd
+		self.regex(r'^.*\s\=\s')
+
 		self.add(vbox)
 		self.show_all()
 		
@@ -88,15 +86,14 @@ class Config(gtk.Window):
 				if msg1 == gtk.RESPONSE_YES:
 					self.save(widget)
 	
-	def regex(self):
-		regex = '\[.*\]'
+	def regex(self, regex):
 		start, end = self.textbuffer.get_bounds()
-		text = self.textbuffer.get_text(start, end)
-		p = re.compile('\[.*\]')
+		text = self.textbuffer.get_text(start, end, False)
+		
+		p = re.compile(regex, re.M)
 		iterator = p.finditer(text)
+		
 		for iter in iterator:
-			 iter_start = self.textbuffer.get_iter_at_line(iter.start())
-			 iter_end = self.textbuffer.get_iter_at_line(iter.end())
-			 self.textbuffer.apply_tag_by_name('color_defualt', iter_start, iter_end)
-			 print iter.start() 
-			 print iter.end()
+			iter_start = self.textbuffer.get_iter_at_offset(iter.start(0))
+			iter_end = self.textbuffer.get_iter_at_offset(iter.end(0))
+			self.textbuffer.apply_tag_by_name('color_defualt', iter_start, iter_end)

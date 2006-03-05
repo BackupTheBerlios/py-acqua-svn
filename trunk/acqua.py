@@ -154,7 +154,7 @@ class Gui(gtk.Window):
 		
 		('Plug-in', None, _('_Plug-in')),
 			
-			('Plug-in',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
+			('Plugins',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
 			
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -188,7 +188,7 @@ class Gui(gtk.Window):
 			<menuitem action='Configurazione'/>
 		</menu>
 		<menu action='Plug-in'>
-			<menuitem action='Plug-in'/>	
+			<menuitem action='Plugins'/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
