@@ -124,9 +124,28 @@ class Combo(gtk.ComboBox):
 				self.set_active_iter(it)
 				return
 			it = mod.iter_next(it)
-#class InputDialog(gtk.Dialog):
-#	def __init__(
+class InputDialog(gtk.MessageDialog):
+	def __init__(self, parent, text):
+		gtk.MessageDialog.__init__(self,
+			parent,
+			gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+			gtk.MESSAGE_QUESTION,
+			gtk.BUTTONS_OK,
+			text)
 		
+		self.entry = gtk.Entry()
+		self.vbox.add(self.entry)
+		self.entry.show()
+		self.set_size_request(250, 150)
+	
+	def run(self):
+		id = gtk.Dialog.run(self)
+		
+		self.hide()
+		self.destroy()
+		
+		return self.entry.get_text()
+
 class Test:
 	def __init__(self, i):
 		w = gtk.Window()
@@ -143,10 +162,11 @@ class Test:
 		box.pack_start(btn)
 		w.add(box)
 		w.show_all()
+		b = InputDialog(None, "asdasso")
+		print b.run()
 	def a(self, w):
 		print self.e.get_text()
 		
 if __name__ == "__main__":
 	Test(0)
-	Test(1)
 	gtk.main()

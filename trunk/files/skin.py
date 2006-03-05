@@ -34,8 +34,6 @@ class Skin(gtk.Window):
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		self.set_resizable(False)
 		
-		path = os.path.join(os.getcwd(), os.path.join("pixmaps", "skin"))
-		
 		box = gtk.VBox()
 		box.set_spacing(4)
 		box.set_border_width(4)
@@ -53,7 +51,7 @@ class Skin(gtk.Window):
 		# Due colonne una per il nome dello skin
 		# l'altra per il percorso al file main.png
 		
-		list = gtk.ListStore(str, str)
+		self.list = list = gtk.ListStore(str, str)
 		self.view = view = gtk.TreeView(list)
 		
 		view.append_column(gtk.TreeViewColumn(_("Skin"), gtk.CellRendererText(), text=0))
@@ -71,12 +69,9 @@ class Skin(gtk.Window):
 		hbox.pack_start(self.image)
 
 		box.pack_start(hbox)
+
+		self.reload()
 		
-		for file in os.listdir(path):
-			current = os.path.join(path, file)
-			if os.path.isdir(current):
-				self.add_skin(current, list)
-			
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		bb.set_spacing(5)
@@ -96,6 +91,15 @@ class Skin(gtk.Window):
 		
 		self.add(box)
 		self.show_all()
+	
+	def reload(self):
+		
+		path = os.path.join(os.getcwd(), os.path.join("pixmaps", "skin"))
+		
+		for file in os.listdir(path):
+			current = os.path.join(path, file)
+			if os.path.isdir(current):
+				self.add_skin(current, self.list)
 		
 	def add_skin(self, path, list):
 		back = os.path.join(path, "main.png")
@@ -108,7 +112,9 @@ class Skin(gtk.Window):
 	
 	def on_selection_changed(self, selection):
 		mod, it = selection.get_selected()
-		self.update_image(mod.get_value(it, 1))
+		
+		if it != None:
+			self.update_image(mod.get_value(it, 1))
 	
 	def update_image(self, path):
 		self.image.set_from_file(path)
@@ -126,21 +132,29 @@ class Skin(gtk.Window):
 		filter.add_pattern("*.jpg")
 		dialog.add_filter(filter)
 		
-		id = self.dialog.run() 
+		id = dialog.run() 
 
 		if id == gtk.RESPONSE_OK:
-			file = self.dialog.get_filename()
+			file = dialog.get_filename()
 			path = os.path.join(os.getcwd(), 'pixmaps/skin')
-			
-			#Copio tutto nella dir skin
-			if self.path != file:
-				try:
-					shutil.copy(file, 'pixmaps/skin')
-				except:
-					print _("E' occorso un errore durante la copia: %s") % sys.exc_value
+
+			name = utils.InputDialog(self, _("Inserisci il nome per il nuovo skin")).run()
+			if name != "":
+				# Copio tutto nella dir skin
+				path = os.path.join(path, name)
+				os.mkdir(path)
+				
+				if self.path != file:
+					try:
+						shutil.copy(file, os.path.join(path, 'main.png'))
+					except:
+						print _("E' occorso un errore durante la copia: %s") % sys.exc_value
 		
 		dialog.hide()
 		dialog.destroy()
+
+		self.list.clear()
+		self.reload()
 		
 	def on_skin_ok(self, widget):
 		mod, it = self.view.get_selection().get_selected()
