@@ -20,6 +20,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
+import utils
 
 class Calcoli(gtk.Window):
 	def __init__(self): 
@@ -41,14 +42,24 @@ class Calcoli(gtk.Window):
 		tbl_valori.set_border_width(4)
 		tbl_valori.set_row_spacings(4)
 		
-		tbl_valori.attach(self.new_label(_("Altezza in cm:")), 0, 1, 0, 1)
-		tbl_valori.attach(self.new_label(_("Lunghezza in cm:")), 0, 1, 1, 2)
-		tbl_valori.attach(self.new_label(_("Larghezza in cm:")), 0, 1, 2, 3)
+		
+		tbl_valori.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		tbl_valori.attach(self.new_label(_("Altezza in cm:")), 0, 1, 1, 2)
+		tbl_valori.attach(self.new_label(_("Lunghezza in cm:")), 0, 1, 2, 3)
+		tbl_valori.attach(self.new_label(_("Larghezza in cm:")), 0, 1, 3, 4)
+		
+		self.e_vasca = utils.Combo()
+
+		self.e_vasca.append_text(_("Dolce"))
+		self.e_vasca.append_text(_("Marino"))
+		
 		
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
-		tbl_valori.attach(self.e_altezza, 1, 2, 0, 1, yoptions=0)
-		tbl_valori.attach(self.e_lunghezza, 1, 2, 1, 2, yoptions=0)
-		tbl_valori.attach(self.e_larghezza, 1, 2, 2, 3, yoptions=0)
+		
+		tbl_valori.attach(self.e_vasca, 1, 2, 0, 1, yoptions=0)
+		tbl_valori.attach(self.e_altezza, 1, 2, 1, 2, yoptions=0)
+		tbl_valori.attach(self.e_lunghezza, 1, 2, 2, 3, yoptions=0)
+		tbl_valori.attach(self.e_larghezza, 1, 2, 3, 4, yoptions=0)
 		
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
