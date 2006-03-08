@@ -34,16 +34,18 @@ class Skin(gtk.Window):
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		self.set_resizable(False)
 		
-		box = gtk.VBox()
-		box.set_spacing(4)
-		box.set_border_width(4)
+		self.path = os.path.join(os.getcwd(), os.path.join("pixmaps", "skin"))
+		
+		self.box = gtk.VBox()
+		self.box.set_spacing(4)
+		self.box.set_border_width(4)
 
 		# Hbox per contenere una scrolled e un image
 		hbox = gtk.HBox()
 		
 		# Una Scrolled Window per contenere
 		# la Treeview
-		
+
 		sw = gtk.ScrolledWindow()
 		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -68,10 +70,10 @@ class Skin(gtk.Window):
 		hbox.pack_start(sw, False, False, 0)
 		hbox.pack_start(self.image)
 
-		box.pack_start(hbox)
+		self.box.pack_start(hbox)
 
 		self.reload()
-		
+
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		bb.set_spacing(5)
@@ -87,9 +89,9 @@ class Skin(gtk.Window):
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
 		btn.connect('clicked', self.insert_skin)
 		bb.pack_start(btn)
-		box.pack_start(bb, False, False, 0)
+		self.box.pack_start(bb, False, False, 0)
 		
-		self.add(box)
+		self.add(self.box)
 		self.show_all()
 	
 	def reload(self):
@@ -148,8 +150,8 @@ class Skin(gtk.Window):
 					try:
 						shutil.copy(file, os.path.join(path, 'main.png'))
 					except:
-						print _("E' occorso un errore durante la copia: %s") % sys.exc_value
-		
+						print _("E' occorso un errore durante la copia: %s") % sys.exc_value	
+
 		dialog.hide()
 		dialog.destroy()
 
@@ -166,15 +168,3 @@ class Skin(gtk.Window):
 
 		impostazioni.save()
 		self.exit()
-		
-def make_thumb(twh, w, h):
-	if w == h:
-		return twh, twh
-	if w < h:
-		y = twh
-		x = int(float(y*w)/float(h))
-		return x, y
-	if w > h:
-		x = twh
-		y = int(float(x*h)/float(w))
-		return x, y

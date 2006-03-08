@@ -156,6 +156,10 @@ class Gui(gtk.Window):
 			
 			('Plugins',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
 			
+		('Update', None, _('_Update')),
+			
+			('Update',	None, _('_Update'), None, _('Update...'), 'update_apri'),
+
 		('Aiuto', None, _('_Aiuto')),
 		
 			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
@@ -189,6 +193,9 @@ class Gui(gtk.Window):
 		</menu>
 		<menu action='Plug-in'>
 			<menuitem action='Plugins'/>
+		</menu>
+		<menu action='Update'>
+			<menuitem action='Update'/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -308,7 +315,11 @@ class Gui(gtk.Window):
 		
 	def config_apri(self, widget, data=None):
 		import files.config
-		files.config.Config()		
+		files.config.Config()
+	
+	def update_apri(self, widget, data=None):
+		import update
+		update.Update()		
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
