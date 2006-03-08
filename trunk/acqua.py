@@ -158,7 +158,7 @@ class Gui(gtk.Window):
 			
 		('Update', None, _('_Update')),
 			
-			('Update',	None, _('_Update'), None, _('Update...'), 'update_apri'),
+			('Aggiorna',	None, _('_Aggiorna'), None, _('Aggiorna...'), 'update_apri'),
 
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -195,7 +195,7 @@ class Gui(gtk.Window):
 			<menuitem action='Plugins'/>
 		</menu>
 		<menu action='Update'>
-			<menuitem action='Update'/>
+			<menuitem action='Aggiorna'/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -318,8 +318,8 @@ class Gui(gtk.Window):
 		files.config.Config()
 	
 	def update_apri(self, widget, data=None):
-		import update
-		update.Update()		
+		import files.update
+		files.update.Update()		
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
