@@ -65,10 +65,14 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+		if self.e_vasca.get_text() == ('Dolce'):
 		
+			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+			tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+			tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+		else:
+			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+			
 		self.volume = self.new_label('0', False)
 		self.piante_inseribili = self.new_label('0', False)
 		self.num_pesci_3_4 = self.new_label('0', False)
