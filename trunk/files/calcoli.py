@@ -65,7 +65,9 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		if self.e_vasca.get_text() == ('Dolce'):
+		idea = self.e_vasca.get_text()
+		
+		if idea == 'Dolce':
 		
 			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
 			tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
@@ -84,6 +86,7 @@ class Calcoli(gtk.Window):
 		tbl.attach(self.new_label(_("Numero di pesci 5-6 cm:")), 0, 1, 5, 6)
 		tbl.attach(self.new_label(_("Watt per piante esigenti:")), 0, 1, 6, 7)
 		tbl.attach(self.new_label(_("Watt per piante poco esigenti:")), 0, 1, 8, 9)
+		
 		self.num_pesci_5_6 = self.new_label('0', False)
 		self.watt_esigenti = self.new_label('0', False)
 		self.watt_poco_esigenti = self.new_label('0', False)
