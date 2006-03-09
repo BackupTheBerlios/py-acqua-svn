@@ -65,15 +65,15 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		idea = self.e_vasca.get_text()
+		idea = self.e_vasca.get_active_text()
+		#print idea
+		#if idea == 'Dolce':
 		
-		if idea == 'Dolce':
-		
-			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
-			tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-			tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
-		else:
-			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+		#	tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+		#	tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+		#	tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+		#else:
+		#	tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
 			
 		self.volume = self.new_label('0', False)
 		self.piante_inseribili = self.new_label('0', False)
@@ -102,6 +102,10 @@ class Calcoli(gtk.Window):
 		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
 		btn.connect('clicked', self.on_refresh)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		btn.connect('clicked', self.on_aggiorna)
 		bb.pack_start(btn)
 		
 		vbox.pack_start(bb, False, False, 0)
@@ -140,6 +144,18 @@ class Calcoli(gtk.Window):
 		self.entry1.set_text("")
 		self.entry2.set_text("")
 		self.entry3.set_text("")
+		
+		
+	def on_aggiorna(self, widget):
+		idea = self.e_vasca.get_active_text()
+		print idea
+		if idea == 'Dolce':
+		
+			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+			tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+			tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+		else:
+			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
 		
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
