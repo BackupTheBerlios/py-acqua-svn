@@ -147,6 +147,9 @@ class Calcoli(gtk.Window):
 		
 		
 	def on_aggiorna(self, widget):
+		tbl = gtk.Table(6, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
 		idea = self.e_vasca.get_active_text()
 		print idea
 		if idea == 'Dolce':
