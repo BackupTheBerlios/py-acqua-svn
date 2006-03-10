@@ -40,7 +40,7 @@ class Vasca(gtk.Window):
 		self.view = view = gtk.TreeView(self.vasca_store)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		
-		lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'),
+		lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
 			_('Tipo Acquario'), _('Tipo Filtro'),
 			_('Impianto Co2'), _('Illuminazione')]
 			
@@ -78,7 +78,7 @@ class Vasca(gtk.Window):
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
 			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4],
-			y[5], y[6], y[7], self.make_image(y[8]), y[8]])
+			y[5], y[6], y[7], y[8], self.make_image(y[9]), y[9]])
 		
 		
 		frm = gtk.Frame(_("Editing:"))
@@ -103,16 +103,17 @@ class Vasca(gtk.Window):
 		box.pack_start(frm, False, False, 0)
 		
 		# Creiamo la table che verra contenuta nel frame
-		tbl = gtk.Table(8, 2)
+		tbl = gtk.Table(9, 2)
 		
 		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 4, 5)
-		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
-		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
-		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 7, 8)
+		tbl.attach(self.new_label(_("Litri:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 7, 8)
+		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 8, 9)
 		
 		self.e_vasca = utils.Combo()
 
@@ -124,7 +125,7 @@ class Vasca(gtk.Window):
 		self.e_vasca.append_text(_("Salmastro"))
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
-		self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry()
+		self.e_litri, self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
 		self.e_path = gtk.Entry()
 
@@ -133,10 +134,12 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_vasca, 1, 2, 0, 1)
 		tbl.attach(self.e_data, 1, 2, 1, 2)
 		tbl.attach(self.e_nome, 1, 2, 2, 3)
-		tbl.attach(self.e_tipo, 1, 2, 3, 4)
-		tbl.attach(self.e_filtro, 1, 2, 4, 5)
-		tbl.attach(self.e_co2, 1, 2, 5, 6)
-		tbl.attach(self.e_il, 1, 2, 6, 7)
+		tbl.attach(self.e_litri, 1, 2, 3, 4)
+		tbl.attach(self.e_tipo, 1, 2, 4, 5)
+		tbl.attach(self.e_filtro, 1, 2, 5, 6)
+		tbl.attach(self.e_co2, 1, 2, 6, 7)
+		tbl.attach(self.e_il, 1, 2, 7, 8)
+		tbl.attach(self.e_path, 1, 2, 8, 9)
 
 		hbox = gtk.HBox()
 
@@ -187,6 +190,7 @@ class Vasca(gtk.Window):
 			text = self.e_vasca.get_text()
 			date = self.e_data.get_text()
 			name = self.e_nome.get_text()
+			litri = self.e_litri.get_text()
 			tacq = self.e_tipo.get_text()
 			tflt = self.e_filtro.get_text()
 			ico2 = self.e_co2.get_text()
@@ -196,18 +200,19 @@ class Vasca(gtk.Window):
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', img='%(img)s' where id = %(id)s" %vars())
+			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', img='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
 			self.vasca_store.set_value(it, 1, text)
 			self.vasca_store.set_value(it, 2, date)
 			self.vasca_store.set_value(it, 3, name)
-			self.vasca_store.set_value(it, 4, tacq)
-			self.vasca_store.set_value(it, 5, tflt)
-			self.vasca_store.set_value(it, 6, ico2)
-			self.vasca_store.set_value(it, 7, illu)
-			self.vasca_store.set_value(it, 8, self.make_image(img))
-			self.vasca_store.set_value(it, 9, img)
+			self.vasca_store.set_value(it, 4, litri)
+			self.vasca_store.set_value(it, 5, tacq)
+			self.vasca_store.set_value(it, 6, tflt)
+			self.vasca_store.set_value(it, 7, ico2)
+			self.vasca_store.set_value(it, 8, illu)
+			self.vasca_store.set_value(it, 9, self.make_image(img))
+			self.vasca_store.set_value(it, 10, img)
 
 			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
@@ -234,6 +239,7 @@ class Vasca(gtk.Window):
 		text = self.e_vasca.get_text()
 		date = self.e_data.get_text()
 		name = self.e_nome.get_text()
+		litri = self.e_litri.get_text()
 		tacq = self.e_tipo.get_text()
 		tflt = self.e_filtro.get_text()
 		ico2 = self.e_co2.get_text()
@@ -243,18 +249,19 @@ class Vasca(gtk.Window):
 		self.vasca_store.set_value(it, 1, text)
 		self.vasca_store.set_value(it, 2, date)
 		self.vasca_store.set_value(it, 3, name)
-		self.vasca_store.set_value(it, 4, tacq)
-		self.vasca_store.set_value(it, 5, tflt)
-		self.vasca_store.set_value(it, 6, ico2)
-		self.vasca_store.set_value(it, 7, illu)
-		self.vasca_store.set_value(it, 8, self.make_image(img))
-		self.vasca_store.set_value(it, 9, img)
+		self.vasca_store.set_value(it, 4, litri)
+		self.vasca_store.set_value(it, 5, tacq)
+		self.vasca_store.set_value(it, 6, tflt)
+		self.vasca_store.set_value(it, 7, ico2)
+		self.vasca_store.set_value(it, 8, illu)
+		self.vasca_store.set_value(it, 9, self.make_image(img))
+		self.vasca_store.set_value(it, 10, img)
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?)',
-			(id, text, date, name, tacq, tflt, ico2, illu, img))
+		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?,?)',
+			(id, text, date, name, litri, tacq, tflt, ico2, illu, img))
 		conn.commit()
 
 		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
@@ -300,11 +307,12 @@ class Vasca(gtk.Window):
 			self.e_vasca.set_text(mod.get_value(it, 1))
 			self.e_data.set_text(mod.get_value(it, 2))
 			self.e_nome.set_text(mod.get_value(it, 3))
-			self.e_tipo.set_text(mod.get_value(it, 4))
-			self.e_filtro.set_text(mod.get_value(it, 5))
-			self.e_co2.set_text(mod.get_value(it, 6))
-			self.e_il.set_text(mod.get_value(it, 7))
-			self.e_path.set_text(mod.get_value(it, 9))
+			self.e_litri.set_text(mod.get_value(it, 4))
+			self.e_tipo.set_text(mod.get_value(it, 5))
+			self.e_filtro.set_text(mod.get_value(it, 6))
+			self.e_co2.set_text(mod.get_value(it, 7))
+			self.e_il.set_text(mod.get_value(it, 8))
+			self.e_path.set_text(mod.get_value(it, 10))
 			
 	def on_row_activated(self, tree, path, col):
 		mod = self.view.get_model()
@@ -450,10 +458,11 @@ class InfoDialog(gtk.Dialog):
 		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 4, 5)
-		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 5, 6)
-		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Litri:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 7, 8)
 
 		attach = lambda t, x, y: tbl.attach(gtk.Label(str(t)), 1, 2, x, y)
 		
@@ -464,6 +473,7 @@ class InfoDialog(gtk.Dialog):
 		attach(mod.get_value(it, 5), 4, 5)
 		attach(mod.get_value(it, 6), 5, 6)
 		attach(mod.get_value(it, 7), 6, 7)
+		attach(mod.get_value(it, 8), 7, 8)
 		
 		self.vbox.pack_start(tbl, False, False, 0)
 		self.show_all()
