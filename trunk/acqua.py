@@ -81,16 +81,16 @@ if not os.path.exists('Data'):
 if not os.path.exists("Data/db"):
 	connessione=sqlite.connect("Data/db")
 	cursore=connessione.cursor()
-	cursore.execute("create table vasca (id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, img TEXT)")
+	cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, img TEXT)")
 	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT)")
 	cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC)")
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
-	cursore.execute("create table filtro (id integer,date DATE, giorni NUMERIC)")
-	cursore.execute("create table datapesci (nome TEXT, cara TEXT)")
-	cursore.execute("create table datapiante (nome TEXT, cara TEXT)")
+	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC)")
+	cursore.execute("create table datapesci(nome TEXT, cara TEXT)")
+	cursore.execute("create table datapiante(nome TEXT, cara TEXT)")
 	connessione.commit()
 	
 def fix_actions(actions, instance):

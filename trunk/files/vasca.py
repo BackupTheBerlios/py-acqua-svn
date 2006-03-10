@@ -35,7 +35,7 @@ class Vasca(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
+		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		
 		self.view = view = gtk.TreeView(self.vasca_store)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
@@ -103,7 +103,7 @@ class Vasca(gtk.Window):
 		box.pack_start(frm, False, False, 0)
 		
 		# Creiamo la table che verra contenuta nel frame
-		tbl = gtk.Table(9, 2)
+		tbl = gtk.Table(8, 2)
 		
 		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
@@ -139,7 +139,6 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_filtro, 1, 2, 5, 6)
 		tbl.attach(self.e_co2, 1, 2, 6, 7)
 		tbl.attach(self.e_il, 1, 2, 7, 8)
-		tbl.attach(self.e_path, 1, 2, 8, 9)
 
 		hbox = gtk.HBox()
 
@@ -150,7 +149,7 @@ class Vasca(gtk.Window):
 		hbox.pack_start(self.e_path)
 		hbox.pack_start(btn, False, False, 0)
 		
-		tbl.attach(hbox, 1, 2, 7, 8)
+		tbl.attach(hbox, 1, 2, 8, 9)
 
 		tbl.set_border_width(10)
 		
@@ -443,7 +442,7 @@ class InfoDialog(gtk.Dialog):
 		
 		try:
 			img.set_from_file(os.path.join('Immagini',
-				str(mod.get_value(it, 9))))
+				str(mod.get_value(it, 10))))
 		except:
 			img.set_from_stock(gtk.STOCK_IMAGE_MISSING,
 				gtk.ICON_SIZE_DIALOG)
