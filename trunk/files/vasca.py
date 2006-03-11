@@ -81,7 +81,9 @@ class Vasca(gtk.Window):
 			y[5], y[6], y[7], y[8], self.make_image(y[9]), y[9]])
 		
 		
-		frm = gtk.Frame(_("Editing:"))
+		frm = gtk.Frame(_("Vasca:")); frm1 = gtk.Frame(_("Editing:"))
+		
+		
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
 		bb = gtk.HButtonBox()
@@ -105,9 +107,10 @@ class Vasca(gtk.Window):
 		
 		
 		# Creiamo la table che verra contenuta nel frame
-		tbl = gtk.Table(8, 2)
+		tbl_1 = gtk.Table(8, 2)
 		
-		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		tbl_1.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		
 		#combo per i tipi di vasche
 		self.e_vasca = utils.Combo()
 		
@@ -117,8 +120,10 @@ class Vasca(gtk.Window):
 		self.e_vasca.append_text(_("Marino Mediterraneo"))
 		self.e_vasca.append_text(_("Paludario"))
 		self.e_vasca.append_text(_("Salmastro"))
+		self.e_vasca.set_active(0)
 		
-		tbl.attach(self.e_vasca, 1, 2, 0, 1)
+		
+		tbl_1.attach(self.e_vasca, 1, 2, 0, 1)
 		
 		# Quando si sceglie il tipo di vasca invochiamo aggiorna()
 		self.e_vasca.connect('changed', self.aggiorna)
@@ -131,6 +136,9 @@ class Vasca(gtk.Window):
 		self.notebook.set_show_border(False)
 		
 		#creiamo la tabella per il dolce
+		tbl = gtk.Table(8, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
 		
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
@@ -174,10 +182,10 @@ class Vasca(gtk.Window):
 		
 		
 		# Creiamo la table per il tipo marino
-		tbl = gtk.Table(6, 2)
+		tbl = gtk.Table(8, 2)
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
-		idea = self.e_vasca.get_active_text()
+		
 		
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
@@ -225,10 +233,14 @@ class Vasca(gtk.Window):
 
 		tbl.set_border_width(10)
 		
-		frm.add(tbl)
+		
+		frm.add(tbl_1)
+		
 		#aggiungiamo la notebook
-		frm.add(self.notebook)
-
+		frm1.add(self.notebook)
+		
+		
+		
 		self.status = gtk.Statusbar()
 		self.img = gtk.Image()
 		
