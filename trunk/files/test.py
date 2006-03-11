@@ -51,7 +51,11 @@ class Test(gtk.Window):
 			float,	# AMMO
 			float,	# FERRO
 			float,	# RAME
-			float)	# FOSFATI
+			float,	# FOSFATI
+			float,	#calcio
+			float,	#magnesio
+			float)	#densita
+		
 		
 		self.view = view = gtk.TreeView(self.test_store)
 		
@@ -67,7 +71,7 @@ class Test(gtk.Window):
 			view.append_column(col)
 		
 		lst = [_('Ph'), _('Kh'), _('Gh'), _('No'), _('No2'),
-			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati')]
+			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'), _('Calcio'), _('Magnesio'), _('Densità')]
 			
 		for i in lst:
 			id = lst.index(i)
@@ -90,7 +94,7 @@ class Test(gtk.Window):
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
 			self.test_store.append([y[0], y[1], y[2], y[3], y[4],
-			y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12]])
+			y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15]])
 		
 		
 		frm = gtk.Frame(_("Editing:"))
@@ -128,6 +132,7 @@ class Test(gtk.Window):
 		tbl.attach(self.new_label(_("Kh:")), 0, 1, 3, 4)
 		tbl.attach(self.new_label(_("Gh:")), 0, 1, 4, 5)
 		tbl.attach(self.new_label(_("No:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Calcio")), 0, 1, 6, 7)
 		
 		tbl.attach(self.new_label(_("No2:")), 2, 3, 0, 1)
 		tbl.attach(self.new_label(_("Conducibilita':")), 2, 3, 1, 2)
@@ -135,6 +140,8 @@ class Test(gtk.Window):
 		tbl.attach(self.new_label(_("Ferro")), 2, 3, 3, 4)
 		tbl.attach(self.new_label(_("Rame")), 2, 3, 4, 5)
 		tbl.attach(self.new_label(_("Fosfati")), 2, 3, 5, 6)
+		tbl.attach(self.new_label(_("Magnesio")), 2, 3, 6, 7)
+		tbl.attach(self.new_label(_("Densità")), 2, 3, 7, 8)
 
 		def make_inst(num):
 			a = list()
@@ -155,7 +162,8 @@ class Test(gtk.Window):
 		self.e_ph, self.e_kh = make_inst(2)
 		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
 		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
-
+		self.e_calcio, self.e_magnesio, self.e_densita = make_inst(3)
+		
 		attach = lambda x, y, z: tbl.attach(x, 1, 2, y, z)
 
 		attach(self.e_data, 0, 1)
@@ -164,6 +172,7 @@ class Test(gtk.Window):
 		attach(self.e_kh, 3, 4)
 		attach(self.e_gh, 4, 5)
 		attach(self.e_no, 5, 6)
+		attach(self.e_calcio, 6, 7)
 		
 		attach = lambda x, y, z: tbl.attach(x, 3, 4, y, z)
 		
@@ -173,6 +182,8 @@ class Test(gtk.Window):
 		attach(self.e_ferro, 3, 4)
 		attach(self.e_rame, 4, 5)
 		attach(self.e_fosfati, 5, 6)
+		attach(self.e_magnesio, 6, 7)
+		attach(self.e_densita, 7, 8)
 
 		tbl.set_border_width(10)
 		
@@ -225,11 +236,16 @@ class Test(gtk.Window):
 			ferro = self.e_ferro.get_text()
 			rame = self.e_rame.get_text()
 			fosfati = self.e_fosfati.get_text()
+			calcio = self.e_calcio.get_text()
+			magnesio = self.e_magnesio.get_text()
+			densita = self.e_densita.get_text()
+			
+			
 			
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s' where id=%(id)s" %vars())
+			cur.execute("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)' where id=%(id)s" %vars())
 			conn.commit()
 
 			self.test_store.set_value(it, 1, data)
@@ -244,6 +260,11 @@ class Test(gtk.Window):
 			self.test_store.set_value(it, 10, ferro)
 			self.test_store.set_value(it, 11, rame)
 			self.test_store.set_value(it, 12, fosfati)
+			self.test_store.set_value(it, 13, calcio)
+			self.test_store.set_value(it, 14, magnesio)
+			self.test_store.set_value(it, 15, densita)
+			
+			
 			
 			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
@@ -277,6 +298,10 @@ class Test(gtk.Window):
 		ferro = self.e_ferro.get_text()
 		rame = self.e_rame.get_text()
 		fosfati = self.e_fosfati.get_text()
+		calcio = self.e_calcio.get_text()
+		magnesio = self.e_magnesio.get_text()
+		densita = self.e_densita.get_text()
+		
 		
 		self.test_store.set_value(it, 1, data)
 		self.test_store.set_value(it, 2, vasca)
@@ -290,12 +315,15 @@ class Test(gtk.Window):
 		self.test_store.set_value(it, 10, ferro)
 		self.test_store.set_value(it, 11, rame)
 		self.test_store.set_value(it, 12, fosfati)
+		self.test_store.set_value(it, 13, calcio)
+		self.test_store.set_value(it, 14, magnesio)
+		self.test_store.set_value(it, 15, densita)
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?)',
-			(id, data, vasca, ph, kh, gh, no, no2, cond, ammo, ferro, rame, fosfati))
+		cur.execute('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			(id, data, vasca, ph, kh, gh, no, no2, cond, ammo, ferro, rame, fosfati, calcio, magnesio, densita))
 		conn.commit()
 
 		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
@@ -350,6 +378,9 @@ class Test(gtk.Window):
 			self.e_ferro.set_text(mod.get_value(it, 10))
 			self.e_rame.set_text(mod.get_value(it, 11))
 			self.e_fosfati.set_text(mod.get_value(it, 12))
+			self.e_calcio.set_text(mod.get_value(it, 13))
+			self.e_magnesio.set_text(mod.get_value(it, 14))
+			self.e_densita.set_text(mod.get_value(it, 15))
 	
 	def on_draw_graph(self, widget):
 		if not Test.PyChart:
@@ -375,6 +406,10 @@ class Test(gtk.Window):
 			ferro = self.e_ferro.get_text()
 			rame = self.e_rame.get_text()
 			fosfati = self.e_fosfati.get_text()
+			calcio = self.e_calcio.get_text()
+			magnesio = self.e_magnesio.get_text()
+			densita = self.e_densita.get_text()
+			
 			
 			can = canvas.init(os.path.join('Immagini', 'grafico.png'))
 			
@@ -386,7 +421,9 @@ class Test(gtk.Window):
 				[_('Gh'), gh], [_('No'), no],
 				[_('No2'), no2], [_('Cond.'), cond],
 				[_('Ammon.'), ammo], [_('Ferro'), ferro],
-				[_('Rame'), rame], [_('Fosf.'), fosfati]
+				[_('Rame'), rame], [_('Fosf.'), fosfati],
+				[_('Calcio'), calcio], [_('Magnes.'), magnesio],
+				[_('Densità'), densita]
 				]
 			ar = area.T(x_coord = category_coord.T(data, 0),
 				y_range = (0, None),
