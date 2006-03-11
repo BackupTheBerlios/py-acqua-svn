@@ -108,7 +108,29 @@ class Vasca(gtk.Window):
 		tbl = gtk.Table(8, 2)
 		
 		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		#combo per i tipi di vasche
+		self.e_vasca = utils.Combo()
 		
+		self.e_vasca.append_text(_("Dolce"))
+		self.e_vasca.append_text(_("Dolce Tropicale"))
+		self.e_vasca.append_text(_("Marino"))
+		self.e_vasca.append_text(_("Marino Mediterraneo"))
+		self.e_vasca.append_text(_("Paludario"))
+		self.e_vasca.append_text(_("Salmastro"))
+		
+		tbl.attach(self.e_vasca, 1, 2, 0, 1)
+		
+		# Quando si sceglie il tipo di vasca invochiamo aggiorna()
+		self.e_vasca.connect('changed', self.aggiorna)
+		
+		
+		# Creiamo un notebook di due schede contenenti le diverse
+		# tabelle (per dolce e marino)
+		self.notebook = gtk.Notebook()
+		self.notebook.set_show_tabs(False)
+		self.notebook.set_show_border(False)
+		
+		#creiamo la tabella per il dolce
 		
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
@@ -120,17 +142,16 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 8, 9)
 		
 		#combo per i tipi di vasche
-		self.e_vasca = utils.Combo()
+		#self.e_vasca = utils.Combo()
 
-		self.e_vasca.append_text(_("Dolce"))
-		self.e_vasca.append_text(_("Dolce Tropicale"))
-		self.e_vasca.append_text(_("Marino"))
-		self.e_vasca.append_text(_("Marino Mediterraneo"))
-		self.e_vasca.append_text(_("Paludario"))
-		self.e_vasca.append_text(_("Salmastro"))
+		#self.e_vasca.append_text(_("Dolce"))
+		#self.e_vasca.append_text(_("Dolce Tropicale"))
+		#self.e_vasca.append_text(_("Marino"))
+		#self.e_vasca.append_text(_("Marino Mediterraneo"))
+		#self.e_vasca.append_text(_("Paludario"))
+		#self.e_vasca.append_text(_("Salmastro"))
 		
-		# Quando si sceglie il tipo di vasca invochiamo aggiorna()
-		#self.e_vasca.connect('changed', self.aggiorna)
+		
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
 		self.e_litri, self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry(), gtk.Entry()
@@ -139,7 +160,7 @@ class Vasca(gtk.Window):
 
 		self.e_path.set_property('editable', False)
 		
-		tbl.attach(self.e_vasca, 1, 2, 0, 1)
+		#tbl.attach(self.e_vasca, 1, 2, 0, 1)
 		tbl.attach(self.e_data, 1, 2, 1, 2)
 		tbl.attach(self.e_nome, 1, 2, 2, 3)
 		tbl.attach(self.e_litri, 1, 2, 3, 4)
@@ -147,6 +168,49 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_filtro, 1, 2, 5, 6)
 		tbl.attach(self.e_co2, 1, 2, 6, 7)
 		tbl.attach(self.e_il, 1, 2, 7, 8)
+		
+		# Aggiungiamo la table per il tipo dolce alla notebook
+		self.notebook.append_page(tbl, None)
+		
+		
+		# Creiamo la table per il tipo marino
+		tbl = gtk.Table(6, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
+		idea = self.e_vasca.get_active_text()
+		
+		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
+		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Litri:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Tipo Acquario:")), 0, 1, 4, 5)
+		tbl.attach(self.new_label(_("Tipo Filtro:")), 0, 1, 5, 6)
+		tbl.attach(self.new_label(_("Impianto Co2:")), 0, 1, 6, 7)
+		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 7, 8)
+		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 8, 9)
+		
+		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
+		self.e_litri, self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry(), gtk.Entry()
+		self.e_co2, self.e_il = gtk.Entry(), gtk.Entry()
+		self.e_path = gtk.Entry()
+
+		self.e_path.set_property('editable', False)
+		
+		tbl.attach(self.e_data, 1, 2, 1, 2)
+		tbl.attach(self.e_nome, 1, 2, 2, 3)
+		tbl.attach(self.e_litri, 1, 2, 3, 4)
+		tbl.attach(self.e_tipo, 1, 2, 4, 5)
+		tbl.attach(self.e_filtro, 1, 2, 5, 6)
+		tbl.attach(self.e_co2, 1, 2, 6, 7)
+		tbl.attach(self.e_il, 1, 2, 7, 8)
+		
+		# Aggiungiamo la table per il tipo marino alla notebook
+		self.notebook.append_page(tbl, None)
+		
+		
+		
+		
+		
+		
 
 		hbox = gtk.HBox()
 
@@ -162,6 +226,8 @@ class Vasca(gtk.Window):
 		tbl.set_border_width(10)
 		
 		frm.add(tbl)
+		#aggiungiamo la notebook
+		frm.add(self.notebook)
 
 		self.status = gtk.Statusbar()
 		self.img = gtk.Image()
@@ -181,6 +247,10 @@ class Vasca(gtk.Window):
 		self.timeoutid = None
 
 		box.set_border_width(4)
+		
+		
+	def aggiorna(self, widget):
+		self.notebook.set_current_page(self.e_vasca.get_active())
 
 	def on_refresh(self, widget):
 		
