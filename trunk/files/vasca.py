@@ -237,7 +237,7 @@ class Vasca(gtk.Window):
 		frm.add(tbl_1)
 		
 		#aggiungiamo la notebook
-		frm1.add(tbl, self.notebook)
+		frm1.add(self.notebook)
 		
 		
 		
