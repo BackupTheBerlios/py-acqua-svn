@@ -102,10 +102,14 @@ class Vasca(gtk.Window):
 		box.pack_start(bb, False, False, 0)
 		box.pack_start(frm, False, False, 0)
 		
+		
+		
 		# Creiamo la table che verra contenuta nel frame
 		tbl = gtk.Table(8, 2)
 		
 		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
+		
+		
 		tbl.attach(self.new_label(_("Data:")), 0, 1, 1, 2)
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 2, 3)
 		tbl.attach(self.new_label(_("Litri:")), 0, 1, 3, 4)
@@ -115,6 +119,7 @@ class Vasca(gtk.Window):
 		tbl.attach(self.new_label(_("Illuminazione:")), 0, 1, 7, 8)
 		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 8, 9)
 		
+		#combo per i tipi di vasche
 		self.e_vasca = utils.Combo()
 
 		self.e_vasca.append_text(_("Dolce"))
@@ -123,6 +128,9 @@ class Vasca(gtk.Window):
 		self.e_vasca.append_text(_("Marino Mediterraneo"))
 		self.e_vasca.append_text(_("Paludario"))
 		self.e_vasca.append_text(_("Salmastro"))
+		
+		# Quando si sceglie il tipo di vasca invochiamo aggiorna()
+		#self.e_vasca.connect('changed', self.aggiorna)
 		
 		self.e_data, self.e_nome = utils.DataButton(), gtk.Entry()
 		self.e_litri, self.e_tipo, self.e_filtro = gtk.Entry(), gtk.Entry(), gtk.Entry()

@@ -57,7 +57,7 @@ class Calcoli(gtk.Window):
 		self.e_vasca.append_text(_("Marino"))
 		self.e_vasca.set_active(0)
 
-		# Quandi si sceglie marino o dolce invochiamo aggiorna()
+		# Quando si sceglie marino o dolce invochiamo aggiorna()
 		self.e_vasca.connect('changed', self.aggiorna)
 		
 		# Creiamo le entry per la tabella valori
@@ -82,6 +82,10 @@ class Calcoli(gtk.Window):
 		self.dlc_volume = self.new_label('0', False)
 		self.dlc_piante_inseribili = self.new_label('0', False)
 		self.dlc_num_pesci_3_4 = self.new_label('0', False)
+		
+		tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
 		
 		tbl.attach(self.dlc_volume, 1, 2, 2, 3)
 		tbl.attach(self.dlc_piante_inseribili, 1, 2, 3, 4)
@@ -128,10 +132,6 @@ class Calcoli(gtk.Window):
 		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
 		btn.connect('clicked', self.on_refresh)
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.on_aggiorna)
 		bb.pack_start(btn)
 		
 		vbox.pack_start(bb, False, False, 0)
