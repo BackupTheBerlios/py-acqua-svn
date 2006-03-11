@@ -110,7 +110,7 @@ class Calcoli(gtk.Window):
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
-		idea = self.e_vasca.get_active_text()
+		
 		
 		tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
 		tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
