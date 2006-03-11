@@ -234,6 +234,7 @@ class Vasca(gtk.Window):
 		tbl.set_border_width(10)
 		
 		
+		
 		frm.add(tbl_1)
 		
 		#aggiungiamo la notebook
