@@ -33,27 +33,34 @@ class Calcoli(gtk.Window):
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
 		
+		# I due frame
 		f1 = gtk.Frame(_('Valori')); f2 = gtk.Frame(_('Risultati'))
 		
+		# Pacchiamoli...
 		vbox.pack_start(f1, False, False, 0)
 		vbox.pack_start(f2, False, False, 0)
 		
+		# Tabella per i valori
 		tbl_valori = gtk.Table(3, 2)
 		tbl_valori.set_border_width(4)
 		tbl_valori.set_row_spacings(4)
 		
-		
+		# Le varie label
 		tbl_valori.attach(self.new_label(_("Vasca:")), 0, 1, 0, 1)
 		tbl_valori.attach(self.new_label(_("Altezza in cm:")), 0, 1, 1, 2)
 		tbl_valori.attach(self.new_label(_("Lunghezza in cm:")), 0, 1, 2, 3)
 		tbl_valori.attach(self.new_label(_("Larghezza in cm:")), 0, 1, 3, 4)
 		
+		# ComboBox
 		self.e_vasca = utils.Combo()
-
 		self.e_vasca.append_text(_("Dolce"))
 		self.e_vasca.append_text(_("Marino"))
+		self.e_vasca.set_active(0)
+
+		# Quandi si sceglie marino o dolce invochiamo aggiorna()
+		self.e_vasca.connect('changed', self.aggiorna)
 		
-		
+		# Creiamo le entry per la tabella valori
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		
 		tbl_valori.attach(self.e_vasca, 1, 2, 0, 1, yoptions=0)
@@ -61,41 +68,60 @@ class Calcoli(gtk.Window):
 		tbl_valori.attach(self.e_lunghezza, 1, 2, 2, 3, yoptions=0)
 		tbl_valori.attach(self.e_larghezza, 1, 2, 3, 4, yoptions=0)
 		
+		# Creiamo un notebook di due schede contenenti le diverse
+		# tabelle (per dolce e marino)
+		self.notebook = gtk.Notebook()
+		self.notebook.set_show_tabs(False)
+		self.notebook.set_show_border(False)
+
+		# Creiamo la tabella per il tipo Dolce
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
-		
-		idea = self.e_vasca.get_active_text()
-		#print idea
-		#if idea == 'Dolce':
-		
-		#	tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
-		#	tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-		#	tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
-		#else:
-		#	tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
 			
-		self.volume = self.new_label('0', False)
-		self.piante_inseribili = self.new_label('0', False)
-		self.num_pesci_3_4 = self.new_label('0', False)
+		self.dlc_volume = self.new_label('0', False)
+		self.dlc_piante_inseribili = self.new_label('0', False)
+		self.dlc_num_pesci_3_4 = self.new_label('0', False)
 		
-		tbl.attach(self.volume, 1, 2, 2, 3)
-		tbl.attach(self.piante_inseribili, 1, 2, 3, 4)
-		tbl.attach(self.num_pesci_3_4, 1, 2, 4, 5)
+		tbl.attach(self.dlc_volume, 1, 2, 2, 3)
+		tbl.attach(self.dlc_piante_inseribili, 1, 2, 3, 4)
+		tbl.attach(self.dlc_num_pesci_3_4, 1, 2, 4, 5)
 		
 		tbl.attach(self.new_label(_("Numero di pesci 5-6 cm:")), 0, 1, 5, 6)
 		tbl.attach(self.new_label(_("Watt per piante esigenti:")), 0, 1, 6, 7)
 		tbl.attach(self.new_label(_("Watt per piante poco esigenti:")), 0, 1, 8, 9)
 		
-		self.num_pesci_5_6 = self.new_label('0', False)
-		self.watt_esigenti = self.new_label('0', False)
-		self.watt_poco_esigenti = self.new_label('0', False)
+		self.dlc_num_pesci_5_6 = self.new_label('0', False)
+		self.dlc_watt_esigenti = self.new_label('0', False)
+		self.dlc_watt_poco_esigenti = self.new_label('0', False)
 		
-		tbl.attach(self.num_pesci_5_6, 1, 2, 5, 6)
-		tbl.attach(self.watt_esigenti, 1, 2, 6, 7)
-		tbl.attach(self.watt_poco_esigenti, 1, 2, 8, 9)
+		tbl.attach(self.dlc_num_pesci_5_6, 1, 2, 5, 6)
+		tbl.attach(self.dlc_watt_esigenti, 1, 2, 6, 7)
+		tbl.attach(self.dlc_watt_poco_esigenti, 1, 2, 8, 9)
 
-		f1.add(tbl_valori); f2.add(tbl)
+		# Aggiungiamo la table per il tipo dolce alla notebook
+		self.notebook.append_page(tbl, None)
+
+		# Creiamo la table per il tipo marino
+		tbl = gtk.Table(6, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
+		idea = self.e_vasca.get_active_text()
+		
+		tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+		tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
+		tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+
+		# Da definire cosa aggiungere.. ecc :p
+
+		# Aggiungiamo la table per il tipo marino alla notebook
+		self.notebook.append_page(tbl, None)
+
+		# Pacchiamo la tabella dei valori
+		f1.add(tbl_valori)
+
+		# .. e la notebook
+		f2.add(self.notebook)
 		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
@@ -115,6 +141,11 @@ class Calcoli(gtk.Window):
 		self.show_all()
 		
 	def on_refresh(self, widget):
+		
+		# FIXME: i nomi delle variabili sono da cambiare...
+		# tipo self.dlc_volume robe del genere :p
+		if True: return
+
 		try:
 			a = int(self.e_larghezza.get_text())
 			b = int(self.e_lunghezza.get_text())
@@ -145,20 +176,12 @@ class Calcoli(gtk.Window):
 		self.entry2.set_text("")
 		self.entry3.set_text("")
 		
-		
 	def on_aggiorna(self, widget):
-		tbl = gtk.Table(6, 2)
-		tbl.set_border_width(4)
-		tbl.set_row_spacings(4)
-		idea = self.e_vasca.get_active_text()
-		print idea
-		if idea == 'Dolce':
+		# Questa è chiamata dal bottone aggiungi ! (nn so cosa deve fare quindi passo :p)
+		pass
 		
-			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
-			tbl.attach(self.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-			tbl.attach(self.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
-		else:
-			tbl.attach(self.new_label(_("Volume:")), 0, 1, 2, 3)
+	def aggiorna(self, widget):
+		self.notebook.set_current_page(self.e_vasca.get_active())
 		
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
