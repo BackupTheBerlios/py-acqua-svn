@@ -31,7 +31,7 @@ class Vasca(gtk.Window):
 		gtk.Window.__init__(self)
 		
 		self.set_title(_("Vasche"))
-		self.set_size_request(600, 400)
+		self.set_size_request(700, 500)
 		
 		box = gtk.VBox()
 		
