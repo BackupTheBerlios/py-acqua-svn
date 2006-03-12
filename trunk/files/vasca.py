@@ -83,7 +83,7 @@ class Vasca(gtk.Window):
 		
 		frm = gtk.Frame(_("Vasca:")); frm1 = gtk.Frame(_("Editing:"))
 		
-				# Pacchiamoli...
+		# Pacchiamoli...
 		box.pack_start(frm, False, False, 0)
 		box.pack_start(frm1, False, False, 0)
 
@@ -181,6 +181,22 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_filtro, 1, 2, 5, 6)
 		tbl.attach(self.e_co2, 1, 2, 6, 7)
 		tbl.attach(self.e_il, 1, 2, 7, 8)
+		
+		
+		
+		#per l immagine
+		hbox = gtk.HBox()
+
+		btn = gtk.Button(stock=gtk.STOCK_OPEN)
+		btn.set_relief(gtk.RELIEF_NONE)
+		btn.connect('clicked', self.on_browse)
+		
+		hbox.pack_start(self.e_path)
+		hbox.pack_start(btn, False, False, 0)
+		
+		tbl.attach(hbox, 1, 2, 8, 9)
+
+		tbl.set_border_width(10)
 		
 		# Aggiungiamo la table per il tipo dolce alla notebook
 		self.notebook.append_page(tbl, None)
