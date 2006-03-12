@@ -83,6 +83,11 @@ class Vasca(gtk.Window):
 		
 		frm = gtk.Frame(_("Vasca:")); frm1 = gtk.Frame(_("Editing:"))
 		
+				# Pacchiamoli...
+		box.pack_start(frm, False, False, 0)
+		box.pack_start(frm1, False, False, 0)
+
+		
 		
 		
 		# Creiamo una buttonbox per contenere i bottoni di modifica
