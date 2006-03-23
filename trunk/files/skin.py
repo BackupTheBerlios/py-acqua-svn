@@ -82,6 +82,10 @@ class Skin(gtk.Window):
 		btn.connect('clicked', self.on_skin_ok)
 		bb.pack_start(btn)
 		
+		btn = gtk.Button(stock=gtk.STOCK_DELETE)
+		btn.connect('clicked', self.on_delete)
+		bb.pack_start(btn)
+		
 		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
 		btn.connect('clicked', self.exit)
 		bb.pack_start(btn)
@@ -168,3 +172,9 @@ class Skin(gtk.Window):
 
 		impostazioni.save()
 		self.exit()
+
+	def on_delete(self, widget):
+		mod, it = self.view.get_selection().get_selected()
+		file = mod.get_value(it, 1)
+		print file
+		#os.removedirs(file)
