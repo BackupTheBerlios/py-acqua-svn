@@ -212,7 +212,7 @@ class Data_Pesci(gtk.Window):
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into data_pesci values(?,?,?,?)',
+		cur.execute('insert into data_pesci values(?,?,?,?,?)',
 			(id, nome, famiglia, note, img))
 		conn.commit()
 
