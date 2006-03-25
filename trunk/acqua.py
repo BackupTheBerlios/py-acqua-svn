@@ -89,8 +89,9 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC)")
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
 	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC)")
-	cursore.execute("create table datapesci(nome TEXT, cara TEXT)")
-	cursore.execute("create table datapiante(nome TEXT, cara TEXT)")
+	cursore.execute("create table data_pesci(id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
+	cursore.execute("create table data_piante (id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
+	cursore.execute("create table data_invertebrati (id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
 	connessione.commit()
 	
 def fix_actions(actions, instance):
@@ -327,7 +328,8 @@ class Gui(gtk.Window):
 		files.update.Update()	
 	
 	def data_pesci_apri(self, widget, data=None):
-		pass 
+		import files.data_pesci
+		files.data_pesci.Data_Pesci()		
 		
 	def data_piante_apri(self, widget, data=None):
 		pass
