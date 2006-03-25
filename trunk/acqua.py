@@ -151,15 +151,19 @@ class Gui(gtk.Window):
 			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 			
 			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
-		
-		('Plug-in', None, _('_Plug-in')),
 			
 			('Plugins',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
 			
-		('Update', None, _('_Update')),
-			
 			('Aggiorna',	None, _('_Aggiorna'), None, _('Aggiorna...'), 'update_apri'),
 
+		('Database', None, _('Database')),
+			
+			('Pesci',	None, _('_Pesci'), None, _('Pesci...'), 'data_pesci_apri'),
+			
+			('Piante',	None, _('_Piante'), None, _('Piante...'), 'data_piante_apri'),
+			
+			('Invertebrati',	None, _('_Invertebrati'), None, _('Invertebrati...'), 'data_invertebrati_apri'),
+		
 		('Aiuto', None, _('_Aiuto')),
 		
 			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
@@ -190,12 +194,13 @@ class Gui(gtk.Window):
 			<menuitem action='Spese'/>
 			<menuitem action='Skin'/>
 			<menuitem action='Configurazione'/>
-		</menu>
-		<menu action='Plug-in'>
 			<menuitem action='Plugins'/>
-		</menu>
-		<menu action='Update'>
 			<menuitem action='Aggiorna'/>
+		</menu>
+		<menu action='Database'>
+			<menuitem action='Pesci'/>
+			<menuitem action='Piante'/>
+			<menuitem action='Invertebrati'/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -319,7 +324,16 @@ class Gui(gtk.Window):
 	
 	def update_apri(self, widget, data=None):
 		import files.update
-		files.update.Update()		
+		files.update.Update()	
+	
+	def data_pesci_apri(self, widget, data=None):
+		pass 
+		
+	def data_piante_apri(self, widget, data=None):
+		pass
+	
+	def data_invertebrati_apri(self, widget, data=None):
+		pass
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
@@ -342,7 +356,7 @@ class Gui(gtk.Window):
 		
 		text = [
 			"Luca Sanna - Founder and lead developer - pyacqua@gmail.com",
-			"Encrico Giubertoni - Web Site Manager - enrico.giubertoni@gmail.com",
+			"Enrico Giubertoni - Web Site Manager - enrico.giubertoni@gmail.com",
 			"Federico Degrandis - Developer - danger90@gmail.com",
 			"Massimiliano Sist - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com",
 			"Pietro Grassi - Release Tester - gnatophillum@gmail.com",
