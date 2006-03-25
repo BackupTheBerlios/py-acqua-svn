@@ -176,5 +176,6 @@ class Skin(gtk.Window):
 	def on_delete(self, widget):
 		mod, it = self.view.get_selection().get_selected()
 		file = mod.get_value(it, 1)
-		print file
-		#os.removedirs(file)
+		dir, nome = os.path.split(file)
+		os.remove(os.path.join(dir, nome))
+		os.removedirs(dir)

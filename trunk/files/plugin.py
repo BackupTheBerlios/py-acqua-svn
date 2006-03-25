@@ -112,7 +112,17 @@ class Plugin(gtk.Window):
 		file_split = os.path.splitext(file)
 		self.path = os.path.join(os.getcwd(), 'Plugin')
 		
-		#Estraggo dai file tar.gz
+		#Copio tutto nella dir Plugin		
+		if self.path != file:
+			try:
+				shutil.copy(file, 'Plugin')
+			except:
+				print "E' occorso un errore durante la copia: %s" % sys.exc_value
+		
+		for files in self.path:
+			
+		
+		"""#Estraggo dai file tar.gz
 		if file_split[1] == '.gz':
 			try:
 				tar_file = tarfile.open(mode = "r|", fileobj = file)
@@ -120,18 +130,4 @@ class Plugin(gtk.Window):
 					tar_file.extract(tarinfo)
 				tar.close()
 			except:
-				print "Errore durante l'estrazione: %s" % sys.exc_value
-		
-		#Copio tutto nella dir Plugin		
-		if self.path != file:
-			try:
-				shutil.copy(file, 'Plugin')
-			except:
-				print "E' occorso un errore durante la copia: %s" % sys.exc_value
-				
-		#Cerca nella dir i file e le cartelle
-		for dir_file in os.listdir(self.path):
-			if os.path.isfile(os.path.join(self.path, dir_file)):
-				pass
-			elif os.path.isdir(os.path.join(self.path, dir_file)):
-				pass
+				print "Errore durante l'estrazione: %s" % sys.exc_value"""

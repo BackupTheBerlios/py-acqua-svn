@@ -35,26 +35,26 @@ class Update(gtk.Window):
 		
 		#Funzioni e variabili varie
 		set_up = "Avvio update py-Acqua in corso..."
+		self.set_svn = "Controllo la presenza di .svn... %s"
+		self.errore = "Errore durante l'update: %s"
 		self.textbuffer.set_text(set_up)
 		self.on_update()
 
 	def on_update(self):
-		set_svn = "Controllo la presenza di .svn..."
+		
 		client = pysvn.Client()
 		cwdir = os.getcwd()
 		svn = 'http://svn.berlios.de/svnroot/repos/py-acqua/trunk/'
 		for dir in os.listdir(cwdir):
 			if dir == ".svn":
 				try:
-					self.textbuffer.set_text(set_svn + "Ok")
+					self.textbuffer.set_text(self.set_svn % "Ok")
 					client.update(cwdir)
 				except:
-					print "Errore durante l'update: %s" % sys.exc_value
+					self.textbuffer.set_text(self.errore % sys.exc_value)
 			else:
 				try:
+					self.textbuffer.set_text(self.set_svn % "No")
 					client.checkout(svn, cwdir)
 				except:					
-					print "Errore durante l'update: %s" % sys.exc_value
-		
-	def co_connection(self):
-		pass
+					self.textbuffer.set_text(self.errore % sys.exc_value)
