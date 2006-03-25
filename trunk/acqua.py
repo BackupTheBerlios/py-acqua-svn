@@ -158,11 +158,11 @@ class Gui(gtk.Window):
 
 		('Database', None, _('Database')),
 			
-			('Pesci',	None, _('_Pesci'), None, _('Pesci...'), 'data_pesci_apri'),
+			('Database Pesci',	None, _('_Pesci'), None, _('Pesci...'), 'data_pesci_apri'),
 			
-			('Piante',	None, _('_Piante'), None, _('Piante...'), 'data_piante_apri'),
+			('Database Piante',	None, _('_Piante'), None, _('Piante...'), 'data_piante_apri'),
 			
-			('Invertebrati',	None, _('_Invertebrati'), None, _('Invertebrati...'), 'data_invertebrati_apri'),
+			('Database Invertebrati',	None, _('_Invertebrati'), None, _('Invertebrati...'), 'data_invertebrati_apri'),
 		
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -198,9 +198,9 @@ class Gui(gtk.Window):
 			<menuitem action='Aggiorna'/>
 		</menu>
 		<menu action='Database'>
-			<menuitem action='Pesci'/>
-			<menuitem action='Piante'/>
-			<menuitem action='Invertebrati'/>
+			<menuitem action='Database Pesci'/>
+			<menuitem action='Database Piante'/>
+			<menuitem action='Database Invertebrati'/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
