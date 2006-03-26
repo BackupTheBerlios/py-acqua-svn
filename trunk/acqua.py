@@ -129,8 +129,6 @@ class Gui(gtk.Window):
 			
 			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), 'invertebrati_apri'),
 			
-			('Database', None, _('_Database'), '<control>D', _('Database...')),
-			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
 			
 		('Impostazioni', None, _('_Impostazioni')),
@@ -181,7 +179,6 @@ class Gui(gtk.Window):
 			<menuitem action='Pesci'/>
 			<menuitem action='Piante'/>
 			<menuitem action='Invertebrati'/>
-			<menuitem action='Database'/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>
