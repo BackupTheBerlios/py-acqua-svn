@@ -67,14 +67,14 @@ class Data_Pesci(gtk.Window):
 		
 		box.pack_start(sw)
 		
-		connessione=sqlite.connect(os.path.join('Data', 'db'))
-		cursore=connessione.cursor()
-		cursore.execute("select * from data_pesci")
+		#connessione=sqlite.connect(os.path.join('Data', 'db'))
+		#cursore=connessione.cursor()
+		#cursore.execute("select * from data_pesci")
 
 		# Costruisci l'immagine..
-		for y in cursore.fetchall():
-			self.data_pesci_store.append([y[0], y[1], y[2], y[3],
-			y[4], self.make_image(y[4])])
+		#for y in cursore.fetchall():
+		#	self.data_pesci_store.append([y[0], y[1], y[2], y[3],
+		#	y[4], self.make_image(y[4])])
 		
 		
 		frm = gtk.Frame(_("Editing:"))
@@ -83,17 +83,17 @@ class Data_Pesci(gtk.Window):
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.on_add)
+		btn = gtk.Button(_('Cerca'))
+		#btn.connect('clicked', self.on_cerca)
 		bb.pack_start(btn)
 		
-		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		btn.connect('clicked', self.on_refresh)
-		bb.pack_start(btn)
+		#btn = gtk.Button(stock=gtk.STOCK_REFRESH)
+		#btn.connect('clicked', self.on_refresh)
+		#bb.pack_start(btn)
 		
-		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
-		btn.connect('clicked', self.on_del)
-		bb.pack_start(btn)
+		#btn = gtk.Button(stock=gtk.STOCK_REMOVE)
+		#btn.connect('clicked', self.on_del)
+		#bb.pack_start(btn)
 		
 		box.pack_start(bb, False, False, 0)
 		box.pack_start(frm, False, False, 0)
@@ -103,28 +103,28 @@ class Data_Pesci(gtk.Window):
 		
 		tbl.attach(self.new_label(_("Nome:")), 0, 1, 0, 1)
 		tbl.attach(self.new_label(_("Famiglia:")), 0, 1, 1, 2)
-		tbl.attach(self.new_label(_("Note:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_("Immagine:")), 0, 1, 3, 4)
+		#tbl.attach(self.new_label(_("Note:")), 0, 1, 2, 3)
+		#tbl.attach(self.new_label(_("Immagine:")), 0, 1, 3, 4)
 		
 		self.e_nome = gtk.Entry()
 		self.e_famiglia = gtk.Entry()
-		self.e_note = gtk.Entry()
-		self.e_path = gtk.Entry()
+		#self.e_note = gtk.Entry()
+		#self.e_path = gtk.Entry()
 
-		self.e_path.set_property('editable', False)
+	#	self.e_path.set_property('editable', False)
 		
 		tbl.attach(self.e_nome, 1, 2, 0, 1)
 		tbl.attach(self.e_famiglia, 1, 2, 1, 2)
-		tbl.attach(self.e_note, 1, 2, 2, 3)
+		#tbl.attach(self.e_note, 1, 2, 2, 3)
 		
 		hbox = gtk.HBox()
 
-		btn = gtk.Button(stock=gtk.STOCK_OPEN)
-		btn.set_relief(gtk.RELIEF_NONE)
-		btn.connect('clicked', self.on_browse)
+	#	btn = gtk.Button(stock=gtk.STOCK_OPEN)
+	#	btn.set_relief(gtk.RELIEF_NONE)
+	#	btn.connect('clicked', self.on_browse)
 		
-		hbox.pack_start(self.e_path)
-		hbox.pack_start(btn, False, False, 0)
+	#	hbox.pack_start(self.e_path)
+	#	hbox.pack_start(btn, False, False, 0)
 		
 		tbl.attach(hbox, 1, 2, 3, 4)
 

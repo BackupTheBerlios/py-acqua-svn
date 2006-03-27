@@ -89,9 +89,6 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC)")
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
 	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC)")
-	cursore.execute("create table data_pesci(id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
-	cursore.execute("create table data_piante (id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
-	cursore.execute("create table data_invertebrati (id integer, nome TEXT, famiglia TEXT, note TEXT, img TEXT)")
 	connessione.commit()
 	
 def fix_actions(actions, instance):
