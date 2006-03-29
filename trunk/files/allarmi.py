@@ -21,6 +21,7 @@
 
 import gtk
 import os
+import utils
 import impostazioni
 
 from inserisci import *
@@ -32,6 +33,7 @@ class Allarmi(gtk.Window):
 		
 		self.set_title(_('Allarmi'))
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		
 		vbox = gtk.VBox()
 		vbox.set_spacing(4)
 		vbox.set_border_width(4)
@@ -40,22 +42,22 @@ class Allarmi(gtk.Window):
 		tbl = gtk.Table(10, 2)
 		tbl.set_border_width(5)
 		
-		tbl.attach(self.new_label(_('Ph')), 0, 1, 0, 1)
-		tbl.attach(self.new_label(_('Kh')), 0, 1, 1, 2)
-		tbl.attach(self.new_label(_('Gh')), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_('No2')), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_('No3')), 0, 1, 4, 5)
-		tbl.attach(self.new_label(_('Conducibilita\'')), 0, 1, 5, 6)
-		tbl.attach(self.new_label(_('Ammoniaca')), 0, 1, 6, 7)
-		tbl.attach(self.new_label(_('Ferro')), 0, 1, 7, 8)
-		tbl.attach(self.new_label(_('Rame')), 0, 1, 8, 9)
-		tbl.attach(self.new_label(_('Fosfati')), 0, 1, 9, 10)
+		tbl.attach(utils.new_label(_('Ph')), 0, 1, 0, 1)
+		tbl.attach(utils.new_label(_('Kh')), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_('Gh')), 0, 1, 2, 3)
+		tbl.attach(utils.new_label(_('No2')), 0, 1, 3, 4)
+		tbl.attach(utils.new_label(_('No3')), 0, 1, 4, 5)
+		tbl.attach(utils.new_label(_('Conducibilita\'')), 0, 1, 5, 6)
+		tbl.attach(utils.new_label(_('Ammoniaca')), 0, 1, 6, 7)
+		tbl.attach(utils.new_label(_('Ferro')), 0, 1, 7, 8)
+		tbl.attach(utils.new_label(_('Rame')), 0, 1, 8, 9)
+		tbl.attach(utils.new_label(_('Fosfati')), 0, 1, 9, 10)
 		
-		self.ph = self.new_label('0', False); self.kh = self.new_label('0', False)
-		self.gh = self.new_label('0', False); self.no2 = self.new_label('0', False)
-		self.no3 = self.new_label('0', False); self.cond = self.new_label('0', False)
-		self.rame = self.new_label('0', False); self.fosfati = self.new_label('0', False)
-		self.ammoniaca = self.new_label('0', False); self.ferro = self.new_label('0', False)
+		self.ph = utils.new_label('0', False); self.kh = utils.new_label('0', False)
+		self.gh = utils.new_label('0', False); self.no2 = utils.new_label('0', False)
+		self.no3 = utils.new_label('0', False); self.cond = utils.new_label('0', False)
+		self.rame = utils.new_label('0', False); self.fosfati = utils.new_label('0', False)
+		self.ammoniaca = utils.new_label('0', False); self.ferro = utils.new_label('0', False)
 
 		tbl.attach(self.ph, 1, 2, 0, 1)
 		tbl.attach(self.kh, 1, 2, 1, 2)
@@ -70,6 +72,7 @@ class Allarmi(gtk.Window):
 		
 		vbox.pack_start(tbl)
 
+		# creiamo la ButtonBox
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		bb.set_spacing(4)
@@ -90,6 +93,8 @@ class Allarmi(gtk.Window):
 		self.show_all()
 
 		self.set_size_request(400, 300)
+		
+		# Aggiorniamo le label
 		self.refresh(None)
 		
 	def refresh(self, widget):
@@ -142,26 +147,27 @@ class Allarmi(gtk.Window):
 			else: self.fosfati.set_label(_('Fosfati ok'))
 		
 	def make_test_page(self):
+		
 		# Pagina Test
 		tbl = gtk.Table(10, 2)
 		tbl.set_border_width(5)
 		
-		tbl.attach(self.new_label(_('Ph')), 0, 1, 0, 1)
-		tbl.attach(self.new_label(_('Kh')), 0, 1, 1, 2)
-		tbl.attach(self.new_label(_('Gh')), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_('No2')), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_('No3')), 0, 1, 4, 5)
-		tbl.attach(self.new_label(_('Conducibilita\'')), 0, 1, 5, 6)
-		tbl.attach(self.new_label(_('Ammoniaca')), 0, 1, 6, 7)
-		tbl.attach(self.new_label(_('Ferro')), 0, 1, 7, 8)
-		tbl.attach(self.new_label(_('Rame')), 0, 1, 8, 9)
-		tbl.attach(self.new_label(_('Fosfati')), 0, 1, 9, 10)
+		tbl.attach(utils.new_label(_('Ph')), 0, 1, 0, 1)
+		tbl.attach(utils.new_label(_('Kh')), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_('Gh')), 0, 1, 2, 3)
+		tbl.attach(utils.new_label(_('No2')), 0, 1, 3, 4)
+		tbl.attach(utils.new_label(_('No3')), 0, 1, 4, 5)
+		tbl.attach(utils.new_label(_('Conducibilita\'')), 0, 1, 5, 6)
+		tbl.attach(utils.new_label(_('Ammoniaca')), 0, 1, 6, 7)
+		tbl.attach(utils.new_label(_('Ferro')), 0, 1, 7, 8)
+		tbl.attach(utils.new_label(_('Rame')), 0, 1, 8, 9)
+		tbl.attach(utils.new_label(_('Fosfati')), 0, 1, 9, 10)
 		
-		self.ph = self.new_label('0', False); self.kh = self.new_label('0', False)
-		self.gh = self.new_label('0', False); self.no2 = self.new_label('0', False)
-		self.no3 = self.new_label('0', False); self.cond = self.new_label('0', False)
-		self.rame = self.new_label('0', False); self.fosfati = self.new_label('0', False)
-		self.ammoniaca = self.new_label('0', False); self.ferro = self.new_label('0', False)
+		self.ph = utils.new_label('0', False); self.kh = utils.new_label('0', False)
+		self.gh = utils.new_label('0', False); self.no2 = utils.new_label('0', False)
+		self.no3 = utils.new_label('0', False); self.cond = utils.new_label('0', False)
+		self.rame = utils.new_label('0', False); self.fosfati = utils.new_label('0', False)
+		self.ammoniaca = utils.new_label('0', False); self.ferro = utils.new_label('0', False)
 
 		tbl.attach(self.ph, 1, 2, 0, 1)
 		tbl.attach(self.kh, 1, 2, 1, 2)
@@ -175,18 +181,6 @@ class Allarmi(gtk.Window):
 		tbl.attach(self.fosfati, 1, 2, 9, 10)
 
 		return tbl
-		
-	def new_label(self, txt, bold=True):
-		lbl = gtk.Label()
-		if bold:
-			lbl.set_use_markup(True)
-			lbl.set_label('<b>' + txt + '</b>')
-			lbl.set_alignment(0, 1.0)
-		else:
-			lbl.set_label(txt)
-			lbl.set_alignment(0.5, 0)
-		
-		return lbl
 		
 	def exit(self, *w):
 		self.hide()

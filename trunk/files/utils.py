@@ -20,6 +20,9 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
+import os
+import os.path
+from pysqlite2 import dbapi2 as sqlite
 
 class DataButton(gtk.Button):
 	def __init__(self, label=None, set_cb=None, get_cb=None):
@@ -100,6 +103,33 @@ class IntEntry(FloatEntry):
 	
 	def get_text(self):
 		return self.get_value_as_int()
+
+class ImgEntry (gtk.HBox):
+	def __init__ (self):
+		gtk.HBox.__init__ (self)
+
+		self.entry = gtk.Entry ()
+		self.entry.set_property ('editable', False)
+
+		self.btn = gtk.Button (stock=gtk.STOCK_OPEN)
+		self.btn.set_relief (gtk.RELIEF_NONE)
+		self.btn.connect ('clicked', self.callback)
+
+		self.pack_start (self.entry)
+		self.pack_start (self.btn, False, False, 0)
+	
+	def set_text (self, value):
+		self.entry.set_text(value)
+	
+	def get_text (self):
+		return self.entry.get_text()
+	
+	def callback (self, widget):
+		ret = FileChooser ("Selezione Immagine", None).run ()
+
+		if ret != None:
+			self.set_text(copy_image(ret))
+
 class Combo(gtk.ComboBox):
 	def __init__(self):
 		liststore = gtk.ListStore(str)
@@ -124,6 +154,7 @@ class Combo(gtk.ComboBox):
 				self.set_active_iter(it)
 				return
 			it = mod.iter_next(it)
+
 class InputDialog(gtk.MessageDialog):
 	def __init__(self, parent, text):
 		gtk.MessageDialog.__init__(self,
@@ -177,15 +208,18 @@ class FileChooser(gtk.FileChooserDialog):
 		self.connect('update-preview', self.on_update_preview)
 	
 	def run(self):
-		gtk.Dialog.run(self)
+		id = gtk.Dialog.run(self)
 
 		self.hide()
-		self.destroy()
 
 		if id == gtk.RESPONSE_OK:
-			return self.get_filename()
+			ret = self.get_filename()
 		else:
-			return None
+			ret = None
+
+		self.destroy()
+
+		return ret
 
 	def on_update_preview(self, chooser):
 		uri = chooser.get_uri()
@@ -202,17 +236,66 @@ class FileChooser(gtk.FileChooserDialog):
 		
 		chooser.set_preview_widget_active(True)
 
-def make_thumb(twh, w, h):
+def new_label (txt, bold=True):
+	lbl = gtk.Label ()
+	
+	if bold:
+		lbl.set_use_markup (True)
+		lbl.set_label ('<b>' + txt + '</b>')
+		lbl.set_alignment (0, 1.0)
+	else:
+		lbl.set_label (txt)
+		lbl.set_alignment (0.5, 0)
+	
+	return lbl
+
+def make_thumb (twh, w, h):
 	if w == h:
 		return twh, twh
 	if w < h:
 		y = twh
-		x = int(float(y*w)/float(h))
+		x = int (float (y * w) / float (h))
 		return x, y
 	if w > h:
 		x = twh
-		y = int(float(x*h)/float(w))
+		y = int (float (x * h) / float (w))
 		return x, y
+
+def cmd (txt, *w):
+	conn = sqlite.connect (os.path.join ('Data', 'db'))
+	cur = conn.cursor ()
+
+	cur.execute (txt, w)
+
+	conn.commit ()
+
+def get (txt):
+	conn = sqlite.connect (os.path.join ('Data', 'db'))
+	cur = conn.cursor ()
+	cur.execute (txt)
+
+	return cur.fetchall()
+
+def make_image (name):
+	try:
+		pixbuf = gtk.gdk.pixbuf_new_from_file (os.path.join ('Immagini', name))
+		w, h = make_thumb (50, pixbuf.get_width (), pixbuf.get_height ())
+		return pixbuf.scale_simple (w, h, gtk.gdk.INTERP_HYPER)
+	except:
+		return None
+
+def copy_image (name):
+	img_dir = os.path.join (os.path.abspath (os.getcwd ()), "Immagini")
+	img_dir = os.path.join (img_dir, os.path.basename (name))
+	
+	if img_dir != name:
+		try:
+			import shutil
+			shutil.copy (name, 'Immagini/')
+		except:
+			print "Errore mentre copiavo (%s)" % sys.exc_value
+	
+	return os.path.basename (name)
 
 class Test:
 	def __init__(self, i):
@@ -228,12 +311,13 @@ class Test:
 		btn = gtk.Button('a')
 		btn.connect('clicked', self.a)
 		box.pack_start(btn)
+		box.pack_start(ImgEntry())
 		w.add(box)
 		w.show_all()
 	def a(self, w):
 		print self.e.get_text()
 		
 if __name__ == "__main__":
-	#Test(0)
-	FileChooser("asd", None)
+	Test(0)
+	#FileChooser("asd", None)
 	gtk.main()
