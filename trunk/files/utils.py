@@ -24,6 +24,8 @@ import os
 import os.path
 from pysqlite2 import dbapi2 as sqlite
 
+SKIN_DIR = os.path.join(os.getcwd(), "pixmaps/skin")
+
 class DataButton(gtk.Button):
 	def __init__(self, label=None, set_cb=None, get_cb=None):
 		gtk.Button.__init__(self, label)
@@ -296,6 +298,19 @@ def copy_image (name):
 			print "Errore mentre copiavo (%s)" % sys.exc_value
 	
 	return os.path.basename (name)
+
+def create_skin (name, file):
+	path = os.path.join (SKIN_DIR, name)
+
+	if not os.path.exists (path):
+		os.mkdir (path)
+
+		pix = gtk.gdk.pixbuf_new_from_file (file)
+		
+		if pix.get_width () != 467 or pix.get_height () != 309:
+			pix = pix.scale_simple (467, 309, gtk.gdk.INTERP_HYPER)
+		
+		pix.save (os.path.join (path, "main.png"), "png")
 
 class Test:
 	def __init__(self, i):

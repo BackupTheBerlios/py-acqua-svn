@@ -29,7 +29,7 @@ class Fertilizzante(dbwindow.DBWindow):
 	def __init__(self): 
 		# id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC
 		
-		lst = gtk.ListStore(int, str, str, float, gobject.TYPE_PYOBJECT)
+		lst = gtk.ListStore(int, str, str, float, str)
 		dbwindow.DBWindow.__init__(self, 4, 1,
 				[_('Id'), _('Data'), _('Nome'), _('Quantita\''), _('Prossima volta')],
 				[utils.DataButton(), gtk.Entry(), utils.FloatEntry(), utils.DataButton()],

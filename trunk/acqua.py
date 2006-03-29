@@ -227,11 +227,13 @@ class Gui(gtk.Window):
 		self.set_resizable(False)
 		
 		import files.impostazioni
-		
+		import files.utils		
 		
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
-		image.set_from_file(files.impostazioni.sfondo)
+
+		file = os.path.join(files.utils.SKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
+		image.set_from_file(file)
 		
 		# Menu
 		self.create_menu()

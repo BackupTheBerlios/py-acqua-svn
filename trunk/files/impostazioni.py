@@ -35,7 +35,7 @@ minfe = maxfe = 0
 minra = maxra = 0
 minfo = maxfo = 0
 show_tips = "1"
-sfondo = os.path.join('pixmaps', 'main.png')
+skin = "default"
 
 def save():
 	try:
@@ -54,7 +54,6 @@ def save():
 		cfg.add_section("rame")
 		cfg.add_section("fosfati")
 		cfg.add_section("GUI")
-		cfg.add_section("Sfondo")
 		
 		global show_tips
 		global sfondo
@@ -95,7 +94,7 @@ def save():
 		cfg.set("fosfati", "max", maxfo)
 		
 		cfg.set("GUI", "show_tips", show_tips)
-		cfg.set("Sfondo", "file", sfondo)
+		cfg.set("GUI", "skin", skin)
 		cfg.write(par)
 		
 		par.flush()
@@ -113,7 +112,7 @@ def refresh():
 			cfg.read(par)
 			
 			global show_tips
-			global sfondo
+			global skin
 			global minph, maxph, minkh, maxkh
 			global minam, maxam, minfe, maxfe
 			global minra, maxra, minfo, maxfo
@@ -141,7 +140,7 @@ def refresh():
 			minfo = cfg.get("fosfati","min")
 			maxfo = cfg.get("fosfati","max")
 			show_tips = cfg.get("GUI", "show_tips")
-			sfondo = cfg.get("Sfondo", "file")
+			skin = cfg.get("GUI", "skin")
 		except:
 			print _("Errore nel caricamento dei valori.. uso quelli di default")
 	else:
