@@ -386,7 +386,7 @@ class Vasca(gtk.Window):
 		tbl.attach(self.e_filtro, 1, 2, 5, 6)
 		tbl.attach(self.e_co2, 1, 2, 6, 7)
 		tbl.attach(self.e_il, 1, 2, 7, 8)
-		tbl.attach(self.e_il, 1, 2, 8, 9)
+		tbl.attach(self.e_risc, 1, 2, 8, 9)
 		#per l immagine
 
 		hbox = gtk.HBox()
