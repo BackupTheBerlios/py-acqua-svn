@@ -42,7 +42,8 @@ class Vasca(gtk.Window):
 		
 		lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
 			_('Tipo Acquario'), _('Tipo Filtro'),
-			_('Impianto Co2'), _('Illuminazione'), _('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione')]
+			_('Impianto Co2'), _('Illuminazione'), 
+			_('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione')]
 			
 		renderer = gtk.CellRendererText()
 		
