@@ -35,14 +35,14 @@ class Vasca(gtk.Window):
 		
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
+		self.vasca_store = gtk.ListStore(int, str, str, str, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		
 		self.view = view = gtk.TreeView(self.vasca_store)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		
 		lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
 			_('Tipo Acquario'), _('Tipo Filtro'),
-			_('Impianto Co2'), _('Illuminazione')]
+			_('Impianto Co2'), _('Illuminazione'), _('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione')]
 			
 		renderer = gtk.CellRendererText()
 		
@@ -78,7 +78,7 @@ class Vasca(gtk.Window):
 		# Costruisci l'immagine..
 		for y in cursore.fetchall():
 			self.vasca_store.append([y[0], y[1], y[2], y[3], y[4],
-			y[5], y[6], y[7], y[8], self.make_image(y[9]), y[9]])
+			y[5], y[6], y[7], y[8], y[9], y[10], y[11], self.make_image(y[12]), y[12]])
 		
 		
 		frm = gtk.Frame(_("Vasca:")); frm1 = gtk.Frame(_("Editing:"))
@@ -506,13 +506,15 @@ class Vasca(gtk.Window):
 			tflt = self.e_filtro.get_text()
 			ico2 = self.e_co2.get_text()
 			illu = self.e_il.get_text()
+			reat = self.e_reattore.get_text()
+			schiu = self.e_schiumatoio.get_text()
 			risca = self.e_risc.get_text()
 			img = self.e_path.get_text()
 			
 			conn = sqlite.connect(os.path.join('Data', 'db'))
 			cur = conn.cursor()
 
-			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', riscaldamento='%(risca)s', img='%(img)s' where id = %(id)s" %vars())
+			cur.execute("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='(schiu)s', riscaldamento='%(risca)s', img='%(img)s' where id = %(id)s" %vars())
 			conn.commit()
 			
 			self.vasca_store.set_value(it, 1, text)
@@ -523,9 +525,11 @@ class Vasca(gtk.Window):
 			self.vasca_store.set_value(it, 6, tflt)
 			self.vasca_store.set_value(it, 7, ico2)
 			self.vasca_store.set_value(it, 8, illu)
-			self.vasca_store.set_value(it, 9, risca)
-			self.vasca_store.set_value(it, 10, self.make_image(img))
-			self.vasca_store.set_value(it, 11, img)
+			self.vasca_store.set_value(it, 9, reat)
+			self.vasca_store.set_value(it, 10, schiu)
+			self.vasca_store.set_value(it, 11, risca)
+			self.vasca_store.set_value(it, 12, self.make_image(img))
+			self.vasca_store.set_value(it, 13, img)
 
 			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
 
@@ -557,6 +561,8 @@ class Vasca(gtk.Window):
 		tflt = self.e_filtro.get_text()
 		ico2 = self.e_co2.get_text()
 		illu = self.e_il.get_text()
+		reat = self.e_reattore.get_text()
+		schiu = self.e_schiumatoio.get_text()
 		risca = self.e_risc.get_text()
 		img = self.e_path.get_text()
 		
@@ -568,15 +574,17 @@ class Vasca(gtk.Window):
 		self.vasca_store.set_value(it, 6, tflt)
 		self.vasca_store.set_value(it, 7, ico2)
 		self.vasca_store.set_value(it, 8, illu)
-		self.vasca_store.set_value(it, 9, risca)
-		self.vasca_store.set_value(it, 10, self.make_image(img))
-		self.vasca_store.set_value(it, 11, img)
+		self.vasca_store.set_value(it, 9, reat)
+		self.vasca_store.set_value(it, 10, schiu)
+		self.vasca_store.set_value(it, 11, risca)
+		self.vasca_store.set_value(it, 12, self.make_image(img))
+		self.vasca_store.set_value(it, 13, img)
 		
 		conn = sqlite.connect(os.path.join('Data', 'db'))
 		cur = conn.cursor()
 
-		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?)',
-			(id, text, date, name, litri, tacq, tflt, ico2, illu, risca, img))
+		cur.execute('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			(id, text, date, name, litri, tacq, tflt, ico2, illu, reat, schiu, risca, img))
 		conn.commit()
 
 		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
@@ -627,8 +635,10 @@ class Vasca(gtk.Window):
 			self.e_filtro.set_text(mod.get_value(it, 6))
 			self.e_co2.set_text(mod.get_value(it, 7))
 			self.e_il.set_text(mod.get_value(it, 8))
-			self.e_risc.set_text(mod.get_value(it, 9))
-			self.e_path.set_text(mod.get_value(it, 11))
+			self.e_reattore.set_text(mod.get_value(it, 9))
+			self.e_schiumatoio.set_text(mod.get_value(it, 10))
+			self.e_risc.set_text(mod.get_value(it, 11))
+			self.e_path.set_text(mod.get_value(it, 12))
 			
 	def on_row_activated(self, tree, path, col):
 		mod = self.view.get_model()
