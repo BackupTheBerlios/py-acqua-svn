@@ -28,6 +28,7 @@ import sys
 import tarfile
 import shutil
 import time
+import utils
 
 class Plugin(gtk.Window):
 	
@@ -109,18 +110,27 @@ class Plugin(gtk.Window):
 		
 	def filename(self, widget, data=None):
 		file = self.dialog.get_filename()
-		file_split = os.path.splitext(file)
-		self.path = os.path.join(os.getcwd(), 'Plugin')
+		#file_split = os.path.splitext(file)
+		path = os.path.join(os.getcwd(), 'Plugin')
+		
+		# Se il file è uguale??? import utils.IputDialog
+		
 		
 		#Copio tutto nella dir Plugin		
-		if self.path != file:
+		if path != file:
 			try:
 				shutil.copy(file, 'Plugin')
 			except:
 				print "E' occorso un errore durante la copia: %s" % sys.exc_value
 		
-		for files in self.path:
-			
+		for i in os.listdir(path):
+			if os.path.isfile(os.path.join(path, i)):
+				print "File", i
+			elif os.path.isdir(os.path.join(path, i)):
+				print "Dir", i
+				enter = os.path.join(path, i)
+				for x in os.listdir(enter):
+					print "File " + x + " in dir " + i
 		
 		"""#Estraggo dai file tar.gz
 		if file_split[1] == '.gz':
