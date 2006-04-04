@@ -169,7 +169,7 @@ class InputDialog(gtk.MessageDialog):
 		self.entry = gtk.Entry()
 		self.vbox.add(self.entry)
 		self.entry.show()
-		self.set_size_request(250, 150)
+		self.set_size_request(300, 150)
 	
 	def run(self):
 		id = gtk.Dialog.run(self)

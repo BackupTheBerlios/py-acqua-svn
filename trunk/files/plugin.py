@@ -25,7 +25,6 @@ import gtk
 
 import os
 import sys
-import tarfile
 import shutil
 import time
 import utils
@@ -38,7 +37,7 @@ class Plugin(gtk.Window):
 		self.set_resizable(False)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		self.set_size_request(500, 150)
-		
+				
 		box = gtk.VBox()
 		
 		self.vasca_store = gtk.ListStore(int, str, str, str, str)
@@ -81,8 +80,8 @@ class Plugin(gtk.Window):
 		
 		self.status = gtk.Statusbar()
 		box.pack_start(self.status)
-		
 		self.add(box)
+		self.search()
 		self.show_all()
 			
 	def on_del(self, widget):
@@ -105,7 +104,6 @@ class Plugin(gtk.Window):
 		
 		id = self.dialog.run() 
 		self.dialog.hide()		
-		
 		self.dialog.destroy()
 		
 	def filename(self, widget, data=None):
@@ -114,30 +112,31 @@ class Plugin(gtk.Window):
 		path = os.path.join(os.getcwd(), 'Plugin')
 		
 		# Se il file è uguale??? import utils.IputDialog
-		
-		
+		for i in os.listdir(path):
+			if i == os.path.split(file)[1]:
+				dialog_info = utils.InputDialog(self, 'Il file %s esiste già...\nVuoi rinominarlo?' % i)
+				file = dialog_info.run()
+				
 		#Copio tutto nella dir Plugin		
 		if path != file:
 			try:
 				shutil.copy(file, 'Plugin')
+				self.search()
 			except:
 				print "E' occorso un errore durante la copia: %s" % sys.exc_value
 		
+		
+				
+	def search(self):
+		path = os.path.join(os.getcwd(), 'Plugin')
+		id = 0
 		for i in os.listdir(path):
 			if os.path.isfile(os.path.join(path, i)):
-				print "File", i
+				id += 1
+				self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
 			elif os.path.isdir(os.path.join(path, i)):
-				print "Dir", i
+				id += 1
 				enter = os.path.join(path, i)
+				#self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
 				for x in os.listdir(enter):
 					print "File " + x + " in dir " + i
-		
-		"""#Estraggo dai file tar.gz
-		if file_split[1] == '.gz':
-			try:
-				tar_file = tarfile.open(mode = "r|", fileobj = file)
-				for tarinfo in tar_file:
-					tar_file.extract(tarinfo)
-				tar.close()
-			except:
-				print "Errore durante l'estrazione: %s" % sys.exc_value"""
