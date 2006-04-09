@@ -30,7 +30,7 @@ class Fertilizzante(dbwindow.DBWindow):
 		# id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC
 		
 		lst = gtk.ListStore(int, str, str, float, str)
-		dbwindow.DBWindow.__init__(self, 4, 1,
+		dbwindow.DBWindow.__init__(self, 1, 4,
 				[_('Id'), _('Data'), _('Nome'), _('Quantita\''), _('Prossima volta')],
 				[utils.DataButton(), gtk.Entry(), utils.FloatEntry(), utils.DataButton()],
 				lst)
@@ -66,7 +66,7 @@ class Fertilizzante(dbwindow.DBWindow):
 	
 	def remove_id (self, id):
 		utils.cmd ('delete from fertilizzante where id=%d' % id)
-		self.update_status(dbwindow.NotifyType.ADD, _("Row rimossa (ID: %d)" % id))
+		self.update_status(dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)" % id))
 	
 	def decrement_id (self, id):
 		utils.cmd ('update fertilizzante set id=%d where id=%d' % (id - 1, id))

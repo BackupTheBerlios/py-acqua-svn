@@ -133,13 +133,16 @@ class ImgEntry (gtk.HBox):
 			self.set_text(copy_image(ret))
 
 class Combo(gtk.ComboBox):
-	def __init__(self):
+	def __init__(self, lst=None):
 		liststore = gtk.ListStore(str)
 		gtk.ComboBox.__init__(self, liststore)
 		
 		cell = gtk.CellRendererText()
 		self.pack_start(cell, True)
 		self.add_attribute(cell, 'text', 0)
+
+		for i in lst:
+			self.append_text (i)
 		
 	def get_text(self):
 		it = self.get_active_iter()
@@ -238,16 +241,20 @@ class FileChooser(gtk.FileChooserDialog):
 		
 		chooser.set_preview_widget_active(True)
 
-def new_label (txt, bold=True):
+def new_label (txt, bold=True, x=0, y=0):
 	lbl = gtk.Label ()
 	
 	if bold:
 		lbl.set_use_markup (True)
 		lbl.set_label ('<b>' + txt + '</b>')
-		lbl.set_alignment (0, 1.0)
+		#lbl.set_alignment (0, 1.0)
+		lbl.set_alignment (0, 0.5)
 	else:
 		lbl.set_label (txt)
 		lbl.set_alignment (0.5, 0)
+	
+	if x != 0 and y != 0:
+		lbl.set_alignment (x, y)
 	
 	return lbl
 
@@ -311,6 +318,61 @@ def create_skin (name, file):
 			pix = pix.scale_simple (467, 309, gtk.gdk.INTERP_HYPER)
 		
 		pix.save (os.path.join (path, "main.png"), "png")
+
+class InfoDialog (gtk.Dialog):
+	def __init__ (self, parent, text, lbl_lst, lst, img=None):
+
+		gtk.Dialog.__init__ (self, text, parent,
+				gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
+		
+		assert len (lbl_lst) == len (lst)
+
+		self.set_size_request (400, 300)
+		self.vbox.set_border_width (10)
+
+		self.set_has_separator (False)
+		
+		tbl = gtk.Table (len (lst), 2)
+		tbl.set_border_width (4)
+
+		if img != None:
+			
+			gimg = gtk.Image ()
+			
+			try:
+				gimg.set_from_file (os.path.join ('Immagini', img))
+			except:
+				gimg.set_from_stock (gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_DIALOG)
+			
+			sw = gtk.ScrolledWindow ()
+			sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+			
+			sw.add_with_viewport (gimg)
+			self.vbox.pack_start (sw)
+
+		attach = lambda t, x: tbl.attach (new_label (t), 0, 1, x, x+1)
+		
+		x = 0
+		for i in lbl_lst:
+			attach (i, x)
+			x += 1
+
+		attach = lambda t, x: tbl.attach (gtk.Label (t), 1, 2, x, x+1)
+
+		x = 0
+		for i in lst:
+			attach (i.get_text (), x)
+			x += 1
+
+		self.vbox.pack_start (tbl, False, False, 0)
+		self.show_all ()
+
+		self.connect ('response', self.on_response)
+	
+	def on_response (self, dial, id):
+		if id == gtk.RESPONSE_OK:
+			self.hide ()
+			self.destroy ()
 
 class Test:
 	def __init__(self, i):

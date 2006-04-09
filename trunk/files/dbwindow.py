@@ -21,11 +21,15 @@ class DBWindow (gtk.Window):
 		# Creiamo la store e la view
 		self.store = lst_store
 		self.view = gtk.TreeView (self.store)
-		self.last = len(cols)
+		self.last = len (cols) + 1
 		self.vars = widgets
 
 		# Callback per la selection
 		self.view.get_selection ().connect ('changed', self.on_selection_changed)
+		self.view.connect ('row-activated', self.on_row_activated)
+
+		for i in range(len(cols)-1):
+			print cols[i+1], widgets[i], lst_store.get_column_type(i+1)
 
 		# Le Colonne ..
 
@@ -36,6 +40,8 @@ class DBWindow (gtk.Window):
 		for name in cols:
 			id = cols.index (name)
 			
+			print "Adding %d" % id
+			
 			if self.store.get_column_type (id) == gobject.TYPE_DOUBLE:
 				
 				self.view.insert_column_with_data_func (-1, name, renderer, self.float_func, id)
@@ -45,6 +51,7 @@ class DBWindow (gtk.Window):
 
 				if self.store.get_column_type (id).pytype == gtk.gdk.Pixbuf:
 					col = gtk.TreeViewColumn (name, pix_rend, pixbuf=id)
+					self.last -= 1
 				else:
 					col = gtk.TreeViewColumn (name, renderer, text=id)
 				
@@ -53,6 +60,8 @@ class DBWindow (gtk.Window):
 				col.set_resizable (True)
 				
 				self.view.append_column (col)
+
+		print "Pixmap init at %d" % self.last
 
 		# La ScrolledWindow
 		self.sw = gtk.ScrolledWindow ()
@@ -94,7 +103,9 @@ class DBWindow (gtk.Window):
 		cols.remove(cols[0])
 		
 		# Andiamo a creare la table per l'editing		
-		self.table = e_tbl = gtk.Table (n_row, n_col, False)
+		self.table = e_tbl = gtk.Table (n_row, n_col)
+		self.table.set_border_width (4)
+		self.table.set_col_spacings (8)
 
 		x, y = 0, 0
 
@@ -103,11 +114,13 @@ class DBWindow (gtk.Window):
 			
 			idx = cols.index (name)
 			tmp = self.vars[idx]
+
+			print "Creating e_%s at %d %d %d %d" % (name[:5], x, x+1, y, y+1)
 			
 			self.__dict__ ["e_" + name [:5]] = tmp
 			e_tbl.attach (tmp, x+1, x+2, y, y+1)
 
-			e_tbl.attach (gtk.Label (name), x, x+1, y, y+1)
+			e_tbl.attach (utils.new_label (name, x=0, y=0.5), x, x+1, y, y+1)
 
 			if idx == n_col:
 				x += 2; y = 0
@@ -181,10 +194,13 @@ class DBWindow (gtk.Window):
 
 		for i in self.vars:
 			if self.store.get_column_type (self.vars.index (i) + 1).pytype == gtk.gdk.Pixbuf:
-				i.set_text( mod.get_value (it, x + self.last))
+				print "image is %s" % mod.get_value (it, self.last + x)
+				i.set_text( mod.get_value (it, self.last + x))
 				x += 1
 			else:
 				i.set_text( mod.get_value (it, self.vars.index (i) + 1))
+	def on_row_activated (self, tree, path, col):
+		pass
 	
 	def on_add (self, widget):
 		mod = self.view.get_model ()
@@ -207,8 +223,10 @@ class DBWindow (gtk.Window):
 		
 		for tmp in self.vars:
 			if self.store.get_column_type (self.vars.index (tmp) + 1).pytype == gtk.gdk.Pixbuf:
+
+				print "col n %d => %s" % (self.last + x, tmp)
 				
-				self.store.set_value (it, x + self.last, tmp.get_text ())
+				self.store.set_value (it, self.last + x, tmp.get_text ())
 
 				self.store.set_value (it, self.vars.index (tmp) + 1, utils.make_image (tmp.get_text ()))
 
