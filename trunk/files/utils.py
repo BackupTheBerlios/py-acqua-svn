@@ -141,8 +141,8 @@ class Combo(gtk.ComboBox):
 		self.pack_start(cell, True)
 		self.add_attribute(cell, 'text', 0)
 
-		for i in lst:
-			self.append_text (i)
+		if lst != None:
+			for i in lst: self.append_text (i)
 		
 	def get_text(self):
 		it = self.get_active_iter()

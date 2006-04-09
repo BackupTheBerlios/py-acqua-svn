@@ -24,21 +24,16 @@ import gobject
 import os
 import sys
 import utils
-from pysqlite2 import dbapi2 as sqlite
+import dbwindow
 
-class Test(gtk.Window):
+class Test (dbwindow.DBWindow):
 	PyChart = True
-	def __init__(self): 
-		gtk.Window.__init__(self)
-		
-		self.set_title(_("Test"))
-		self.set_size_request(600, 400)
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
-		box = gtk.VBox()
+	def __init__ (self): 
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
 		# NUMERIC, ra NUMERIC, fo NUMERIC
-		self.test_store = gtk.ListStore(
+		
+		lst = gtk.ListStore (
 			int,	# ID
 			str,	# DATA
 			str,	# VASCA
@@ -52,335 +47,95 @@ class Test(gtk.Window):
 			float,	# FERRO
 			float,	# RAME
 			float,	# FOSFATI
-			float,	#calcio
-			float,	#magnesio
-			float)	#densita
-		
-		
-		self.view = view = gtk.TreeView(self.test_store)
-		
-		lst = [_('Id'), _('Data'), _('Vasca')]
-		renderer = gtk.CellRendererText()
-		
-		for i in lst:
-			id = lst.index(i)
-			col = gtk.TreeViewColumn(i, renderer, text=id)
-			col.set_sort_column_id(id)
-			col.set_clickable(True)
-			col.set_resizable(True)
-			view.append_column(col)
-		
-		lst = [_('Ph'), _('Kh'), _('Gh'), _('No'), _('No2'),
-			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'), _('Calcio'), _('Magnesio'), _('Densità')]
-			
-		for i in lst:
-			id = lst.index(i)
-			view.insert_column_with_data_func(-1, i, renderer, self.row_func, id+3)
-		
-		view.get_selection().connect('changed', self.on_selection_changed)
-		
-		sw = gtk.ScrolledWindow()
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-		
-		sw.add(view)
-		
-		box.pack_start(sw)
-		
-		connessione=sqlite.connect(os.path.join('Data', 'db'))
-		cursore=connessione.cursor()
-		cursore.execute("select * from test")
+			float,	# calcio
+			float,	# magnesio
+			float)	# densita
 
-		# Costruisci l'immagine..
-		for y in cursore.fetchall():
-			self.test_store.append([y[0], y[1], y[2], y[3], y[4],
-			y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15]])
+		cols = [_('Id'), _('Data'), _('Vasca'), _('Ph'), _('Kh'), _('Gh'), _('No'), _('No2'),
+			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
+			_('Calcio'), _('Magnesio'), _('Densita\'')]
 		
+		inst = [utils.DataButton (), utils.Combo ()]
 		
-		frm = gtk.Frame(_("Editing:"))
-		
-		# Creiamo una buttonbox per contenere i bottoni di modifica
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.on_add)
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		btn.connect('clicked', self.on_refresh)
-		bb.pack_start(btn)
-		
-		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
-		btn.connect('clicked', self.on_del)
-		bb.pack_start(btn)
+		for i in range (13): inst.append (utils.FloatEntry ())
 
-		btn = gtk.Button(_('Grafico'))
-		btn.connect('clicked', self.on_draw_graph)
-		bb.pack_start(btn)
+		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst)
 		
-		box.pack_start(bb, False, False, 0)
-		box.pack_start(frm, False, False, 0)
+		for y in utils.get ('select * from test'):
+			lst.append ([y[0], y[1], y[2], y[3], y[4],
+					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15]])
 		
-		# Creiamo la table che verra contenuta nel frame
-		tbl = gtk.Table(6, 4)
-		tbl.set_col_spacings(4)
-		
-		tbl.attach(self.new_label(_("Data:")), 0, 1, 0, 1)
-		tbl.attach(self.new_label(_("Vasca:")), 0, 1, 1, 2)
-		tbl.attach(self.new_label(_("Ph:")), 0, 1, 2, 3)
-		tbl.attach(self.new_label(_("Kh:")), 0, 1, 3, 4)
-		tbl.attach(self.new_label(_("Gh:")), 0, 1, 4, 5)
-		tbl.attach(self.new_label(_("No:")), 0, 1, 5, 6)
-		tbl.attach(self.new_label(_("Calcio")), 0, 1, 6, 7)
-		
-		tbl.attach(self.new_label(_("No2:")), 2, 3, 0, 1)
-		tbl.attach(self.new_label(_("Conducibilita':")), 2, 3, 1, 2)
-		tbl.attach(self.new_label(_("Ammoniaca:")), 2, 3, 2, 3)
-		tbl.attach(self.new_label(_("Ferro")), 2, 3, 3, 4)
-		tbl.attach(self.new_label(_("Rame")), 2, 3, 4, 5)
-		tbl.attach(self.new_label(_("Fosfati")), 2, 3, 5, 6)
-		tbl.attach(self.new_label(_("Magnesio")), 2, 3, 6, 7)
-		tbl.attach(self.new_label(_("Densità")), 2, 3, 7, 8)
+		for y in utils.get ('select * from vasca'):
+			self.vars[1].append_text (y[3])
 
-		def make_inst(num):
-			a = list()
-			for i in range(num):
-				a.append(utils.FloatEntry())
-			return a
+		self.set_title (_("Test"))
+		self.set_size_request (600, 400)
+		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 
-		self.e_data = utils.DataButton()
-		self.e_vasca = utils.Combo()
-		
-		connessione=sqlite.connect(os.path.join('Data', 'db'))
-		cursore=connessione.cursor()
-		cursore.execute("select * from vasca")
-		
-		for v in cursore.fetchall():
-			self.e_vasca.append_text(v[3])
+		btn = gtk.Button (_("Grafico"))
+		btn.connect ('clicked', self.on_draw_graph)
+		btn.set_relief (gtk.RELIEF_NONE)
 
-		self.e_ph, self.e_kh = make_inst(2)
-		self.e_gh, self.e_no, self.e_no2, self.e_cond = make_inst(4)
-		self.e_ammo, self.e_ferro, self.e_rame, self.e_fosfati = make_inst(4)
-		self.e_calcio, self.e_magnesio, self.e_densita = make_inst(3)
-		
-		attach = lambda x, y, z: tbl.attach(x, 1, 2, y, z)
+		self.button_box.pack_start (btn)
 
-		attach(self.e_data, 0, 1)
-		attach(self.e_vasca, 1, 2)
-		attach(self.e_ph, 2, 3)
-		attach(self.e_kh, 3, 4)
-		attach(self.e_gh, 4, 5)
-		attach(self.e_no, 5, 6)
-		attach(self.e_calcio, 6, 7)
-		
-		attach = lambda x, y, z: tbl.attach(x, 3, 4, y, z)
-		
-		attach(self.e_no2, 0, 1)
-		attach(self.e_cond, 1, 2)
-		attach(self.e_ammo, 2, 3)
-		attach(self.e_ferro, 3, 4)
-		attach(self.e_rame, 4, 5)
-		attach(self.e_fosfati, 5, 6)
-		attach(self.e_magnesio, 6, 7)
-		attach(self.e_densita, 7, 8)
+		self.show_all ()
 
-		tbl.set_border_width(10)
-		
-		frm.add(tbl)
-
-		self.status = gtk.Statusbar()
-		self.img = gtk.Image()
-		
-		hbox = gtk.HBox()
-		hbox.pack_start(self.img, False, False, 0)
-		hbox.pack_start(self.status)
-		
-		box.pack_start(hbox, False, False, 0)
-		
-		self.add(box)
-		self.show_all()
-		
-		self.connect('delete-event', self.on_delete_event)
-
-		self.img.hide()
-		self.timeoutid = None
-
-		box.set_border_width(4)
-		
-	def row_func(self, col, cell, model, iter, id):
-		value = model.get_value(iter, id)
-		cell.set_property("text", "%.2f" % value)
-
-	def on_refresh(self, widget):
-		
-		# Prendiamo l'iter e il modello dalla selezione
-		
-		mod, it = self.view.get_selection().get_selected()
-		
-		# Se esiste una selezione aggiorniamo la row
-		# in base al contenuto delle entry
-		
-		if it != None:
-			id = int(self.test_store.get_value(it, 0))
-			
-			data = self.e_data.get_text()
-			vasca = self.e_vasca.get_text()
-			ph = self.e_ph.get_text()
-			kh = self.e_kh.get_text()
-			gh = self.e_gh.get_text()
-			no = self.e_no.get_text()
-			no2 = self.e_no2.get_text()
-			cond = self.e_cond.get_text()
-			ammo = self.e_ammo.get_text()
-			ferro = self.e_ferro.get_text()
-			rame = self.e_rame.get_text()
-			fosfati = self.e_fosfati.get_text()
-			calcio = self.e_calcio.get_text()
-			magnesio = self.e_magnesio.get_text()
-			densita = self.e_densita.get_text()
-			
-			
-			
-			conn = sqlite.connect(os.path.join('Data', 'db'))
-			cur = conn.cursor()
-
-			cur.execute("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)' where id=%(id)s" %vars())
-			conn.commit()
-
-			self.test_store.set_value(it, 1, data)
-			self.test_store.set_value(it, 2, vasca)
-			self.test_store.set_value(it, 3, ph)
-			self.test_store.set_value(it, 4, kh)
-			self.test_store.set_value(it, 5, gh)
-			self.test_store.set_value(it, 6, no)
-			self.test_store.set_value(it, 7, no2)
-			self.test_store.set_value(it, 8, cond)
-			self.test_store.set_value(it, 9, ammo)
-			self.test_store.set_value(it, 10, ferro)
-			self.test_store.set_value(it, 11, rame)
-			self.test_store.set_value(it, 12, fosfati)
-			self.test_store.set_value(it, 13, calcio)
-			self.test_store.set_value(it, 14, magnesio)
-			self.test_store.set_value(it, 15, densita)
-			
-			
-			
-			self.update_status(0, _("Row aggiornata (ID: %d)") % id)
-
-	def on_add(self, widget):
-		mod = self.view.get_model()
-		it = mod.get_iter_first()
-		id = 0
-		
-		while it != None:
-			tmp = int(self.test_store.get_value(it, 0))
-			
-			if tmp > id: id = tmp
-
-			it = mod.iter_next(it)
-		
-		id += 1		
-		it = self.test_store.append()
-
-		# Settiamo il campo ID
-		self.test_store.set_value(it, 0, id)
-
-		data = self.e_data.get_text()
-		vasca = self.e_vasca.get_text()
-		ph = self.e_ph.get_text()
-		kh = self.e_kh.get_text()
-		gh = self.e_gh.get_text()
-		no = self.e_no.get_text()
-		no2 = self.e_no2.get_text()
-		cond = self.e_cond.get_text()
-		ammo = self.e_ammo.get_text()
-		ferro = self.e_ferro.get_text()
-		rame = self.e_rame.get_text()
-		fosfati = self.e_fosfati.get_text()
-		calcio = self.e_calcio.get_text()
-		magnesio = self.e_magnesio.get_text()
-		densita = self.e_densita.get_text()
-		
-		
-		self.test_store.set_value(it, 1, data)
-		self.test_store.set_value(it, 2, vasca)
-		self.test_store.set_value(it, 3, ph)
-		self.test_store.set_value(it, 4, kh)
-		self.test_store.set_value(it, 5, gh)
-		self.test_store.set_value(it, 6, no)
-		self.test_store.set_value(it, 7, no2)
-		self.test_store.set_value(it, 8, cond)
-		self.test_store.set_value(it, 9, ammo)
-		self.test_store.set_value(it, 10, ferro)
-		self.test_store.set_value(it, 11, rame)
-		self.test_store.set_value(it, 12, fosfati)
-		self.test_store.set_value(it, 13, calcio)
-		self.test_store.set_value(it, 14, magnesio)
-		self.test_store.set_value(it, 15, densita)
-		
-		conn = sqlite.connect(os.path.join('Data', 'db'))
-		cur = conn.cursor()
-
-		cur.execute('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-			(id, data, vasca, ph, kh, gh, no, no2, cond, ammo, ferro, rame, fosfati, calcio, magnesio, densita))
-		conn.commit()
-
-		self.update_status(1, _("Row aggiunta (ID: %d)") % id)
-		
-	def on_del(self, widget): 
-		# prendiamo l'iter selezionato e elimianiamolo dalla store
+	def  after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()
 
-		if it != None:
-			# Questo Ã¨ il valore da confrontare
-			value = int(self.test_store.get_value(it, 0))
-
-			# Rimuoviamo dal database
-			conn = sqlite.connect(os.path.join('Data', 'db'))
-			cur = conn.cursor()
-
-			cur.execute('delete from test where id=%d' % value)
-			conn.commit()
-
-			# Rimuoviamo la riga selezionata
-			self.test_store.remove(it)
-
-			# Iteriamo tutte le righe per trovarne una con campo id
-			# maggiore di value e modifichiamolo
-			it = mod.get_iter_first()
-
-			while it != None:
-				tmp = int(self.test_store.get_value(it, 0))
-
-				if value < tmp:
-					self.test_store.set_value(it, 0, tmp-1)
-					cur.execute("update test set id=%d where id=%d" % (tmp-1, tmp))
-					conn.commit()
-				it = mod.iter_next(it)
-
-			self.update_status(2, _("Row eliminata (ID: %d)") % value)
-
-	def on_selection_changed(self, sel):
-		# Aggiorniamo il contenuto delle entry in base alla selezione
-		mod, it = sel.get_selected()
+		id = mod.get_value (it, 0)
 		
-		if it != None:
-			self.e_data.set_text(mod.get_value(it, 1))
-			self.e_vasca.set_text(mod.get_value(it, 2))
-			self.e_ph.set_text(mod.get_value(it, 3))
-			self.e_kh.set_text(mod.get_value(it, 4))
-			self.e_gh.set_text(mod.get_value(it, 5))
-			self.e_no.set_text(mod.get_value(it, 6))
-			self.e_no2.set_text(mod.get_value(it, 7))
-			self.e_cond.set_text(mod.get_value(it, 8))
-			self.e_ammo.set_text(mod.get_value(it, 9))
-			self.e_ferro.set_text(mod.get_value(it, 10))
-			self.e_rame.set_text(mod.get_value(it, 11))
-			self.e_fosfati.set_text(mod.get_value(it, 12))
-			self.e_calcio.set_text(mod.get_value(it, 13))
-			self.e_magnesio.set_text(mod.get_value(it, 14))
-			self.e_densita.set_text(mod.get_value(it, 15))
+		data = self.vars[0].get_text ()
+		vasca = self.vars[1].get_text ()
+		ph = self.vars[2].get_text ()
+		kh = self.vars[3].get_text ()
+		gh = self.vars[4].get_text ()
+		no = self.vars[5].get_text ()
+		no2 = self.vars[6].get_text ()
+		cond = self.vars[7].get_text ()
+		ammo = self.vars[8].get_text ()
+		ferro = self.vars[9].get_text ()
+		rame = self.vars[10].get_text ()
+		fosfati = self.vars[11].get_text ()
+		calcio = self.vars[12].get_text ()
+		magnesio = self.vars[13].get_text ()
+		densita = self.vars[14].get_text ()
+		
+		utils.cmd("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)s' where id=%(id)s" % vars ())
+		
+		self.update_status (dbwindow.NotifyType.SAVE, _("Row Aggiornata (ID: %d") % id)
+
+	def add_entry (self, it):
+		mod, id = self.view.get_selection ().get_selected ()
+
+		id = mod.get_value (it, 0)
+		
+		utils.cmd ('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', id,
+				self.vars[0].get_text (),
+				self.vars[1].get_text (),
+				self.vars[2].get_text (),
+				self.vars[3].get_text (),
+				self.vars[4].get_text (),
+				self.vars[5].get_text (),
+				self.vars[6].get_text (),
+				self.vars[7].get_text (),
+				self.vars[8].get_text (),
+				self.vars[9].get_text (),
+				self.vars[10].get_text (),
+				self.vars[11].get_text (),
+				self.vars[12].get_text (),
+				self.vars[13].get_text (),
+				self.vars[14].get_text ()
+				)
+
+		self.update_status(dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		
+	def remove_id (self, id):
+		utils.cmd ('delete from test where id=%d' % id)
+		self.update_status(dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)" % id))
+	
+	def decrement_id (self, id):
+		utils.cmd ('update test set id=%d where id=%d' % (id - 1, id))
 	
 	def on_draw_graph(self, widget):
 		if not Test.PyChart:
@@ -393,24 +148,22 @@ class Test(gtk.Window):
 			dialog.destroy()
 			
 		else:
-			date = self.e_data.get_text()
-			vasca = self.e_vasca.get_text()
-			
-			ph = self.e_ph.get_text()
-			kh = self.e_kh.get_text()
-			gh = self.e_gh.get_text()
-			no = self.e_no.get_text()
-			no2 = self.e_no2.get_text()
-			cond = self.e_cond.get_text()
-			ammo = self.e_ammo.get_text()
-			ferro = self.e_ferro.get_text()
-			rame = self.e_rame.get_text()
-			fosfati = self.e_fosfati.get_text()
-			calcio = self.e_calcio.get_text()
-			magnesio = self.e_magnesio.get_text()
-			densita = self.e_densita.get_text()
-			
-			
+			date = self.vars[0].get_text ()
+			vasca = self.vars[1].get_text ()
+			ph = self.vars[2].get_text ()
+			kh = self.vars[3].get_text ()
+			gh = self.vars[4].get_text ()
+			no = self.vars[5].get_text ()
+			no2 = self.vars[6].get_text ()
+			cond = self.vars[7].get_text ()
+			ammo = self.vars[8].get_text ()
+			ferro = self.vars[9].get_text ()
+			rame = self.vars[10].get_text ()
+			fosfati = self.vars[11].get_text ()
+			calcio = self.vars[12].get_text ()
+			magnesio = self.vars[13].get_text ()
+			densita = self.vars[14].get_text ()
+
 			can = canvas.init(os.path.join('Immagini', 'grafico.png'))
 			
 			theme.use_color = 2
@@ -459,43 +212,6 @@ class Test(gtk.Window):
 			if os.path.isfile(os.path.join('Immagini', 'grafico.png')):
 				os.remove(os.path.join('Immagini', 'grafico.png'))
 
-	def on_delete_event(self, widget, event):
-		if self.timeoutid != None:
-			gobject.source_remove(self.timeoutid)
-	
-	def new_label(self, txt):
-		lbl = gtk.Label()
-		lbl.set_use_markup(True)
-		lbl.set_label('<b>' + txt + '</b>')
-		lbl.set_alignment(0.0, 0.5)
-		
-		return lbl
-		
-	def update_status(self, type, txt):
-		self.img.show()
-		
-		if type == 0:
-			self.img.set_from_stock(gtk.STOCK_SAVE, gtk.ICON_SIZE_MENU)
-		if type == 1:
-			self.img.set_from_stock(gtk.STOCK_ADD, gtk.ICON_SIZE_MENU)
-		if type == 2:
-			self.img.set_from_stock(gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
-		
-		if self.timeoutid != None:
-			gobject.source_remove(self.timeoutid)
-			self.status.pop(0)
-
-		self.status.push(0, txt)
-
-		self.timeoutid = gobject.timeout_add(2000, self.callback)
-	
-	def callback(self):
-		self.img.hide()
-		self.status.pop(0)
-
-		self.timeoutid = None
-		
-		return False
 try:
 	from pychart import *
 except:

@@ -73,7 +73,7 @@ class DBWindow (gtk.Window):
 		self.vbox.pack_start(self.sw)
 
 		# La ButtonBox per le modifiche
-		bb = gtk.HButtonBox ()
+		self.button_box = bb = gtk.HButtonBox ()
 		bb.set_layout (gtk.BUTTONBOX_END)
 
 		btn = gtk.Button (stock=gtk.STOCK_ADD)
