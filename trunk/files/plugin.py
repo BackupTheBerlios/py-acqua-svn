@@ -22,7 +22,6 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
-
 import os
 import sys
 import shutil
@@ -116,6 +115,7 @@ class Plugin(gtk.Window):
 			if i == os.path.split(file)[1]:
 				dialog_info = utils.InputDialog(self, 'Il file %s esiste già...\nVuoi rinominarlo?' % i)
 				file = dialog_info.run()
+				# Devo continuare... :P
 				
 		#Copio tutto nella dir Plugin		
 		if path != file:
@@ -126,7 +126,6 @@ class Plugin(gtk.Window):
 				print "E' occorso un errore durante la copia: %s" % sys.exc_value
 		
 		
-				
 	def search(self):
 		path = os.path.join(os.getcwd(), 'Plugin')
 		id = 0
