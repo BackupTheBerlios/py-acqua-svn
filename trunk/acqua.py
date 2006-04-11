@@ -135,8 +135,6 @@ class Gui(gtk.Window):
 			('Fertilizzante', None, _('_Fertilizzante'), None, _('fertilizzante...'), 'fertilizzante_apri'),
 			
 			('Filtro', None, _('_Filtro'), None, _('filtro...'), 'filtro_apri'),
-
-			('Calendario', None, _('_Calendario'), None, _('Calendario...'),'calendario_apri'),
 			
 			('Inserisci', None, _('_Inserisci'), None, _('Inserisci...'), 'inserisci_apri'),
 			
@@ -145,8 +143,6 @@ class Gui(gtk.Window):
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
 			
 			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
-			
-			('Configurazione', None, _('_Configurazione'), None, _('Configurazione'), 'config_apri'),
 			
 			('Plugins',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
 			
@@ -183,12 +179,10 @@ class Gui(gtk.Window):
 			<menuitem action='Tips Tricks'/>
 			<menuitem action='Fertilizzante'/>
 			<menuitem action='Filtro'/>
-			<menuitem action='Calendario'/>
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
 			<menuitem action='Skin'/>
-			<menuitem action='Configurazione'/>
 			<menuitem action='Plugins'/>
 			<menuitem action='Aggiorna'/>
 		</menu>
@@ -283,10 +277,6 @@ class Gui(gtk.Window):
 		import files.tips
 		files.tips.TipsDialog()	
 		
-	def calendario_apri(self,widget, data=None):
-		import files.calendario
-		return files.calendario.Calendario()
-		
 	def inserisci_apri(self,widget, data=None):
 		import files.inserisci
 		return files.inserisci.Inserisci()
@@ -314,10 +304,6 @@ class Gui(gtk.Window):
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
 		files.plugin.Plugin()
-		
-	def config_apri(self, widget, data=None):
-		import files.config
-		files.config.Config()
 	
 	def update_apri(self, widget, data=None):
 		import files.update
