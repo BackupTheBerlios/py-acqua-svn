@@ -128,7 +128,7 @@ class Vasca (dbwindow.DBWindow):
 			self.vars[id].set_data ('old-value', self.vars[id].get_text ())
 			self.vars[id].set_text (txt)
 
-	def after_refresh (self, it):		
+	def after_refresh (self, it):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		id = mod.get_value (it, 0)
