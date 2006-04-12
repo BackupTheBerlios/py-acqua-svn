@@ -50,7 +50,6 @@ class Vasca (dbwindow.DBWindow):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
 					y[5], y[6], y[7], y[8], y[9], y[10], y[11], utils.make_image(y[12]), y[12]])
 		
-		self.connect ('delete-event', self.on_delete_event)
 		self.set_title (_("Vasche"))
 		self.set_size_request (700, 500)
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")

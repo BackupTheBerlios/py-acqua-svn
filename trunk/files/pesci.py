@@ -30,10 +30,12 @@ class Pesci (dbwindow.DBWindow):
 		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
-			[utils.DataButton (), gtk.Entry (), utils.IntEntry (), gtk.Entry (), utils.ImgEntry ()], lst)
+			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.ImgEntry ()], lst)
 		
 		for y in utils.get ("select * from pesci"):
 			lst.append ([y[0], y[1], y[2], y[3], y[4], utils.make_image(y[5]), y[5]])
+		for y in utils.get ("select * from vasca"):
+			self.vars[1].append_text (y[3])
 		
 		
 		self.set_title (_("Pesci"))
