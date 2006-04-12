@@ -183,7 +183,7 @@ class InputDialog(gtk.MessageDialog):
 		return self.entry.get_text()
 
 class FileChooser(gtk.FileChooserDialog):
-	def __init__(self, text, parent):
+	def __init__(self, text, parent, filter=None):
 		gtk.FileChooserDialog.__init__(
 			self,
 			text,
@@ -199,16 +199,19 @@ class FileChooser(gtk.FileChooserDialog):
 		self.set_size_request(128, -1)
 
 		# Creiamo i filtri
-
-		filter = gtk.FileFilter()
-		filter.set_name("Immagini")
-		filter.add_mime_type("image/png")
-		filter.add_mime_type("image/jpeg")
-		filter.add_mime_type("image/gif")
-		filter.add_pattern("*.png")
-		filter.add_pattern("*.jpg")
-		filter.add_pattern("*.gif")
-		self.add_filter(filter)
+		
+		if filter == None:
+			filter = gtk.FileFilter()
+			filter.set_name(_("Immagini"))
+			filter.add_mime_type("image/png")
+			filter.add_mime_type("image/jpeg")
+			filter.add_mime_type("image/gif")
+			filter.add_pattern("*.png")
+			filter.add_pattern("*.jpg")
+			filter.add_pattern("*.gif")
+			self.add_filter(filter)
+		else:
+			self.add_filter(filter)
 		
 		self.connect('update-preview', self.on_update_preview)
 	
@@ -302,9 +305,20 @@ def copy_image (name):
 			import shutil
 			shutil.copy (name, 'Immagini/')
 		except:
-			print "Errore mentre copiavo (%s)" % sys.exc_value
+			print _("Errore mentre copiavo (%s)") % sys.exc_value
 	
 	return os.path.basename (name)
+
+def copy_plugin (name):
+	plg_dir = os.path.join (os.path.abspath (os.getcwd ()), "Plugin")
+	plg_dir = os.path.join (plg_dir, os.path.basename (name))
+	
+	if plg_dir != name:
+		try:
+			import shutil
+			shutil.copy (name, 'Plugin/')
+		except:
+			print _("Errore mentre copiavo (%s)") % sys.exc_value
 
 def create_skin (name, file):
 	path = os.path.join (SKIN_DIR, name)

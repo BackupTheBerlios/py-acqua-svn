@@ -19,10 +19,9 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pygtk
-pygtk.require('2.0')
 import gtk
 import os
+import glob
 import sys
 import shutil
 import time
@@ -40,9 +39,9 @@ class Plugin(gtk.Window):
 				
 		box = gtk.VBox()
 		
-		self.vasca_store = gtk.ListStore(int, str, str, str, str)
-		self.view = view = gtk.TreeView(self.vasca_store)
-		lst = ['Id', 'Nome', 'Autore', 'Email', 'Data']
+		self.store = gtk.ListStore(int, str, str, str, str)
+		self.view = view = gtk.TreeView(self.store)
+		lst = ['Id', 'Nome', 'Descrizione', 'Versione', 'Autore']
 		
 		render = gtk.CellRendererText()
 		
@@ -68,81 +67,39 @@ class Plugin(gtk.Window):
 		btn.connect('clicked', self.on_add)
 		bb.pack_start(btn)
 		
-		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		btn.connect('clicked', self.on_refresh)
-		bb.pack_start(btn)
-		
 		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
-		btn.connect('clicked', self.on_del)
+		btn.connect('clicked', self.on_unload)
 		bb.pack_start(btn)
 		
 		box.pack_start(bb, False, False, 0)
 		
-		self.status = gtk.Statusbar()
-		box.pack_start(self.status)
 		self.add(box)
-		self.search()
+		self.fillstore()
 		self.show_all()
 			
-	def on_del(self, widget):
-		pass
+	def on_unload(self, widget):
+		mod, it = self.view.get_selection().get_selected()
+		
+		if it != None:
+			id = mod.get_value (it, 0)
+			plug = App.p_engine.array[id]
 			
-	def on_refresh(self, widget):
-		pass
+			plug.stop()
+			App.p_engine.array.remove(plug)
+			
+			self.store.clear()
+			self.fillstore()
 		
 	def on_add(self, widget):
-		self.dialog = gtk.FileChooserDialog("Carica Plug-in...", self, 
-			buttons = (gtk.STOCK_OK, gtk.RESPONSE_OK, gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
-		
 		filter = gtk.FileFilter()
-		filter.set_name("Plug-in py-Acqua")
+		filter.set_name(_("PyAcqua Plugins"))
 		filter.add_pattern("*.py")
-		filter.add_pattern("*.tar.gz")
-		self.dialog.add_filter(filter)
 		
-		self.dialog.connect('response', self.filename)
+		ret = utils.FileChooser(_("Seleziona un Plugin per PyAcqua"), self, filter).run()
 		
-		id = self.dialog.run() 
-		self.dialog.hide()		
-		self.dialog.destroy()
-		
-	def filename(self, widget, data=None):
-		file = self.dialog.get_filename()
-		#file_split = os.path.splitext(file)
-		path = os.path.join(os.getcwd(), 'Plugin')
-		
-		# Se il file e' uguale??? import utils.IputDialog
-		for i in os.listdir(path):
-			if i == os.path.split(file)[1]:
-				dialog_info = utils.InputDialog(self, 'Il file %s esiste già...\nVuoi rinominarlo?' % i)
-				file = dialog_info.run()
-				# Devo continuare... :P
-				
-		#Copio tutto nella dir Plugin		
-		if path != file:
-			try:
-				shutil.copy(file, 'Plugin')
-				self.search()
-			except:
-				print "E' occorso un errore durante la copia: %s" % sys.exc_value
-		
-		
-	def search(self):
-		path = os.path.join(os.getcwd(), 'Plugin')
-		id = 0
-		
-		App.p_engine.load ("Plugin.dummy", "dummy")
-		
-		for i in os.listdir(path):
-			if os.path.isfile(os.path.join(path, i)):
-				id += 1
-				file = os.path.join (path, i)
-				
-				self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
-			elif os.path.isdir(os.path.join(path, i)):
-				id += 1
-				enter = os.path.join(path, i)
-				#self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
-				for x in os.listdir(enter):
-					#print "File " + x + " in dir " + i
-					pass
+		if ret != None:
+			utils.copy_plugin (ret)
+			
+	def fillstore(self):
+		for i in App.p_engine.array:
+			self.store.append([App.p_engine.array.index(i), i.__name__, i.__desc__, i.__ver__, i.__author__])
