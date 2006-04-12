@@ -112,11 +112,15 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
+		self.mar_volume = utils.new_label('0', False)
+		self.mar_piante = utils.new_label('0', False)
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 2, 3)
-		tbl.attach(utils.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-		tbl.attach(utils.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
-
+		tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 3, 4)
+		
+		tbl.attach(self.mar_volume, 1, 2, 2, 3)
+		tbl.attach(self.mar_piante, 1, 2, 3, 4)
+		
 		# Da definire cosa aggiungere.. ecc :p
 
 		# Aggiungiamo la table per il tipo marino alla notebook
@@ -145,7 +149,7 @@ class Calcoli(gtk.Window):
 		
 		# FIXME: i nomi delle variabili sono da cambiare...
 		# tipo self.dlc_volume robe del genere :p
-		if True: return
+		#if True: return
 
 		try:
 			a = int(self.e_larghezza.get_text())
@@ -164,13 +168,17 @@ class Calcoli(gtk.Window):
 		h = e / (3*6)
 		i = e*0.5
 		l = e*0.35
+		
 
-		self.volume.set_text(str(e))
-		self.piante_inseribili.set_text(str(f))
-		self.num_pesci_3_4.set_text(str(g))
-		self.num_pesci_5_6.set_text(str(h))
-		self.watt_esigenti.set_text(str(i))
-		self.watt_poco_esigenti.set_text(str(l))
+		self.dlc_volume.set_text(str(e))
+		self.dlc_piante_inseribili.set_text(str(f))
+		self.dlc_num_pesci_3_4.set_text(str(g))
+		self.dlc_num_pesci_5_6.set_text(str(h))
+		self.dlc_watt_esigenti.set_text(str(i))
+		self.dlc_watt_poco_esigenti.set_text(str(l))
+		
+		self.mar_volume.set_text(str(e))
+		self.mar_piante.set_text(str(e))
 	
 	def pulisci_calcoli(self, obj):
 		self.entry1.set_text("")
