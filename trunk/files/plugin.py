@@ -27,6 +27,7 @@ import sys
 import shutil
 import time
 import utils
+from app import App
 
 class Plugin(gtk.Window):
 	
@@ -110,7 +111,7 @@ class Plugin(gtk.Window):
 		#file_split = os.path.splitext(file)
 		path = os.path.join(os.getcwd(), 'Plugin')
 		
-		# Se il file è uguale??? import utils.IputDialog
+		# Se il file e' uguale??? import utils.IputDialog
 		for i in os.listdir(path):
 			if i == os.path.split(file)[1]:
 				dialog_info = utils.InputDialog(self, 'Il file %s esiste già...\nVuoi rinominarlo?' % i)
@@ -132,6 +133,9 @@ class Plugin(gtk.Window):
 		for i in os.listdir(path):
 			if os.path.isfile(os.path.join(path, i)):
 				id += 1
+				file = os.path.join (path, i)
+				App.p_engine.load ("Plugin.dummy")
+				
 				self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
 			elif os.path.isdir(os.path.join(path, i)):
 				id += 1
