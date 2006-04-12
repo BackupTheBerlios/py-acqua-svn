@@ -13,14 +13,17 @@ class PluginEngine:
 	def __init__ (self):
 		#self.load ("asd")
 		pass
-	def load (self, name):
-		module = __import__ (name)
-		print module
-		#inst = vars(module)[name]
-		#plug = inst ()
+	def load (self, name, klass):
+		module = __import__ (name, globals (), locals (), [klass])
+		instance = vars(module)[klass]
 		
-		#print plug.__name__
-		#plug.start (); plug.stop ()
+		plugin = instance ()
+		
+		plugin.start ()
+		print "Plugin '%s' caricato" % plugin.__name__
+		
+		plugin.stop ()
+		print "Plugin '%s' fermato" % plugin.__name__
 
 if __name__ == "__main__":
 	e = Engine ()

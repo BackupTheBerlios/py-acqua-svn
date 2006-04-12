@@ -130,11 +130,13 @@ class Plugin(gtk.Window):
 	def search(self):
 		path = os.path.join(os.getcwd(), 'Plugin')
 		id = 0
+		
+		App.p_engine.load ("Plugin.dummy", "dummy")
+		
 		for i in os.listdir(path):
 			if os.path.isfile(os.path.join(path, i)):
 				id += 1
 				file = os.path.join (path, i)
-				App.p_engine.load ("Plugin.dummy")
 				
 				self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
 			elif os.path.isdir(os.path.join(path, i)):
@@ -142,4 +144,5 @@ class Plugin(gtk.Window):
 				enter = os.path.join(path, i)
 				#self.vasca_store.append([id, i, 'danger', 'danger90@gmail.com', '27/04/1990'])
 				for x in os.listdir(enter):
-					print "File " + x + " in dir " + i
+					#print "File " + x + " in dir " + i
+					pass
