@@ -36,6 +36,10 @@ class PluginEngine:
 		try:
 			module = __import__ (name, globals (), locals (), [klass])
 			instance = vars(module)[klass]
+
+			for i in self.array:
+				if i.__class__ == instance:
+					return False
 			
 			plugin = instance ()
 			plugin.start ()

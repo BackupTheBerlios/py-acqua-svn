@@ -100,6 +100,12 @@ class Plugin(gtk.Window):
 		if ret != None:
 			utils.copy_plugin (ret)
 			
+			name = os.path.basename (ret)[:-3]
+			App.p_engine.load ("Plugin." +  name, name)
+			
+			self.store.clear ()
+			self.fillstore ()
+			
 	def fillstore(self):
 		for i in App.p_engine.array:
 			self.store.append([App.p_engine.array.index(i), i.__name__, i.__desc__, i.__ver__, i.__author__])

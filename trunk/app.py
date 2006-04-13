@@ -76,8 +76,6 @@ class Gui(gtk.Window):
 			
 			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 			
-			('Plugins',	None, _('_Plug-in'), None, _('Plug-in...'), 'plugin_apri'),
-			
 			('Aggiorna',	None, _('_Aggiorna'), None, _('Aggiorna...'), 'update_apri'),
 
 		('Database', None, _('Database')),
@@ -87,6 +85,11 @@ class Gui(gtk.Window):
 			('Database Piante',	None, _('_Piante'), None, _('Piante...'), 'data_piante_apri'),
 			
 			('Database Invertebrati',	None, _('_Invertebrati'), None, _('Invertebrati...'), 'data_invertebrati_apri'),
+		('Plugins', None, _('Plugins')),
+
+			('PluginManager',	None, _('_Manager'), None, _('Plug-in...'), 'plugin_apri'),
+
+			# i vari Plugin aggiungeranno qui le entry
 		
 		('Aiuto', None, _('_Aiuto')),
 		
@@ -115,13 +118,16 @@ class Gui(gtk.Window):
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
 			<menuitem action='Skin'/>
-			<menuitem action='Plugins'/>
 			<menuitem action='Aggiorna'/>
 		</menu>
 		<menu action='Database'>
 			<menuitem action='Database Pesci'/>
 			<menuitem action='Database Piante'/>
 			<menuitem action='Database Invertebrati'/>
+		</menu>
+		<menu action='Plugins'>
+			<menuitem action='PluginManager'/>
+			<separator/>
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
@@ -289,3 +295,6 @@ class Gui(gtk.Window):
 		
 	def main(self):
 		gtk.main()
+	
+	def get_plugin_menu(self):
+		return self.ui.get_widget('/Menubar/Plugins').get_submenu()

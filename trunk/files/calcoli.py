@@ -78,53 +78,58 @@ class Calcoli(gtk.Window):
 		# Creiamo la tabella per il tipo Dolce
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
-		tbl.set_row_spacings(4)
 			
 		self.dlc_volume = utils.new_label('0', False)
 		self.dlc_piante_inseribili = utils.new_label('0', False)
 		self.dlc_num_pesci_3_4 = utils.new_label('0', False)
 		
-		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 2, 3)
-		tbl.attach(utils.new_label(_("Piante Inseribili:")), 0, 1, 3, 4)
-		tbl.attach(utils.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 4, 5)
+		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
+		tbl.attach(utils.new_label(_("Piante Inseribili:")), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_("Numero di pesci 3-4 cm:")), 0 ,1, 2, 3)
 		
-		tbl.attach(self.dlc_volume, 1, 2, 2, 3)
-		tbl.attach(self.dlc_piante_inseribili, 1, 2, 3, 4)
-		tbl.attach(self.dlc_num_pesci_3_4, 1, 2, 4, 5)
+		tbl.attach(self.dlc_volume, 1, 2, 0, 1)
+		tbl.attach(self.dlc_piante_inseribili, 1, 2, 1, 2)
+		tbl.attach(self.dlc_num_pesci_3_4, 1, 2, 2, 3)
 		
-		tbl.attach(utils.new_label(_("Numero di pesci 5-6 cm:")), 0, 1, 5, 6)
-		tbl.attach(utils.new_label(_("Watt per piante esigenti:")), 0, 1, 6, 7)
-		tbl.attach(utils.new_label(_("Watt per piante poco esigenti:")), 0, 1, 8, 9)
+		tbl.attach(utils.new_label(_("Numero di pesci 5-6 cm:")), 0, 1, 3, 4)
+		tbl.attach(utils.new_label(_("Watt per piante esigenti:")), 0, 1, 4, 5)
+		tbl.attach(utils.new_label(_("Watt per piante poco esigenti:")), 0, 1, 5, 6)
 		
 		self.dlc_num_pesci_5_6 = utils.new_label('0', False)
 		self.dlc_watt_esigenti = utils.new_label('0', False)
 		self.dlc_watt_poco_esigenti = utils.new_label('0', False)
 		
-		tbl.attach(self.dlc_num_pesci_5_6, 1, 2, 5, 6)
-		tbl.attach(self.dlc_watt_esigenti, 1, 2, 6, 7)
-		tbl.attach(self.dlc_watt_poco_esigenti, 1, 2, 8, 9)
+		tbl.attach(self.dlc_num_pesci_5_6, 1, 2, 3, 4)
+		tbl.attach(self.dlc_watt_esigenti, 1, 2, 4, 5)
+		tbl.attach(self.dlc_watt_poco_esigenti, 1, 2, 5, 6)
+
+		box = gtk.VBox()
+		box.pack_start(tbl, False, False, 0)
 
 		# Aggiungiamo la table per il tipo dolce alla notebook
-		self.notebook.append_page(tbl, None)
+		self.notebook.append_page(box, None)
 
 		# Creiamo la table per il tipo marino
-		tbl = gtk.Table(6, 2)
+		tbl = gtk.Table(2, 2)
 		tbl.set_border_width(4)
-		tbl.set_row_spacings(4)
+		#tbl.set_row_spacings(4)
 		
 		self.mar_volume = utils.new_label('0', False)
 		self.mar_piante = utils.new_label('0', False)
 		
-		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 2, 3)
-		tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 3, 4)
+		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
+		tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 1, 2)
 		
-		tbl.attach(self.mar_volume, 1, 2, 2, 3)
-		tbl.attach(self.mar_piante, 1, 2, 3, 4)
+		tbl.attach(self.mar_volume, 1, 2, 0, 1)
+		tbl.attach(self.mar_piante, 1, 2, 1, 2)
 		
 		# Da definire cosa aggiungere.. ecc :p
 
+		box = gtk.VBox()
+		box.pack_start(tbl, False, False, 0)
+
 		# Aggiungiamo la table per il tipo marino alla notebook
-		self.notebook.append_page(tbl, None)
+		self.notebook.append_page(box, None)
 
 		# Pacchiamo la tabella dei valori
 		f1.add(tbl_valori)
