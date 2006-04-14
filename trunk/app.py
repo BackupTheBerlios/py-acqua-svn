@@ -75,8 +75,6 @@ class Gui(gtk.Window):
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
 			
 			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
-			
-			('Aggiorna',	None, _('_Aggiorna'), None, _('Aggiorna...'), 'update_apri'),
 
 		('Database', None, _('Database')),
 			
@@ -118,7 +116,6 @@ class Gui(gtk.Window):
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
 			<menuitem action='Skin'/>
-			<menuitem action='Aggiorna'/>
 		</menu>
 		<menu action='Database'>
 			<menuitem action='Database Pesci'/>
@@ -242,10 +239,6 @@ class Gui(gtk.Window):
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
 		files.plugin.Plugin()
-	
-	def update_apri(self, widget, data=None):
-		import files.update
-		files.update.Update()	
 	
 	def data_pesci_apri(self, widget, data=None):
 		import files.data_pesci
