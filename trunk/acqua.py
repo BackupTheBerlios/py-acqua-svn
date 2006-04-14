@@ -28,10 +28,11 @@ APP = 'acqua'
 DIR = 'locale'
 
 try:
-	locale.setlocale(locale.LC_ALL, 'en_US')
+	locale.setlocale(locale.LC_ALL, '')
 	gettext.bindtextdomain(APP, DIR)
 	gettext.textdomain(APP)
-	gettext.install("acqua", DIR, unicode=1)
+	gettext.install(APP)
+	__builtins__.__dict__["_"] = gettext.gettext
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
 	__builtins__.__dict__["_"] = lambda x : x

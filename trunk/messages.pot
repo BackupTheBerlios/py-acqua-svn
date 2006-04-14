@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-13 19:47+0200\n"
+"POT-Creation-Date: 2006-04-15 18:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: acqua.py:51
+#: acqua.py:52
 msgid "You need to install pyGTK or GTKv2"
 msgstr ""
 
-#: acqua.py:57
+#: acqua.py:58
 msgid "You need to install pysqlite"
 msgstr ""
 
