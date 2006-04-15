@@ -253,7 +253,7 @@ class Gui(gtk.Window):
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
 		
-		dialog.set_name("PyAcqua 0.8")
+		dialog.set_name("PyAcqua 0.9")
 		dialog.set_copyright("\302\251 Copyright (C) 2005, 2006 Luca Sanna - Italy")
 		dialog.set_website("http://pyacqua.altervista.org")
 		
@@ -276,7 +276,7 @@ class Gui(gtk.Window):
 			"Massimiliano Sist - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com",
 			"Pietro Grassi - Release Tester - gnatophillum@gmail.com",
 			"Piero Musu - Graphic - admin@irk.it",
-			"Francesco Piccinno - Developer - stack@fallasa.it"
+			"Francesco Piccinno - Developer - stack.box@gmail.com"
 		]
 		
 		dialog.set_authors(text)

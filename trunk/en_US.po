@@ -1,21 +1,24 @@
+# translation of en_US.po to Italiano
 # English translations for PACKAGE package.
 # Copyright (C) 2006 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+#
+#
 # <stack@dannazione>, 2006.
-# 
-# 
+# Francesco Piccinno <stack.box@gmail,com>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: en_US\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-15 18:00+0200\n"
-"PO-Revision-Date: 2006-04-14 21:13+0200\n"
-"Last-Translator:  <stack@dannazione>\n"
-"Language-Team: English <en@translate.freefriends.org>\n"
+"POT-Creation-Date: 2006-04-16 14:30+0200\n"
+"PO-Revision-Date: 2006-04-16 14:37+0200\n"
+"Last-Translator: Francesco Piccinno <stack.box@gmail,com>\n"
+"Language-Team: Italiano\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.2\n"
 
 #: acqua.py:52
 msgid "You need to install pyGTK or GTKv2"
@@ -53,27 +56,27 @@ msgstr "_Test "
 msgid "Test"
 msgstr "Test "
 
-#: app.py:55 app.py:83
+#: app.py:55 app.py:81
 msgid "_Pesci"
 msgstr "_Fish"
 
-#: app.py:55 app.py:83
+#: app.py:55 app.py:81
 msgid "Pesci..."
 msgstr "Fish..."
 
-#: app.py:57 app.py:85
+#: app.py:57 app.py:83
 msgid "_Piante"
 msgstr "_Plants"
 
-#: app.py:57 app.py:85
+#: app.py:57 app.py:83
 msgid "Piante..."
 msgstr "Plants..."
 
-#: app.py:59 app.py:87
+#: app.py:59 app.py:85
 msgid "_Invertebrati"
 msgstr "_Invertebrates"
 
-#: app.py:59 app.py:87
+#: app.py:59 app.py:85
 msgid "Invertebrati..."
 msgstr "Invertebrates..."
 
@@ -146,42 +149,34 @@ msgid "Skin..."
 msgstr "Skin... "
 
 #: app.py:79
-msgid "_Aggiorna"
-msgstr "_Update"
-
-#: app.py:79
-msgid "Aggiorna..."
-msgstr "Update..."
-
-#: app.py:81
 msgid "Database"
 msgstr "Database "
 
-#: app.py:88
+#: app.py:86
 msgid "Plugins"
 msgstr "Plugins "
 
-#: app.py:90
+#: app.py:88
 msgid "_Manager"
 msgstr "_Manager "
 
-#: app.py:90
+#: app.py:88
 msgid "Plug-in..."
 msgstr "Plug-in... "
 
-#: app.py:94 app.py:98
+#: app.py:92 app.py:96
 msgid "_Aiuto"
 msgstr "_Help"
 
-#: app.py:96
+#: app.py:94
 msgid "_Informazioni"
 msgstr "_Information"
 
-#: app.py:96
+#: app.py:94
 msgid "Riguardo Py-Acqua"
 msgstr "Care Py-Acqua"
 
-#: app.py:98
+#: app.py:96
 msgid "Aiuto..."
 msgstr "Help..."
 
@@ -432,12 +427,13 @@ msgstr "Database Fish"
 
 #: files/data_pesci.py:42 files/fertilizzante.py:34 files/filtro.py:32
 #: files/invertebrati.py:30 files/pesci.py:30 files/piante.py:30
-#: files/spese.py:30 files/test.py:54 files/vasca.py:38
+#: files/plugin.py:44 files/spese.py:30 files/test.py:54 files/vasca.py:38
 msgid "Id"
 msgstr "Id "
 
 #: files/data_pesci.py:42 files/fertilizzante.py:34 files/invertebrati.py:30
-#: files/pesci.py:30 files/piante.py:30 files/spese.py:30 files/vasca.py:38
+#: files/pesci.py:30 files/piante.py:30 files/plugin.py:44 files/spese.py:30
+#: files/vasca.py:38
 msgid "Nome"
 msgstr "Name"
 
@@ -587,6 +583,22 @@ msgstr "Fish"
 #: files/piante.py:41
 msgid "Piante"
 msgstr "Plants"
+
+#: files/plugin.py:35
+msgid "Plug-in"
+msgstr "Plug-in"
+
+#: files/plugin.py:44
+msgid "Descrizione"
+msgstr "Description"
+
+#: files/plugin.py:44
+msgid "Versione"
+msgstr "Version"
+
+#: files/plugin.py:44
+msgid "Autore"
+msgstr "Author"
 
 #: files/plugin.py:95
 msgid "PyAcqua Plugins"

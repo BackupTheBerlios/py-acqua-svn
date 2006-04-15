@@ -28,8 +28,8 @@ class DBWindow (gtk.Window):
 		self.view.get_selection ().connect ('changed', self.on_selection_changed)
 		self.view.connect ('row-activated', self.on_row_activated)
 
-		for i in range(len(cols)-1):
-			print cols[i+1], widgets[i], lst_store.get_column_type(i+1)
+		#for i in range(len(cols)-1):
+		#	print cols[i+1], widgets[i], lst_store.get_column_type(i+1)
 
 		# Le Colonne ..
 
@@ -40,7 +40,7 @@ class DBWindow (gtk.Window):
 		for name in cols:
 			id = cols.index (name)
 			
-			print "Adding %d" % id
+			#print "Adding %d" % id
 			
 			if self.store.get_column_type (id) == gobject.TYPE_DOUBLE:
 				
@@ -61,7 +61,7 @@ class DBWindow (gtk.Window):
 				
 				self.view.append_column (col)
 
-		print "Pixmap init at %d" % self.last
+		#print "Pixmap init at %d" % self.last
 
 		# La ScrolledWindow
 		self.sw = gtk.ScrolledWindow ()
@@ -115,7 +115,7 @@ class DBWindow (gtk.Window):
 			idx = cols.index (name)
 			tmp = self.vars[idx]
 
-			print "Creating e_%s at %d %d %d %d" % (name[:5], x, x+1, y, y+1)
+			#print "Creating e_%s at %d %d %d %d" % (name[:5], x, x+1, y, y+1)
 			
 			self.__dict__ ["e_" + name [:5]] = tmp
 			e_tbl.attach (tmp, x+1, x+2, y, y+1)
@@ -194,7 +194,7 @@ class DBWindow (gtk.Window):
 
 		for i in self.vars:
 			if self.store.get_column_type (self.vars.index (i) + 1).pytype == gtk.gdk.Pixbuf:
-				print "image is %s" % mod.get_value (it, self.last + x)
+				#print "image is %s" % mod.get_value (it, self.last + x)
 				i.set_text( mod.get_value (it, self.last + x))
 				x += 1
 			else:
@@ -224,7 +224,7 @@ class DBWindow (gtk.Window):
 		for tmp in self.vars:
 			if self.store.get_column_type (self.vars.index (tmp) + 1).pytype == gtk.gdk.Pixbuf:
 
-				print "col n %d => %s" % (self.last + x, tmp)
+				#print "col n %d => %s" % (self.last + x, tmp)
 				
 				self.store.set_value (it, self.last + x, tmp.get_text ())
 

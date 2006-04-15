@@ -32,7 +32,7 @@ class Plugin(gtk.Window):
 	
 	def __init__(self):
 		gtk.Window.__init__(self)
-		self.set_title("Plug-in")
+		self.set_title(_("Plug-in"))
 		self.set_resizable(False)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		self.set_size_request(500, 150)
@@ -41,7 +41,7 @@ class Plugin(gtk.Window):
 		
 		self.store = gtk.ListStore(int, str, str, str, str)
 		self.view = view = gtk.TreeView(self.store)
-		lst = ['Id', 'Nome', 'Descrizione', 'Versione', 'Autore']
+		lst = [_('Id'), _('Nome'), _('Descrizione'), _('Versione'), _('Autore')]
 		
 		render = gtk.CellRendererText()
 		
