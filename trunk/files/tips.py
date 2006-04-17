@@ -84,8 +84,11 @@ class TipsDialog(gtk.Dialog):
 			TipsDialog.exist = False
 	
 	def tip(self):
-	
-		tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
+
+		if impostazioni.lang.lower() == "en":
+			tip_file = open(os.path.join('files', 'tip_of_the_day_en.txt'), 'r')
+		else:
+			tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
 	
 		testo = tip_file.read()
 		
