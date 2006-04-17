@@ -36,6 +36,7 @@ minra = maxra = 0
 minfo = maxfo = 0
 show_tips = "1"
 skin = "default"
+lang = "it"
 
 def save():
 	try:
@@ -95,6 +96,7 @@ def save():
 		
 		cfg.set("GUI", "show_tips", show_tips)
 		cfg.set("GUI", "skin", skin)
+		cfg.set("GUI", "lang", lang)
 		cfg.write(par)
 		
 		par.flush()
@@ -112,7 +114,7 @@ def refresh():
 			cfg.read(par)
 			
 			global show_tips
-			global skin
+			global skin, lang
 			global minph, maxph, minkh, maxkh
 			global minam, maxam, minfe, maxfe
 			global minra, maxra, minfo, maxfo
@@ -141,6 +143,7 @@ def refresh():
 			maxfo = cfg.get("fosfati","max")
 			show_tips = cfg.get("GUI", "show_tips")
 			skin = cfg.get("GUI", "skin")
+			lang = cfg.get("GUI", "lang")
 		except:
 			print _("Errore nel caricamento dei valori.. uso quelli di default")
 	else:

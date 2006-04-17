@@ -22,17 +22,22 @@ import webbrowser
 import locale
 import gettext
 import sys
-
+import files.impostazioni
 
 APP = 'acqua'
 DIR = 'locale'
 
 try:
-	locale.setlocale(locale.LC_ALL, '')
-	gettext.bindtextdomain(APP, DIR)
-	gettext.textdomain(APP)
-	gettext.install(APP)
-	__builtins__.__dict__["_"] = gettext.gettext
+	files.impostazioni.refresh ()
+
+	if files.impostazioni.lang.lower () == "en":
+		en = gettext.translation (APP, DIR, ["en"])
+		en.install ()
+		try:
+			locale.setlocale (locale.LC_MESSAGES, "en_US")
+		except: pass
+	else:
+		__builtins__.__dict__["_"] = lambda x : x
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
 	__builtins__.__dict__["_"] = lambda x : x

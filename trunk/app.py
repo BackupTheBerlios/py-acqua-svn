@@ -76,6 +76,8 @@ class Gui(gtk.Window):
 			
 			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 
+			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
+
 		('Database', None, _('Database')),
 			
 			('Database Pesci',	None, _('_Pesci'), None, _('Pesci...'), 'data_pesci_apri'),
@@ -115,6 +117,8 @@ class Gui(gtk.Window):
 			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
+			<separator/>
+			<menuitem action='Lingua'/>
 			<menuitem action='Skin'/>
 		</menu>
 		<menu action='Database'>
@@ -249,6 +253,10 @@ class Gui(gtk.Window):
 	
 	def data_invertebrati_apri(self, widget, data=None):
 		pass
+	
+	def lang_open(self, widget, data=None):
+		import files.lang
+		files.lang.LangWindow()
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
