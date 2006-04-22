@@ -40,8 +40,8 @@ try:
 		en.install ()
 		try:
 			os.environ['LANG'] = "en_US"
+			__builtins__.__dict__.delete("_")
 			locale.setlocale (locale.LC_MESSAGES, "en_US")
-			__builtins__.__dict__["_"] = gettext.gettext
 		except: pass
 	else:
 		os.environ['LANG'] = "it_IT"

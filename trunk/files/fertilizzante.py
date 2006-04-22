@@ -37,6 +37,10 @@ class Fertilizzante(dbwindow.DBWindow):
 		
 		for y in utils.get ('select * from fertilizzante'):
 			lst.append([y[0], y[1], y[2], y[3], y[4]])
+		
+		self.set_title (_("Fertilizzante"))
+		self.set_size_request (400, 200)
+		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 	
 	def after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()
