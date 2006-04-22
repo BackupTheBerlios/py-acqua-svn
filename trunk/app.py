@@ -132,7 +132,6 @@ class Gui(gtk.Window):
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
-			<menuitem action='Help'/>
 		</menu>
 		</menubar></ui>"""
 		

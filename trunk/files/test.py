@@ -185,7 +185,7 @@ class Test (dbwindow.DBWindow):
 				x_axis = axis.X(label=_('Test')),
 				y_axis = axis.Y(label=_('Valori')))
 			ar.add_plot(bar_plot.T(data = data, label = _("Legenda")))
-			ar.draw(can)
+			ar.draw()
 			can.close()
 
 			# InfoDialog

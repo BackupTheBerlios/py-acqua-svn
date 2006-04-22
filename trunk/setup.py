@@ -5,7 +5,7 @@ import py2exe
 setup( 
     name = 'PyAcqua', 
     description = 'Programma per la gestione degli acquari.', 
-    version = '0.8', 
+    version = '0.9', 
  
     windows = [ 
                   { 
@@ -16,13 +16,30 @@ setup(
  
     options = { 
                   'py2exe': { 
-                      'packages':'encodings', 
-                      'includes': 'cairo, pango, pangocairo, atk, gobject, pychart, pychart.axis, pychart.area, pychart.basecanvas, pychart.canvas, pychart.line_plot, pychart.pie_plot, pychart.rose_plot, pychart.tick_mark, pychart.bar_plot, pychart.chart_data, pychart.arrow, pychart.text_box, pychart.color, pychart.font, pychart.fill_style, pychart.error_bar, pychart.range_plot, pychart.chart_object, pychart.line_style, pychart.legend, pychart.pychart_util, pychart.theme, pychart.scaling, pychart.zap, pychart.coord, pychart.linear_coord, pychart.log_coord, pychart.category_coord, pychart.afm, pychart.interval_bar_plot, pysqlite2', 
+                      'packages': 'encodings, pychart', 
+                      'includes': 'dircache, cairo, pango, pangocairo, atk, gobject, pysqlite2', 
+					  "dll_excludes": [
+						"iconv.dll","intl.dll","libatk-1.0-0.dll",
+						"libgdk_pixbuf-2.0-0.dll", "libgdk–win32-2.0-0.dll",
+						"libglib-2.0-0.dll", "libgmodule-2.0-0.dll",
+						"libgobject-2.0-0.dll", "libgthread-2.0-0.dll",
+						"libgtk–win32-2.0-0.dll", "libpango-1.0-0.dll",
+						"libpangowin32-1.0-0.dll", "libcairo-2.dll",
+						"libgdk-win32-2.0-0.dll", "libgtk-win32-2.0-0.dll",
+						"libpangocairo-1.0-0.dll", "libpng13.dll"]
                   } 
               }, 
  
-    data_files=[ 
-                   ("pixmaps", glob.glob("pixmaps/*")),
-				   ("files", glob.glob("files/*.txt"))
-               ] 
+    data_files=[
+        ("pixmaps/skin/blue", glob.glob("pixmaps/skin/blue/*")),
+        ("pixmaps/skin/dark", glob.glob("pixmaps/skin/dark/*")),
+        ("pixmaps/skin/default", glob.glob("pixmaps/skin/default/*")),
+        ("pixmaps/skin", ""),
+        ("pixmaps", ["pixmaps/en.xpm", "pixmaps/it.xpm", "pixmaps/logopyacqua.jpg"]),
+        ("files", glob.glob("files/*.txt")),
+		("locale", ""),
+		("locale/en", ""),
+		("locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/acqua.mo"]),
+		("Plugin", glob.glob("Plugin/*.py"))
+    ] 
 ) 

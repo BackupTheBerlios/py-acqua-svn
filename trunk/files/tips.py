@@ -85,10 +85,11 @@ class TipsDialog(gtk.Dialog):
 	
 	def tip(self):
 
-		if impostazioni.lang.lower() == "en":
-			tip_file = open(os.path.join('files', 'tip_of_the_day_en.txt'), 'r')
-		else:
-			tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
+#FIXME: il file dei tips e' codificato male
+#		if impostazioni.lang.lower() == "en":
+#			tip_file = open(os.path.join('files', 'tip_of_the_day_en.txt'), 'r')
+#		else:
+		tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
 	
 		testo = tip_file.read()
 		
@@ -97,6 +98,6 @@ class TipsDialog(gtk.Dialog):
 		lista_tips = testo.split('&')
 		x = random.randint(0, len(lista_tips) - 1)
 		
-		testo = lista_tips[x] + _('\n\nDalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm')
+		testo = lista_tips[x] + _("\n\nDalle FAQ di it.hobby.acquari http://www.maughe.it/faq/faq.htm")
 		
 		self.textbuffer.set_text(testo)

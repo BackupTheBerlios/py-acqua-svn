@@ -19,6 +19,10 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import os
+__builtins__.__dict__["_"] = lambda x : x
+os.environ['PATH'] += r";lib;etc;bin;ghost\gs8.53\bin"
+
 import webbrowser
 import locale
 import gettext
@@ -35,9 +39,12 @@ try:
 		en = gettext.translation (APP, DIR, ["en"])
 		en.install ()
 		try:
+			os.environ['LANG'] = "en_US"
 			locale.setlocale (locale.LC_MESSAGES, "en_US")
+			__builtins__.__dict__["_"] = gettext.gettext
 		except: pass
 	else:
+		os.environ['LANG'] = "it_IT"
 		__builtins__.__dict__["_"] = lambda x : x
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
@@ -63,11 +70,8 @@ try:
 except:
 	print _("You need to install pysqlite")
 
-import os
 import app
 import files.engine
-
-os.environ['PATH'] += r";lib;etc;bin;ghost\gs8.53\bin"
 
 ### creiamo la directory che contiene le immagini
 
