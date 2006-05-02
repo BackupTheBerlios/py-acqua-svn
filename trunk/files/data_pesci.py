@@ -27,9 +27,15 @@ class Data_Pesci (dbwindow.DBWindow):
 	def __init__(self):
 		
 		lst = gtk.ListStore (int, str, str, str, gtk.gdk.Pixbuf, str)
-		self.col_lst = [_('Id'), _('Nome'), _('Famiglia'), _('Note'), _("Immagine")]
 		
-		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst, [gtk.Entry (), gtk.Entry ()], lst)
+		dbwindow.DBWindow.__init__(self, 1, 4,
+				[_('Id'), _('Data'), _('Nome'), _('Famiglia\''), _('Note')],
+				[utils.DataButton(), gtk.Entry(), gtk.Entry(), gtk.Entry()],
+				lst)
+		
+		
+		
+		
 		
 		
 		
