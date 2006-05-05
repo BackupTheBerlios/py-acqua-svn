@@ -40,8 +40,8 @@ class Test (dbwindow.DBWindow):
 			float,	# PH
 			float,	# KH
 			float,	# GH
-			float,	# NO
 			float,	# NO2
+			float,	# NO3
 			float,	# COND
 			float,	# AMMO
 			float,	# FERRO
@@ -51,7 +51,7 @@ class Test (dbwindow.DBWindow):
 			float,	# magnesio
 			float)	# densita
 
-		cols = [_('Id'), _('Data'), _('Vasca'), _('Ph'), _('Kh'), _('Gh'), _('No'), _('No2'),
+		cols = [_('Id'), _('Data'), _('Vasca'), _('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
 			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
 			_('Calcio'), _('Magnesio'), _('Densita\'')]
 		
@@ -171,8 +171,8 @@ class Test (dbwindow.DBWindow):
 			
 			data = [
 				[_('Ph'), ph], [_('Kh'), kh],
-				[_('Gh'), gh], [_('No'), no],
-				[_('No2'), no2], [_('Cond.'), cond],
+				[_('Gh'), gh], [_('No2'), no],
+				[_('No3'), no2], [_('Cond.'), cond],
 				[_('Ammon.'), ammo], [_('Ferro'), ferro],
 				[_('Rame'), rame], [_('Fosf.'), fosfati],
 				[_('Calcio'), calcio], [_('Magnes.'), magnesio],
