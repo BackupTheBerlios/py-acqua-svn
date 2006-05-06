@@ -78,13 +78,6 @@ class Gui(gtk.Window):
 
 			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
 
-		('Database', None, _('Database')),
-			
-			('Database Pesci',	None, _('_Pesci'), None, _('Pesci...'), 'data_pesci_apri'),
-			
-			('Database Piante',	None, _('_Piante'), None, _('Piante...'), 'data_piante_apri'),
-			
-			('Database Invertebrati',	None, _('_Invertebrati'), None, _('Invertebrati...'), 'data_invertebrati_apri'),
 		('Plugins', None, _('Plugins')),
 
 			('PluginManager',	None, _('_Manager'), None, _('Plug-in...'), 'plugin_apri'),
@@ -120,11 +113,6 @@ class Gui(gtk.Window):
 			<separator/>
 			<menuitem action='Lingua'/>
 			<menuitem action='Skin'/>
-		</menu>
-		<menu action='Database'>
-			<menuitem action='Database Pesci'/>
-			<menuitem action='Database Piante'/>
-			<menuitem action='Database Invertebrati'/>
 		</menu>
 		<menu action='Plugins'>
 			<menuitem action='PluginManager'/>
@@ -242,16 +230,6 @@ class Gui(gtk.Window):
 	def plugin_apri(self, widget, data=None):
 		import files.plugin
 		files.plugin.Plugin()
-	
-	def data_pesci_apri(self, widget, data=None):
-		import files.data_pesci
-		files.data_pesci.Data_Pesci()		
-		
-	def data_piante_apri(self, widget, data=None):
-		pass
-	
-	def data_invertebrati_apri(self, widget, data=None):
-		pass
 	
 	def lang_open(self, widget, data=None):
 		import files.lang
