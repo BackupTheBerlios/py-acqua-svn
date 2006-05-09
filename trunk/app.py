@@ -58,6 +58,10 @@ class Gui(gtk.Window):
 			
 			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), 'invertebrati_apri'),
 			
+			('Importa', None, _('_Importa'), None, _('Importa...'), 'importa_apri'),
+			
+			('Esporta', None, _('_Esporta'), None, _('Esporta...'), 'esporta_apri'),
+			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
 			
 		('Impostazioni', None, _('_Impostazioni')),
@@ -100,6 +104,9 @@ class Gui(gtk.Window):
 			<menuitem action='Pesci'/>
 			<menuitem action='Piante'/>
 			<menuitem action='Invertebrati'/>
+			<separator/>
+			<menuitem action='Importa'/>
+			<menuitem action='Esporta'/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>
@@ -235,9 +242,15 @@ class Gui(gtk.Window):
 		import files.lang
 		files.lang.LangWindow()
 		
+	def importa_apri(self, widget, data=None):
+		pass
+		
+	def esporta_apri(self, widget, data=None):
+		pass
+		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
-		
+	
 		dialog.set_name("PyAcqua 0.9")
 		dialog.set_copyright("\302\251 Copyright (C) 2005, 2006 Luca Sanna - Italy")
 		dialog.set_website("http://pyacqua.altervista.org")
