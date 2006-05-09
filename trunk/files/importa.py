@@ -20,5 +20,9 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
-import gobject
 import utils
+import dbwindow
+
+class Dialog (dbwindow.DBWindow):
+	pass
+	#da inserire un dialog per scegliere la versione del programma e importare il file del database

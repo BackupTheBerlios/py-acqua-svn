@@ -243,7 +243,8 @@ class Gui(gtk.Window):
 		files.lang.LangWindow()
 		
 	def importa_apri(self, widget, data=None):
-		pass
+		import files.importa
+		files.importa.Dialog()
 		
 	def esporta_apri(self, widget, data=None):
 		pass
