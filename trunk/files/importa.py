@@ -21,8 +21,32 @@
 
 import gtk
 import utils
-import dbwindow
 
-class Dialog (dbwindow.DBWindow):
-	pass
-	#da inserire un dialog per scegliere la versione del programma e importare il file del database
+class Importa (gtk.Window):
+	def __init__ (self):
+		gtk.Window.__init__ (self)
+
+		self.set_title (_("Importa"))
+		self.set_size_request (400, 200)
+		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		self.connect ('delete-event', self.exit)
+	
+		vbox = gtk.VBox()
+		vbox.set_spacing(4)
+		vbox.set_border_width(4)
+		
+		tbl = gtk.Table(3, 2)
+		tbl.set_border_width(4)
+		tbl.set_row_spacings(4)
+		
+		tbl.attach(utils.new_label(_("Importa:")), 0, 1, 0, 1)
+		self.immagine = utils.ImgEntry ()
+		tbl.attach(self.immagine, 1, 2, 0, 1)
+		
+		box = gtk.VBox()
+		box.pack_start(tbl, False, False, 0)
+		self.add (box)
+		self.show_all ()
+	
+	def exit (self, *w):
+		self.hide ()

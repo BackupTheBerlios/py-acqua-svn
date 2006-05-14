@@ -244,7 +244,7 @@ class Gui(gtk.Window):
 		
 	def importa_apri(self, widget, data=None):
 		import files.importa
-		files.importa.Dialog()
+		files.importa.Importa()
 		
 	def esporta_apri(self, widget, data=None):
 		pass
