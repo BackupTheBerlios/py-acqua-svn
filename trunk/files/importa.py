@@ -31,8 +31,8 @@ class DbEntry (utils.FileEntry):
 		filter.set_name (_("PyAcqua Databases"))
 
 		# FIXME: su windows non credo funzioni
-		filter.add_mime_type ("application/x-sqlite3")
-		#filter.add_pattern ("*.*")
+		#filter.add_mime_type ("application/x-sqlite3")
+		filter.add_pattern ("db")
 		ret = utils.FileChooser ("Seleziona Database", None, filter, False).run ()
 
 		if ret != None:
