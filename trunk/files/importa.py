@@ -25,6 +25,8 @@ import utils
 class Importa (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
+		
+	
 
 		self.set_title (_("Importa"))
 		self.set_size_request (400, 200)
@@ -39,12 +41,25 @@ class Importa (gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		tbl.attach(utils.new_label(_("Importa:")), 0, 1, 0, 1)
-		self.immagine = utils.ImgEntry ()
-		tbl.attach(self.immagine, 1, 2, 0, 1)
+		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.7"))
+		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione 0.8"))
+		
+		tbl.attach(utils.new_label(_("Importa:")), 1, 2, 0, 1)
+		tbl.attach(utils.new_label(_("Esporta:")), 1, 2, 1, 2)
+		
+		self.importa_db = utils.ImgEntry ()
+		self.esporta_db = utils.ImgEntry ()
+		
+		tbl.attach(self.importa_db, 2, 3, 0, 1)
+		tbl.attach(self.esporta_db, 2, 3, 1, 2)
+		
+		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.7"))
+		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione 0.8"))
 		
 		box = gtk.VBox()
 		box.pack_start(tbl, False, False, 0)
+		box.pack_start (sette)
+		box.pack_start (otto)
 		self.add (box)
 		self.show_all ()
 	
