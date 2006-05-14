@@ -103,6 +103,11 @@ class Importa (gtk.Window):
 		self.add (box)
 
 		self.show_all ()
+		
+	def on_ok (self):
+		pass
+	def on_cancel (self):
+		pass
 	
 	def exit (self, *w):
 		self.hide ()
