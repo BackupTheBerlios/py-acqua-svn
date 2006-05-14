@@ -81,9 +81,24 @@ class Importa (gtk.Window):
 		tbl.attach(frame, 0, 2, 2, 3)
 
 		# TODO: aggiungi i bottoni per i comandi tipo esporta, converti
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		
+		btn = gtk.Button(stock=gtk.STOCK_OK)
+		#btn.connect('clicked', self.on_ok)
+		bb.pack_start(btn)
+		
+		btn = gtk.Button(stock=gtk.STOCK_CANCEL)
+		#btn.connect('clicked', self.on_cancel)
+		bb.pack_start(btn)
+		
+		
 
 		box = gtk.VBox (2, False)
 		box.pack_start (tbl, False, False, 0)
+		
+		box.pack_start(bb, False, False, 0)
 
 		self.add (box)
 
