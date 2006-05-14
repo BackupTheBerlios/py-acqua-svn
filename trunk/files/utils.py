@@ -106,7 +106,7 @@ class IntEntry(FloatEntry):
 	def get_text(self):
 		return self.get_value_as_int()
 
-class ImgEntry (gtk.HBox):
+class FileEntry (gtk.HBox):
 	def __init__ (self):
 		gtk.HBox.__init__ (self)
 
@@ -119,12 +119,18 @@ class ImgEntry (gtk.HBox):
 
 		self.pack_start (self.entry)
 		self.pack_start (self.btn, False, False, 0)
-	
 	def set_text (self, value):
 		self.entry.set_text(value)
 	
 	def get_text (self):
 		return self.entry.get_text()
+	
+	def callback (self, widget):
+		pass
+
+class ImgEntry (FileEntry):
+	def __init__ (self):
+		FileEntry.__init__ (self)
 	
 	def callback (self, widget):
 		ret = FileChooser ("Selezione Immagine", None).run ()
@@ -183,7 +189,7 @@ class InputDialog(gtk.MessageDialog):
 		return self.entry.get_text()
 
 class FileChooser(gtk.FileChooserDialog):
-	def __init__(self, text, parent, filter=None):
+	def __init__(self, text, parent, filter=None, for_images=True):
 		gtk.FileChooserDialog.__init__(
 			self,
 			text,
@@ -191,11 +197,15 @@ class FileChooser(gtk.FileChooserDialog):
 			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
 			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		
-		self.set_use_preview_label(False)
-
-		img = gtk.Image()
+		if for_images == True:
+			self.set_use_preview_label(False)
+			
+			img = gtk.Image()
+			
+			self.set_preview_widget(img)
+			
+			self.connect('update-preview', self.on_update_preview)
 		
-		self.set_preview_widget(img)
 		self.set_size_request(128, -1)
 
 		# Creiamo i filtri
@@ -212,8 +222,6 @@ class FileChooser(gtk.FileChooserDialog):
 			self.add_filter(filter)
 		else:
 			self.add_filter(filter)
-		
-		self.connect('update-preview', self.on_update_preview)
 	
 	def run(self):
 		id = gtk.Dialog.run(self)
