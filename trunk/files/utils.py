@@ -189,11 +189,12 @@ class InputDialog(gtk.MessageDialog):
 		return self.entry.get_text()
 
 class FileChooser(gtk.FileChooserDialog):
-	def __init__(self, text, parent, filter=None, for_images=True):
+	def __init__(self, text, parent, filter=None, for_images=True, act=gtk.FILE_CHOOSER_ACTION_OPEN):
 		gtk.FileChooserDialog.__init__(
 			self,
 			text,
 			parent,
+			act,
 			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
 			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		
@@ -206,7 +207,7 @@ class FileChooser(gtk.FileChooserDialog):
 			
 			self.connect('update-preview', self.on_update_preview)
 		
-		self.set_size_request(128, -1)
+		#self.set_size_request(128, -1)
 
 		# Creiamo i filtri
 		

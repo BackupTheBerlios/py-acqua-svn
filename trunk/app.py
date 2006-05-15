@@ -58,9 +58,7 @@ class Gui(gtk.Window):
 			
 			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), 'invertebrati_apri'),
 			
-			('Importa', None, _('_Importa'), None, _('Importa...'), 'importa_apri'),
-			
-			('Esporta', None, _('_Esporta'), None, _('Esporta...'), 'esporta_apri'),
+			('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), 'importa_apri'),
 			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
 			
@@ -84,7 +82,7 @@ class Gui(gtk.Window):
 
 		('Plugins', None, _('Plugins')),
 
-			('PluginManager',	None, _('_Manager'), None, _('Plug-in...'), 'plugin_apri'),
+			('PluginManager', gtk.STOCK_INDEX, _('_Manager'), None, _('Plug-in...'), 'plugin_apri'),
 
 			# i vari Plugin aggiungeranno qui le entry
 		
@@ -106,7 +104,6 @@ class Gui(gtk.Window):
 			<menuitem action='Invertebrati'/>
 			<separator/>
 			<menuitem action='Importa'/>
-			<menuitem action='Esporta'/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>

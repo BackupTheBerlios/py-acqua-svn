@@ -21,6 +21,7 @@
 
 import gtk
 import utils
+import os.path
 
 class DbEntry (utils.FileEntry):
 	def __init__ (self):
@@ -30,10 +31,21 @@ class DbEntry (utils.FileEntry):
 		filter = gtk.FileFilter ()
 		filter.set_name (_("PyAcqua Databases"))
 
-		# FIXME: su windows non credo funzioni
-		#filter.add_mime_type ("application/x-sqlite3")
 		filter.add_pattern ("db")
-		ret = utils.FileChooser ("Seleziona Database", None, filter, False).run ()
+		ret = utils.FileChooser (_("Seleziona Database"), None, filter, False).run ()
+
+		if ret != None:
+			self.set_text (ret)
+class DbEntryOut (utils.FileEntry):
+	def __init__ (self):
+		utils.FileEntry.__init__ (self)
+
+	def callback (self, widget):
+		filter = gtk.FileFilter ()
+		filter.set_name (_("Tutti i file"))
+
+		filter.add_pattern ("*.*")
+		ret = utils.FileChooser (_("Salva Database come..."), None, filter, False, gtk.FILE_CHOOSER_ACTION_SAVE).run ()
 
 		if ret != None:
 			self.set_text (ret)
@@ -42,8 +54,7 @@ class Importa (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
 
-		self.set_title (_("Importa"))
-		#self.set_size_request (400, 200)
+		self.set_title (_("Importa/Esporta Database"))
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 		self.connect ('delete-event', self.exit)
 	
@@ -58,11 +69,11 @@ class Importa (gtk.Window):
 		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.7"))
 		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione 0.8"))
 		
-		tbl.attach(utils.new_label(_("Importa:")), 0, 1, 0, 1)
-		tbl.attach(utils.new_label(_("Esporta:")), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_("Importa:")), 0, 1, 0, 1, xpadding=8)
+		tbl.attach(utils.new_label(_("Esporta:")), 0, 1, 1, 2, xpadding=8)
 		
 		self.importa_db = DbEntry ()
-		self.esporta_db = DbEntry ()
+		self.esporta_db = DbEntryOut ()
 		
 		tbl.attach(self.importa_db, 1, 2, 0, 1)
 		tbl.attach(self.esporta_db, 1, 2, 1, 2)
@@ -80,34 +91,60 @@ class Importa (gtk.Window):
 
 		tbl.attach(frame, 0, 2, 2, 3)
 
-		# TODO: aggiungi i bottoni per i comandi tipo esporta, converti
-		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		
 		btn = gtk.Button(stock=gtk.STOCK_OK)
-		#btn.connect('clicked', self.on_ok)
+		btn.connect('clicked', self.on_ok)
 		bb.pack_start(btn)
 		
 		btn = gtk.Button(stock=gtk.STOCK_CANCEL)
-		#btn.connect('clicked', self.on_cancel)
+		btn.connect('clicked', self.on_cancel)
 		bb.pack_start(btn)
-		
-		
 
-		box = gtk.VBox (2, False)
-		box.pack_start (tbl, False, False, 0)
-		
-		box.pack_start(bb, False, False, 0)
+		tbl.attach (bb, 0, 2, 3, 4, ypadding=4)
 
-		self.add (box)
+		self.add (tbl)
+		self.set_resizable (False)
 
 		self.show_all ()
 		
-	def on_ok (self):
-		pass
-	def on_cancel (self):
-		pass
+	def on_ok (self, widget):
+		in_db = self.importa_db.get_text ()
+		out_db = self.esporta_db.get_text ()
+
+		def msg (txt, buttons=gtk.BUTTONS_OK):
+			a = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO, buttons, txt)
+			r = a.run ()
+			a.hide (); a.destroy ()
+
+			return r
+
+		if in_db == "":
+			msg (_("Seleziona un database da convertire"))
+		elif out_db == "":
+			msg (_("Seleziona il file su cui salvare"))
+		else:
+			if os.path.exists(out_db):
+				a = msg (_("Il file esiste. Sovrascrivere?"), gtk.BUTTONS_YES_NO)
+
+				if a != gtk.RESPONSE_YES:
+					return
+				else:
+					# Procediamo alla conversione
+					# marcare le sezione di codice per la conversione con try/except
+					# onde evitare errori. Il file da convertire e' in_db
+					# Quello su cui salvare out_db
+
+					if self.ver_sette.get_active():
+						# TODO: Conversione da versione 7
+						pass
+					elif self.ver_otto.get_active():
+						# TODO: Conversione da versione 8
+						pass
+
+	def on_cancel (self, widget):
+		self.exit ()
 	
 	def exit (self, *w):
 		self.hide ()
