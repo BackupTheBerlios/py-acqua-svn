@@ -81,8 +81,8 @@ class Importa (gtk.Window):
 		frame = gtk.Frame ("Vecchia versione:")
 		vbox = gtk.VBox(2, False)
 		
-		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.7"))
-		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione 0.8"))
+		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.8"))
+		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione attuale"))
 
 		vbox.pack_start (sette, False, False, 0)
 		vbox.pack_start (otto, False, False, 0)
