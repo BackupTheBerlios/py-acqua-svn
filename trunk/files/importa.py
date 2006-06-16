@@ -22,6 +22,7 @@
 import gtk
 import utils
 import os.path
+from pysqlite2 import dbapi2 as sqlite
 
 class DbEntry (utils.FileEntry):
 	def __init__ (self):
@@ -44,7 +45,7 @@ class DbEntryOut (utils.FileEntry):
 		filter = gtk.FileFilter ()
 		filter.set_name (_("Tutti i file"))
 
-		filter.add_pattern ("*.*")
+		filter.add_pattern ("db")
 		ret = utils.FileChooser (_("Salva Database come..."), None, filter, False, gtk.FILE_CHOOSER_ACTION_SAVE).run ()
 
 		if ret != None:
@@ -131,15 +132,35 @@ class Importa (gtk.Window):
 				if a != gtk.RESPONSE_YES:
 					return
 				else:
+					
 					# Procediamo alla conversione
 					# marcare le sezione di codice per la conversione con try/except
 					# onde evitare errori. Il file da convertire e' in_db
 					# Quello su cui salvare out_db
 
 					if self.ver_sette.get_active():
+					# per aggiornare il database
+						try:
+							connessione=sqlite.connect("Data/db")
+							cursore=connessione.cursor()
+							cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+							cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+							cursore.execute("alter table vasca add reattore TEXT")
+							cursore.execute("alter table vasca add schiumatoio TEXT")
+							cursore.execute("alter table vasca add riscaldamento TEXT")
+							cursore.execute("alter table test add vasca FLOAT")
+							cursore.execute("alter table test add calcio FLOAT")
+							cursore.execute("alter table test add magnesio FLOAT")
+							cursore.execute("alter table test add densita FLOAT")
+							connessione.commit()
+							self.hide()
+						except:
+						# da mettere un dialog per dare errore in caso di non successo 
+							print "error"
+							pass
 						# TODO: Conversione da versione 7
-						pass
 					elif self.ver_otto.get_active():
+						#questo e la versione attuale deve solo sovrascrivere il file
 						# TODO: Conversione da versione 8
 						pass
 
