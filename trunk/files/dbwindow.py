@@ -230,6 +230,12 @@ class DBWindow (gtk.Window):
 				x += 1
 			else:
 				i.set_text( mod.get_value (it, self.vars.index (i) + 1))
+
+		self.after_selection_changed (mod, it)
+	
+	def after_selection_changed (mod, it):
+		pass
+
 	def on_row_activated (self, tree, path, col):
 		pass
 	

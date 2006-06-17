@@ -126,12 +126,6 @@ class Test (dbwindow.DBWindow):
 		self.set_title (_("Test"))
 		self.set_size_request (600, 400)
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
-
-		btn = gtk.Button (_("Grafico"))
-		btn.connect ('clicked', self.on_draw_graph)
-		btn.set_relief (gtk.RELIEF_NONE)
-
-		self.button_box.pack_start (btn)
 		
 		if Test.Chart:
 			self.note.set_current_page (0)
@@ -141,7 +135,10 @@ class Test (dbwindow.DBWindow):
 		if Test.Chart:
 			id = widget.get_active ()
 			
-			if id == 0 or id == 1:
+			if id == 1:
+				self.on_draw_graph (None)
+				self.note.set_current_page (id)
+			else:
 				self.note.set_current_page (id)
 			
 	def pack_before_button_box (self, hb):
@@ -236,13 +233,18 @@ class Test (dbwindow.DBWindow):
 	def decrement_id (self, id):
 		utils.cmd ('update test set id=%d where id=%d' % (id - 1, id))
 		
-	def on_draw_graph(self, widget):
-		lst = list()
-		
-		for i in range(13):
-			lst.append (float (self.vars[i+2].get_text ()))
-			 
-		self.grapher.plot (lst)		
+	def after_selection_changed (self, mod, it):
+		if self.note.get_current_page () == 1:
+			self.on_draw_graph (None)
+
+	def on_draw_graph (self, widget):
+		if Test.Chart:
+			lst = list()
+			
+			for i in range(13):
+				lst.append (float (self.vars[i+2].get_text ()))
+				 
+			self.grapher.plot (lst)		
 
 try:
 	import matplotlib
