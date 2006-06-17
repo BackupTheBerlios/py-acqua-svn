@@ -114,14 +114,21 @@ class DBWindow (gtk.Window):
 		btn.set_relief (gtk.RELIEF_NONE)
 		btn.connect ('clicked', self.on_remove)
 		bb.pack_start(btn)
-
-		self.vbox.pack_start(bb, False, False, 0)
+		
+		hb = gtk.HBox (2, False)
+		
+		self.pack_before_button_box (hb)
+		
+		hb.pack_start (bb)
+		
+		self.vbox.pack_start(hb, False, False, 0)
 
 		# Creiamo la zona editing
 		edt_frame = gtk.Frame ("Editing:")
 		edt_frame.set_shadow_type (gtk.SHADOW_ETCHED_IN)
-
-		self.vbox.pack_start (edt_frame, False, False, 0)
+		
+		if self.custom_page(edt_frame) == False:
+			self.vbox.pack_start (edt_frame, False, False, 0)
 		
 		# Eliminiamo la colonna id che nn ci serve
 		cols.remove(cols[0])
@@ -327,6 +334,12 @@ class DBWindow (gtk.Window):
 	def decrement_id (self, id):
 		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
 		pass
+	
+	def pack_before_button_box (self, hb):
+		pass
+	
+	def custom_page (self, edt_frame):
+		return False
 
 class Test(DBWindow):
 	def __init__(self):

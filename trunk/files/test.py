@@ -26,8 +26,63 @@ import sys
 import utils
 import dbwindow
 
+class GraphPage (gtk.ScrolledWindow):
+	
+	def __init__ (self, legend=False):
+		gtk.ScrolledWindow.__init__ (self)
+		
+		self.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		
+		self.legend = legend
+		
+		self.figure = Figure (figsize=(6,4), dpi=72)
+		self.axis = self.figure.add_subplot (111)
+		
+		self.canvas = FigureCanvasGTK(self.figure)
+		self.add_with_viewport (self.canvas)
+		
+		self.show_all ()
+	
+	def plot (self, values):
+		
+		self.axis.clear ()
+		self.axis.set_ylabel('Valori')
+		#self.axis.set_title('PyAcqua Grapher')
+		self.axis.grid(True)
+		
+		self.values = values
+		
+		ind = arange (1)
+		width = 0.25
+		
+		index = 0
+		
+		# TODO: i colori sono da sistemare
+		colors = ('r', 'g', 'y', 'b', 'c', 'm', 'k', 'w', 'r', 'g', 'y', 'b', 'g')
+		
+		lst = zip (self.values, colors)
+		
+		bars = []
+		labels = (_('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
+			_('Cond'), _('Ammo'), _('Fe'), _('Cu'), _('Fosf'),
+			_('Ca'), _('Magn'), _('Dens'))
+		
+		for i, c in lst:
+			bars.append (self.axis.bar (ind + (width * index), i, width/2, color=c))
+			index += 1
+		
+		self.axis.set_xticks (arange (12, step=0.25) + 0.25/4)
+		self.axis.set_xticklabels (labels)
+		self.axis.set_xlim (-width, 0.25 * 13)
+		
+		if self.legend:
+			self.axis.legend (bars, labels, shadow=True, loc=1)
+		
+		self.canvas.draw ()
+		
+
 class Test (dbwindow.DBWindow):
-	PyChart = True
+	Chart = True
 	def __init__ (self): 
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
@@ -77,10 +132,54 @@ class Test (dbwindow.DBWindow):
 		btn.set_relief (gtk.RELIEF_NONE)
 
 		self.button_box.pack_start (btn)
-
+		
+		if Test.Chart:
+			self.note.set_current_page (0)
 		self.show_all ()
+	
+	def on_change_view (self, widget):
+		if Test.Chart:
+			id = widget.get_active ()
+			
+			if id == 0 or id == 1:
+				self.note.set_current_page (id)
+			
+	def pack_before_button_box (self, hb):
+		if Test.Chart:
+			cmb = utils.Combo ()
+			
+			cmb.append_text (_("Modifica"))
+			cmb.append_text (_("Grafico"))
+			
+			cmb.set_active (0)
+			
+			cmb.connect ('changed', self.on_change_view)
+			
+			align = gtk.Alignment (0, 0.5)
+			align.add (cmb)
+			
+			hb.pack_start (align)
+			
+			cmb.show ()
+	
+	def custom_page (self, edt_frame):
+		if Test.Chart:
+			self.note = gtk.Notebook ()
+			self.vbox.pack_start (self.note, False, False, 0)
+			
+			self.note.set_show_tabs (False)
+			self.note.set_show_border (False)
+			self.grapher = GraphPage ()
+			
+			self.note.append_page (edt_frame)
+			self.note.append_page (self.grapher)
+			
+			# C'e' la custom page qui :P
+			return True
+		else:
+			return False
 
-	def  after_refresh (self, it):
+	def after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()
 
 		id = mod.get_value (it, 0)
@@ -136,83 +235,23 @@ class Test (dbwindow.DBWindow):
 	
 	def decrement_id (self, id):
 		utils.cmd ('update test set id=%d where id=%d' % (id - 1, id))
-	
+		
 	def on_draw_graph(self, widget):
-		if not Test.PyChart:
-			dialog = gtk.MessageDialog(self, gtk.DIALOG_MODAL,
-				gtk.MESSAGE_WARNING, gtk.BUTTONS_OK,
-				_("PyChart non installato.\nScaricalo da http://home.gna.org/pychart/"))
-			
-			dialog.run()
-			dialog.hide()
-			dialog.destroy()
-			
-		else:
-			date = self.vars[0].get_text ()
-			vasca = self.vars[1].get_text ()
-			ph = self.vars[2].get_text ()
-			kh = self.vars[3].get_text ()
-			gh = self.vars[4].get_text ()
-			no = self.vars[5].get_text ()
-			no2 = self.vars[6].get_text ()
-			cond = self.vars[7].get_text ()
-			ammo = self.vars[8].get_text ()
-			ferro = self.vars[9].get_text ()
-			rame = self.vars[10].get_text ()
-			fosfati = self.vars[11].get_text ()
-			calcio = self.vars[12].get_text ()
-			magnesio = self.vars[13].get_text ()
-			densita = self.vars[14].get_text ()
-
-			can = canvas.init(os.path.join('Immagini', 'grafico.png'))
-			
-			theme.use_color = 2
-			theme.reinitialize()
-			
-			data = [
-				[_('Ph'), ph], [_('Kh'), kh],
-				[_('Gh'), gh], [_('No2'), no],
-				[_('No3'), no2], [_('Cond.'), cond],
-				[_('Ammon.'), ammo], [_('Ferro'), ferro],
-				[_('Rame'), rame], [_('Fosf.'), fosfati],
-				[_('Calcio'), calcio], [_('Magnes.'), magnesio],
-				[_('Densità'), densita]
-				]
-			ar = area.T(x_coord = category_coord.T(data, 0),
-				y_range = (0, None),
-				size = (400, 250),
-
-				x_axis = axis.X(label=_('Test')),
-				y_axis = axis.Y(label=_('Valori')))
-			ar.add_plot(bar_plot.T(data = data, label = _("Legenda")))
-			ar.draw()
-			can.close()
-
-			# InfoDialog
-			d = gtk.MessageDialog(self, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-			d.set_markup(_("<span size=\"large\"><b>PyAcqua Graph</b></span>\n\n<b>Tipo Vasca:</b> %s\n<b>Data:</b> %s") % (vasca, date))
-			
-			img = gtk.Image(); img.set_from_file(os.path.join('Immagini', 'grafico.png'))
-			
-			sw = gtk.ScrolledWindow()
-			sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-			#sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-			
-			sw.add_with_viewport(img)
-			
-			d.vbox.pack_start(sw)
-			d.vbox.show_all()
-			d.set_border_width(4)
-			
-			d.set_size_request(600, 450)
-			
-			d.run()
-			d.hide(); d.destroy()
-			
-			if os.path.isfile(os.path.join('Immagini', 'grafico.png')):
-				os.remove(os.path.join('Immagini', 'grafico.png'))
+		lst = list()
+		
+		for i in range(13):
+			lst.append (float (self.vars[i+2].get_text ()))
+			 
+		self.grapher.plot (lst)		
 
 try:
-	from pychart import *
+	import matplotlib
+	
+	matplotlib.use ('GTKAgg')
+	from matplotlib.figure import Figure
+	from matplotlib.axes import Subplot
+	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
+	from matplotlib.numerix import arange
+	
 except:
-	Test.PyChart = False
+	Test.Chart = False
