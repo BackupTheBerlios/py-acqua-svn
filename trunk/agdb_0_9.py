@@ -28,6 +28,7 @@ cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, q
 cursore.execute("alter table vasca add reattore TEXT")
 cursore.execute("alter table vasca add schiumatoio TEXT")
 cursore.execute("alter table vasca add riscaldamento TEXT")
+cursore.execute("alter table vasca add note VARCHAR(500)")
 cursore.execute("alter table test add vasca FLOAT")
 cursore.execute("alter table test add calcio FLOAT")
 cursore.execute("alter table test add magnesio FLOAT")
