@@ -26,6 +26,8 @@ import sys
 import utils
 import dbwindow
 
+from pysqlite2 import dbapi2 as sqlite
+
 class GraphPage (gtk.ScrolledWindow):
 	
 	def __init__ (self, legend=False):
@@ -241,9 +243,18 @@ class Test (dbwindow.DBWindow):
 		if Test.Chart:
 			lst = list()
 			
-			for i in range(13):
-				lst.append (float (self.vars[i+2].get_text ()))
-				 
+			#ho fatto un po di casino :)
+			
+			connessione=sqlite.connect("Data/db")
+			cursore=connessione.cursor()
+			cursore.execute("select * from test")
+			#for i in range(13):
+				#lst.append (float (self.vars[i+2].get_text ()))
+			for y in cursore.fetchall():
+				lst.append y[2]
+			#lst.append (float (self.vars[2].get_text()))	 
+			
+			
 			self.grapher.plot (lst)		
 
 try:
