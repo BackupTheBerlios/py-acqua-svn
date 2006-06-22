@@ -63,9 +63,9 @@ class GraphPage (gtk.ScrolledWindow):
 		lst = zip (self.values, colors)
 		
 		bars = []
-		labels = (_('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
-			_('Cond'), _('Ammo'), _('Fe'), _('Cu'), _('Fosf'),
-			_('Ca'), _('Magn'), _('Dens'))
+		labels = (_('pH'), _('KH'), _('GH'), _('NO2'), _('NO3'),
+			_('Conducibilita'), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
+			_('Calcio'), _('Magnesio'), _('Densita'))
 		
 		for i, c in lst:
 			bars.append (self.axis.bar (ind + (width * index), i, width/2, color=c))
