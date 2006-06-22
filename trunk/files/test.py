@@ -251,7 +251,7 @@ class Test (dbwindow.DBWindow):
 			#for i in range(13):
 				#lst.append (float (self.vars[i+2].get_text ()))
 			for y in cursore.fetchall():
-				lst.append y[2]
+				lst.append (float(y[2]))
 			#lst.append (float (self.vars[2].get_text()))	 
 			
 			
