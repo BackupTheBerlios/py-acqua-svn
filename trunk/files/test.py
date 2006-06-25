@@ -270,6 +270,7 @@ class Test (dbwindow.DBWindow):
 		
 		
 		
+		
 try:
 	import matplotlib
 	
