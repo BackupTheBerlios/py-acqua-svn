@@ -26,7 +26,7 @@ import sys
 import utils
 import dbwindow
 
-from pysqlite2 import dbapi2 as sqlite
+
 
 class GraphPage (gtk.ScrolledWindow):
 	
@@ -140,15 +140,24 @@ class Test (dbwindow.DBWindow):
 			if id == 1:
 				self.on_draw_graph (None)
 				self.note.set_current_page (id)
-			else:
+				
+			elif id == 2:
+				self.on_impostazioni (None)
 				self.note.set_current_page (id)
 			
+			else:
+				self.note.set_current_page (id)
+				
+			
+	
+	
 	def pack_before_button_box (self, hb):
 		if Test.Chart:
 			cmb = utils.Combo ()
 			
 			cmb.append_text (_("Modifica"))
 			cmb.append_text (_("Grafico"))
+			cmb.append_text (_("Impostazioni"))
 			
 			cmb.set_active (0)
 			
@@ -245,18 +254,22 @@ class Test (dbwindow.DBWindow):
 			
 			#ho fatto un po di casino :)
 			
-			connessione=sqlite.connect("Data/db")
-			cursore=connessione.cursor()
-			cursore.execute("select * from test")
-			#for i in range(13):
-				#lst.append (float (self.vars[i+2].get_text ()))
-			for y in cursore.fetchall():
-				lst.append (float(y[2]))
+			
+			for i in range(13):
+				lst.append (float (self.vars[i+2].get_text ()))
+			#for y in cursore.fetchall():
+				#lst.append (float(y[2]))
 			#lst.append (float (self.vars[2].get_text()))	 
 			
 			
 			self.grapher.plot (lst)		
 
+	def on_impostazioni (self, widget):
+		print "da aggiungere la finestra inserisci"
+		
+		
+		
+		
 try:
 	import matplotlib
 	
