@@ -252,15 +252,11 @@ class Test (dbwindow.DBWindow):
 		if Test.Chart:
 			lst = list()
 			
-			#ho fatto un po di casino :)
+			
 			
 			
 			for i in range(13):
 				lst.append (float (self.vars[i+2].get_text ()))
-			#for y in cursore.fetchall():
-				#lst.append (float(y[2]))
-			#lst.append (float (self.vars[2].get_text()))	 
-			
 			
 			self.grapher.plot (lst)		
 
