@@ -28,6 +28,7 @@ import dbwindow
 
 
 
+
 class GraphPage (gtk.ScrolledWindow):
 	
 	def __init__ (self, legend=False):
@@ -264,6 +265,9 @@ class Test (dbwindow.DBWindow):
 		print "da aggiungere la finestra inserisci"
 		
 		
+
+		import files.inserisci
+		return files.inserisci.Inserisci()
 		
 		
 		
