@@ -233,7 +233,7 @@ class DBWindow (gtk.Window):
 
 		self.after_selection_changed (mod, it)
 	
-	def after_selection_changed (mod, it):
+	def after_selection_changed (self, mod, it):
 		pass
 
 	def on_row_activated (self, tree, path, col):

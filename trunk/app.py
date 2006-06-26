@@ -64,7 +64,7 @@ class Gui(gtk.Window):
 			
 		('Impostazioni', None, _('_Impostazioni')),
 		
-			('Tips Tricks',	None, _('_Tips Tricks'), None, _('Tips and Tricks...'), 'tips_apri'),
+			('Tips Tricks',	gtk.STOCK_DIALOG_INFO, _('_Tips Tricks'), None, _('Tips and Tricks...'), 'tips_apri'),
 			
 			('Fertilizzante', None, _('_Fertilizzante'), None, _('fertilizzante...'), 'fertilizzante_apri'),
 			
@@ -76,7 +76,7 @@ class Gui(gtk.Window):
 			
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
 			
-			('Skin', None, _('_Skin'), None, _('Skin...'), 'skin_apri'),
+			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 
 			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
 

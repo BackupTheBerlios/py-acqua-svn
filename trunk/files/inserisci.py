@@ -26,12 +26,12 @@ import impostazioni
 #from inserisci import *
 from pysqlite2 import dbapi2 as sqlite
 
-class Inserisci(gtk.Window):
+class Inserisci(gtk.ScrolledWindow):
 	def __init__(self):
-		gtk.Window.__init__(self)
+		gtk.ScrolledWindow.__init__(self)
 		
-		self.set_title(_('Inserisci Test'))
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		self.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		
 		box = gtk.VBox()
 		box.set_spacing(4)
 		box.set_border_width(4)
@@ -100,8 +100,8 @@ class Inserisci(gtk.Window):
 		box.pack_start(bb, False, False, 0)
 		
 		
-		self.add(box)
-		self.show_all()
+		self.add_with_viewport (box)
+		self.show_all ()
 		
 	
 	def inserisci_test(self, widget):

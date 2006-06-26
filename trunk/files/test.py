@@ -86,6 +86,7 @@ class GraphPage (gtk.ScrolledWindow):
 
 class Test (dbwindow.DBWindow):
 	Chart = True
+	Chart = False
 	def __init__ (self): 
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
@@ -130,64 +131,64 @@ class Test (dbwindow.DBWindow):
 		self.set_size_request (600, 400)
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 		
-		if Test.Chart:
-			self.note.set_current_page (0)
+		self.note.set_current_page (0)
 		self.show_all ()
 	
 	def on_change_view (self, widget):
-		if Test.Chart:
-			id = widget.get_active ()
-			
-			if id == 1:
-				self.on_draw_graph (None)
-				self.note.set_current_page (id)
-				
-			elif id == 2:
-				self.on_impostazioni (None)
-				self.note.set_current_page (id)
-			
-			else:
-				self.note.set_current_page (id)
-				
-			
-	
+		id = widget.get_active ()
+		
+		if Test.Chart and id == 1:
+			self.on_draw_graph (None)
+			self.note.set_current_page (id)
+		else:
+			self.note.set_current_page (id)
 	
 	def pack_before_button_box (self, hb):
+		cmb = utils.Combo ()
+		
+		cmb.append_text (_("Modifica"))
+		
 		if Test.Chart:
-			cmb = utils.Combo ()
-			
-			cmb.append_text (_("Modifica"))
 			cmb.append_text (_("Grafico"))
-			cmb.append_text (_("Impostazioni"))
-			
-			cmb.set_active (0)
-			
-			cmb.connect ('changed', self.on_change_view)
-			
-			align = gtk.Alignment (0, 0.5)
-			align.add (cmb)
-			
-			hb.pack_start (align)
-			
-			cmb.show ()
+		
+		cmb.append_text (_("Impostazioni"))
+		
+		cmb.set_active (0)
+		
+		cmb.connect ('changed', self.on_change_view)
+		
+		align = gtk.Alignment (0, 0.5)
+		align.add (cmb)
+		
+		hb.pack_start (align, False, True, 0)
+		
+		if not Test.Chart:
+			label = gtk.Label (_("<i>E' necessario matplotlib per i grafici.</i>"))
+			label.set_use_markup (True)
+			label.set_alignment (0, 0.5)
+			hb.pack_start (label, False, True, 0)
+		
+		cmb.show ()
 	
 	def custom_page (self, edt_frame):
+		import files.inserisci
+		
+		self.note = gtk.Notebook ()
+		self.vbox.pack_start (self.note, False, False, 0)
+		
+		self.note.set_show_tabs (False)
+		self.note.set_show_border (False)
+		self.note.append_page (edt_frame)
+		
 		if Test.Chart:
-			self.note = gtk.Notebook ()
-			self.vbox.pack_start (self.note, False, False, 0)
-			
-			self.note.set_show_tabs (False)
-			self.note.set_show_border (False)
 			self.grapher = GraphPage ()
-			
-			self.note.append_page (edt_frame)
 			self.note.append_page (self.grapher)
-			
-			# C'e' la custom page qui :P
-			return True
-		else:
-			return False
-
+		
+		self.note.append_page (files.inserisci.Inserisci ())
+		
+		# C'e' la custom page qui :P
+		return True
+		
 	def after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()
 
@@ -251,26 +252,23 @@ class Test (dbwindow.DBWindow):
 
 	def on_draw_graph (self, widget):
 		if Test.Chart:
-			lst = list()
+			mod, it = self.view.get_selection ().get_selected ()
 			
+			if it == None: return
 			
+			x = 0
+			lst = [None,] * 13
 			
+			for i in range (13):
+				if self.store.get_column_type (i + 3).pytype == gtk.gdk.Pixbuf:
+					#print "image is %s" % mod.get_value (it, self.last + x)
+					lst[i] = mod.get_value (it, self.last + x)
+					x += 1
+				else:
+					lst[i] = mod.get_value (it, i + 3)
 			
-			for i in range(13):
-				lst.append (float (self.vars[i+2].get_text ()))
+			self.grapher.plot (lst)
 			
-			self.grapher.plot (lst)		
-
-	def on_impostazioni (self, widget):
-		print "da aggiungere la finestra inserisci"
-		
-		
-
-		import files.inserisci
-		return files.inserisci.Inserisci()
-		
-		
-		
 try:
 	import matplotlib
 	
