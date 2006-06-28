@@ -70,8 +70,6 @@ class Gui(gtk.Window):
 			
 			('Filtro', None, _('_Filtro'), None, _('filtro...'), 'filtro_apri'),
 			
-			('Inserisci', None, _('_Inserisci'), None, _('Inserisci...'), 'inserisci_apri'),
-			
 			('Allarmi', None, _('_Allarmi'), None, _('Allarmi...'), 'allarmi_apri'),
 			
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
@@ -111,7 +109,6 @@ class Gui(gtk.Window):
 			<menuitem action='Tips Tricks'/>
 			<menuitem action='Fertilizzante'/>
 			<menuitem action='Filtro'/>
-			<menuitem action='Inserisci'/>
 			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
 			<separator/>
@@ -206,10 +203,6 @@ class Gui(gtk.Window):
 	def tips_apri(self, widget, data=None):
 		import files.tips
 		files.tips.TipsDialog()	
-		
-	def inserisci_apri(self,widget, data=None):
-		import files.inserisci
-		return files.inserisci.Inserisci()
 		
 	def allarmi_apri(self, widget, data=None):
 		import files.allarmi
