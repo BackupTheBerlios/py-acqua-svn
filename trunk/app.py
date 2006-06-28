@@ -204,10 +204,6 @@ class Gui(gtk.Window):
 		import files.tips
 		files.tips.TipsDialog()	
 		
-	def allarmi_apri(self, widget, data=None):
-		import files.allarmi
-		files.allarmi.Allarmi()
-		
 	def spese_apri(self, widget, data=None):
 		import files.spese
 		files.spese.Spese()
