@@ -19,15 +19,38 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+# stAck rulez *_*
+
+
 import gtk
+import gtk.gdk
 import gobject
 import os
 import sys
 import utils
 import dbwindow
+import datetime
+import impostazioni
 
+# I love chicken
+checks = (
+	(impostazioni.minph, impostazioni.maxph),
+	(impostazioni.minkh, impostazioni.maxkh),
+	(impostazioni.mingh, impostazioni.maxgh),
+	(impostazioni.minno2, impostazioni.maxno2),
+	(impostazioni.minno3, impostazioni.maxno3),
+	(impostazioni.mincon, impostazioni.maxcon),
+	(impostazioni.minam, impostazioni.maxam),
+	(impostazioni.minfe, impostazioni.maxfe),
+	(impostazioni.minra, impostazioni.maxra),
+	(impostazioni.minfo, impostazioni.maxfo)
+)
 
-
+gcolor = (
+	gtk.gdk.color_parse ('#bcfffc'), # Minore
+	gtk.gdk.color_parse ('#ff8080'), # Maggiore
+	gtk.gdk.color_parse ('#80ff80')  # OK
+)
 
 class GraphPage (gtk.ScrolledWindow):
 	
@@ -38,64 +61,201 @@ class GraphPage (gtk.ScrolledWindow):
 		
 		self.legend = legend
 		
-		self.figure = Figure (figsize=(6,4), dpi=72)
-		self.axis = self.figure.add_subplot (111)
+		tbl = gtk.Table (4, 2, False)
 		
-		self.canvas = FigureCanvasGTK(self.figure)
-		self.add_with_viewport (self.canvas)
+		self.menu = gtk.Menu ()
+		
+		for y in utils.get ('select * from vasca'):
+			self.menu.append (gtk.CheckMenuItem (y[3]))
+		
+		al = gtk.Alignment(0, 0.5)
+		btn = gtk.Button()
+		btn.set_relief (gtk.RELIEF_NONE)
+		hb = gtk.HBox (0, False)
+		hb.add (gtk.Arrow (gtk.ARROW_RIGHT, gtk.SHADOW_ETCHED_IN))
+		hb.add (gtk.Label (_("Selezione Vasche")))
+		btn.add (hb)
+		al.add (btn)
+		
+		btn.connect ('button_press_event', self.on_popup)
+		
+		bb = gtk.HButtonBox ()
+		bb.set_layout (gtk.BUTTONBOX_EDGE)
+		
+		button = utils.new_button (_("Plot"), gtk.STOCK_ZOOM_IN)
+		button.connect ('clicked', self.on_plot)
+		
+		bb.pack_start (button)
+		
+		self.m_box = gtk.VBox (False, 2)
+		
+		self.checks = []		
+		labels = (_('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
+			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
+			_('Calcio'), _('Magnesio'), _('Densita\''))
+		
+		x = 1
+		funny_toggle = False
+		
+		for i in labels:
+			widg = gtk.CheckButton (i)
+			self.checks.append (widg)
+			if not funny_toggle:
+				tbl.attach (widg, 1, 2, x, x+1)
+				x += 1
+			else:
+				tbl.attach (widg, 0, 1, x, x+1)
+				
+			funny_toggle = not funny_toggle
+		
+		tbl.attach (utils.new_label (_("Vasca:")), 0, 1, 0, 1)
+		tbl.attach (utils.new_label (_("Valori:")), 0, 1, 1, 2)
+		tbl.attach (al, 1, 2, 0, 1)
+		tbl.attach (bb, 0, 2, x, x+1)
+		
+		self.add_with_viewport (tbl)
 		
 		self.show_all ()
 	
+	def on_plot (self, widget):
+		vasche = []
+		to_plot = []
+		data = []
+		
+		for i in self.menu.get_children():
+			if i.active:
+				vasche.append (i.get_children()[0].get_text())
+		
+		for i in self.checks:
+			if i.get_active ():
+				to_plot.append (self.checks.index (i))
+		
+		# Ed ecco qui la cosa piu' assurda mai fatta
+		for i in to_plot:
+			for n in vasche:
+				temp = []
+				
+				for y in utils.get ("SELECT * FROM test WHERE vasca = '%s'" % n.replace("'", "''")):
+					temp2 = []
+					
+					temp2.append (y[1]) # data
+					temp2.append (y[2]) # nome
+					temp2.append (y[i+3]) # valore (offset del cazzo +2 .. +1 perche' conta da 0)
+					
+					temp.append (temp2)
+				
+				data.append (i)
+				data.append (temp)
+		
+		del to_plot
+		
+		#print data
+		
+		self.plot (data)
+	
+	def on_popup (self, widget, event):
+		self.menu.popup (None, None, None, event.button, event.time)
+		self.menu.show_all ()
+	
 	def plot (self, values):
 		
-		self.axis.clear ()
-		self.axis.set_ylabel('Valori')
-		#self.axis.set_title('PyAcqua Grapher')
-		self.axis.grid(True)
+		window = gtk.Window ()
+		window.set_title (_("PyAcqua - Grafico"))
+		window.set_size_request (800, 600)
 		
-		self.values = values
+		window.figure = Figure ()#figsize=(6,4), dpi=72)
+		window.axis = window.figure.add_subplot (111)
 		
-		ind = arange (1)
-		width = 0.25
+		window.canvas = FigureCanvasGTK(window.figure)
 		
-		index = 0
+		sw = gtk.ScrolledWindow ()
+		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
+		sw.add_with_viewport (window.canvas)
 		
-		# TODO: i colori sono da sistemare
-		colors = ('r', 'g', 'y', 'b', 'c', 'm', 'k', 'w', 'r', 'g', 'y', 'b', 'g')
+		window.axis.clear ()		
+		window.axis.grid(True)
 		
-		lst = zip (self.values, colors)
+		# [0, [[u'23/04/2006', u'Vasca Sala', 0.40000000000000002], [u'17/06/2006', u'Vasca Sala', 3.3999999999999999], [u'26/06/2006', u'Vasca Sala', 0.0]], 0, [[u'26/06/2006', u'Mia', 1.5000000000000002]], 1, [[u'23/04/2006', u'Vasca Sala', 1.6000000000000001], [u'17/06/2006', u'Vasca Sala', 1.6000000000000001], [u'26/06/2006', u'Vasca Sala', 1.6000000000000001]], 1, [[u'26/06/2006', u'Mia', 2.1000000000000005]]]
 		
-		bars = []
+		
 		labels = (_('pH'), _('KH'), _('GH'), _('NO2'), _('NO3'),
 			_('Conducibilita'), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
 			_('Calcio'), _('Magnesio'), _('Densita'))
 		
-		for i, c in lst:
-			bars.append (self.axis.bar (ind + (width * index), i, width/2, color=c))
-			index += 1
+		colors = ('r', 'g', 'y', 'b', 'c', 'm', 'k', 'w')
+		color = 0
 		
-		self.axis.set_xticks (arange (12, step=0.25) + 0.25/4)
-		self.axis.set_xticklabels (labels)
-		self.axis.set_xlim (-width, 0.25 * 13)
+		label = values[0]
+		dates = []
+		valori = []
 		
-		if self.legend:
-			self.axis.legend (bars, labels, shadow=True, loc=1)
+		for i in values:
+			if type (i) == int:
+				label = labels [i]
+			else:
+				for x in i:
+					dt = x[0].split ('/')
+					dates.append (datetime.date (int (dt[2]), int (dt[1]), int (dt[0])))
+					valori.append (x[2])
+				
+				if color == 8:
+					color = 0
+					
+				window.axis.plot_date (date2num (dates), valori, colors[color] + 'o--', label="%s %s" % (x[1], label))
+				valori = []; dates = []
+				color += 1
 		
-		self.canvas.draw ()
+		# In caso si usi l'inglese meglio %m-%d
+		window.axis.xaxis.set_major_formatter (DateFormatter(_('%d/%m')))
+		window.axis.legend ()
+		window.canvas.draw ()
 		
+		bb = gtk.HButtonBox ()
+		bb.set_layout (gtk.BUTTONBOX_END)
+		
+		btn = gtk.Button (stock=gtk.STOCK_SAVE)
+		btn.connect ('clicked', self.on_save, window)
+		btn.set_relief (gtk.RELIEF_NONE)
+				
+		bb.pack_start (btn)
+		
+		btn = gtk.Button (stock=gtk.STOCK_CLOSE)
+		btn.connect ('clicked', self.exit, window)
+		btn.set_relief (gtk.RELIEF_NONE)
+		
+		bb.pack_start (btn)
+		
+		vbox = gtk.VBox (False, 2)
+		vbox.pack_start (sw, True, True, 0)
+		vbox.pack_start (bb, False, False, 0)
+		
+		window.add (vbox)
+		
+		window.connect ('delete_event', self.exit, window)
+		window.show_all()
+	
+	def on_save (self, widget, window):
+		ret = utils.FileChooser (_("Salva Grafico..."), window, None, True, gtk.FILE_CHOOSER_ACTION_SAVE).run ()
+		window.figure.savefig (ret)
+		
+	def exit (self, widget, window):
+		window.hide ()
+		window.destroy ()
 
 class Test (dbwindow.DBWindow):
 	Chart = True
-	Chart = False
 	def __init__ (self): 
 		# id integer, date DATE, vasca FLOAT, ph FLOAT, kh FLOAT, gh
 		# NUMERIC, no NUMERIC, noo NUMERIC, con NUMERIC, amm NUMERIC, fe
 		# NUMERIC, ra NUMERIC, fo NUMERIC
 		
+		# Una liststore piu' grande dubito che esista 
 		lst = gtk.ListStore (
 			int,	# ID
 			str,	# DATA
 			str,	# VASCA
+			
 			float,	# PH
 			float,	# KH
 			float,	# GH
@@ -106,9 +266,21 @@ class Test (dbwindow.DBWindow):
 			float,	# FERRO
 			float,	# RAME
 			float,	# FOSFATI
+			
 			float,	# calcio
 			float,	# magnesio
-			float)	# densita
+			float,	# densita
+			
+			gtk.gdk.Color,	# PH
+			gtk.gdk.Color,	# KH
+			gtk.gdk.Color,	# GH
+			gtk.gdk.Color,	# NO2
+			gtk.gdk.Color,	# NO3
+			gtk.gdk.Color,	# COND
+			gtk.gdk.Color,	# AMMO
+			gtk.gdk.Color,	# FERRO
+			gtk.gdk.Color,	# RAME
+			gtk.gdk.Color)	# FOSFATI
 
 		cols = [_('Id'), _('Data'), _('Vasca'), _('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
 			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
@@ -116,16 +288,32 @@ class Test (dbwindow.DBWindow):
 		
 		inst = [utils.DataButton (), utils.Combo ()]
 		
-		for i in range (13): inst.append (utils.FloatEntry ())
+		for i in range (13):
+			spin = utils.FloatEntry ()
+			spin.connect ('output', self.on_spin_change)
+			inst.append (spin)
 
-		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst)
+		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst,
+									True) # different renderer
 		
 		for y in utils.get ('select * from test'):
 			lst.append ([y[0], y[1], y[2], y[3], y[4],
-					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15]])
+					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15],
+					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2]])
 		
 		for y in utils.get ('select * from vasca'):
 			self.vars[1].append_text (y[3])
+		
+		# Scan sulle colonne
+		for i in self.view.get_columns ()[3:13]:
+			i.add_attribute (i.get_cell_renderers ()[0], 'cell_background-gdk', self.view.get_columns().index (i) + 13)
+		
+		mod = self.view.get_model ()
+		it = mod.get_iter_first ()
+		
+		while it != None:
+			self.check_iterator (mod, it)
+			it = mod.iter_next (it)
 
 		self.set_title (_("Test"))
 		self.set_size_request (600, 400)
@@ -138,7 +326,7 @@ class Test (dbwindow.DBWindow):
 		id = widget.get_active ()
 		
 		if Test.Chart and id == 1:
-			self.on_draw_graph (None)
+			#self.on_draw_graph (None)
 			self.note.set_current_page (id)
 		else:
 			self.note.set_current_page (id)
@@ -213,6 +401,8 @@ class Test (dbwindow.DBWindow):
 		utils.cmd("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)s' where id=%(id)s" % vars ())
 		
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row Aggiornata (ID: %d") % id)
+		
+		self.check_iterator (mod, it)
 
 	def add_entry (self, it):
 		mod, id = self.view.get_selection ().get_selected ()
@@ -235,9 +425,11 @@ class Test (dbwindow.DBWindow):
 				self.vars[12].get_text (),
 				self.vars[13].get_text (),
 				self.vars[14].get_text ()
-				)
+		)
 
 		self.update_status(dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		
+		self.check_iterator (mod, it)
 		
 	def remove_id (self, id):
 		utils.cmd ('delete from test where id=%d' % id)
@@ -247,8 +439,23 @@ class Test (dbwindow.DBWindow):
 		utils.cmd ('update test set id=%d where id=%d' % (id - 1, id))
 		
 	def after_selection_changed (self, mod, it):
-		if self.note.get_current_page () == 1:
-			self.on_draw_graph (None)
+		# Checckiamo un po'
+		pass
+	
+	def on_spin_change (self, widget):
+		id = self.vars.index (widget)
+		id -= 2
+		
+		print id
+		if id < 10:
+			val = widget.get_value ()
+			
+			if val < float (checks[id][0]):
+				widget.modify_bg (gtk.STATE_NORMAL, gcolor[0])
+			elif val > float (checks[id][1]):
+				widget.modify_bg (gtk.STATE_NORMAL, gcolor[1])
+			else:
+				widget.modify_bg (gtk.STATE_NORMAL, gcolor[2])
 
 	def on_draw_graph (self, widget):
 		if Test.Chart:
@@ -268,7 +475,21 @@ class Test (dbwindow.DBWindow):
 					lst[i] = mod.get_value (it, i + 3)
 			
 			self.grapher.plot (lst)
+	
+	def check_iterator (self, mod, it):
+		for i in range (len (checks)):
+			val = mod.get_value (it, i + 3)
 			
+			col = self.view.get_column (i + 3)
+			cell = col.get_cell_renderers ()[0]
+			
+			if val < float (checks[i][0]):
+				mod.set_value (it, i + 13 + 3, gcolor[0])
+			elif val > float (checks[i][1]):
+				mod.set_value (it, i + 13 + 3, gcolor[1])
+			else:
+				mod.set_value (it, i + 13 + 3, gcolor[2])
+
 try:
 	import matplotlib
 	
@@ -277,6 +498,7 @@ try:
 	from matplotlib.axes import Subplot
 	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
 	from matplotlib.numerix import arange
+	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
 	
 except:
 	Test.Chart = False

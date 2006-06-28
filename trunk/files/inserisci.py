@@ -84,18 +84,31 @@ class Inserisci(gtk.ScrolledWindow):
 		tbl.attach(self.fosfati_minimo, 1, 2, 10, 11, yoptions=gtk.SHRINK)
 		tbl.attach(self.fosfati_massimo, 2, 3, 10, 11, yoptions=gtk.SHRINK)
 		
+		self.ph_minimo.set_text (str (impostazioni.minph)); self.ph_massimo.set_text (str (impostazioni.maxph))
+		self.kh_minimo.set_text (str (impostazioni.minkh)); self.kh_massimo.set_text (str (impostazioni.maxkh))
+		self.gh_minimo.set_text (str (impostazioni.mingh)); self.gh_massimo.set_text (str (impostazioni.maxgh))
+		self.no2_minimo.set_text (str (impostazioni.minno2)); self.no2_massimo.set_text (str (impostazioni.maxno2))
+		self.no3_minimo.set_text (str (impostazioni.minno3)); self.no3_massimo.set_text (str (impostazioni.maxno3))
+		self.cond_minimo.set_text (str (impostazioni.mincon)); self.cond_massimo.set_text (str (impostazioni.maxcon))
+		self.rame_minimo.set_text (str (impostazioni.minra)); self.rame_massimo.set_text (str (impostazioni.maxra))
+		self.fosfati_minimo.set_text (str (impostazioni.minfo)); self.fosfati_massimo.set_text (str (impostazioni.maxfo))
+		self.ammoniaca_minimo.set_text (str (impostazioni.minam)); self.ammoniaca_massimo.set_text (str (impostazioni.maxam))
+		self.ferro_minimo.set_text (str (impostazioni.minfe)); self.ferro_massimo.set_text (str (impostazioni.maxfe))
+		
 		box.pack_start(tbl)
 		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
 		bb.set_spacing(4)
 		
-		btn = gtk.Button(stock=gtk.STOCK_CLOSE)
+		btn = gtk.Button(stock=gtk.STOCK_CANCEL)
 		btn.connect('clicked', self.exit)
+		btn.set_relief (gtk.RELIEF_NONE)
 		bb.pack_start(btn)
 		
-		btn = gtk.Button(stock=gtk.STOCK_ADD)
+		btn = gtk.Button(stock=gtk.STOCK_SAVE)
 		btn.connect('clicked', self.inserisci_test)
+		btn.set_relief (gtk.RELIEF_NONE)
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
 		

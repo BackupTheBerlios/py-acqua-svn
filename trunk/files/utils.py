@@ -270,6 +270,20 @@ def new_label (txt, bold=True, x=0, y=0):
 	
 	return lbl
 
+def new_button (txt, stock=None):
+	button = gtk.Button ()
+	hb = gtk.HBox (0, False)
+	
+	if stock:
+		img = gtk.Image()
+		img.set_from_stock (stock, gtk.ICON_SIZE_MENU)
+		#img.set_size_request (8, 6)
+		hb.add (img)
+	hb.add (gtk.Label (txt))
+	button.add (hb)
+	
+	return button
+				
 def make_thumb (twh, w, h):
 	if w == h:
 		return twh, twh

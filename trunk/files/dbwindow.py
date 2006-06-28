@@ -33,7 +33,7 @@ class NotifyType:
 
 class DBWindow (gtk.Window):
 
-	def __init__ (self, n_row, n_col, cols, widgets, lst_store):
+	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
 
 		assert (len (cols) - 1 == len (widgets))
 		
@@ -56,9 +56,10 @@ class DBWindow (gtk.Window):
 		#	print cols[i+1], widgets[i], lst_store.get_column_type(i+1)
 
 		# Le Colonne ..
-
-		renderer = gtk.CellRendererText ()
-		pix_rend = gtk.CellRendererPixbuf()
+		
+		if not different_renderer:
+			renderer = gtk.CellRendererText ()
+			pix_rend = gtk.CellRendererPixbuf()
 
 		# i nomi sono in cols
 		for name in cols:
@@ -66,7 +67,11 @@ class DBWindow (gtk.Window):
 			
 			#print "Adding %d" % id
 			
+			
 			if self.store.get_column_type (id) == gobject.TYPE_DOUBLE:
+				
+				if different_renderer:
+					renderer = gtk.CellRendererText ()
 				
 				self.view.insert_column_with_data_func (-1, name, renderer, self.float_func, id)
 				
@@ -74,9 +79,17 @@ class DBWindow (gtk.Window):
 				col = None
 
 				if self.store.get_column_type (id).pytype == gtk.gdk.Pixbuf:
+				
+					if different_renderer:
+						pix_rend = gtk.CellRendererPixbuf()
+						
 					col = gtk.TreeViewColumn (name, pix_rend, pixbuf=id)
 					self.last -= 1
 				else:
+				
+					if different_renderer:
+						renderer = gtk.CellRendererText ()
+					
 					col = gtk.TreeViewColumn (name, renderer, text=id)
 				
 				col.set_sort_column_id (id + 1)
