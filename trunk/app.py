@@ -70,8 +70,6 @@ class Gui(gtk.Window):
 			
 			('Filtro', None, _('_Filtro'), None, _('filtro...'), 'filtro_apri'),
 			
-			('Allarmi', None, _('_Allarmi'), None, _('Allarmi...'), 'allarmi_apri'),
-			
 			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
 			
 			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), 'skin_apri'),
@@ -109,7 +107,6 @@ class Gui(gtk.Window):
 			<menuitem action='Tips Tricks'/>
 			<menuitem action='Fertilizzante'/>
 			<menuitem action='Filtro'/>
-			<menuitem action='Allarmi'/>
 			<menuitem action='Spese'/>
 			<separator/>
 			<menuitem action='Lingua'/>
