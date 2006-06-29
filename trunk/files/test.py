@@ -144,14 +144,14 @@ class GraphPage (gtk.ScrolledWindow):
 					
 					temp.append (temp2)
 				
-				data.append (i)
-				data.append (temp)
+				if len (temp) != 0:
+					data.append (i)
+					data.append (temp)
 		
 		del to_plot
 		
-		#print data
-		
-		self.plot (data)
+		if data:
+			self.plot (data)
 	
 	def on_popup (self, widget, event):
 		self.menu.popup (None, None, None, event.button, event.time)
