@@ -446,7 +446,7 @@ class Test (dbwindow.DBWindow):
 		id = self.vars.index (widget)
 		id -= 2
 		
-		print id
+		#print id
 		if id < 10:
 			val = widget.get_value ()
 			

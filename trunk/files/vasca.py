@@ -25,12 +25,13 @@ import os
 import sys
 import utils
 import dbwindow
+import pango
 
 class Vasca (dbwindow.DBWindow):
 	def __init__ (self): 
 
 		# id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, img TEXT
-		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
+		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 
 		tmp = utils.Combo ([_("Dolce"), _("Dolce Tropicale"), _("Marino"), _("Marino Mediterraneo"), _("Paludario"), _("Salmastro")])
 		tmp.connect ('changed', self.aggiorna)
@@ -38,17 +39,21 @@ class Vasca (dbwindow.DBWindow):
 		self.col_lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
 			_('Tipo Acquario'), _('Tipo Filtro'),
 			_('Impianto Co2'), _('Illuminazione'), 
-			_('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione'), _("Immagine")]
+			_('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione'), _("Note"), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 5, self.col_lst,
 				[tmp, utils.DataButton (), gtk.Entry (), utils.FloatEntry (),
 				 gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (),
-				 gtk.Entry (), gtk.Entry (), utils.ImgEntry ()], lst)
+				 gtk.Entry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
 
 
 		for y in utils.get ('select * from vasca'):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
-					y[5], y[6], y[7], y[8], y[9], y[10], y[11], utils.make_image(y[12]), y[12]])
+					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
+		
+		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize-set', True)
+		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize', pango.ELLIPSIZE_END)
+		self.view.get_column (12).set_min_width (140)
 		
 		self.set_title (_("Vasche"))
 		self.set_size_request (700, 500)
@@ -143,9 +148,10 @@ class Vasca (dbwindow.DBWindow):
 		reat  = self.vars[8].get_text ()
 		schiu = self.vars[9].get_text ()
 		risca = self.vars[10].get_text ()
-		img   = self.vars[11].get_text ()
+		note  = self.vars[11].get_text ()
+		img   = self.vars[12].get_text ()
 
-		utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', img='%(img)s' where id = %(id)s" % vars())
+		utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
 		
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 
@@ -154,10 +160,10 @@ class Vasca (dbwindow.DBWindow):
 
 		id = mod.get_value (it, 0)
 
-		for i in self.vars:
-			print i.get_text ()
+		#for i in self.vars:
+		#	print i.get_text ()
 		
-		utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?)',
+		utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 				id,
 				self.vars[0].get_text (),
 				self.vars[1].get_text (),
@@ -170,7 +176,8 @@ class Vasca (dbwindow.DBWindow):
 				self.vars[8].get_text (),
 				self.vars[9].get_text (),
 				self.vars[10].get_text (),
-				self.vars[11].get_text ())
+				self.vars[11].get_text (),
+				self.vars[12].get_text ())
 		
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
@@ -185,4 +192,4 @@ class Vasca (dbwindow.DBWindow):
 		mod = self.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 
-		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 13))
+		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))

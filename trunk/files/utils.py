@@ -156,6 +156,7 @@ class Combo(gtk.ComboBox):
 
 		if it != None: return str(mod.get_value(it, 0))
 		else: return None
+		
 	def set_text(self, txt):
 		mod = self.get_model()
 		it = mod.get_iter_first()
@@ -165,6 +166,32 @@ class Combo(gtk.ComboBox):
 				self.set_active_iter(it)
 				return
 			it = mod.iter_next(it)
+class NoteEntry (gtk.Expander):
+	def __init__(self, len=500):
+		gtk.Expander.__init__(self, _("Mostra/Nascondi"))
+		
+		sw = gtk.ScrolledWindow ()
+		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
+
+		self.view = gtk.TextView ()
+		self.view.set_wrap_mode (gtk.WRAP_WORD)
+		self.view.get_buffer ().connect ('changed', self.on_changed)
+		self.len = len
+
+		sw.add (self.view)
+		self.add (sw)
+
+	def on_changed (self, buffer):
+		if buffer.get_char_count() > self.len:
+			buffer.set_text (buffer.get_text (buffer.get_start_iter (), buffer.get_end_iter ())[0:self.len])
+	
+	def get_text (self):
+		buffer = self.view.get_buffer ()
+		return buffer.get_text (buffer.get_start_iter (), buffer.get_end_iter ())
+	
+	def set_text (self, txt):
+		self.view.get_buffer ().set_text (txt)
 
 class InputDialog(gtk.MessageDialog):
 	def __init__(self, parent, text):

@@ -164,7 +164,7 @@ class DBWindow (gtk.Window):
 			self.__dict__ ["e_" + name [:5]] = tmp
 			e_tbl.attach (tmp, x+1, x+2, y, y+1)
 
-			e_tbl.attach (utils.new_label (name, x=0, y=0.5), x, x+1, y, y+1)
+			e_tbl.attach (utils.new_label (name, x=0, y=0.5), x, x+1, y, y+1, yoptions=gtk.SHRINK)
 
 			if idx == n_col:
 				x += 2; y = 0
