@@ -23,14 +23,44 @@ from pysqlite2 import dbapi2 as sqlite
 
 connessione=sqlite.connect("Data/db")
 cursore=connessione.cursor()
-cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
-cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
-cursore.execute("alter table vasca add reattore TEXT")
-cursore.execute("alter table vasca add schiumatoio TEXT")
-cursore.execute("alter table vasca add riscaldamento TEXT")
-cursore.execute("alter table vasca add note VARCHAR(500)")
-cursore.execute("alter table test add vasca FLOAT")
-cursore.execute("alter table test add calcio FLOAT")
-cursore.execute("alter table test add magnesio FLOAT")
-cursore.execute("alter table test add densita FLOAT")
+try:
+	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+except:
+	pass
+try:
+	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add reattore TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add schiumatoio TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add riscaldamento TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add note VARCHAR(500)")
+except:
+	pass
+try:
+	cursore.execute("alter table test add vasca FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add calcio FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add magnesio FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add densita FLOAT")
+except:
+	pass
 connessione.commit()
