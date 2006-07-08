@@ -26,8 +26,8 @@ import dbwindow
 class Piante (dbwindow.DBWindow):
 	def __init__(self):
 		
-		lst = gtk.ListStore (int, str, str, int, str, gtk.gdk.Pixbuf, str)
-		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _("Note"), _("Immagine")]
+		lst = gtk.ListStore (int, str, str, int, str, str, gtk.gdk.Pixbuf, str)
+		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)

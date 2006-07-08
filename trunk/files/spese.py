@@ -26,7 +26,7 @@ import dbwindow
 class Spese (dbwindow.DBWindow):
 	def __init__ (self):
 		
-		lst = gtk.ListStore (int, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
+		lst = gtk.ListStore (int, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Tipologia'), _('Quantita'), _('Nome'), _('Prezzo'), _('Note'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 4, self.col_lst,
