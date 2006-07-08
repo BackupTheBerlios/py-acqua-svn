@@ -31,12 +31,12 @@ class Fertilizzante(dbwindow.DBWindow):
 		
 		lst = gtk.ListStore(int, str, str, float, str)
 		dbwindow.DBWindow.__init__(self, 1, 4,
-				[_('Id'), _('Data'), _('Nome'), _('Quantita\''), _('Prossima volta')],
-				[utils.DataButton(), gtk.Entry(), utils.FloatEntry(), utils.DataButton()],
+				[_('Id'), _('Data'), _('Nome'), _('Quantita\''), _('Prossima volta'), _('Note')],
+				[utils.DataButton(), gtk.Entry(), utils.FloatEntry(), utils.DataButton(), utils.NoteEntry ()],
 				lst)
 		
 		for y in utils.get ('select * from fertilizzante'):
-			lst.append([y[0], y[1], y[2], y[3], y[4]])
+			lst.append([y[0], y[1], y[2], y[3], y[4], y[5]])
 		
 		self.set_title (_("Fertilizzante"))
 		self.set_size_request (400, 200)
@@ -50,8 +50,9 @@ class Fertilizzante(dbwindow.DBWindow):
 		nome = self.vars[1].get_text ()
 		quantita = self.vars[2].get_text ()
 		giorni = self.vars[3].get_text ()
+		note = self.vars[4].get_text ()
 		
-		utils.cmd ("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s' where id=%(id)s" %vars())
+		utils.cmd ("update fertilizzante set date='%(date)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s', note='%(note)s' where id=%(id)s" %vars())
 			
 		self.update_status(dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 	
@@ -60,11 +61,12 @@ class Fertilizzante(dbwindow.DBWindow):
 
 		id = mod.get_value (it, 0)
 		
-		utils.cmd ('insert into fertilizzante values(?,?,?,?,?)', id,
+		utils.cmd ('insert into fertilizzante values(?,?,?,?,?,?)', id,
 				self.vars[0].get_text (),
 				self.vars[1].get_text (),
 				self.vars[2].get_text (),
-				self.vars[3].get_text ())
+				self.vars[3].get_text (),
+				self.vars[4].get_text ())
 
 		self.update_status(dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 	
