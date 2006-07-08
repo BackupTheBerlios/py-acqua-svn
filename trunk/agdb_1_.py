@@ -23,6 +23,51 @@ from pysqlite2 import dbapi2 as sqlite
 
 connessione=sqlite.connect("Data/db")
 cursore=connessione.cursor()
+###################################
+# versione 0.7
+try:
+	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+except:
+	pass
+try:
+	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add reattore TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add schiumatoio TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add riscaldamento TEXT")
+except:
+	pass
+try:
+	cursore.execute("alter table vasca add note VARCHAR(500)")
+except:
+	pass
+try:
+	cursore.execute("alter table test add vasca FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add calcio FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add magnesio FLOAT")
+except:
+	pass
+try:
+	cursore.execute("alter table test add densita FLOAT")
+except:
+	pass
+
+###################################
+#versione 1.0
 try:
 	cursore.execute("alter table vasca add note VARCHAR(500)")
 except:

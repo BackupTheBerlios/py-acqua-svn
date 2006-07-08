@@ -67,8 +67,8 @@ class Importa (gtk.Window):
 		tbl.set_border_width(4)
 		tbl.set_row_spacings(4)
 		
-		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.7"))
-		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione 0.8"))
+		self.ver_sette = sette = gtk.RadioButton (None, _("Versione 0.8"))
+		self.ver_otto = otto = gtk.RadioButton (sette, _("Versione attuale"))
 		
 		tbl.attach(utils.new_label(_("Importa:")), 0, 1, 0, 1, xpadding=8)
 		tbl.attach(utils.new_label(_("Esporta:")), 0, 1, 1, 2, xpadding=8)
