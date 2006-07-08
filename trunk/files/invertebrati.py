@@ -27,13 +27,13 @@ class Invertebrati (dbwindow.DBWindow):
 	def __init__ (self):
 		
 		lst = gtk.ListStore (int, str, str, int, str, gtk.gdk.Pixbuf, str)
-		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _("Immagine")]
+		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
-			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.ImgEntry ()], lst)
+			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
 		
 		for y in utils.get ("select * from invertebrati"):
-			lst.append([y[0], y[1], y[2], y[3], y[4], utils.make_image(y[5]), y[5]])
+			lst.append([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
 		for y in utils.get ("select * from vasca"):
 			self.vars[1].append_text (y[3])
 		
@@ -50,9 +50,10 @@ class Invertebrati (dbwindow.DBWindow):
 		vasca  = self.vars[1].get_text ()
 		quantita  = self.vars[2].get_text ()
 		nome = self.vars[3].get_text ()
-		img  = self.vars[4].get_text ()
+		note = self.vars[4].get_text ()
+		img  = self.vars[5].get_text ()
 
-		utils.cmd ("update invertebrati set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', img='%(img)s' where id = %(id)s" % vars ())
+		utils.cmd ("update invertebrati set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s' ,img='%(img)s' where id = %(id)s" % vars ())
 			
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 
@@ -64,13 +65,14 @@ class Invertebrati (dbwindow.DBWindow):
 		for i in self.vars:
 			print i.get_text ()
 		
-		utils.cmd ('insert into invertebrati values(?,?,?,?,?,?)',
+		utils.cmd ('insert into invertebrati values(?,?,?,?,?,?,?)',
 				id,
 				self.vars[0].get_text (),
 				self.vars[1].get_text (),
 				self.vars[2].get_text (),
 				self.vars[3].get_text (),
-				self.vars[4].get_text ())
+				self.vars[4].get_text (),
+				self.vars[5].get_text ())
 		
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		

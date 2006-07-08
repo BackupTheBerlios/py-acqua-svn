@@ -27,14 +27,14 @@ class Spese (dbwindow.DBWindow):
 	def __init__ (self):
 		
 		lst = gtk.ListStore (int, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
-		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Tipologia'), _('Quantita'), _('Nome'), _('Prezzo'), _("Immagine")]
+		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Tipologia'), _('Quantita'), _('Nome'), _('Prezzo'), _('Note'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 4, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.Combo (),
-			 utils.IntEntry (), gtk.Entry (), gtk.Entry (), utils.ImgEntry ()], lst)
+			 utils.IntEntry (), gtk.Entry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
 		
 		for y in utils.get ("select * from spese"):
-			lst.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], utils.make_image(y[7]), y[7]])
+			lst.append([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
 		for y in utils.get ("select * from vasca"):
 			self.vars[1].append_text (y[3])
 		for y in [_("Vasca"), _("Pesce"), _("Pianta"), _("Invertebrato"), _("Fertilizzante"), _("Filtro"), _("Varie")]:
@@ -55,9 +55,10 @@ class Spese (dbwindow.DBWindow):
 		quantita = self.vars[3].get_text ()
 		nome  = self.vars[4].get_text ()
 		soldi  = self.vars[5].get_text ()
-		img  = self.vars[6].get_text ()
+		note = self.vars[6].get_text ()
+		img  = self.vars[7].get_text ()
 
-		utils.cmd ("update spese set date='%(date)s', vasca='%(vasca)s', tipologia='%(tipologia)s', quantita='%(quantita)s', nome='%(nome)s', soldi='%(soldi)s', img='%(img)s' where id = %(id)s" % vars ())
+		utils.cmd ("update spese set date='%(date)s', vasca='%(vasca)s', tipologia='%(tipologia)s', quantita='%(quantita)s', nome='%(nome)s', soldi='%(soldi)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
 		
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 	

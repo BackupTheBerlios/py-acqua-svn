@@ -29,13 +29,13 @@ import dbwindow
 class Filtro (dbwindow.DBWindow):
 	def __init__ (self):
 		lst = gtk.ListStore (int, str, str, float, str)
-		self.col_lst = [_('Id'), _('Data'), _('Prossima volta')]
+		self.col_lst = [_('Id'), _('Data'), _('Prossima volta'), _('Note')]
 
 		dbwindow.DBWindow.__init__ (self, 1, 2, self.col_lst,
-				[utils.DataButton (), utils.DataButton ()], lst)
+				[utils.DataButton (), utils.DataButton (), utils.NoteEntry ()], lst)
 
 		for y in utils.get ("select * from filtro"):
-			lst.append ([y[0], y[1], y[2]])
+			lst.append ([y[0], y[1], y[2], y[3]])
 		
 		self.set_title (_("Filtro"))
 		self.set_size_request (600, 400)
@@ -48,8 +48,9 @@ class Filtro (dbwindow.DBWindow):
 
 		date = self.vars[0].get_text ()
 		giorni = self.vars[1].get_text ()
+		note = self.vars[2].get_text ()
 		
-		utils.cmd ("update filtro set date='%(date)s', giorni='%(giorni)s'" % vars ())
+		utils.cmd ("update filtro set date='%(date)s', giorni='%(giorni)s', note='%(note)s'" % vars ())
 
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 
@@ -58,10 +59,11 @@ class Filtro (dbwindow.DBWindow):
 
 		id = mod.get_value (it, 0)
 
-		utils.cmd ('insert into filtro values (?,?,?)',
+		utils.cmd ('insert into filtro values (?,?,?,?)',
 				id,
 				self.vars[0].get_text (),
-				self.vars[1].get_text ())
+				self.vars[1].get_text (),
+				self.vars[2].get_text ())
 
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
