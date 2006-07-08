@@ -70,7 +70,7 @@ class Spese (dbwindow.DBWindow):
 		for i in self.vars:
 			print i.get_text ()
 		
-		utils.cmd ('insert into spese values(?,?,?,?,?,?,?,?)',
+		utils.cmd ('insert into spese values(?,?,?,?,?,?,?,?,?)',
 				id,
 				self.vars[0].get_text (),
 				self.vars[1].get_text (),
@@ -78,7 +78,8 @@ class Spese (dbwindow.DBWindow):
 				self.vars[3].get_text (),
 				self.vars[4].get_text (),
 				self.vars[5].get_text (),
-				self.vars[6].get_text ())
+				self.vars[6].get_text (),
+				self.vars[7].get_text ())
 		
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		

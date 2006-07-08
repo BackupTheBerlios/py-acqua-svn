@@ -28,7 +28,7 @@ import dbwindow
 
 class Filtro (dbwindow.DBWindow):
 	def __init__ (self):
-		lst = gtk.ListStore (int, str, str, float, str, str)
+		lst = gtk.ListStore (int, str, str, str)
 		self.col_lst = [_('Id'), _('Data'), _('Prossima volta'), _('Note')]
 
 		dbwindow.DBWindow.__init__ (self, 1, 2, self.col_lst,
