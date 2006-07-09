@@ -18,84 +18,44 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 import gtk
 from pysqlite2 import dbapi2 as sqlite
 
 class dbupdate:
 	def updatedb (self):
-		connessione=sqlite.connect("Data/db")
-		cursore=connessione.cursor()
-	###################################
-	# versione 0.7
-		try:
-			cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
-		except:
-			pass
-		try:
-			cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table vasca add reattore TEXT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table vasca add schiumatoio TEXT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table vasca add riscaldamento TEXT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table vasca add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table test add vasca FLOAT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table test add calcio FLOAT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table test add magnesio FLOAT")
-		except:
-			pass
-		try:
-			cursore.execute("alter table test add densita FLOAT")
-		except:
-			pass
+		connessione=sqlite.connect ("Data/db")
+		cursore=connessione.cursor ()
 
-###################################
-#versione 1.0
-		try:
-			cursore.execute("alter table vasca add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table pesci add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table piante add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table invertebrati add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table fertilizzante add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table spese add note VARCHAR(500)")
-		except:
-			pass
-		try:
-			cursore.execute("alter table filtro add note VARCHAR(500)")
-		except:
-			pass
-		connessione.commit()
+		def check (query):
+			try:
+				cursore.execute (query)
+			except:
+				print "Errore nella query (%s)" % query
+
+		###################################
+		# Versione 0.7
+		
+		check ("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+		check ("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+		check ("alter table vasca add reattore TEXT")
+		check ("alter table vasca add schiumatoio TEXT")
+		check ("alter table vasca add riscaldamento TEXT")
+		check ("alter table vasca add note VARCHAR(500)")
+		check ("alter table test add vasca FLOAT")
+		check ("alter table test add calcio FLOAT")
+		check ("alter table test add magnesio FLOAT")
+		check ("alter table test add densita FLOAT")
+		
+		###################################
+		# Versione 1.0
+
+		check ("alter table vasca add note VARCHAR(500)")
+		check ("alter table pesci add note VARCHAR(500)")
+		check ("alter table piante add note VARCHAR(500)")
+		check ("alter table invertebrati add note VARCHAR(500)")
+		check ("alter table fertilizzante add note VARCHAR(500)")
+		check ("alter table spese add note VARCHAR(500)")
+		check ("alter table filtro add note VARCHAR(500)")
+
+		connessione.commit ()
