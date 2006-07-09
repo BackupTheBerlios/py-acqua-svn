@@ -34,6 +34,9 @@ minam = maxam = 0
 minfe = maxfe = 0
 minra = maxra = 0
 minfo = maxfo = 0
+mincal = maxcal = 0
+minmag = maxmag = 0
+minden = maxden = 0
 show_tips = "1"
 skin = "default"
 lang = "it"
@@ -54,6 +57,9 @@ def save():
 		cfg.add_section("ferro")
 		cfg.add_section("rame")
 		cfg.add_section("fosfati")
+		cfg.add_section("calcio")
+		cfg.add_section("magnesio")
+		cfg.add_section("densita")
 		cfg.add_section("GUI")
 		
 		global show_tips
@@ -63,6 +69,8 @@ def save():
 		global minra, maxra, minfo, maxfo
 		global mingh, maxgh, minno2, maxno2
 		global minno3, maxno3, mincom, maxcon
+		global mincal, maxcal, minmag, maxmag
+		global minden, maxden
 		
 		cfg.set("ph", "min", minph)
 		cfg.set("ph", "max", maxph)
@@ -94,6 +102,15 @@ def save():
 		cfg.set("fosfati", "min", minfo)
 		cfg.set("fosfati", "max", maxfo)
 		
+		cfg.set("calcio", "min", mincal)
+		cfg.set("calcio", "max", maxcal)
+		
+		cfg.set("magnesio", "min", minmag)
+		cfg.set("magnesio", "max", maxmag)
+		
+		cfg.set("densita", "min", minden)
+		cfg.set("densita", "max", maxden)
+		
 		cfg.set("GUI", "show_tips", show_tips)
 		cfg.set("GUI", "skin", skin)
 		cfg.set("GUI", "lang", lang)
@@ -120,6 +137,8 @@ def refresh():
 			global minra, maxra, minfo, maxfo
 			global mingh, maxgh, minno2, maxno2
 			global minno3, maxno3, mincom, maxcon
+			global mincal, maxcal, minmag, maxmag
+			global minden, maxden
 
 			minph = cfg.get("ph","min")
 			maxph = cfg.get("ph","max")
@@ -141,6 +160,12 @@ def refresh():
 			maxra = cfg.get("rame","max")
 			minfo = cfg.get("fosfati","min")
 			maxfo = cfg.get("fosfati","max")
+			mincal = cfg.get("calcio","min")
+			maxcal = cfg.get("calcio","max")
+			minmag = cfg.get("magnesio","min")
+			maxmag = cfg.get("magnesio","max")
+			minden = cfg.get("densita","min")
+			maxden = cfg.get("densita","max")
 			show_tips = cfg.get("GUI", "show_tips")
 			skin = cfg.get("GUI", "skin")
 			lang = cfg.get("GUI", "lang")

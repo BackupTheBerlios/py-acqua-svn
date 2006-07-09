@@ -51,17 +51,26 @@ class Inserisci(gtk.ScrolledWindow):
 		tbl.attach(self.new_label(_('Ferro')), 0, 1, 8, 9, yoptions=gtk.SHRINK)
 		tbl.attach(self.new_label(_('Rame')), 0, 1, 9, 10, yoptions=gtk.SHRINK)
 		tbl.attach(self.new_label(_('Fosfati')), 0, 1, 10, 11, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Calcio')), 0, 1, 11, 12, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Magnesio')), 0, 1, 12, 13, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Densita\'')), 0, 1, 13, 14, yoptions=gtk.SHRINK)
 		
-		self.ph_minimo = gtk.Entry(); self.ph_massimo = gtk.Entry()
-		self.kh_minimo = gtk.Entry(); self.kh_massimo = gtk.Entry()
-		self.gh_minimo = gtk.Entry(); self.gh_massimo = gtk.Entry()
-		self.no2_minimo = gtk.Entry(); self.no2_massimo = gtk.Entry()
-		self.no3_minimo = gtk.Entry(); self.no3_massimo = gtk.Entry()
-		self.cond_minimo = gtk.Entry(); self.cond_massimo = gtk.Entry()
-		self.rame_minimo = gtk.Entry(); self.rame_massimo = gtk.Entry()
-		self.fosfati_minimo = gtk.Entry(); self.fosfati_massimo = gtk.Entry()
-		self.ammoniaca_minimo = gtk.Entry(); self.ammoniaca_massimo = gtk.Entry()
-		self.ferro_minimo = gtk.Entry(); self.ferro_massimo = gtk.Entry()
+		
+		self.ph_minimo = utils.FloatEntry (); self.ph_massimo = utils.FloatEntry ()
+		self.kh_minimo = utils.FloatEntry (); self.kh_massimo = utils.FloatEntry ()
+		self.gh_minimo = utils.FloatEntry (); self.gh_massimo = utils.FloatEntry ()
+		self.no2_minimo = utils.FloatEntry (); self.no2_massimo = utils.FloatEntry ()
+		self.no3_minimo = utils.FloatEntry (); self.no3_massimo = utils.FloatEntry ()
+		self.cond_minimo = utils.FloatEntry (); self.cond_massimo = utils.FloatEntry ()
+		self.rame_minimo = utils.FloatEntry (); self.rame_massimo = utils.FloatEntry ()
+		self.fosfati_minimo = utils.FloatEntry (); self.fosfati_massimo = utils.FloatEntry ()
+		self.ammoniaca_minimo = utils.FloatEntry (); self.ammoniaca_massimo = utils.FloatEntry ()
+		self.ferro_minimo = utils.FloatEntry (); self.ferro_massimo = utils.FloatEntry ()
+		self.calcio_minimo = utils.FloatEntry (); self.calcio_massimo = utils.FloatEntry ()
+		self.magnesio_minimo = utils.FloatEntry (); self.magnesio_massimo = utils.FloatEntry ()
+		self.densita_minimo = utils.FloatEntry (); self.densita_massimo = utils.FloatEntry ()
+		
+		
 
 		tbl.attach(self.ph_minimo, 1, 2, 1, 2, yoptions=gtk.SHRINK)
 		tbl.attach(self.ph_massimo, 2, 3, 1, 2, yoptions=gtk.SHRINK)
@@ -83,6 +92,12 @@ class Inserisci(gtk.ScrolledWindow):
 		tbl.attach(self.rame_massimo, 2, 3, 9, 10, yoptions=gtk.SHRINK)
 		tbl.attach(self.fosfati_minimo, 1, 2, 10, 11, yoptions=gtk.SHRINK)
 		tbl.attach(self.fosfati_massimo, 2, 3, 10, 11, yoptions=gtk.SHRINK)
+		tbl.attach(self.calcio_minimo, 1, 2, 11, 12, yoptions=gtk.SHRINK)
+		tbl.attach(self.calcio_massimo, 2, 3, 11, 12, yoptions=gtk.SHRINK)
+		tbl.attach(self.magnesio_minimo, 1, 2, 12, 13, yoptions=gtk.SHRINK)
+		tbl.attach(self.magnesio_massimo, 2, 3, 12, 13, yoptions=gtk.SHRINK)
+		tbl.attach(self.densita_minimo, 1, 2, 13, 14, yoptions=gtk.SHRINK)
+		tbl.attach(self.densita_massimo, 2, 3, 13, 14, yoptions=gtk.SHRINK)
 		
 		self.ph_minimo.set_text (str (impostazioni.minph)); self.ph_massimo.set_text (str (impostazioni.maxph))
 		self.kh_minimo.set_text (str (impostazioni.minkh)); self.kh_massimo.set_text (str (impostazioni.maxkh))
@@ -94,6 +109,10 @@ class Inserisci(gtk.ScrolledWindow):
 		self.fosfati_minimo.set_text (str (impostazioni.minfo)); self.fosfati_massimo.set_text (str (impostazioni.maxfo))
 		self.ammoniaca_minimo.set_text (str (impostazioni.minam)); self.ammoniaca_massimo.set_text (str (impostazioni.maxam))
 		self.ferro_minimo.set_text (str (impostazioni.minfe)); self.ferro_massimo.set_text (str (impostazioni.maxfe))
+		self.calcio_minimo.set_text (str (impostazioni.mincal)); self.calcio_massimo.set_text (str (impostazioni.maxcal))
+		self.magnesio_minimo.set_text (str (impostazioni.minmag)); self.magnesio_massimo.set_text (str (impostazioni.maxmag))
+		self.densita_minimo.set_text (str (impostazioni.minden)); self.densita_massimo.set_text (str (impostazioni.maxden))
+		
 		
 		box.pack_start(tbl)
 		
@@ -139,6 +158,14 @@ class Inserisci(gtk.ScrolledWindow):
 		impostazioni.maxra = self.rame_massimo.get_text()
 		impostazioni.minfo = self.fosfati_minimo.get_text()
 		impostazioni.maxfo = self.fosfati_massimo.get_text()
+		impostazioni.mincal = self.calcio_minimo.get_text()
+		impostazioni.maxcal = self.calcio_massimo.get_text()
+		impostazioni.minmag = self.magnesio_minimo.get_text()
+		impostazioni.maxmag = self.magnesio_massimo.get_text()
+		impostazioni.minden = self.densita_minimo.get_text()
+		impostazioni.maxden = self.densita_massimo.get_text()
+		
+		
 		
 		impostazioni.save()
 	
