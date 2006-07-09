@@ -41,7 +41,6 @@ class dbupdate:
 		check ("alter table vasca add reattore TEXT")
 		check ("alter table vasca add schiumatoio TEXT")
 		check ("alter table vasca add riscaldamento TEXT")
-		check ("alter table vasca add note VARCHAR(500)")
 		check ("alter table test add vasca FLOAT")
 		check ("alter table test add calcio FLOAT")
 		check ("alter table test add magnesio FLOAT")
