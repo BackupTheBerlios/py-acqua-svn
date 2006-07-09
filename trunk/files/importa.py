@@ -21,6 +21,7 @@
 
 import gtk
 import utils
+import agdb
 import os.path
 from pysqlite2 import dbapi2 as sqlite
 
@@ -140,22 +141,11 @@ class Importa (gtk.Window):
 
 					if self.ver_sette.get_active():
 					# per aggiornare il database
+						# da inserire direttamente il file agdb.pyacqua
 						try:
-							connessione=sqlite.connect("Data/db")
-							cursore=connessione.cursor()
-							cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
-							cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
-							cursore.execute("alter table vasca add reattore TEXT")
-							cursore.execute("alter table vasca add schiumatoio TEXT")
-							cursore.execute("alter table vasca add riscaldamento TEXT")
-							cursore.execute("alter table test add vasca FLOAT")
-							cursore.execute("alter table test add calcio FLOAT")
-							cursore.execute("alter table test add magnesio FLOAT")
-							cursore.execute("alter table test add densita FLOAT")
-							connessione.commit()
-							self.hide()
-						except:
+							agdb.dbupdate ()
 						# da mettere un dialog per dare errore in caso di non successo 
+						except:
 							print "error"
 							pass
 						# TODO: Conversione da versione 7
