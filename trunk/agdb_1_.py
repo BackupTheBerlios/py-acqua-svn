@@ -23,77 +23,39 @@ from pysqlite2 import dbapi2 as sqlite
 
 connessione=sqlite.connect("Data/db")
 cursore=connessione.cursor()
+
+def checker (query):
+	try:
+		cursore.execute (query)
+	except:
+		print "Error while executing (%s)" % query
+
 ###################################
 # versione 0.7
-try:
-	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
-except:
-	pass
-try:
-	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
-except:
-	pass
-try:
-	cursore.execute("alter table vasca add reattore TEXT")
-except:
-	pass
-try:
-	cursore.execute("alter table vasca add schiumatoio TEXT")
-except:
-	pass
-try:
-	cursore.execute("alter table vasca add riscaldamento TEXT")
-except:
-	pass
-try:
-	cursore.execute("alter table vasca add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table test add vasca FLOAT")
-except:
-	pass
-try:
-	cursore.execute("alter table test add calcio FLOAT")
-except:
-	pass
-try:
-	cursore.execute("alter table test add magnesio FLOAT")
-except:
-	pass
-try:
-	cursore.execute("alter table test add densita FLOAT")
-except:
-	pass
+def update_v7 ():
+	checker ("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+	checker ("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
+	checker ("alter table vasca add reattore TEXT")
+	checker ("alter table vasca add schiumatoio TEXT")
+	checker ("alter table vasca add riscaldamento TEXT")
+	checker ("alter table vasca add note VARCHAR(500)")
+	checker ("alter table test add vasca FLOAT")
+	checker ("alter table test add calcio FLOAT")
+	checker ("alter table test add magnesio FLOAT")
+	checker ("alter table test add densita FLOAT")
 
 ###################################
 #versione 1.0
-try:
-	cursore.execute("alter table vasca add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table pesci add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table piante add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table invertebrati add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table fertilizzante add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table spese add note VARCHAR(500)")
-except:
-	pass
-try:
-	cursore.execute("alter table filtro add note VARCHAR(500)")
-except:
-	pass
+def update_v1 ():
+	checker ("alter table vasca add note VARCHAR(500)")
+	checker ("alter table pesci add note VARCHAR(500)")
+	checker ("alter table piante add note VARCHAR(500)")
+	checker ("alter table invertebrati add note VARCHAR(500)")
+	checker ("alter table fertilizzante add note VARCHAR(500)")
+	checker ("alter table spese add note VARCHAR(500)")
+	checker ("alter table filtro add note VARCHAR(500)")
+
+update_v7 ()
+update_v1 ()
+
 connessione.commit()
