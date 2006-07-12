@@ -44,8 +44,7 @@ class fox:
 		
 		
 		
-		##### mi da errore qua su add, come mai????
-		##### lascia 2 commenti 
+		##### da finire perche da errori
 		add (box)
 		show_all ()
 			
