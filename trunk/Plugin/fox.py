@@ -3,7 +3,7 @@ import gtk
 import files.utils
 import files.dbwindow
 
-class fox(gtk.Window):
+class fox:
 	__name__ = "Fox"
 	__desc__ = "Plugin per fox"
 	__ver__ = "0.0.1"
@@ -44,7 +44,8 @@ class fox(gtk.Window):
 		
 		
 		
-		
+		##### mi da errore qua su add, come mai????
+		##### lascia 2 commenti 
 		add (box)
 		show_all ()
 			
