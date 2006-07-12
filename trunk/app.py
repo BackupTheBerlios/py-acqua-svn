@@ -229,9 +229,6 @@ class Gui(gtk.Window):
 		import files.importa
 		files.importa.Importa()
 		
-	def esporta_apri(self, widget, data=None):
-		pass
-		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
 	
