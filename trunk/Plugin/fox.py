@@ -3,7 +3,7 @@ import gtk
 import files.utils
 import files.dbwindow
 
-class fox:
+class fox(gtk.Window):
 	__name__ = "Fox"
 	__desc__ = "Plugin per fox"
 	__ver__ = "0.0.1"
