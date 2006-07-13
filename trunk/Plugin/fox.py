@@ -74,7 +74,7 @@ class fox(gtk.Window):
 		tbl_alba.attach(self.new_label(_('Alba')), 0, 1, 0, 1, yoptions=gtk.SHRINK)
 		tbl_alba.attach(self.new_label(_('Tramonto')), 0, 1, 1, 2, yoptions=gtk.SHRINK)
 		
-		#qui pero e da modificare invece che scegliere la data bisogna far scegliere
+		#qui e da modificare! invece che scegliere la data bisogna far scegliere
 		# l ora dell alba e del tramonto.
 		
 		self.alba = files.utils.DataButton ()
