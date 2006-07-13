@@ -3,7 +3,7 @@ import gtk
 import files.utils
 import files.dbwindow
 
-class fox:
+class fox(gtk.Window):
 	__name__ = "Fox"
 	__desc__ = "Plugin per fox"
 	__ver__ = "0.0.1"
@@ -38,15 +38,20 @@ class fox:
 		tbl.set_border_width(5)
 		
 		tbl.attach(self.new_label(_('Sonde')), 1, 2, 0, 1, yoptions=gtk.SHRINK)
-		tbl.attach(self.new_label(_('Ph')), 2, 3, 0, 1, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Ph')), 1, 2, 1, 2, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Temperatura')), 1, 2, 2, 3, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Uscite')), 1, 2, 3, 4, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Uscita 1')), 1, 2, 4, 5, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Uscita 2')), 1, 2, 5, 6, yoptions=gtk.SHRINK)
+		tbl.attach(self.new_label(_('Uscita 3')), 1, 2, 6, 7, yoptions=gtk.SHRINK)
 		
 		box.pack_start(tbl)
 		
 		
 		
 		##### da finire perche da errori
-		add (box)
-		show_all ()
+		self.add(box)
+		self.show_all ()
 			
 	def new_label(self, txt, bold=True):
 		lbl = gtk.Label()
