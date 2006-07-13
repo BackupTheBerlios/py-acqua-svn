@@ -34,6 +34,11 @@ class fox(gtk.Window):
 		box.set_spacing(4)
 		box.set_border_width(4)
 		
+		f1 = gtk.Frame(_('Sonde')); f2 = gtk.Frame(_('Uscite'))
+		
+		box.pack_start(f1, False, False, 0)
+		box.pack_start(f2, False, False, 0)
+		
 		tbl = gtk.Table(11, 3)
 		tbl.set_border_width(5)
 		
@@ -48,7 +53,7 @@ class fox(gtk.Window):
 		box.pack_start(tbl)
 		
 		
-		
+		f1.add(tbl)
 		##### da finire perche da errori
 		self.add(box)
 		self.show_all ()
