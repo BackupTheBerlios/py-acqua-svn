@@ -80,6 +80,7 @@ class fox(gtk.Window):
 		f3.add(tbl_alba)
 		
 		self.add(box)
+		self.connect ('delete_event', self.exit)
 
 	def stop (self):
 		print "** Stopping", self.__name__
@@ -92,3 +93,4 @@ class fox(gtk.Window):
 		
 	def exit(self, *w):
 		self.hide()
+		return True # Per non distruggere il contenuto
