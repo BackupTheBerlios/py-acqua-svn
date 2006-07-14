@@ -23,6 +23,7 @@
 
 import os
 import glob
+import sys
 
 class Plugin:
 	__name__ = ""
@@ -44,7 +45,7 @@ class PluginEngine:
 		# Carichiamo tutti i plugin presenti in Plugin/
 		
 		path = os.path.join(os.getcwd(), 'Plugin')
-		
+
 		for i in glob.glob(path + "/*.py"):
 			if os.path.isfile(os.path.join(path, i)):
 				file = os.path.join (path, i)
@@ -52,12 +53,17 @@ class PluginEngine:
 				
 				if base != "__init__.py":
 					print _("Carico <%s>") % base[:-3]
-					if self.load ("Plugin." + base[:-3], base[:-3]) == False:
+					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
+					if self.load (path, base[:-3], base[:-3]) == False:
 						print _("Errori... Ignoro")
 		
-	def load (self, name, klass):
+	def load (self, path, name, klass):
+		# Aggiungiamo la path
+		old = sys.path
+		sys.path.append (path)
+		
 		try:
-			module = __import__ (name, globals (), locals (), [klass])
+			module = __import__ (name)#, globals (), locals (), [klass])
 			instance = vars(module)[klass]
 
 			for i in self.array:
@@ -69,8 +75,15 @@ class PluginEngine:
 			
 			self.array.append (plugin)
 			
+			print ">> Restoring path"
+			sys.path = old
+
 			return True
 		except:
+			print ">> Restoring path"
+			sys.path = old
+
+			print "!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type)
 			return False
 
 if __name__ == "__main__":

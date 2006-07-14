@@ -101,7 +101,7 @@ class Plugin(gtk.Window):
 			utils.copy_plugin (ret)
 			
 			name = os.path.basename (ret)[:-3]
-			App.p_engine.load ("Plugin." +  name, name)
+			App.p_engine.load (os.path.join (os.path.abspath (os.getcwd ()), "Plugin"), name, name)
 			
 			self.store.clear ()
 			self.fillstore ()
