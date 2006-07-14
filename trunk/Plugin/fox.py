@@ -59,12 +59,13 @@ class fox(gtk.Window):
 		box.pack_start (f2, False, False, 0)
 		#box.pack_start (f3, False, False, 0)
 		
-		fbox = gtk.VBox ()
+		fbox = gtk.HBox ()
 		f1_checks = list ()
-
+		x = 1
 		for i in (_("pH1"), _("pH2"), _("Temperatura"), _("Redox")):
 			tmp = gtk.CheckButton (i)
 			f1_checks.append (tmp)
+			
 			fbox.pack_start (tmp, False, False, 0)
 
 
@@ -142,6 +143,9 @@ class fox(gtk.Window):
 		self.co3 = gtk.CheckButton ("Co2 Regolata dal pH")
 		tbl.attach(self.co3, 0, 1, 8, 9, yoptions=0)
 		
+		tbl.attach(utils.new_label(_('Valore di pH da mantenere')), 0, 1, 9, 10, yoptions=gtk.SHRINK)
+		self.val_ph = utils.FloatEntry ()
+		tbl.attach(self.val_ph, 1, 2, 9, 10, yoptions=0)
 		
 		#tbl_alba = gtk.Table(2, 2)
 		#tbl_alba.set_border_width(5)
