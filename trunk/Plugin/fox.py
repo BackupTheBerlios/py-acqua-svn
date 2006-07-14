@@ -41,6 +41,10 @@ class fox(gtk.Window):
 		
 		tbl_sonde.attach(utils.new_label(_('Ph')), 0, 1, 0, 1, yoptions=gtk.SHRINK)
 		tbl_sonde.attach(utils.new_label(_('Temperatura')), 0, 1, 1, 2, yoptions=gtk.SHRINK)
+		
+		check_sonde = gtk.CheckButton()
+		tbl_sonde.attach(check_sonde, 1, 2, 0, 1)
+		
 
 		# Aggiungi il resto
 		
