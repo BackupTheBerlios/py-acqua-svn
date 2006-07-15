@@ -188,30 +188,58 @@ class fox(gtk.Window):
 		tbl.attach(self.usc_81, 7, 8, 5, 6, xoptions=0)
 		tbl.attach(self.usc_91, 8, 9, 5, 6, xoptions=0)
 		tbl.attach(self.usc_111, 9, 10, 5, 6, xoptions=0)
+		
 		lst1 = ("Sempre acceso")
+		
 		self.sempre = gtk.CheckButton (lst1)
 		tbl.attach(self.sempre, 0, 1, 6, 7, xoptions=gtk.SHRINK)
+		
 		self.sempre1 = gtk.CheckButton (lst1)
 		tbl.attach(self.sempre1, 1, 2, 6, 7, xoptions=gtk.SHRINK)
 		
+		self.sempre2 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre2, 2, 3, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre3 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre3, 3, 4, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre4 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre4, 4, 5, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre5 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre5, 5, 6, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre6 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre6, 6, 7, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre7 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre7, 7, 8, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre8 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre8, 8, 9, 6, 7, xoptions=gtk.SHRINK)
+		
+		self.sempre9 = gtk.CheckButton (lst1)
+		tbl.attach(self.sempre9, 9, 10, 6, 7, xoptions=gtk.SHRINK)
 		
 		
-		tbl_alba = gtk.Table(2, 2)
+		
+		tbl_alba = gtk.Table(2, 4)
 		tbl_alba.set_border_width(5)
 		
 		
 		self.co1 = gtk.CheckButton ("Co2 Permanente")
-		tbl_alba.attach(self.co1, 0, 1, 0, 1, xoptions=gtk.SHRINK)
+		tbl_alba.attach(self.co1, 0, 1, 0, 1, xoptions=gtk.FILL)
 		
-		self.co2 = gtk.CheckButton ("Co2 Regolata dal timer della luce")
-		tbl_alba.attach(self.co2, 0, 1, 1, 2, xoptions=gtk.SHRINK)
+		self.co2 = gtk.CheckButton ("Co2 Regolata dalla luce")
+		tbl_alba.attach(self.co2, 0, 1, 1, 2, xoptions=gtk.FILL)
 		
 		self.co3 = gtk.CheckButton ("Co2 Regolata dal pH")
-		tbl_alba.attach(self.co3, 0, 1, 2, 3, xoptions=gtk.SHRINK)
+		tbl_alba.attach(self.co3, 0, 1, 2, 3, xoptions=gtk.FILL)
 		
-		tbl_alba.attach(utils.new_label(_('Valore di pH da mantenere')), 0, 1, 9, 10, xoptions=gtk.SHRINK)
+		tbl_alba.attach(utils.new_label(_('Valore di pH da mantenere')), 0, 1, 3, 4, xoptions=gtk.FILL)
+		
 		self.val_ph = utils.FloatEntry ()
-		tbl_alba.attach(self.val_ph, 1, 2, 2, 3, xoptions=gtk.SHRINK)
+		tbl_alba.attach(self.val_ph, 1, 2, 3, 4, xoptions=gtk.SHRINK)
 		
 		
 		
