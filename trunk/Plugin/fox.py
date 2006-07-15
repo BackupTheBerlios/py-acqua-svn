@@ -34,6 +34,9 @@ class fox(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__ (self)
 		self.create_gui ()
+		self.set_title(_("Fox Plugin"))
+		self.set_resizable(False)
+		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 
 	def start (self):
 		print ">> Starting", self.__name__
@@ -113,6 +116,11 @@ class fox(gtk.Window):
 		tbl.attach(utils.new_label(_('Accensione')), 2, 3, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 3, 4, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 4, 5, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 5, 6, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 6, 7, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 7, 8, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 8, 9, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 9, 10, 2, 3, xoptions=gtk.SHRINK)
 		
 		
 		
@@ -120,26 +128,59 @@ class fox(gtk.Window):
 		self.usc_2 = utils.TimeEntry ()
 		self.usc_3 = utils.TimeEntry ()
 		self.usc_4 = utils.TimeEntry ()
+		self.usc_5 = utils.TimeEntry ()
+		self.usc_6 = utils.TimeEntry ()
+		self.usc_7 = utils.TimeEntry ()
+		self.usc_8 = utils.TimeEntry ()
+		self.usc_9 = utils.TimeEntry ()
+		self.usc_10 = utils.TimeEntry ()
+		
 		
 		tbl.attach(self.usc_1, 0, 1, 3, 4, xoptions=0)
 		tbl.attach(self.usc_2, 1, 2, 3, 4, xoptions=0)
 		tbl.attach(self.usc_3, 2, 3, 3, 4, xoptions=0)
 		tbl.attach(self.usc_4, 3, 4, 3, 4, xoptions=0)
+		tbl.attach(self.usc_5, 4, 5, 3, 4, xoptions=0)
+		tbl.attach(self.usc_6, 5, 6, 3, 4, xoptions=0)
+		tbl.attach(self.usc_7, 6, 7, 3, 4, xoptions=0)
+		tbl.attach(self.usc_8, 7, 8, 3, 4, xoptions=0)
+		tbl.attach(self.usc_9, 8, 9, 3, 4, xoptions=0)
+		tbl.attach(self.usc_10, 9, 10, 3, 4, xoptions=0)
+		
 		
 		tbl.attach(utils.new_label(_('Spegnimento')), 0, 1, 4, 5, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Spegnimento')), 1, 2, 4, 5, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Spegnimento')), 2, 3, 4, 5, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Spegnimento')), 3, 4, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 4, 5, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 5, 6, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 6, 7, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 7, 8, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 8, 9, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 9, 10, 4, 5, xoptions=gtk.SHRINK)
 		
-		self.usc_5 = utils.TimeEntry ()
-		self.usc_6 = utils.TimeEntry ()
-		self.usc_7 = utils.TimeEntry ()
-		self.usc_8 = utils.TimeEntry ()
+		self.usc_11 = utils.TimeEntry ()
+		self.usc_21 = utils.TimeEntry ()
+		self.usc_31 = utils.TimeEntry ()
+		self.usc_41 = utils.TimeEntry ()
+		self.usc_51 = utils.TimeEntry ()
+		self.usc_61 = utils.TimeEntry ()
+		self.usc_71 = utils.TimeEntry ()
+		self.usc_81 = utils.TimeEntry ()
+		self.usc_91 = utils.TimeEntry ()
+		self.usc_111 = utils.TimeEntry ()
 		
-		tbl.attach(self.usc_5, 0, 1, 5, 6, xoptions=0)
-		tbl.attach(self.usc_6, 1, 2, 5, 6, xoptions=0)
-		tbl.attach(self.usc_7, 2, 3, 5, 6, xoptions=0)
-		tbl.attach(self.usc_8, 3, 4, 5, 6, xoptions=0)
+		tbl.attach(self.usc_11, 0, 1, 5, 6, xoptions=0)
+		tbl.attach(self.usc_21, 1, 2, 5, 6, xoptions=0)
+		tbl.attach(self.usc_31, 2, 3, 5, 6, xoptions=0)
+		tbl.attach(self.usc_41, 3, 4, 5, 6, xoptions=0)
+		tbl.attach(self.usc_51, 4, 5, 5, 6, xoptions=0)
+		tbl.attach(self.usc_61, 5, 6, 5, 6, xoptions=0)
+		tbl.attach(self.usc_71, 6, 7, 5, 6, xoptions=0)
+		tbl.attach(self.usc_81, 7, 8, 5, 6, xoptions=0)
+		tbl.attach(self.usc_91, 8, 9, 5, 6, xoptions=0)
+		tbl.attach(self.usc_111, 9, 10, 5, 6, xoptions=0)
+		
 		
 		
 		
