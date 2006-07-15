@@ -73,23 +73,35 @@ class DataButton(gtk.Button):
 		diag.destroy()
 		
 		
-class TimeEntry(gtk.SpinButton):
-	def __init__(self, min=0, max=24, inc=1, page=1):
-		gtk.SpinButton.__init__(self, digits=0)
-		self.set_range(min, max)
-		self.set_increments(inc, page)
-		self.set_wrap(True)
-	
+class TimeEntry(gtk.HBox):
+	def __init__(self):
+		gtk.HBox.__init__ (self, False, 2)
+
+		self.spin_h = gtk.SpinButton (digits=0)
+		self.spin_m = gtk.SpinButton (digits=0)
+
+		self.spin_h.set_range (0, 23)
+		self.spin_m.set_range (0, 59)
+		
+		self.spin_h.set_increments (1, 2)
+		self.spin_m.set_increments (1, 2)
+
+		self.spin_h.set_wrap (True)
+		self.spin_m.set_wrap (True)
+
+		self.pack_start (self.spin_h, False, False, 0)
+		self.pack_start (self.spin_m, False, False, 0)
+
 	def set_text(self, value):
 		try:
-			value = float(value)
+			lst = value.split (':')
+			self.spin_h.set_value (float (lst[0]))
+			self.spin_m.set_value (fload (lst[1]))
 		except:
-			value = 0
-
-		self.set_value(value)
+			pass
 	
 	def get_text(self):
-		return self.get_value()
+		return str (self.spin_h.get_value_as_int()) + ":" + str (self.spin_m.get_value_as_int ())
 
 class FloatEntry(gtk.SpinButton):
 	def __init__(self, min=0, max=9999, inc=0.1, page=1):
@@ -472,6 +484,7 @@ class Test:
 		btn.connect('clicked', self.a)
 		box.pack_start(btn)
 		box.pack_start(ImgEntry())
+		box.pack_start(TimeEntry())
 		w.add(box)
 		w.show_all()
 	def a(self, w):
