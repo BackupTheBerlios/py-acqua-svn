@@ -35,7 +35,7 @@ class fox(gtk.Window):
 		gtk.Window.__init__ (self)
 		self.create_gui ()
 		self.set_title(_("Fox Plugin"))
-		self.set_resizable(False)
+		self.set_size_request (600, 400)
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 
 	def start (self):
@@ -56,11 +56,19 @@ class fox(gtk.Window):
 		box.set_spacing(4)
 		box.set_border_width(4)
 		
+		sw = gtk.ScrolledWindow ()
+		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
+		#sw.add(box)
+		sw.add_with_viewport (box)
+		self.add(sw)
+		
 		f1 = gtk.Frame(_('Sonde')); f2 = gtk.Frame(_('Uscite')); f3 = gtk.Frame(_('Regolazione Co2'))
 
 		box.pack_start (f1, False, False, 0)
 		box.pack_start (f2, False, False, 0)
 		box.pack_start (f3, False, False, 0)
+		
 		
 		fbox = gtk.HBox ()
 		f1_checks = list ()
@@ -210,7 +218,6 @@ class fox(gtk.Window):
 		f2.add(tbl)
 		f3.add(tbl_alba)
 		
-		self.add(box)
 		self.connect ('delete_event', self.exit)
 
 	def stop (self):
