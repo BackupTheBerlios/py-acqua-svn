@@ -73,14 +73,14 @@ class fox(gtk.Window):
 
 		# Aggiungi il resto
 		
-		tbl = gtk.Table(4, 2)
+		tbl = gtk.Table(8, 2)
 		tbl.set_border_width(5)
 		
 		x = 0; labels = ('1', '2', '3', '4'); f2_checks = list ()
 		for i in labels:
 			widget = gtk.CheckButton(_("Uscita ") + i)
 			f2_checks.append (widget)
-			tbl.attach (widget, x, x+1, 0, 1, yoptions=gtk.SHRINK); x += 1
+			tbl.attach (widget, x, x+1, 0, 1, xoptions=gtk.SHRINK); x += 1
 		
 		
 		
@@ -99,53 +99,53 @@ class fox(gtk.Window):
 		self.uscita3 = utils.Combo ()
 		self.uscita4 = utils.Combo ()
 		
-		tbl.attach(self.uscita1, 0, 1, 1, 2, yoptions=0)
-		tbl.attach(self.uscita2, 1, 2, 1, 2, yoptions=0)
-		tbl.attach(self.uscita3, 2, 3, 1, 2, yoptions=0)
-		tbl.attach(self.uscita4, 3, 4, 1, 2, yoptions=0)
+		tbl.attach(self.uscita1, 0, 1, 1, 2, xoptions=0)
+		tbl.attach(self.uscita2, 1, 2, 1, 2, xoptions=0)
+		tbl.attach(self.uscita3, 2, 3, 1, 2, xoptions=0)
+		tbl.attach(self.uscita4, 3, 4, 1, 2, xoptions=0)
 		
-		tbl.attach(utils.new_label(_('Accensione')), 0, 1, 2, 3, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Accensione')), 1, 2, 2, 3, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Accensione')), 2, 3, 2, 3, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Accensione')), 3, 4, 2, 3, yoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 0, 1, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 1, 2, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 2, 3, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 3, 4, 2, 3, xoptions=gtk.SHRINK)
 		
-		self.usc_1 = utils.DataButton ()
-		self.usc_2 = utils.DataButton ()
+		self.usc_1 = utils.IntEntry ()
+		self.usc_2 = utils.IntEntry ()
 		self.usc_3 = utils.DataButton ()
 		self.usc_4 = utils.DataButton ()
 		
-		tbl.attach(self.usc_1, 0, 1, 3, 4, yoptions=0)
-		tbl.attach(self.usc_2, 1, 2, 3, 4, yoptions=0)
-		tbl.attach(self.usc_3, 2, 3, 3, 4, yoptions=0)
-		tbl.attach(self.usc_4, 3, 4, 3, 4, yoptions=0)
+		tbl.attach(self.usc_1, 0, 1, 3, 4, xoptions=0)
+		tbl.attach(self.usc_2, 1, 2, 3, 4, xoptions=0)
+		tbl.attach(self.usc_3, 2, 3, 3, 4, xoptions=0)
+		tbl.attach(self.usc_4, 3, 4, 3, 4, xoptions=0)
 		
-		tbl.attach(utils.new_label(_('Spegnimento')), 0, 1, 4, 5, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Spegnimento')), 1, 2, 4, 5, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Spegnimento')), 2, 3, 4, 5, yoptions=gtk.SHRINK)
-		tbl.attach(utils.new_label(_('Spegnimento')), 3, 4, 4, 5, yoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 0, 1, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 1, 2, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 2, 3, 4, 5, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Spegnimento')), 3, 4, 4, 5, xoptions=gtk.SHRINK)
 		
 		self.usc_5 = utils.DataButton ()
 		self.usc_6 = utils.DataButton ()
 		self.usc_7 = utils.DataButton ()
 		self.usc_8 = utils.DataButton ()
 		
-		tbl.attach(self.usc_5, 0, 1, 5, 6, yoptions=0)
-		tbl.attach(self.usc_6, 1, 2, 5, 6, yoptions=0)
-		tbl.attach(self.usc_7, 2, 3, 5, 6, yoptions=0)
-		tbl.attach(self.usc_8, 3, 4, 5, 6, yoptions=0)
+		tbl.attach(self.usc_5, 0, 1, 5, 6, xoptions=0)
+		tbl.attach(self.usc_6, 1, 2, 5, 6, xoptions=0)
+		tbl.attach(self.usc_7, 2, 3, 5, 6, xoptions=0)
+		tbl.attach(self.usc_8, 3, 4, 5, 6, xoptions=0)
 		
 		self.co1 = gtk.CheckButton ("Co2 Permanente")
-		tbl.attach(self.co1, 0, 1, 6, 7, yoptions=0)
+		tbl.attach(self.co1, 0, 1, 6, 7, xoptions=0)
 		
 		self.co2 = gtk.CheckButton ("Co2 Regolata dal timer della luce")
-		tbl.attach(self.co2, 0, 1, 7, 8, yoptions=0)
+		tbl.attach(self.co2, 0, 1, 7, 8, xoptions=0)
 		
 		self.co3 = gtk.CheckButton ("Co2 Regolata dal pH")
-		tbl.attach(self.co3, 0, 1, 8, 9, yoptions=0)
+		tbl.attach(self.co3, 0, 1, 8, 9, xoptions=0)
 		
 		tbl.attach(utils.new_label(_('Valore di pH da mantenere')), 0, 1, 9, 10, yoptions=gtk.SHRINK)
 		self.val_ph = utils.FloatEntry ()
-		tbl.attach(self.val_ph, 1, 2, 9, 10, yoptions=0)
+		tbl.attach(self.val_ph, 1, 2, 9, 10, xoptions=0)
 		
 		#tbl_alba = gtk.Table(2, 2)
 		#tbl_alba.set_border_width(5)
