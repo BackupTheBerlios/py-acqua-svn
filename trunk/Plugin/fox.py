@@ -82,32 +82,18 @@ class fox(gtk.Window):
 			f2_checks.append (widget)
 			tbl.attach (widget, x, x+1, 0, 1, xoptions=gtk.SHRINK); x += 1
 		
-		popola = lambda widget, lst: for y in lst: widget.append_text ( y )
-		popola (self.uscita1, ["sdfsf", "asdasd"])
+		lst = [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]
 		
-		
-		#self.uscita1 = utils.Combo ()
-		#for y in [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]:
-			#self.uscita1.append_text (y)
-		
-		
-		
-		
-		self.uscita2 = utils.Combo ()
-		for y in [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]:
-			self.uscita2.append_text (y)
-			
-		self.uscita3 = utils.Combo ()
-		for y in [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]:
-			self.uscita3.append_text (y)
-			
-		self.uscita4 = utils.Combo ()
-		for y in [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]:
-			self.uscita4.append_text (y)
-		
-		self.uscita5 = utils.Combo ()
-		for y in [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]:
-			self.uscita5.append_text (y)
+		self.uscita1 = utils.Combo (lst)
+		self.uscita2 = utils.Combo (lst)	
+		self.uscita3 = utils.Combo (lst)	
+		self.uscita4 = utils.Combo (lst)
+		self.uscita5 = utils.Combo (lst)
+		self.uscita6 = utils.Combo (lst)
+		self.uscita7 = utils.Combo (lst)
+		self.uscita8 = utils.Combo (lst)
+		self.uscita9 = utils.Combo (lst)
+		self.uscita10 = utils.Combo (lst)
 		
 		
 		tbl.attach(self.uscita1, 0, 1, 1, 2, xoptions=0)
@@ -115,11 +101,20 @@ class fox(gtk.Window):
 		tbl.attach(self.uscita3, 2, 3, 1, 2, xoptions=0)
 		tbl.attach(self.uscita4, 3, 4, 1, 2, xoptions=0)
 		tbl.attach(self.uscita5, 4, 5, 1, 2, xoptions=0)
+		tbl.attach(self.uscita6, 5, 6, 1, 2, xoptions=0)
+		tbl.attach(self.uscita7, 6, 7, 1, 2, xoptions=0)
+		tbl.attach(self.uscita8, 7, 8, 1, 2, xoptions=0)
+		tbl.attach(self.uscita9, 8, 9, 1, 2, xoptions=0)
+		tbl.attach(self.uscita10, 9, 10, 1, 2, xoptions=0)
+		
 		
 		tbl.attach(utils.new_label(_('Accensione')), 0, 1, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 1, 2, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 2, 3, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 3, 4, 2, 3, xoptions=gtk.SHRINK)
+		tbl.attach(utils.new_label(_('Accensione')), 4, 5, 2, 3, xoptions=gtk.SHRINK)
+		
+		
 		
 		self.usc_1 = utils.TimeEntry ()
 		self.usc_2 = utils.TimeEntry ()
