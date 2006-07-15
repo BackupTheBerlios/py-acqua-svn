@@ -109,7 +109,7 @@ class fox(gtk.Window):
 		tbl.attach(utils.new_label(_('Accensione')), 2, 3, 2, 3, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Accensione')), 3, 4, 2, 3, xoptions=gtk.SHRINK)
 		
-		self.usc_1 = utils.IntEntry ()
+		self.usc_1 = utils.TimeEntry ()
 		self.usc_2 = utils.IntEntry ()
 		self.usc_3 = utils.DataButton ()
 		self.usc_4 = utils.DataButton ()

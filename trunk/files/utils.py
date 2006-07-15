@@ -71,6 +71,25 @@ class DataButton(gtk.Button):
 			self.update_label(self.get_date())
 		diag.hide()
 		diag.destroy()
+		
+		
+class TimeEntry(gtk.SpinButton):
+	def __init__(self, min=0, max=24, inc=1, page=1):
+		gtk.SpinButton.__init__(self, digits=0)
+		self.set_range(min, max)
+		self.set_increments(inc, page)
+		self.set_wrap(True)
+	
+	def set_text(self, value):
+		try:
+			value = float(value)
+		except:
+			value = 0
+
+		self.set_value(value)
+	
+	def get_text(self):
+		return self.get_value()
 
 class FloatEntry(gtk.SpinButton):
 	def __init__(self, min=0, max=9999, inc=0.1, page=1):
