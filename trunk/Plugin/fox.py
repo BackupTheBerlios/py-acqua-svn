@@ -61,8 +61,10 @@ class fox(gtk.Window):
 		ido = self.uscita1.get_active ()
 		if ido == 1:
 			print "nascondi"
+			self.usc_1.set_sensitive (False)
 		else:
 			print "attiva"
+			self.usc_1.set_sensitive (True)
 			
 	
 	def create_gui (self):
