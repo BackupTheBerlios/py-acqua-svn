@@ -57,14 +57,14 @@ class fox(gtk.Window):
 			else:
 				widget.set_label("Offline")
 	
-	def prova(self, widget):
+	def prova(self, widget, to_check):
 		ido = self.uscita1.get_active ()
 		if ido == 1:
 			print "nascondi"
-			self.usc_1.set_sensitive (False)
+			to_check.set_sensitive (False)
 		else:
 			print "attiva"
-			self.usc_1.set_sensitive (True)
+			to_check.set_sensitive (True)
 			
 	
 	def create_gui (self):
@@ -137,9 +137,6 @@ class fox(gtk.Window):
 		self.uscita10 = utils.Combo (lst)
 		
 		
-		self.uscita1.connect("changed", self.prova)
-			
-		
 		tbl.attach(self.uscita1, 0, 1, 1, 2, xoptions=0)
 		tbl.attach(self.uscita2, 1, 2, 1, 2, xoptions=0)
 		tbl.attach(self.uscita3, 2, 3, 1, 2, xoptions=0)
@@ -175,6 +172,18 @@ class fox(gtk.Window):
 		self.usc_8 = utils.TimeEntry ()
 		self.usc_9 = utils.TimeEntry ()
 		self.usc_10 = utils.TimeEntry ()
+		
+		# Callbacks
+		self.uscita1.connect("changed", self.prova, self.usc_1)
+		self.uscita2.connect("changed", self.prova, self.usc_2)
+		self.uscita3.connect("changed", self.prova, self.usc_3)
+		self.uscita4.connect("changed", self.prova, self.usc_4)
+		self.uscita5.connect("changed", self.prova, self.usc_5)
+		self.uscita6.connect("changed", self.prova, self.usc_6)
+		self.uscita7.connect("changed", self.prova, self.usc_7)
+		self.uscita8.connect("changed", self.prova, self.usc_8)
+		self.uscita9.connect("changed", self.prova, self.usc_9)
+		self.uscita10.connect("changed", self.prova, self.usc_10)
 		
 		
 		tbl.attach(self.usc_1, 0, 1, 3, 4, xoptions=0)
