@@ -77,7 +77,22 @@ class fox(gtk.Window):
 			for i in lst:
 				i.set_sensitive(True)
 			
-			
+	def prova1(self, widget, lst):
+		pp = widget.get_active()
+		if pp == True:
+			for i in lst:
+				i.set_sensitive(False)
+		else:
+			for i in lst:
+				i.set_sensitive(True)	
+		
+		
+		#if pp == True:
+		#	self.usc_1.set_sensitive(False)
+		#	self.usc_11.set_sensitive(False)
+		#else:
+		#	self.usc_1.set_sensitive(True)
+		#	self.usc_11.set_sensitive(True)
 		
 		
 			
@@ -92,7 +107,7 @@ class fox(gtk.Window):
 		sw = gtk.ScrolledWindow ()
 		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
-		#sw.add(box)
+		
 		sw.add_with_viewport (box)
 		self.add(sw)
 		
@@ -254,33 +269,43 @@ class fox(gtk.Window):
 		lst1 = (_("Sempre acceso"))
 		
 		self.sempre = gtk.CheckButton (lst1)
+		self.sempre.connect("toggled", self.prova1, [self.usc_1, self.usc_11])
 		tbl.attach(self.sempre, 0, 1, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre1 = gtk.CheckButton (lst1)
+		self.sempre1.connect("toggled", self.prova1, [self.usc_2, self.usc_21])
 		tbl.attach(self.sempre1, 1, 2, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre2 = gtk.CheckButton (lst1)
+		self.sempre2.connect("toggled", self.prova1, [self.usc_3, self.usc_31])
 		tbl.attach(self.sempre2, 2, 3, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre3 = gtk.CheckButton (lst1)
+		self.sempre3.connect("toggled", self.prova1, [self.usc_4, self.usc_41])
 		tbl.attach(self.sempre3, 3, 4, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre4 = gtk.CheckButton (lst1)
+		self.sempre4.connect("toggled", self.prova1, [self.usc_5, self.usc_51])
 		tbl.attach(self.sempre4, 4, 5, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre5 = gtk.CheckButton (lst1)
+		self.sempre5.connect("toggled", self.prova1, [self.usc_6, self.usc_61])
 		tbl.attach(self.sempre5, 5, 6, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre6 = gtk.CheckButton (lst1)
+		self.sempre6.connect("toggled", self.prova1, [self.usc_7, self.usc_71])
 		tbl.attach(self.sempre6, 6, 7, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre7 = gtk.CheckButton (lst1)
+		self.sempre7.connect("toggled", self.prova1, [self.usc_8, self.usc_81])
 		tbl.attach(self.sempre7, 7, 8, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre8 = gtk.CheckButton (lst1)
+		self.sempre8.connect("toggled", self.prova1, [self.usc_9, self.usc_91])
 		tbl.attach(self.sempre8, 8, 9, 6, 7, xoptions=gtk.SHRINK)
 		
 		self.sempre9 = gtk.CheckButton (lst1)
+		self.sempre9.connect("toggled", self.prova1, [self.usc_10, self.usc_111])
 		tbl.attach(self.sempre9, 9, 10, 6, 7, xoptions=gtk.SHRINK)
 		
 		
