@@ -89,8 +89,6 @@ class TimeEntry(gtk.HBox):
 		self.spin_h.set_wrap (True)
 		self.spin_m.set_wrap (True)
 		
-		
-
 		self.pack_start (self.spin_h, False, False, 0)
 		self.pack_start (self.spin_m, False, False, 0)
 

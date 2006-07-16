@@ -57,14 +57,29 @@ class fox(gtk.Window):
 			else:
 				widget.set_label("Offline")
 	
-	def prova(self, widget, to_check):
+	def prova(self, widget, lst):
+		
 		ido = self.uscita1.get_active ()
-		if ido == 1:
-			print "nascondi"
-			to_check.set_sensitive (False)
+		
+		if ido == 0:
+			for i in lst:
+				i.set_sensitive(False)
+		elif ido == 1:
+			for i in lst:
+				i.set_sensitive(False)
+		elif ido == 2:
+			for i in lst:
+				i.set_sensitive(False)
+		elif ido == 3:
+			for i in lst:
+				i.set_sensitive(False)
 		else:
-			print "attiva"
-			to_check.set_sensitive (True)
+			for i in lst:
+				i.set_sensitive(True)
+			
+			
+		
+		
 			
 	
 	def create_gui (self):
@@ -173,17 +188,9 @@ class fox(gtk.Window):
 		self.usc_9 = utils.TimeEntry ()
 		self.usc_10 = utils.TimeEntry ()
 		
-		# Callbacks
-		self.uscita1.connect("changed", self.prova, self.usc_1)
-		self.uscita2.connect("changed", self.prova, self.usc_2)
-		self.uscita3.connect("changed", self.prova, self.usc_3)
-		self.uscita4.connect("changed", self.prova, self.usc_4)
-		self.uscita5.connect("changed", self.prova, self.usc_5)
-		self.uscita6.connect("changed", self.prova, self.usc_6)
-		self.uscita7.connect("changed", self.prova, self.usc_7)
-		self.uscita8.connect("changed", self.prova, self.usc_8)
-		self.uscita9.connect("changed", self.prova, self.usc_9)
-		self.uscita10.connect("changed", self.prova, self.usc_10)
+		
+		
+		
 		
 		
 		tbl.attach(self.usc_1, 0, 1, 3, 4, xoptions=0)
@@ -230,6 +237,19 @@ class fox(gtk.Window):
 		tbl.attach(self.usc_81, 7, 8, 5, 6, xoptions=0)
 		tbl.attach(self.usc_91, 8, 9, 5, 6, xoptions=0)
 		tbl.attach(self.usc_111, 9, 10, 5, 6, xoptions=0)
+		
+		
+		# Callbacks
+		self.uscita1.connect("changed", self.prova, [self.usc_1, self.usc_11])
+		self.uscita2.connect("changed", self.prova, [self.usc_2, self.usc_21])
+		self.uscita3.connect("changed", self.prova, [self.usc_3, self.usc_31])
+		self.uscita4.connect("changed", self.prova, [self.usc_4, self.usc_41])
+		self.uscita5.connect("changed", self.prova, [self.usc_5, self.usc_51])
+		self.uscita6.connect("changed", self.prova, [self.usc_6, self.usc_61])
+		self.uscita7.connect("changed", self.prova, [self.usc_7, self.usc_71])
+		self.uscita8.connect("changed", self.prova, [self.usc_8, self.usc_81])
+		self.uscita9.connect("changed", self.prova, [self.usc_9, self.usc_91])
+		self.uscita10.connect("changed", self.prova, [self.usc_10, self.usc_111])
 		
 		lst1 = (_("Sempre acceso"))
 		
