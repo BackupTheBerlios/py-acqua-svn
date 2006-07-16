@@ -63,13 +63,22 @@ class fox(gtk.Window):
 		sw.add_with_viewport (box)
 		self.add(sw)
 		
-		f1 = gtk.Frame(_('Sonde')); f2 = gtk.Frame(_('Uscite')); f3 = gtk.Frame(_('Regolazione Co2'))
+		f0 = gtk.Frame (_('Connessione')); f1 = gtk.Frame(_('Sonde')); f2 = gtk.Frame(_('Uscite')); f3 = gtk.Frame(_('Regolazione Co2'))
 
+		box.pack_start (f0, False, False, 0)
 		box.pack_start (f1, False, False, 0)
 		box.pack_start (f2, False, False, 0)
 		box.pack_start (f3, False, False, 0)
 		
+		#f0
+		tbl_con = gtk.Table(4, 2)
+		tbl_con.set_border_width(5)
+		self.but = gtk.Button ("Test")
+		tbl_con.attach(self.but, 0, 1, 0, 1, xoptions=0)
+		#tbl_con.attach(utils.new_label(_('Test')), 0, 1, 0, 1, xoptions=gtk.SHRINK)
 		
+		
+		#f1
 		fbox = gtk.HBox ()
 		f1_checks = list ()
 		x = 1
@@ -93,7 +102,7 @@ class fox(gtk.Window):
 			f2_checks.append (widget)
 			tbl.attach (widget, x, x+1, 0, 1, xoptions=gtk.SHRINK); x += 1
 		
-		lst = [_("Filtro"), _("Co2"), _("Pompa"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]
+		lst = [_("Filtro"), _("Co2"), _("Pompa"), _("Riscaldatore"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]
 		
 		self.uscita1 = utils.Combo (lst)
 		self.uscita2 = utils.Combo (lst)	
@@ -247,7 +256,7 @@ class fox(gtk.Window):
 		
 		
 		
-		
+		f0.add(tbl_con)
 		f2.add(tbl)
 		f3.add(tbl_alba)
 		
