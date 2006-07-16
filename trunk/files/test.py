@@ -157,6 +157,20 @@ class GraphPage (gtk.ScrolledWindow):
 		self.menu.popup (None, None, None, event.button, event.time)
 		self.menu.show_all ()
 	
+	# Implementa un piccolo bubble sort "parallelo"
+	def parallel_sort (self, dates, vals):
+		for i in range (len (dates) - 1):
+			for j in range (len (dates) - 1 - i):
+				if dates[j+1] < dates[j]:
+					tmp1 = dates[j]
+					tmp2 = vals[j]
+					
+					dates[j] = dates[j+1]
+					vals[j] = vals[j+1]
+					
+					dates[j+1] = tmp1
+					vals[j+1] = tmp2
+	
 	def plot (self, values):
 		
 		window = gtk.Window ()
@@ -202,6 +216,8 @@ class GraphPage (gtk.ScrolledWindow):
 				if color == 8:
 					color = 0
 					
+				# Sort su dates
+				self.parallel_sort (dates, valori)
 				window.axis.plot_date (date2num (dates), valori, colors[color] + 'o--', label="%s %s" % (x[1], label))
 				valori = []; dates = []
 				color += 1
