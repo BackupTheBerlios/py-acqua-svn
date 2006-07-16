@@ -73,9 +73,16 @@ class fox(gtk.Window):
 		#f0
 		tbl_con = gtk.Table(4, 2)
 		tbl_con.set_border_width(5)
-		self.but = gtk.Button ("Test")
-		tbl_con.attach(self.but, 0, 1, 0, 1, xoptions=0)
-		#tbl_con.attach(utils.new_label(_('Test')), 0, 1, 0, 1, xoptions=gtk.SHRINK)
+		self.but_on = gtk.ToggleButton (_("Offline"))
+		
+		if self.but_on.get_active(True): 
+			self.but_on.set_label (_("Online"))
+		#self.but_off = gtk.ToggleButton (_("Offline"))
+		else:
+			pass
+		
+		tbl_con.attach(self.but_on, 0, 1, 0, 1, xoptions=0)
+		#tbl_con.attach(self.but_off, 1, 2, 0, 1, xoptions=0)
 		
 		
 		#f1
