@@ -49,6 +49,15 @@ class fox(gtk.Window):
 
 		menu.append (self.item)
 	
+	
+	def on_toggled(self, widget):
+			if widget.get_active():
+				widget.set_label("Online")
+		
+			else:
+				widget.set_label("Offline")
+	
+	
 	def create_gui (self):
 		# Qui viene costruita la gui
 
@@ -73,14 +82,9 @@ class fox(gtk.Window):
 		#f0
 		tbl_con = gtk.Table(4, 2)
 		tbl_con.set_border_width(5)
-		self.but_on = gtk.ToggleButton (Offline)
-		self.but_on.connect("toggled", self.bot)
-		def bot(self, widget):
-			if widget.get_active():
-				widget.set_label("Online")
+		self.but_on = gtk.ToggleButton ('Offline')
+		self.but_on.connect("toggled", self.on_toggled)
 		
-			else:
-				pass
 		
 		tbl_con.attach(self.but_on, 0, 1, 0, 1, xoptions=0)
 		
