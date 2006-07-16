@@ -57,6 +57,13 @@ class fox(gtk.Window):
 			else:
 				widget.set_label("Offline")
 	
+	def prova(self, widget):
+		ido = self.uscita1.get_active ()
+		if ido == 1:
+			print "nascondi"
+		else:
+			print "attiva"
+			
 	
 	def create_gui (self):
 		# Qui viene costruita la gui
@@ -127,6 +134,9 @@ class fox(gtk.Window):
 		self.uscita9 = utils.Combo (lst)
 		self.uscita10 = utils.Combo (lst)
 		
+		
+		self.uscita1.connect("changed", self.prova)
+			
 		
 		tbl.attach(self.uscita1, 0, 1, 1, 2, xoptions=0)
 		tbl.attach(self.uscita2, 1, 2, 1, 2, xoptions=0)
