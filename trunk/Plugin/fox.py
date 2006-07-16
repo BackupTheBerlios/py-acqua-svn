@@ -59,7 +59,7 @@ class fox(gtk.Window):
 	
 	def prova(self, widget, lst):
 		
-		ido = self.uscita1.get_active ()
+		ido = widget.get_active ()
 		
 		if ido == 0:
 			for i in lst:
