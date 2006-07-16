@@ -73,14 +73,14 @@ class fox(gtk.Window):
 		#f0
 		tbl_con = gtk.Table(4, 2)
 		tbl_con.set_border_width(5)
-		self.but_on = gtk.ToggleButton ()
-		self.but_on.toggled("clicked", self.bot)
-	
-		if self.but_on.get_active() == True: 
-			self.but_on.set_label (_("Online"))
+		self.but_on = gtk.ToggleButton (Offline)
+		self.but_on.connect("toggled", self.bot)
+		def bot(self, widget):
+			if widget.get_active():
+				widget.set_label("Online")
 		
-		else:
-			self.but_on.set_label (_("Offline"))
+			else:
+				pass
 		
 		tbl_con.attach(self.but_on, 0, 1, 0, 1, xoptions=0)
 		
