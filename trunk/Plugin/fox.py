@@ -189,7 +189,7 @@ class fox(gtk.Window):
 		tbl.attach(self.usc_91, 8, 9, 5, 6, xoptions=0)
 		tbl.attach(self.usc_111, 9, 10, 5, 6, xoptions=0)
 		
-		lst1 = ("Sempre acceso")
+		lst1 = (_("Sempre acceso"))
 		
 		self.sempre = gtk.CheckButton (lst1)
 		tbl.attach(self.sempre, 0, 1, 6, 7, xoptions=gtk.SHRINK)
@@ -227,18 +227,19 @@ class fox(gtk.Window):
 		tbl_alba.set_border_width(5)
 		
 		
-		self.co1 = gtk.CheckButton ("Co2 Permanente")
+		self.co1 = gtk.CheckButton (_("Co2 Permanente"))
 		tbl_alba.attach(self.co1, 0, 1, 0, 1, xoptions=gtk.FILL)
 		
-		self.co2 = gtk.CheckButton ("Co2 Regolata dalla luce")
+		self.co2 = gtk.CheckButton (_("Co2 Regolata dalla luce"))
 		tbl_alba.attach(self.co2, 0, 1, 1, 2, xoptions=gtk.FILL)
 		
-		self.co3 = gtk.CheckButton ("Co2 Regolata dal pH")
+		self.co3 = gtk.CheckButton (_("Co2 Regolata dal pH"))
 		tbl_alba.attach(self.co3, 0, 1, 2, 3, xoptions=gtk.FILL)
 		
 		tbl_alba.attach(utils.new_label(_('Valore di pH da mantenere')), 0, 1, 3, 4, xoptions=gtk.FILL)
 		
 		self.val_ph = utils.FloatEntry ()
+		self.val_ph.set_range (0, 10)
 		tbl_alba.attach(self.val_ph, 1, 2, 3, 4, xoptions=gtk.SHRINK)
 		
 		
