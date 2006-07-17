@@ -148,7 +148,7 @@ class fox(gtk.Window):
 			f2_checks.append (widget)
 			tbl.attach (widget, x, x+1, 0, 1, xoptions=gtk.SHRINK); x += 1
 		
-		lst = [_("Filtro"), _("Co2"), _("Pompa"), _("Riscaldatore"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4")]
+		lst = [_("Filtro"), _("Co2"), _("Pompa"), _("Riscaldatore"), _("Refrigerante"), _("Schiumatoio"), _("Neon 1"), _("Neon 2"), _("Neon 3"), _("Neon 4"), _("Neon Lunare")]
 		
 		self.uscita1 = utils.Combo (lst)
 		self.uscita2 = utils.Combo (lst)	
@@ -198,11 +198,6 @@ class fox(gtk.Window):
 		self.usc_9 = utils.TimeEntry ()
 		self.usc_10 = utils.TimeEntry ()
 		
-		
-		
-		
-		
-		
 		tbl.attach(self.usc_1, 0, 1, 3, 4, xoptions=0)
 		tbl.attach(self.usc_2, 1, 2, 3, 4, xoptions=0)
 		tbl.attach(self.usc_3, 2, 3, 3, 4, xoptions=0)
@@ -213,7 +208,6 @@ class fox(gtk.Window):
 		tbl.attach(self.usc_8, 7, 8, 3, 4, xoptions=0)
 		tbl.attach(self.usc_9, 8, 9, 3, 4, xoptions=0)
 		tbl.attach(self.usc_10, 9, 10, 3, 4, xoptions=0)
-		
 		
 		tbl.attach(utils.new_label(_('Spegnimento')), 0, 1, 4, 5, xoptions=gtk.SHRINK)
 		tbl.attach(utils.new_label(_('Spegnimento')), 1, 2, 4, 5, xoptions=gtk.SHRINK)

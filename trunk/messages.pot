@@ -8,19 +8,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-15 13:02+0200\n"
+"POT-Creation-Date: 2006-07-17 15:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: acqua.py:52
+#: acqua.py:65
 msgid "You need to install pyGTK or GTKv2"
 msgstr ""
 
-#: acqua.py:58
+#: acqua.py:71
 msgid "You need to install pysqlite"
 msgstr ""
 
@@ -48,131 +48,127 @@ msgstr ""
 msgid "_Test"
 msgstr ""
 
-#: app.py:53 files/test.py:71 files/test.py:185
+#: app.py:53 files/test.py:334
 msgid "Test"
 msgstr ""
 
-#: app.py:55 app.py:81
+#: app.py:55
 msgid "_Pesci"
 msgstr ""
 
-#: app.py:55 app.py:81
+#: app.py:55
 msgid "Pesci..."
 msgstr ""
 
-#: app.py:57 app.py:83
+#: app.py:57
 msgid "_Piante"
 msgstr ""
 
-#: app.py:57 app.py:83
+#: app.py:57
 msgid "Piante..."
 msgstr ""
 
-#: app.py:59 app.py:85
+#: app.py:59
 msgid "_Invertebrati"
 msgstr ""
 
-#: app.py:59 app.py:85
+#: app.py:59
 msgid "Invertebrati..."
 msgstr ""
 
 #: app.py:61
-msgid "_Quit"
+msgid "_Importa/Esporta..."
 msgstr ""
 
 #: app.py:61
-msgid "Esci da Py-Acqua"
+msgid "Importa/Esporta..."
 msgstr ""
 
 #: app.py:63
+msgid "_Quit"
+msgstr ""
+
+#: app.py:63
+msgid "Esci da Py-Acqua"
+msgstr ""
+
+#: app.py:65
 msgid "_Impostazioni"
 msgstr ""
 
-#: app.py:65
+#: app.py:67
 msgid "_Tips Tricks"
 msgstr ""
 
-#: app.py:65
+#: app.py:67
 msgid "Tips and Tricks..."
 msgstr ""
 
-#: app.py:67
+#: app.py:69
 msgid "_Fertilizzante"
 msgstr ""
 
-#: app.py:67
+#: app.py:69
 msgid "fertilizzante..."
 msgstr ""
 
-#: app.py:69
+#: app.py:71
 msgid "_Filtro"
 msgstr ""
 
-#: app.py:69
+#: app.py:71
 msgid "filtro..."
 msgstr ""
 
-#: app.py:71
-msgid "_Inserisci"
-msgstr ""
-
-#: app.py:71
-msgid "Inserisci..."
-msgstr ""
-
 #: app.py:73
-msgid "_Allarmi"
-msgstr ""
-
-#: app.py:73
-msgid "Allarmi..."
-msgstr ""
-
-#: app.py:75
 msgid "_Spese"
 msgstr ""
 
-#: app.py:75
+#: app.py:73
 msgid "Spese..."
 msgstr ""
 
-#: app.py:77
+#: app.py:75
 msgid "_Skin"
 msgstr ""
 
-#: app.py:77
+#: app.py:75
 msgid "Skin..."
 msgstr ""
 
-#: app.py:79
-msgid "Database"
+#: app.py:77
+msgid "_Lingua"
 msgstr ""
 
-#: app.py:86
+#: app.py:77
+msgid "Selezione Lingua..."
+msgstr ""
+
+#: app.py:79
 msgid "Plugins"
 msgstr ""
 
-#: app.py:88
+#: app.py:81
 msgid "_Manager"
 msgstr ""
 
-#: app.py:88
+#: app.py:81
 msgid "Plug-in..."
 msgstr ""
 
-#: app.py:92 app.py:96
+#: app.py:85 app.py:89
 msgid "_Aiuto"
 msgstr ""
 
-#: app.py:94
+#: app.py:87
 msgid "_Informazioni"
 msgstr ""
 
-#: app.py:94
+#: app.py:87
 msgid "Riguardo Py-Acqua"
 msgstr ""
 
-#: app.py:96
+#: app.py:89
 msgid "Aiuto..."
 msgstr ""
 
@@ -180,184 +176,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: files/allarmi.py:34
-msgid "Allarmi"
-msgstr ""
-
-#: files/allarmi.py:45 files/allarmi.py:155 files/inserisci.py:44
-#: files/test.py:54 files/test.py:173
-msgid "Ph"
-msgstr ""
-
-#: files/allarmi.py:46 files/allarmi.py:156 files/inserisci.py:45
-#: files/test.py:54 files/test.py:173
-msgid "Kh"
-msgstr ""
-
-#: files/allarmi.py:47 files/allarmi.py:157 files/inserisci.py:46
-#: files/test.py:54 files/test.py:174
-msgid "Gh"
-msgstr ""
-
-#: files/allarmi.py:48 files/allarmi.py:158 files/inserisci.py:47
-#: files/test.py:54 files/test.py:175
-msgid "No2"
-msgstr ""
-
-#: files/allarmi.py:49 files/allarmi.py:159 files/inserisci.py:48
-msgid "No3"
-msgstr ""
-
-#: files/allarmi.py:50 files/allarmi.py:160 files/inserisci.py:49
-#: files/test.py:55
-msgid "Conducibilita'"
-msgstr ""
-
-#: files/allarmi.py:51 files/allarmi.py:161 files/inserisci.py:50
-#: files/test.py:55
-msgid "Ammoniaca"
-msgstr ""
-
-#: files/allarmi.py:52 files/allarmi.py:162 files/inserisci.py:51
-#: files/test.py:55 files/test.py:176
-msgid "Ferro"
-msgstr ""
-
-#: files/allarmi.py:53 files/allarmi.py:163 files/inserisci.py:52
-#: files/test.py:55 files/test.py:177
-msgid "Rame"
-msgstr ""
-
-#: files/allarmi.py:54 files/allarmi.py:164 files/inserisci.py:53
-#: files/test.py:55
-msgid "Fosfati"
-msgstr ""
-
-#: files/allarmi.py:109
-msgid "Ph basso"
-msgstr ""
-
-#: files/allarmi.py:110
-msgid "Ph alto"
-msgstr ""
-
-#: files/allarmi.py:111
-msgid "Ph ok"
-msgstr ""
-
-#: files/allarmi.py:113
-msgid "Kh basso"
-msgstr ""
-
-#: files/allarmi.py:114
-msgid "Kh alto"
-msgstr ""
-
-#: files/allarmi.py:115
-msgid "Kh ok"
-msgstr ""
-
-#: files/allarmi.py:117
-msgid "Gh basso"
-msgstr ""
-
-#: files/allarmi.py:118
-msgid "Gh alto"
-msgstr ""
-
-#: files/allarmi.py:119
-msgid "Gh ok"
-msgstr ""
-
-#: files/allarmi.py:121
-msgid "No2 bassi"
-msgstr ""
-
-#: files/allarmi.py:122
-msgid "No2 alti"
-msgstr ""
-
-#: files/allarmi.py:123
-msgid "No2 ok"
-msgstr ""
-
-#: files/allarmi.py:125
-msgid "No3 bassi"
-msgstr ""
-
-#: files/allarmi.py:126
-msgid "No3 alti"
-msgstr ""
-
-#: files/allarmi.py:127
-msgid "No3 ok"
-msgstr ""
-
-#: files/allarmi.py:129
-msgid "Conducibilita' bassa"
-msgstr ""
-
-#: files/allarmi.py:130
-msgid "Conducibilita' alta"
-msgstr ""
-
-#: files/allarmi.py:131
-msgid "Conducibilita' ok"
-msgstr ""
-
-#: files/allarmi.py:133
-msgid "Ammoniaca bassa"
-msgstr ""
-
-#: files/allarmi.py:134
-msgid "Ammoniaca alta"
-msgstr ""
-
-#: files/allarmi.py:135
-msgid "Ammoniaca ok"
-msgstr ""
-
-#: files/allarmi.py:137
-msgid "Ferro basso"
-msgstr ""
-
-#: files/allarmi.py:138
-msgid "Ferro alto"
-msgstr ""
-
-#: files/allarmi.py:139
-msgid "Ferro ok"
-msgstr ""
-
-#: files/allarmi.py:141
-msgid "Rame basso"
-msgstr ""
-
-#: files/allarmi.py:142
-msgid "Rame alto"
-msgstr ""
-
-#: files/allarmi.py:143
-msgid "Rame ok"
-msgstr ""
-
-#: files/allarmi.py:145
-msgid "Fosfati bassi"
-msgstr ""
-
-#: files/allarmi.py:146
-msgid "Fosfati alti"
-msgstr ""
-
-#: files/allarmi.py:147
-msgid "Fosfati ok"
-msgstr ""
-
 #: files/calcoli.py:29
 msgid "Calcoli"
 msgstr ""
 
-#: files/calcoli.py:38 files/test.py:186
+#: files/calcoli.py:38
 msgid "Valori"
 msgstr ""
 
@@ -365,7 +188,7 @@ msgstr ""
 msgid "Risultati"
 msgstr ""
 
-#: files/calcoli.py:50
+#: files/calcoli.py:50 files/test.py:111
 msgid "Vasca:"
 msgstr ""
 
@@ -381,11 +204,11 @@ msgstr ""
 msgid "Larghezza in cm:"
 msgstr ""
 
-#: files/calcoli.py:57 files/vasca.py:35 files/vasca.py:59
+#: files/calcoli.py:57 files/vasca.py:36 files/vasca.py:64
 msgid "Dolce"
 msgstr ""
 
-#: files/calcoli.py:58 files/vasca.py:35 files/vasca.py:67
+#: files/calcoli.py:58 files/vasca.py:36 files/vasca.py:72
 msgid "Marino"
 msgstr ""
 
@@ -417,96 +240,30 @@ msgstr ""
 msgid "Watt per piante:"
 msgstr ""
 
-#: files/data_pesci.py:33
-msgid "Database Pesci"
-msgstr ""
-
-#: files/data_pesci.py:42 files/fertilizzante.py:34 files/filtro.py:32
-#: files/invertebrati.py:30 files/pesci.py:30 files/piante.py:30
-#: files/plugin.py:44 files/spese.py:30 files/test.py:54 files/vasca.py:38
-msgid "Id"
-msgstr ""
-
-#: files/data_pesci.py:42 files/fertilizzante.py:34 files/invertebrati.py:30
-#: files/pesci.py:30 files/piante.py:30 files/plugin.py:44 files/spese.py:30
-#: files/vasca.py:38
-msgid "Nome"
-msgstr ""
-
-#: files/data_pesci.py:42
-msgid "Famiglia"
-msgstr ""
-
-#: files/data_pesci.py:42
-msgid "Note"
-msgstr ""
-
-#: files/data_pesci.py:54 files/invertebrati.py:30 files/pesci.py:30
-#: files/piante.py:30 files/spese.py:30 files/vasca.py:41
-msgid "Immagine"
-msgstr ""
-
-#: files/data_pesci.py:80
-msgid "Editing:"
-msgstr ""
-
-#: files/data_pesci.py:86
-msgid "Cerca"
-msgstr ""
-
-#: files/data_pesci.py:104
-msgid "Nome:"
-msgstr ""
-
-#: files/data_pesci.py:105
-msgid "Famiglia:"
-msgstr ""
-
-#: files/data_pesci.py:181 files/fertilizzante.py:52 files/filtro.py:54
-#: files/invertebrati.py:57 files/pesci.py:58 files/piante.py:58
-#: files/spese.py:62 files/vasca.py:150
-#, python-format
-msgid "Row aggiornata (ID: %d)"
-msgstr ""
-
-#: files/data_pesci.py:219 files/fertilizzante.py:65 files/filtro.py:66
-#: files/invertebrati.py:75 files/pesci.py:76 files/piante.py:76
-#: files/spese.py:82 files/test.py:131 files/vasca.py:175
-#, python-format
-msgid "Row aggiunta (ID: %d)"
-msgstr ""
-
-#: files/data_pesci.py:250
-#, python-format
-msgid "Row eliminata (ID: %d)"
-msgstr ""
-
-#: files/data_pesci.py:269
-msgid "Aggiungi foto"
-msgstr ""
-
-#: files/data_pesci.py:282 files/utils.py:205
-msgid "Immagini"
-msgstr ""
-
-#: files/data_pesci.py:308 files/utils.py:308 files/utils.py:321
-#, python-format
-msgid "Errore mentre copiavo (%s)"
-msgstr ""
-
-#: files/engine.py:31
+#: files/engine.py:55
 #, python-format
 msgid "Carico <%s>"
 msgstr ""
 
-#: files/engine.py:33
+#: files/engine.py:58
 msgid "Errori... Ignoro"
 msgstr ""
 
 #: files/fertilizzante.py:34 files/filtro.py:32 files/invertebrati.py:30
-#: files/pesci.py:30 files/piante.py:30 files/spese.py:30 files/test.py:54
-#: files/vasca.py:38
+#: files/pesci.py:30 files/piante.py:30 files/plugin.py:44 files/spese.py:30
+#: files/test.py:301 files/vasca.py:39
+msgid "Id"
+msgstr ""
+
+#: files/fertilizzante.py:34 files/filtro.py:32 files/invertebrati.py:30
+#: files/pesci.py:30 files/piante.py:30 files/spese.py:30 files/test.py:301
+#: files/vasca.py:39
 msgid "Data"
+msgstr ""
+
+#: files/fertilizzante.py:34 files/invertebrati.py:30 files/pesci.py:30
+#: files/piante.py:30 files/plugin.py:44 files/spese.py:30 files/vasca.py:39
+msgid "Nome"
 msgstr ""
 
 #: files/fertilizzante.py:34
@@ -517,9 +274,31 @@ msgstr ""
 msgid "Prossima volta"
 msgstr ""
 
-#: files/fertilizzante.py:69 files/filtro.py:70 files/invertebrati.py:79
-#: files/pesci.py:80 files/piante.py:80 files/spese.py:86 files/test.py:135
-#: files/vasca.py:179
+#: files/fertilizzante.py:34 files/filtro.py:32 files/invertebrati.py:30
+#: files/pesci.py:30 files/piante.py:30 files/spese.py:30 files/vasca.py:42
+msgid "Note"
+msgstr ""
+
+#: files/fertilizzante.py:41 files/spese.py:40
+msgid "Fertilizzante"
+msgstr ""
+
+#: files/fertilizzante.py:57 files/filtro.py:55 files/invertebrati.py:58
+#: files/pesci.py:59 files/piante.py:59 files/spese.py:63 files/vasca.py:156
+#, python-format
+msgid "Row aggiornata (ID: %d)"
+msgstr ""
+
+#: files/fertilizzante.py:71 files/filtro.py:68 files/invertebrati.py:77
+#: files/pesci.py:78 files/piante.py:78 files/spese.py:84 files/test.py:446
+#: files/vasca.py:182
+#, python-format
+msgid "Row aggiunta (ID: %d)"
+msgstr ""
+
+#: files/fertilizzante.py:75 files/filtro.py:72 files/invertebrati.py:81
+#: files/pesci.py:82 files/piante.py:82 files/spese.py:88 files/test.py:452
+#: files/vasca.py:186
 #, python-format
 msgid "Row rimossa (ID: %d)"
 msgstr ""
@@ -528,26 +307,70 @@ msgstr ""
 msgid "Filtro"
 msgstr ""
 
-#: files/filtro.py:79 files/invertebrati.py:88 files/pesci.py:89
-#: files/piante.py:89 files/spese.py:95 files/vasca.py:188
+#: files/filtro.py:81 files/invertebrati.py:90 files/pesci.py:91
+#: files/piante.py:91 files/spese.py:97 files/vasca.py:195
 msgid "Riepilogo"
 msgstr ""
 
-#: files/impostazioni.py:103
+#: files/importa.py:34
+msgid "PyAcqua Databases"
+msgstr ""
+
+#: files/importa.py:37
+msgid "Seleziona Database"
+msgstr ""
+
+#: files/importa.py:47
+msgid "Tutti i file"
+msgstr ""
+
+#: files/importa.py:50
+msgid "Salva Database come..."
+msgstr ""
+
+#: files/importa.py:59
+msgid "Importa/Esporta Database"
+msgstr ""
+
+#: files/importa.py:71 files/importa.py:87
+msgid "Versione 0.8"
+msgstr ""
+
+#: files/importa.py:72 files/importa.py:88
+msgid "Versione attuale"
+msgstr ""
+
+#: files/importa.py:74
+msgid "Importa:"
+msgstr ""
+
+#: files/importa.py:76
+msgid "Esporta:"
+msgstr ""
+
+#: files/importa.py:127
+msgid "Seleziona un database da convertire"
+msgstr ""
+
+#: files/importa.py:129
+msgid "Seleziona il file su cui salvare"
+msgstr ""
+
+#: files/importa.py:132
+msgid "Il file esiste. Sovrascrivere?"
+msgstr ""
+
+#: files/impostazioni.py:122
 #, python-format
 msgid "Errore nel salvataggio del file di configurazione (%s)"
 msgstr ""
 
-#: files/impostazioni.py:145
+#: files/impostazioni.py:173
 msgid "Errore nel caricamento dei valori.. uso quelli di default"
 msgstr ""
 
-#: files/impostazioni.py:147
+#: files/impostazioni.py:175
 msgid "File config.cfg non trovato.. salvo la configurazione di default"
-msgstr ""
-
-#: files/inserisci.py:33
-msgid "Inserisci Test"
 msgstr ""
 
 #: files/inserisci.py:42
@@ -558,8 +381,60 @@ msgstr ""
 msgid "Massimo"
 msgstr ""
 
+#: files/inserisci.py:44 files/test.py:93 files/test.py:301
+msgid "Ph"
+msgstr ""
+
+#: files/inserisci.py:45 files/test.py:93 files/test.py:301
+msgid "Kh"
+msgstr ""
+
+#: files/inserisci.py:46 files/test.py:93 files/test.py:301
+msgid "Gh"
+msgstr ""
+
+#: files/inserisci.py:47 files/test.py:93 files/test.py:301
+msgid "No2"
+msgstr ""
+
+#: files/inserisci.py:48 files/test.py:93 files/test.py:301
+msgid "No3"
+msgstr ""
+
+#: files/inserisci.py:49 files/test.py:94 files/test.py:302
+msgid "Conducibilita'"
+msgstr ""
+
+#: files/inserisci.py:50 files/test.py:94 files/test.py:197 files/test.py:302
+msgid "Ammoniaca"
+msgstr ""
+
+#: files/inserisci.py:51 files/test.py:94 files/test.py:197 files/test.py:302
+msgid "Ferro"
+msgstr ""
+
+#: files/inserisci.py:52 files/test.py:94 files/test.py:197 files/test.py:302
+msgid "Rame"
+msgstr ""
+
+#: files/inserisci.py:53 files/test.py:94 files/test.py:197 files/test.py:302
+msgid "Fosfati"
+msgstr ""
+
+#: files/inserisci.py:54 files/test.py:95 files/test.py:198 files/test.py:303
+msgid "Calcio"
+msgstr ""
+
+#: files/inserisci.py:55 files/test.py:95 files/test.py:198 files/test.py:303
+msgid "Magnesio"
+msgstr ""
+
+#: files/inserisci.py:56 files/test.py:95 files/test.py:303
+msgid "Densita'"
+msgstr ""
+
 #: files/invertebrati.py:30 files/pesci.py:30 files/piante.py:30
-#: files/spese.py:30 files/spese.py:40 files/test.py:54 files/vasca.py:38
+#: files/spese.py:30 files/spese.py:40 files/test.py:301 files/vasca.py:39
 msgid "Vasca"
 msgstr ""
 
@@ -568,8 +443,29 @@ msgstr ""
 msgid "Quantita"
 msgstr ""
 
+#: files/invertebrati.py:30 files/pesci.py:30 files/piante.py:30
+#: files/spese.py:30 files/vasca.py:42
+msgid "Immagine"
+msgstr ""
+
 #: files/invertebrati.py:40
 msgid "Invertebrati"
+msgstr ""
+
+#: files/lang.py:30
+msgid "PyAcqua - Selezione Lingua"
+msgstr ""
+
+#: files/lang.py:41
+msgid "Italiano"
+msgstr ""
+
+#: files/lang.py:42
+msgid "Inglese"
+msgstr ""
+
+#: files/lang.py:58
+msgid "Seleziona Lingua:"
 msgstr ""
 
 #: files/pesci.py:41
@@ -637,10 +533,6 @@ msgid "Invertebrato"
 msgstr ""
 
 #: files/spese.py:40
-msgid "Fertilizzante"
-msgstr ""
-
-#: files/spese.py:40
 msgid "Varie"
 msgstr ""
 
@@ -648,68 +540,77 @@ msgstr ""
 msgid "Spese"
 msgstr ""
 
-#: files/test.py:54 files/test.py:174
-msgid "No"
+#: files/test.py:76
+msgid "Selezione Vasche"
 msgstr ""
 
-#: files/test.py:56 files/test.py:178
-msgid "Calcio"
+#: files/test.py:85
+msgid "Plot"
 msgstr ""
 
-#: files/test.py:56
-msgid "Magnesio"
-msgstr ""
-
-#: files/test.py:56
-msgid "Densita'"
-msgstr ""
-
-#: files/test.py:75
-msgid "Grafico"
-msgstr ""
-
-#: files/test.py:106
-#, python-format
-msgid "Row Aggiornata (ID: %d"
-msgstr ""
-
-#: files/test.py:144
-msgid ""
-"PyChart non installato.\n"
-"Scaricalo da http://home.gna.org/pychart/"
-msgstr ""
-
-#: files/test.py:175
-msgid "Cond."
-msgstr ""
-
-#: files/test.py:176
-msgid "Ammon."
+#: files/test.py:112
+msgid "Valori:"
 msgstr ""
 
 #: files/test.py:177
-msgid "Fosf."
+msgid "PyAcqua - Grafico"
 msgstr ""
 
-#: files/test.py:178
-msgid "Magnes."
+#: files/test.py:196
+msgid "pH"
 msgstr ""
 
-#: files/test.py:179
-msgid "DensitÃ "
+#: files/test.py:196
+msgid "KH"
 msgstr ""
 
-#: files/test.py:187
-msgid "Legenda"
+#: files/test.py:196
+msgid "GH"
 msgstr ""
 
-#: files/test.py:193
+#: files/test.py:196
+msgid "NO2"
+msgstr ""
+
+#: files/test.py:196
+msgid "NO3"
+msgstr ""
+
+#: files/test.py:197
+msgid "Conducibilita"
+msgstr ""
+
+#: files/test.py:198
+msgid "Densita"
+msgstr ""
+
+#: files/test.py:226
+msgid "%d/%m"
+msgstr ""
+
+#: files/test.py:255
+msgid "Salva Grafico..."
+msgstr ""
+
+#: files/test.py:353
+msgid "Modifica"
+msgstr ""
+
+#: files/test.py:356
+msgid "Grafico"
+msgstr ""
+
+#: files/test.py:358
+msgid "Impostazioni"
+msgstr ""
+
+#: files/test.py:370
+msgid "<i>E' necessario matplotlib per i grafici.</i>"
+msgstr ""
+
+#: files/test.py:419
 #, python-format
-msgid ""
-"<span size=\"large\"><b>PyAcqua Graph</b></span>\n"
-"\n"
-"<b>Tipo Vasca:</b> %s\n"
-"<b>Data:</b> %s"
+msgid "Row Aggiornata (ID: %d"
 msgstr ""
 
 #: files/tips.py:38
@@ -720,7 +621,7 @@ msgstr ""
 msgid "Non mostrare al prossimo avvio"
 msgstr ""
 
-#: files/tips.py:97
+#: files/tips.py:101
 msgid ""
 "\n"
 "\n"
@@ -731,58 +632,71 @@ msgstr ""
 msgid "Seleziona una data"
 msgstr ""
 
-#: files/vasca.py:35 files/vasca.py:63
+#: files/utils.py:202
+msgid "Mostra/Nascondi"
+msgstr ""
+
+#: files/utils.py:274
+msgid "Immagini"
+msgstr ""
+
+#: files/utils.py:389 files/utils.py:402
+#, python-format
+msgid "Errore mentre copiavo (%s)"
+msgstr ""
+
+#: files/vasca.py:36 files/vasca.py:68
 msgid "Dolce Tropicale"
 msgstr ""
 
-#: files/vasca.py:35 files/vasca.py:71
+#: files/vasca.py:36 files/vasca.py:76
 msgid "Marino Mediterraneo"
 msgstr ""
 
-#: files/vasca.py:35 files/vasca.py:75
+#: files/vasca.py:36 files/vasca.py:80
 msgid "Paludario"
 msgstr ""
 
-#: files/vasca.py:35 files/vasca.py:79
+#: files/vasca.py:36 files/vasca.py:84
 msgid "Salmastro"
 msgstr ""
 
-#: files/vasca.py:38
+#: files/vasca.py:39
 msgid "Litri"
 msgstr ""
 
-#: files/vasca.py:39
+#: files/vasca.py:40
 msgid "Tipo Acquario"
 msgstr ""
 
-#: files/vasca.py:39
+#: files/vasca.py:40
 msgid "Tipo Filtro"
 msgstr ""
 
-#: files/vasca.py:40
+#: files/vasca.py:41
 msgid "Impianto Co2"
 msgstr ""
 
-#: files/vasca.py:40
+#: files/vasca.py:41
 msgid "Illuminazione"
 msgstr ""
 
-#: files/vasca.py:41
+#: files/vasca.py:42
 msgid "Reattore di calcio"
 msgstr ""
 
-#: files/vasca.py:41
+#: files/vasca.py:42
 msgid "Schiumatoio"
 msgstr ""
 
-#: files/vasca.py:41
+#: files/vasca.py:42
 msgid "Riscaldamento Refrigerazione"
 msgstr ""
 
-#: files/vasca.py:53
+#: files/vasca.py:58
 msgid "Vasche"
 msgstr ""
 
-#: files/vasca.py:107 files/vasca.py:108 files/vasca.py:112 files/vasca.py:113
+#: files/vasca.py:112 files/vasca.py:113 files/vasca.py:117 files/vasca.py:118
 msgid "Assente"
 msgstr ""
