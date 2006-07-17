@@ -56,6 +56,8 @@ class fox(gtk.Window):
 		
 			else:
 				widget.set_label("Offline")
+	def on_salva(self, widget):
+		print "salva"
 	
 	def prova(self, widget, lst):
 		
@@ -87,12 +89,6 @@ class fox(gtk.Window):
 				i.set_sensitive(True)	
 		
 		
-		#if pp == True:
-		#	self.usc_1.set_sensitive(False)
-		#	self.usc_11.set_sensitive(False)
-		#else:
-		#	self.usc_1.set_sensitive(True)
-		#	self.usc_11.set_sensitive(True)
 		
 		
 			
@@ -123,12 +119,11 @@ class fox(gtk.Window):
 		tbl_con.set_border_width(5)
 		self.but_on = gtk.ToggleButton ('Offline')
 		self.but_on.connect("toggled", self.on_toggled)
-		
-		
 		tbl_con.attach(self.but_on, 0, 1, 0, 1, xoptions=0)
 		
-		
-		
+		self.but_salva = gtk.Button('Salva')
+		tbl_con.attach(self.but_salva, 1, 2, 0, 1, xoptions=0)
+		self.but_salva.connect("clicked", self.on_salva)		
 		#f1
 		fbox = gtk.HBox ()
 		f1_checks = list ()
