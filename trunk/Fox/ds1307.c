@@ -253,95 +253,38 @@ int i2c_outbyte(unsigned char x){
 
 }
 
+int main(void)
+{
+	int sec;
+	int min;
+	int hour;
 
-
-
-// Example program for PCF8574
-
-
-int scrivi (unsigned char byte) {	
-	if (i2c_outbyte(byte)==0) {
-		printf("NACK received\n");
-	}
-	else {
-		//printf("Indirizzamento in scrittura accettato\n");
-	}
-}
-
-int main(void) {
-	int value;
-	int ch;
-	int val;
-	
-	if (i2c_open()<0) {
-		printf("i2c open error\n");
-    		return 1;
-	}
-	i2c_start();
-	
-	printf("Inserisci il numero\n");
-	printf("uscita P0 = 1\n");
-	printf("uscita P1 = 2\n");
-	printf("uscita P2 = 4\n");
-	printf("uscita P3 = 8\n");
-	printf("uscita P4 = 16\n");
-	printf("uscita P5 = 32\n");
-	printf("uscita P6 = 64\n");
-	printf("uscita P7 = 128\n");
-	printf("uscite tutte a 0 = 0\n");
-	printf("uscite tutte a 1 = 255\n");
-	
-	
-	scanf("%d", &val);
-	
-	scrivi(0x40);
-	
-	scrivi(0);	
-	
-	scrivi(val);
-		
-	
-	i2c_stop();
-				
-	i2c_start();
-	scrivi(0x41);
-
-		//i2c_inbyte(); 	    // Last conversion result
-	value=i2c_inbyte(); // Current conversion result
-	i2c_stop();
-	
-	printf("Ricevuto: %d\n",value);
-	printf("\n");
-	//out=out*2;
 	sleep(1);
+	i2c_start();
+	i2c_outbyte(0); 
+	sec=i2c_inbyte();
+	i2c_outbyte(0);
+	i2c_outbyte(sec);
+	i2c_outbyte(0x7F);//i2c_outbyte(0x7F); // enable oscillator(bit 7 =0)
+	i2c_stop();
 	
-	
-		//while (1) {
-	for (ch=0;ch<4;ch++) {
+	while(1)
+	{
 		i2c_start();
-		scrivi(0x92);
-			
-		if (i2c_outbyte(ch)==0) {
-			printf("NACK received\n");
-		}
+		i2c_outbyte(0);
+		sec = i2c_inbyte();
 		i2c_stop();
-					
 		i2c_start();
-		scrivi(0x93);
-		
-	
-		i2c_inbyte(); 					// Last conversion result
-		value=i2c_inbyte(); // Current conversion result
+		i2c_outbyte(1);
+		min = i2c_inbyte();
 		i2c_stop();
-		
-		printf("CH%d = %.2fv\n",ch,value*0.012941);
-		//}	
-		printf("\n");
-		sleep(1);	
+		i2c_start();
+		i2c_outbyte(2);
+		hour = i2c_inbyte();
+		i2c_stop();
+		putchar(0x0c);
+		printf("Time : %02X:%02X:%02X\r\n",hour,min,sec);
+
+		sleep(1);
 	}
-	
-	
-	
-i2c_close();
-return 0;
 }
