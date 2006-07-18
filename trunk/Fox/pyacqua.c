@@ -338,7 +338,35 @@ int main(void) {
 		//}	
 		printf("\n");
 		sleep(1);
+	
+	//ds 1307
+	int sec;
+	int min;
+	i2c_start();
+	scrivi(0)
+	sec=i2c_inbyte();
+	//scrivi(0);
+	i2c_outbyte(sec);
+	//i2c_outbyte(0x7F);
+	
+	i2c_stop();
+	//int va;
+	i2c_start();
+	scrivi(0);
+	sec=i2c_inbyte();
+	//va = i2c_inbyte();
+	i2c_stop();
+	i2c_start();
+	scrivi(1);
+	min = i2c_inbyte();
+	i2c_stop();
+	printf("Time : %02X:%02X\r\n", min, sec);
+	
+		
+		
 	}
+	
+	
 	
 i2c_close();
 return 0;
