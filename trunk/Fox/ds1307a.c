@@ -255,55 +255,26 @@ int i2c_outbyte(unsigned char x){
 
 int main(void)
 {
+	if (i2c_open()<0) {
+		printf("i2c open error\n");
+    		return 1;
+	}
 	int sec;
-	int min;
-	int hour;
-	int ii;
+	int val;
+	
 	//initial.
 	i2c_start();
 	i2c_outbyte(208);
-	i2c_inbyte();
-	ii = i2c_inbyte();
-	printf ("%u", ii);
+	printf ("inserisci");
+	scanf("%d", &val);
+	i2c_outbyte(val);
 	i2c_stop();
-	
-	
-	
-	sleep(1);
-	
 	i2c_start();
-	i2c_outbyte(0);
-	i2c_inbyte();	
-	sec=i2c_inbyte();
+	i2c_outbyte(209);
+	sec = i2c_inbyte();
+	i2c_stop();
 	printf ("%u", sec);
-	i2c_outbyte(0);//i2c_outbyte(0x7F); // enable oscillator(bit 7 =0)
-	i2c_outbyte(sec);//i2c_outbyte(0x7F); // enable oscillator(bit 7 =0)
-	i2c_outbyte(0x7F);//i2c_outbyte(0x7F); // enable oscillator(bit 7 =0)
-	i2c_stop();
-	i2c_start();
-	i2c_outbyte(0xd1);
-	i2c_stop();
-	while(1)
-	{
-		
-		i2c_start();
-		i2c_outbyte(0xd1);
-		i2c_stop();
-		i2c_start();
-		i2c_outbyte(0);
-		sec = i2c_inbyte();
-		i2c_stop();
-		i2c_start();
-		i2c_outbyte(1);
-		min = i2c_inbyte();
-		i2c_stop();
-		i2c_start();
-		i2c_outbyte(2);
-		hour = i2c_inbyte();
-		i2c_stop();
-		putchar(0x0c);
-		printf("Time : %02X:%02X:%02X\r\n",hour,min,sec);
-
-		sleep(1);
-	}
+	
+	
+	
 }
