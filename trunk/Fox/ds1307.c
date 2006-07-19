@@ -285,9 +285,9 @@ int main(void)
         date=read_ds1307(4);  // read date
         month=read_ds1307(5); // read month
         year=read_ds1307(6);  // read year
-        printf("Time : %02X:%02X:%02X\r\n",hour,min,sec);
-        printf("Day  : %02X\r\n",day);
-        printf("Date : %02X/%02X/20%02X\r\n",date,month,year); 
+        printf("Time : %d:%d:%d\r\n",hour,min,sec);
+        printf("Day  : %d\r\n",day);
+        printf("Date : %d/%d/20%d\r\n",date,month,year); 
         usleep(500);
     }
 }
