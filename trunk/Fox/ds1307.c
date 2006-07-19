@@ -244,6 +244,7 @@ void write_ds1307(unsigned char address, unsigned char data)
     {
         i2c_start();
         status=i2c_outbyte(208);
+		i2c_stop();
     }
 }
 //==========================
@@ -275,7 +276,8 @@ int main(void)
 
     usleep(50);
     sec=read_ds1307(0);
-    write_ds1307(0,sec & 0x7F); // enable oscillator(bit 7 =0)
+	printf ("%u", sec);
+    write_ds1307(0,sec & 0x7F);	// enable oscillator(bit 7 =0)
 
     while(1)
     {
@@ -286,7 +288,8 @@ int main(void)
         date=read_ds1307(4);  // read date
         month=read_ds1307(5); // read month
         year=read_ds1307(6);  // read year
-        printf("Time : %d:%d:%d\r\n",hour,min,sec);
+		putchar(0x0c);
+        printf("Time : %u:%u:%u\r\n",hour,min,sec);
         printf("Day  : %d\r\n",day);
         printf("Date : %d/%d/20%d\r\n",date,month,year); 
         usleep(500);
