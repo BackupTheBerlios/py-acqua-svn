@@ -255,6 +255,7 @@ unsigned char read_ds1307(unsigned char address)
     i2c_start();
     i2c_outbyte(208);
     i2c_outbyte(address);
+    i2c_stop();
     i2c_start();
     i2c_outbyte(209);
     data=i2c_inbyte();
