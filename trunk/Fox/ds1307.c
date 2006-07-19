@@ -55,22 +55,6 @@
 
 int i2c_fd;
 
-
-// Software delay... :( cercare di modificare sto coso!!!
-
-/*void i2c_delay(int us) {
-  int a;
-  int b;
-  int delayvar=1111;
-
-  for (b=0;b<33;b++) {
-	  for (a=0;a<us;a++) {
-	    delayvar*=3;
-	    delayvar/=3;
-	  }
-	} 
-}*/
-
 // Get the SDA line state - OK
 int i2c_getbit(void) {
 	unsigned int value;
@@ -79,40 +63,31 @@ int i2c_getbit(void) {
 	else return 1;
 }	
 
-
 // Set the SDA line state - OK
-
 void i2c_data(int state) {
 	if (state==1) ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_DATA_LINE);
 	else ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_DATA_LINE);
 }
 
-
 // Set the SCL line state - OK
-
 void i2c_clk(int state) {
 	if (state==1) ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
 	else ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE);
 }
 
-
 // Set the SDA line as output - OK
-
 void i2c_dir_out(void) {
  	int iomask;
 	iomask = I2C_DATA_LINE;
  	ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), &iomask);
 }
 
-
 // Set the SDA line as input - OK
-
 void i2c_dir_in(void) {
  	int iomask;
 	iomask = I2C_DATA_LINE;
  	ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), &iomask);
 }
-
 
 // Read a byte from I2C bus and send the ack sequence - From kernel and tanzilli code (da rivedere)
 unsigned char i2c_inbyte(void) {
@@ -252,39 +227,68 @@ int i2c_outbyte(unsigned char x){
     else return 0;
 
 }
+//==========================
+// write data one byte from DS1307
+//==========================
+void write_ds1307(unsigned char address, unsigned char data)
+{
+    short int status;
+    i2c_start();
+    i2c_outbyte(0xd0);
+    i2c_outbyte(address);
+    i2c_outbyte(data);
+    i2c_stop();
+    i2c_start();
+    status=i2c_outbyte(0xd0);
+    while(status==1)
+    {
+        i2c_start();
+        status=i2c_outbyte(0xd0);
+    }
+    i2c_stop();
+}
+//==========================
+// read data one byte from DS1307
+//==========================
+unsigned char read_ds1307(unsigned char address)
+{
+    unsigned char data;
+    i2c_start();
+    i2c_outbyte(0xd0);
+    i2c_outbyte(address);
+    i2c_start();
+    i2c_outbyte(0xd1);
+    data=i2c_inbyte();
+    i2c_stop();
+    return(data);
+}
+
 
 int main(void)
 {
-	int sec;
-	int min;
-	int hour;
+    int sec,min,hour,day,date,month,year;
 
-	sleep(1);
-	i2c_start();
-	i2c_outbyte(0); 
-	sec=i2c_inbyte();
-	i2c_outbyte(0);
-	i2c_outbyte(sec);
-	i2c_outbyte(0x7F);//i2c_outbyte(0x7F); // enable oscillator(bit 7 =0)
-	i2c_stop();
-	
-	while(1)
-	{
-		i2c_start();
-		i2c_outbyte(0);
-		sec = i2c_inbyte();
-		i2c_stop();
-		i2c_start();
-		i2c_outbyte(1);
-		min = i2c_inbyte();
-		i2c_stop();
-		i2c_start();
-		i2c_outbyte(2);
-		hour = i2c_inbyte();
-		i2c_stop();
-		putchar(0x0c);
-		printf("Time : %02X:%02X:%02X\r\n",hour,min,sec);
+    if (i2c_open()<0) {
+        printf("i2c open error\n");
+        return 1;
+    }
 
-		sleep(1);
-	}
+    usleep(50);
+    sec=read_ds1307(0);
+    write_ds1307(0,sec & 0x7F); // enable oscillator(bit 7 =0)
+
+    while(1)
+    {
+        sec=read_ds1307(0);   // read second
+        min=read_ds1307(1);   // read minute
+        hour=read_ds1307(2);  // read hour
+        day=read_ds1307(3);   // read day
+        date=read_ds1307(4);  // read date
+        month=read_ds1307(5); // read month
+        year=read_ds1307(6);  // read year
+        printf("Time : %02X:%02X:%02X\r\n",hour,min,sec);
+        printf("Day  : %02X\r\n",day);
+        printf("Date : %02X/%02X/20%02X\r\n",date,month,year); 
+        usleep(500);
+    }
 }
