@@ -253,7 +253,7 @@ class DBWindow (gtk.Window):
 		pass
 	
 	def on_add (self, widget):
-		mod = self.view.get_model ()
+		mod = self.store
 		it = mod.get_iter_first ()
 		id = 0
 

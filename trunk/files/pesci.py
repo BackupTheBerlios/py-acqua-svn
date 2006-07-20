@@ -42,6 +42,17 @@ class Pesci (dbwindow.DBWindow):
 		self.set_size_request (600, 400)
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 
+		self.menu = gtk.Menu ()
+
+		for y in utils.get ('select * from vasca'):
+			w = gtk.CheckMenuItem (y[3])
+			w.set_property ("active", True)
+			self.menu.append (w)
+
+		self.filter = lst.filter_new ()
+		self.filter.set_visible_func (self.apply_filter)
+		self.view.set_model (self.filter)
+
 	def after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()
 		
@@ -59,7 +70,7 @@ class Pesci (dbwindow.DBWindow):
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 
 	def add_entry (self, it):
-		mod, id = self.view.get_selection ().get_selected ()
+		mod = self.store
 
 		id = mod.get_value (it, 0)
 
@@ -89,3 +100,39 @@ class Pesci (dbwindow.DBWindow):
 		it = mod.get_iter_from_string(str(path[0]))
 
 		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
+
+	def pack_before_button_box (self, hb):
+		# Creiamo un filtro
+		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
+		btn.set_relief (gtk.RELIEF_NONE)
+
+		btn.connect ("clicked", self.apply)
+		btn.connect ("button_press_event", self.on_popup)
+		
+		alg = gtk.Alignment (0, 0.5)
+		alg.add (btn)
+
+		hb.pack_start (alg, False, True, 0)
+	
+	def apply (self, widget):
+		self.filter.refilter ()
+
+	def apply_filter (self, mod, iter):
+		filters = list ()
+
+		for i in self.menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+		print filters
+		val = mod.get_value (iter, 2)
+		print val
+		
+		if val in filters:
+			return True
+		else:
+			return False
+
+	def on_popup (self, widget, event):
+		if event.button == 3:
+			self.menu.popup (None, None, None, event.button, event.time)
+			self.menu.show_all ()
