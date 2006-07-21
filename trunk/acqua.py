@@ -61,6 +61,7 @@ except:
 
 try:
 	import gtk
+	import gobject
 except:
 	print _("You need to install pyGTK or GTKv2")
 
@@ -102,8 +103,13 @@ if not os.path.exists("Data/db"):
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
 	connessione.commit()
-	
+
 if __name__ == "__main__":
+	gobject.threads_init ()
+	
 	app.App = app.Gui()
 	app.App.p_engine = files.engine.PluginEngine ()
+
+	gtk.gdk.threads_enter ()
 	app.App.main()
+	gtk.gdk.threads_leave ()

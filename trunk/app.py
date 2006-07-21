@@ -85,6 +85,7 @@ class Gui(gtk.Window):
 		('Aiuto', None, _('_Aiuto')),
 		
 			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
+			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), 'open_update'),
 			
 			('Help', None, _('_Aiuto'), None, _('Aiuto...'), 'aiuto_apri'),
 		]
@@ -118,6 +119,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
+			<menuitem action='Update'/>
 		</menu>
 		</menubar></ui>"""
 		
@@ -264,6 +266,9 @@ class Gui(gtk.Window):
 		
 	def aiuto_apri(self, widget, data=None):
 		webbrowser.open('http://pyacqua.netsons.org/wiki/index.php/Wikipedia')
+	def open_update(self, widget, data=None):
+		import files.webupdate
+		files.webupdate.WebUpdate()
 		
 	def main(self):
 		gtk.main()
