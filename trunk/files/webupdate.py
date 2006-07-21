@@ -2,6 +2,7 @@ import gtk
 import gobject
 import httplib
 import threading
+import generate
 
 class Fetcher(threading.Thread):
 	def __init__ (self, callback, url):
@@ -58,6 +59,7 @@ class WebUpdate (gtk.Window):
 		
 		self.connect ('delete-event', self.exit)
 
+		self.actual_data = generate.Generator.ParseDir (".")
 		self.thread (self.populate_tree, "/update/list.txt")
 	
 	def thread (self, callback, url):
@@ -70,9 +72,12 @@ class WebUpdate (gtk.Window):
 
 		data = data.splitlines ()
 
-		for i in data:
-			temp = i.split ('|')
-			self.store.append([temp[0], int (temp[1]), temp[2], 0])
+		for i in zip (data, self.actual_data):
+			if i[0] == i[1]:
+				print "Same", i[0]
+			else:
+				temp = i[0].split ('|')
+				self.store.append([temp[0], int (temp[1]), temp[2], 0])
 
 	def exit (self, *w):
 		self.hide ()
