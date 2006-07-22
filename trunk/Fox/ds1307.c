@@ -194,6 +194,7 @@ void i2c_stop(void) {
 //	0 = Nack, 1=Ack
 int i2c_outbyte(unsigned char x){
     int i,ack;
+    unsigned char xx = x;
 
     i2c_dir_out();
 
@@ -217,6 +218,7 @@ int i2c_outbyte(unsigned char x){
     /*
      * enable input
      */
+
     i2c_dir_in();
     i2c_clk(I2C_CLOCK_HIGH);
     ack=i2c_getbit();
@@ -225,17 +227,19 @@ int i2c_outbyte(unsigned char x){
 
     if (ack==0) 
     {
-	printf("byte: %d - ack *non* ricevuto\r\n",x);
+        printf("byte: %d - ack *non* ricevuto\r\n",xx);
         return 1;
     }
     else {
-	printf("byte: %d - ack ricevuto\r\n",x);
-    	return 0;
+        printf("byte: %d - ack ricevuto\r\n",xx);
+        return 0;
     }
 }
+
 //==========================
 // write data one byte from DS1307
 //==========================
+
 void write_ds1307(unsigned char address, unsigned char data)
 {
     short int status;
@@ -250,12 +254,14 @@ void write_ds1307(unsigned char address, unsigned char data)
     {
         i2c_start();
         status=i2c_outbyte(208);
-		i2c_stop();
+        i2c_stop();
     }
 }
+
 //==========================
 // read data one byte from DS1307
 //==========================
+
 unsigned char read_ds1307(unsigned char address)
 {
     unsigned char data;
