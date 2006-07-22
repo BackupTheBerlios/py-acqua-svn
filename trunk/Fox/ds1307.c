@@ -225,11 +225,11 @@ int i2c_outbyte(unsigned char x){
 
     if (ack==0) 
     {
-	printf("byte: %d - ack *non* ricevuto",x);
+	printf("byte: %d - ack *non* ricevuto\r\n",x);
         return 1;
     }
     else {
-	printf("byte: %d - ack ricevuto",x);
+	printf("byte: %d - ack ricevuto\r\n",x);
     	return 0;
     }
 }
