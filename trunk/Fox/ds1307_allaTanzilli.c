@@ -180,7 +180,7 @@ void write_ds1307(unsigned char address, unsigned char data)
     printf("Scrittura sul ds1307\r\n");
     short int status;
     i2c_start();
-    i2c_outbyte(210);
+    i2c_outbyte(208);
     i2c_outbyte(address);
     i2c_outbyte(data);
     i2c_stop();
@@ -205,11 +205,11 @@ unsigned char read_ds1307(unsigned char address)
     printf("Lettura dal ds1307\r\n");
     unsigned char data;
     i2c_start();
-    i2c_outbyte(210);
+    i2c_outbyte(208);
     i2c_outbyte(address);
     i2c_stop();
     i2c_start();
-    i2c_outbyte(211);
+    i2c_outbyte(209);
     data=i2c_inbyte();
     printf("Valore letto: %d\r\n",data);
     i2c_stop();
