@@ -268,7 +268,7 @@ void write_ds1307(unsigned char address, unsigned char data)
 unsigned char read_ds1307(unsigned char address)
 {
     printf("--------------------------------");
-    printf("Lettura dal ds1307");
+    printf("Lettura dal ds1307\n");
     unsigned char data;
     i2c_start();
     i2c_outbyte(208);
@@ -295,8 +295,9 @@ int main(void)
 
     usleep(50);
     sec=read_ds1307(0);
-	printf ("%d", sec);
     write_ds1307(0,sec & 0x7F);	// enable oscillator(bit 7 =0)
+    write_ds1307(1,30);
+    write_ds1307(2,5);
 
     while(1)
     {
