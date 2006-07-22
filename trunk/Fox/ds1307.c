@@ -286,7 +286,7 @@ unsigned char read_ds1307(unsigned char address)
 
 int main(void)
 {
-    int sec,min,hour,day,date,month,year;
+    int sec,min,hour,day,date,month,year=0;
 
     if (i2c_open()<0) {
         printf("i2c open error\n");
