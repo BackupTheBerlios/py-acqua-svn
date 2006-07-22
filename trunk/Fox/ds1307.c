@@ -27,10 +27,10 @@
 #include "time.h"     
 #include "asm/etraxgpio.h"
 
-#define CLOCK_LOW_TIME            8
-#define CLOCK_HIGH_TIME           8
-#define START_CONDITION_HOLD_TIME 8
-#define STOP_CONDITION_HOLD_TIME  8
+#define CLOCK_LOW_TIME            5
+#define CLOCK_HIGH_TIME           5
+#define START_CONDITION_HOLD_TIME 5
+#define STOP_CONDITION_HOLD_TIME  5
 #define ENABLE_OUTPUT 0x01
 #define ENABLE_INPUT 0x00
 #define I2C_CLOCK_HIGH 1
@@ -242,7 +242,7 @@ int i2c_outbyte(unsigned char x){
 
 void write_ds1307(unsigned char address, unsigned char data)
 {
-    printf("--------------------------------\r\n");
+    printf("-------------------------------->\r\n");
     printf("Scrittura sul ds1307\r\n");
     short int status;
     i2c_start();
@@ -259,7 +259,7 @@ void write_ds1307(unsigned char address, unsigned char data)
         status=i2c_outbyte(208);
         i2c_stop();
     }*/
-    printf("--------------------------------\r\n");
+    printf("<--------------------------------\r\n");
 }
 
 //==========================
@@ -268,7 +268,7 @@ void write_ds1307(unsigned char address, unsigned char data)
 
 unsigned char read_ds1307(unsigned char address)
 {
-    printf("--------------------------------\r\n");
+    printf("-------------------------------->\r\n");
     printf("Lettura dal ds1307\r\n");
     unsigned char data;
     i2c_start();
@@ -280,7 +280,7 @@ unsigned char read_ds1307(unsigned char address)
     data=i2c_inbyte();
     printf("Valore letto: %d\r\n",data);
     i2c_stop();
-    printf("--------------------------------\r\n");
+    printf("<--------------------------------\r\n");
     return(data);
 }
 
