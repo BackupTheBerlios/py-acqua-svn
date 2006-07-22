@@ -223,9 +223,15 @@ int i2c_outbyte(unsigned char x){
     i2c_clk(I2C_CLOCK_LOW);
     i2c_dir_out();
 
-    if (ack==0) return 1;
-    else return 0;
-
+    if (ack==0) 
+    {
+	printf("byte: %d - ack *non* ricevuto",x);
+        return 1;
+    }
+    else {
+	printf("byte: %d - ack ricevuto",x);
+    	return 0;
+    }
 }
 //==========================
 // write data one byte from DS1307
@@ -276,7 +282,7 @@ int main(void)
 
     usleep(50);
     sec=read_ds1307(0);
-	printf ("%u", sec);
+	printf ("%d", sec);
     write_ds1307(0,sec & 0x7F);	// enable oscillator(bit 7 =0)
 
     while(1)
@@ -288,8 +294,7 @@ int main(void)
         date=read_ds1307(4);  // read date
         month=read_ds1307(5); // read month
         year=read_ds1307(6);  // read year
-		putchar(0x0c);
-        printf("Time : %u:%u:%u\r\n",hour,min,sec);
+        printf("\n\rTime : %u:%u:%u\r\n",hour,min,sec);
         printf("Day  : %d\r\n",day);
         printf("Date : %d/%d/20%d\r\n",date,month,year); 
         usleep(500);
