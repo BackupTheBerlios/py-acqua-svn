@@ -250,9 +250,10 @@ void write_ds1307(unsigned char address, unsigned char data)
     i2c_outbyte(address);
     i2c_outbyte(data);
     i2c_stop();
-    i2c_start();
+    /*i2c_start();
     status=i2c_outbyte(208);
-    /*while(status==1)
+    i2c_stop();
+    while(status==1)
     {
         i2c_start();
         status=i2c_outbyte(208);
