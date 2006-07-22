@@ -27,10 +27,10 @@
 #include "time.h"     
 #include "asm/etraxgpio.h"
 
-#define CLOCK_LOW_TIME            5
-#define CLOCK_HIGH_TIME           5
-#define START_CONDITION_HOLD_TIME 5
-#define STOP_CONDITION_HOLD_TIME  5
+#define CLOCK_LOW_TIME            8
+#define CLOCK_HIGH_TIME           8
+#define START_CONDITION_HOLD_TIME 8
+#define STOP_CONDITION_HOLD_TIME  8
 #define ENABLE_OUTPUT 0x01
 #define ENABLE_INPUT 0x00
 #define I2C_CLOCK_HIGH 1
@@ -38,7 +38,7 @@
 #define I2C_DATA_HIGH 1
 #define I2C_DATA_LOW 0
 
-#define I2C_DATA_LINE			1<<24
+#define I2C_DATA_LINE		1<<24
 #define I2C_CLOCK_LINE		1<<25
 
 
@@ -246,7 +246,7 @@ void write_ds1307(unsigned char address, unsigned char data)
     printf("Scrittura sul ds1307\r\n");
     short int status;
     i2c_start();
-    i2c_outbyte(208);
+    i2c_outbyte(210);
     i2c_outbyte(address);
     i2c_outbyte(data);
     i2c_stop();
@@ -272,11 +272,11 @@ unsigned char read_ds1307(unsigned char address)
     printf("Lettura dal ds1307\r\n");
     unsigned char data;
     i2c_start();
-    i2c_outbyte(208);
+    i2c_outbyte(210);
     i2c_outbyte(address);
     i2c_stop();
     i2c_start();
-    i2c_outbyte(209);
+    i2c_outbyte(211);
     data=i2c_inbyte();
     printf("Valore letto: %d\r\n",data);
     i2c_stop();
