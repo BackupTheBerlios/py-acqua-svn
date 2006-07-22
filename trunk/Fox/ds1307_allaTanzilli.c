@@ -203,7 +203,7 @@ unsigned char read_ds1307(unsigned char address)
 {
     printf("-------------------------------->\r\n");
     printf("Lettura dal ds1307\r\n");
-    unsigned char data;
+    unsigned char data = 100;
     i2c_start();
     i2c_outbyte(208);
     i2c_outbyte(address);
