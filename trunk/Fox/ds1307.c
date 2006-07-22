@@ -243,7 +243,7 @@ int i2c_outbyte(unsigned char x){
 void write_ds1307(unsigned char address, unsigned char data)
 {
     printf("--------------------------------");
-    printf("Scrittura sul ds1307");
+    printf("Scrittura sul ds1307\r\n");
     short int status;
     i2c_start();
     i2c_outbyte(208);
@@ -268,7 +268,7 @@ void write_ds1307(unsigned char address, unsigned char data)
 unsigned char read_ds1307(unsigned char address)
 {
     printf("--------------------------------");
-    printf("Lettura dal ds1307\n");
+    printf("Lettura dal ds1307\r\n");
     unsigned char data;
     i2c_start();
     i2c_outbyte(208);
