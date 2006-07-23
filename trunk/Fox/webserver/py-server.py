@@ -30,7 +30,7 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		self.send_header('Content-type', 'text/html')
 		self.end_headers()
 		html = open("html/index.html")
-		self.wfile.write(html)
+		self.wfile.write(html.read())
 		
 		
 
