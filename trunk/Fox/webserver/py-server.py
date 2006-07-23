@@ -22,5 +22,21 @@
 
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
-server = HTTPServer (('', 80), BaseHTTPRequestHandler) # fare il bind sulla 80 da problmi se nn sei r00t :P
+
+server = HTTPServer (('', 88), BaseHTTPRequestHandler) # fare il bind sulla 80 da problmi se nn sei r00t :P
 server.serve_forever ()
+
+BaseClass = SimpleHTTPServer.SimpleHTTPRequestHandler
+
+
+
+class MyRequestHandler(BaseClass):
+	def do_GET(self):
+		self.send_response(200)
+		self.end_headers()
+		self.wfile.write('<html><body>Hello World!</body></html>')
+		
+def test():
+	SimpleHTTPServer.test(MyRequestHandler)
+	
+test()
