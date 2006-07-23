@@ -29,17 +29,18 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServe
 	def do_GET(self):
 		
 		#html
-		self.send_response(200)
-		self.send_header('Content-type', 'text/html')
-		self.end_headers()
+		#self.send_response(200)
+		#self.send_header('Content-type', 'text/html')
+		#self.send_header("Content-type", 'image/jpg;')
+		#self.end_headers()
 		html = open("html/index.html")
 		self.wfile.write(html.read())
 		#cgi
-		self.cgi_directories = ["html/cgi-bin"]
+		#self.cgi_directories = ["html/cgi-bin"]
 		
 		
 		
 
 
-server = BaseHTTPServer.HTTPServer(('', 88), BaseHTTPRequestHandler)# fare il bind sulla 80 da problemi se nn sei r00t :P
+server = BaseHTTPServer.HTTPServer(('', 88), BaseHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
 server.serve_forever()
