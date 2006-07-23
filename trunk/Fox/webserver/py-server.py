@@ -20,6 +20,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-from BaseHTTPServer import HTTPServer
+from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
 
-server = BaseHTTPServer.HTTPServer( ('', 80), BaseHTTPServer.BaseHTTPRequestHandler)
+server = HTTPServer (('', 80), BaseHTTPRequestHandler) # fare il bind sulla 80 da problmi se nn sei r00t :P
+server.serve_forever ()
