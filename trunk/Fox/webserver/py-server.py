@@ -19,24 +19,21 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-
-
-server = HTTPServer (('', 88), BaseHTTPRequestHandler) # fare il bind sulla 80 da problmi se nn sei r00t :P
-server.serve_forever ()
-
-BaseClass = SimpleHTTPServer.SimpleHTTPRequestHandler
+import os 
+import BaseHTTPServer
 
 
-
-class MyRequestHandler(BaseClass):
+class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler): 
 	def do_GET(self):
-		self.send_response(200)
-		self.end_headers()
-		self.wfile.write('<html><body>Hello World!</body></html>')
 		
-def test():
-	SimpleHTTPServer.test(MyRequestHandler)
-	
-test()
+		self.send_response(200)
+		self.send_header('Content-type', 'text/html')
+		self.end_headers()
+		html = open("html/index.html")
+		self.wfile.write(html)
+		
+		
+
+
+server = BaseHTTPServer.HTTPServer(('', 88), BaseHTTPRequestHandler)# fare il bind sulla 80 da problmi se nn sei r00t :P
+server.serve_forever()
