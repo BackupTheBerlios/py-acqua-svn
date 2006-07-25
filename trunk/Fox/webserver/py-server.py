@@ -20,32 +20,82 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os 
+import cgi
 import BaseHTTPServer
 import CGIHTTPServer
+import Cookie
 
 
 
 class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServer.CGIHTTPRequestHandler): 
 	def do_GET(self):
 	
-		#html
-		if os.path.exists("html"):
-			self.send_response(200, 'OK')
-			self.end_headers()
-			html = open("html/index.html")
-			self.wfile.write(html.read())
-			html.close()
+		
+		self.handle_data()
+		
+		
+	def handle_data(self):
+		#"""Process the data received"""
+		self.resp_headers = {"Content-type":'text/html'} # default
+		self.cookie=Cookie.SimpleCookie()
+		if self.headers.has_key('cookie'):
+			self.cookie=Cookie.SimpleCookie(self.headers.getheader("cookie"))
+		path = os.path.join('html')
+		#path = self.get_file() # return a file name or None
+		if os.path.isdir(path):
+		# list directory
+			print path
+			dir_list = self.list_directory(path)
+			
+			self.copyfile(dir_list, self.wfile)
+			return
+		ext = os.path.splitext(path)[1].lower()
+		if len(ext)>1 and hasattr(self,"run_%s" %ext[1:]):
+			# if run_some_extension() exists
+			exec ("self.run_%s(path)" %ext[1:])
+			
 		else:
-			self.send_error(404)
+		# other files
+			ctype = self.guess_type(path)
+			if ctype.startswith('text/'):
+				mode = 'r'
+			else:
+				mode = 'rb'
+			try:
+				f = open(path,mode)
+				self.resp_headers['Content-type'] = ctype
+				self.resp_headers['Content-length'] = str(os.fstat(f.fileno())[6])
+				self.done(200,f)
+			except IOError:
+				self.send_error(404, "File not found")
+	def get_file(self):
+		#"""Set the Content-type header and return the file open for reading, or None"""
+		path = self.path
+		if path.find('?')>1:
+		# remove query string, otherwise the file will not be found
+			path = path.split('?',1)[0]
+			path = self.translate_path(path)
+		if os.path.isdir(path):
+			for index in "index.html", "index.htm":
+				index = os.path.join(path, index)
+				if os.path.exists(index):
+					path = index
+					break
+		return path	
 		
-		
-		
-		#cgi
-		#self.cgi_directories = ["html/cgi-bin"]
-		
-		
-		
+	def done(self, code, infile):
+
+		self.send_response(code)
+		for morsel in self.cookie.values():
+			self.send_header('Set-Cookie', morsel.output(header='').lstrip())
+		for (k,v) in self.resp_headers.items():
+			self.send_header(k,v)
+		self.end_headers()
+		infile.seek(0)
+		self.copyfile(infile, self.wfile)
 
 
-server = BaseHTTPServer.HTTPServer(('', 8000), BaseHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
+port = 8000
+server = BaseHTTPServer.HTTPServer(('', port), BaseHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
+print "ScriptServer running on port %s" %port
 server.serve_forever()
