@@ -40,19 +40,19 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServe
 		self.cookie=Cookie.SimpleCookie()
 		if self.headers.has_key('cookie'):
 			self.cookie=Cookie.SimpleCookie(self.headers.getheader("cookie"))
-		path = os.path.join('html')
-		#path = self.get_file() # return a file name or None
+		#path = os.path.join('html')
+		path = self.get_file() # return a file name or None
 		if os.path.isdir(path):
 		# list directory
-			print path
-			dir_list = self.list_directory(path)
+			pass
+			#dir_list = self.list_directory(path)
 			
-			self.copyfile(dir_list, self.wfile)
-			return
-		ext = os.path.splitext(path)[1].lower()
-		if len(ext)>1 and hasattr(self,"run_%s" %ext[1:]):
-			# if run_some_extension() exists
-			exec ("self.run_%s(path)" %ext[1:])
+			#self.copyfile(dir_list, self.wfile)
+			#return
+		#ext = os.path.splitext(path)[1].lower()
+		#if len(ext)>1 and hasattr(self,"run_%s" %ext[1:]):
+			#if run_some_extension() exists
+		#	exec ("self.run_%s(path)" %ext[1:])
 			
 		else:
 		# other files
@@ -69,15 +69,17 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServe
 			except IOError:
 				self.send_error(404, "File not found")
 	def get_file(self):
-		#"""Set the Content-type header and return the file open for reading, or None"""
 		path = self.path
+		print path
 		if path.find('?')>1:
-		# remove query string, otherwise the file will not be found
+		
 			path = path.split('?',1)[0]
-			path = self.translate_path(path)
+		path = self.translate_path(path)
+		print path
 		if os.path.isdir(path):
 			for index in "index.html", "index.htm":
 				index = os.path.join(path, index)
+				print index
 				if os.path.exists(index):
 					path = index
 					break
@@ -95,6 +97,9 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServe
 		self.copyfile(infile, self.wfile)
 
 
+### qua la docroot poi bisogna settarla per Fox
+docroot="/usr/home/luca/Documenti/Programmi/py-acqua/svn/trunk/Fox/webserver/html"
+os.chdir(docroot)
 port = 8000
 server = BaseHTTPServer.HTTPServer(('', port), BaseHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
 print "ScriptServer running on port %s" %port
