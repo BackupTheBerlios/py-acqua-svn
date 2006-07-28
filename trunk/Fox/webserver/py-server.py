@@ -24,10 +24,9 @@ import cgi
 import BaseHTTPServer
 import CGIHTTPServer
 import Cookie
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 
-
-
-class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServer.CGIHTTPRequestHandler): 
+class CustomHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServer.CGIHTTPRequestHandler): 
 	def do_GET(self):
 	
 		
@@ -98,9 +97,10 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServe
 
 
 ### qua la docroot poi bisogna settarla per Fox
-docroot="/usr/home/luca/Documenti/Programmi/py-acqua/svn/trunk/Fox/webserver/html"
-os.chdir(docroot)
+#docroot="/usr/home/luca/Documenti/Programmi/py-acqua/svn/trunk/Fox/webserver/html"
+#os.chdir(docroot)
 port = 8000
-server = BaseHTTPServer.HTTPServer(('', port), BaseHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
+#server = BaseHTTPServer.HTTPServer(('', port), CustomHandler)
+server = BaseHTTPServer.HTTPServer(('', port), SimpleHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
 print "ScriptServer running on port %s" %port
 server.serve_forever()

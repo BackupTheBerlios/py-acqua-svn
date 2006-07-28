@@ -20,14 +20,14 @@ class Generator (object):
 
 	def ParseDir (dir):
 		stack = [dir]
-		data = list ()
+		data = {}
 
 		while stack:
 			dir = stack.pop ()
 			for file in os.listdir (dir):
 				fullname = os.path.join (dir, file)
 				if not os.path.isdir (fullname):
-					data.append (fullname[2:] + "|" + str (getsize (fullname)) + "|" + str (Generator.checksum (fullname)))
+					data[fullname[2:]] = str (getsize (fullname)) + "|" + str (Generator.checksum (fullname))
 				elif not os.path.islink (fullname):
 					if file != ".svn":
 						stack.append (fullname)
@@ -35,7 +35,6 @@ class Generator (object):
 	ParseDir = staticmethod (ParseDir)
 
 if __name__ == "__main__":
-	for i in Generator.ParseDir ("."):
-		for x in i.split ("|"):
-			print x,
-		print
+	data = Generator.ParseDir (".")
+	for i in data:
+		print "%s|%s" % (i, data[i])
