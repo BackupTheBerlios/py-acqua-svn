@@ -269,7 +269,9 @@ class Gui(gtk.Window):
 		dialog.show()
 		
 	def aiuto_apri(self, widget, data=None):
-		webbrowser.open('http://pyacqua.netsons.org/wiki/index.php/Wikipedia')
+	# il wikipedia e da fare nn ce piu
+		pass
+		#webbrowser.open('http://pyacqua.netsons.org/wiki/index.php/Wikipedia')
 	def open_update(self, widget, data=None):
 		import files.webupdate
 		files.webupdate.WebUpdate()
