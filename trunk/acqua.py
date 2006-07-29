@@ -73,23 +73,9 @@ except:
 
 import app
 import files.engine
+import files.utils as utils
 
-### creiamo la directory che contiene le immagini
-
-if not os.path.exists('Immagini'):
-	os.mkdir('Immagini')
-
-### creiamo la directory per i plugin ###	
-
-if not os.path.exists('Plugin'):
-	os.mkdir('Plugin')
-	
-### creiamo la directory che contiene il database
-
-if not os.path.exists('Data'):
-	os.mkdir('Data')
-	
-### creiamo il database con sqlite
+utils.prepare_enviroment ()
 
 if not os.path.exists("Data/db"):
 	connessione=sqlite.connect("Data/db")

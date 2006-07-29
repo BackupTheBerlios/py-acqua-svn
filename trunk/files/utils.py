@@ -24,7 +24,49 @@ import os
 import os.path
 from pysqlite2 import dbapi2 as sqlite
 
-SKIN_DIR = os.path.join(os.getcwd(), "pixmaps/skin")
+HOME_DIR = None
+PLUG_DIR = None
+DATA_DIR = None
+UPDT_DIR = None
+SKIN_DIR = None
+
+# FIXME: prima della release
+DHOME_DIR = os.getcwd ()	# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
+				# o robe simili
+DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
+DDATA_DIR = os.path.join (DHOME_DIR, "Data")
+DUPDT_DIR = os.path.join (DHOME_DIR, "Update")
+DSKIN_DIR = os.path.join (DHOME_DIR, "Skin")
+DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
+
+def prepare_enviroment ():
+	init_dir_structure ()
+
+def init_dir_structure ():
+	path = os.environ["HOME"]
+	print "Creating %s/.pyacqua" % path
+	
+	HOME_DIR = create_dir (path, ".pyacqua")
+	
+	path = os.path.join (path, ".pyacqua")
+	
+	IMGS_DIR = create_dir (path, "Immagini")
+	PLUG_DIR = create_dir (path, "Plugin")
+	DATA_DIR = create_dir (path, "Data")
+	UPDT_DIR = create_dir (path, "Update")
+	SKIN_DIR = create_dir (path, "Skins")
+
+# FIXME: da controllare per eccezioni ecc.. dara' scazzi senza controllo
+def create_dir (path, name):
+	temp = os.path.join (path, name)
+	
+	if not os.path.exists (temp):
+		os.mkdir (temp)
+	else:
+		print "Already present", temp
+	
+	return temp
+
 
 class DataButton(gtk.Button):
 	def __init__(self, label=None, set_cb=None, get_cb=None):
