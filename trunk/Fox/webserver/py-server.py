@@ -34,27 +34,20 @@ class CustomHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServer.CGIHTTP
 		
 		
 	def handle_data(self):
-		#"""Process the data received"""
-		self.resp_headers = {"Content-type":'text/html'} # default
+		self.resp_headers = {"Content-type":'text/html'} 
 		self.cookie=Cookie.SimpleCookie()
 		if self.headers.has_key('cookie'):
 			self.cookie=Cookie.SimpleCookie(self.headers.getheader("cookie"))
-		#path = os.path.join('html')
-		path = self.get_file() # return a file name or None
+		
+		path = self.get_file() 
 		if os.path.isdir(path):
-		# list directory
+		
 			pass
-			#dir_list = self.list_directory(path)
 			
-			#self.copyfile(dir_list, self.wfile)
-			#return
-		#ext = os.path.splitext(path)[1].lower()
-		#if len(ext)>1 and hasattr(self,"run_%s" %ext[1:]):
-			#if run_some_extension() exists
-		#	exec ("self.run_%s(path)" %ext[1:])
 			
+		
 		else:
-		# other files
+		
 			ctype = self.guess_type(path)
 			if ctype.startswith('text/'):
 				mode = 'r'
@@ -97,10 +90,9 @@ class CustomHandler(BaseHTTPServer.BaseHTTPRequestHandler, CGIHTTPServer.CGIHTTP
 
 
 ### qua la docroot poi bisogna settarla per Fox
-#docroot="/usr/home/luca/Documenti/Programmi/py-acqua/svn/trunk/Fox/webserver/html"
-#os.chdir(docroot)
+docroot="/usr/home/luca/Documenti/Programmi/py-acqua/svn/trunk/Fox/webserver/html"
+os.chdir(docroot)
 port = 8000
-#server = BaseHTTPServer.HTTPServer(('', port), CustomHandler)
 server = BaseHTTPServer.HTTPServer(('', port), SimpleHTTPRequestHandler)# fare il bind sulla 88 da problemi se nn sei r00t :P
 print "ScriptServer running on port %s" %port
 server.serve_forever()
