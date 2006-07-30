@@ -152,12 +152,13 @@ class Gui(gtk.Window):
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
 		
-		file = None
-		try:
-			file = os.path.join(files.utils.SKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
-		except:
+		file = os.path.join(files.utils.SKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
+		
+		if not os.path.exists (file):
 			file = os.path.join(files.utils.DSKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
-		image.set_from_file(file)
+		
+		if os.path.exists (file):
+			image.set_from_file(file)
 		
 		# Menu
 		self.create_menu()

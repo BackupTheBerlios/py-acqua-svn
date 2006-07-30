@@ -35,7 +35,6 @@ DHOME_DIR = os.getcwd ()	# N.B. Questa nella release finale dovrebbe essere /usr
 				# o robe simili
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
-DUPDT_DIR = os.path.join (DHOME_DIR, "Update")
 DSKIN_DIR = os.path.join (DHOME_DIR, "Skin")
 DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
 
@@ -43,6 +42,8 @@ def prepare_enviroment ():
 	init_dir_structure ()
 
 def init_dir_structure ():
+	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR
+	
 	path = os.environ["HOME"]
 	print "Creating %s/.pyacqua" % path
 	

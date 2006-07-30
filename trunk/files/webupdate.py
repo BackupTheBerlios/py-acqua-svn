@@ -4,6 +4,8 @@ import httplib
 import threading
 import generate
 import utils
+import os.path
+import sys
 
 class Fetcher(threading.Thread):
 	def __init__ (self, callback, url):
@@ -14,7 +16,7 @@ class Fetcher(threading.Thread):
 
 	def run (self):
 		try:
-			conn = httplib.HTTPConnection ("intifada.altervista.org")
+			conn = httplib.HTTPConnection ("localhost")
 			conn.request ("GET", self.url)
 			self.data = conn.getresponse ().read ()
 		finally:
@@ -74,9 +76,10 @@ class WebUpdate (gtk.Window):
 		
 		self.file = None
 		self.it = None
+		self.checklist = []
 		
 		self.actual_data = generate.Generator.ParseDir (".")
-		self.thread (self.populate_tree, "/update/list.txt")
+		self.thread (self.populate_tree, "/~stack/update/list.txt")
 	
 	def thread (self, callback, url):
 		f = Fetcher (callback, url)
@@ -152,11 +155,37 @@ class WebUpdate (gtk.Window):
 		
 		# TODO: da finire
 		
-		print "File received", self.file
-		print data
+		if not data:
+			print "No file to receive"
 		
-		self.go_with_next_iter ()
+		# Creiamo le subdirectory necessarie
+		dirs = self.file.split (os.path.sep); dirs.pop ()
+		path = utils.UPDT_DIR
+		
+		print "!! Aggiungi check prima della versione finale webupdate.py:164"
+		#try:
+		for i in dirs:
+			path = os.path.join (path, i)
+			if not os.path.exists (path):
+				os.mkdir (path)
 	
+		print "File received", self.file
+	
+		f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
+		f.write (data)
+		f.close ()
+		
+		self.update_check_list ()
+		self.go_with_next_iter ()
+		#except:
+		#	print "Error while updating (%s %s)" % (sys.exc_value, sys.exc_type)
+	
+	def update_check_list (self):
+		bytes = self.tree.get_model ().get_value (self.it, 2)
+		sum = self.tree.get_model ().get_value (self.it, 3)
+		
+		self.checklist.append ("%s|%d|%s" % (self.file, bytes, sum))
+		
 	def go_with_next_iter (self):
 		self.it = self.tree.get_model ().iter_next (self.it)
 		self.update_from_iter ()
@@ -164,7 +193,18 @@ class WebUpdate (gtk.Window):
 	def update_from_iter (self):
 		if self.it != None:
 			self.file = self.tree.get_model ().get_value (self.it, 0)
-			self.thread (self.update_file, "/souce/" + self.file)
+			self.thread (self.update_file, "/~stack/source/" + self.file)
+		else:
+			# Probabilmente abbiamo finito.. controlliamo la checklist e via
+			if len (self.checklist) > 0:
+					print "!! Aggiungi check prima della versione finale webupdate.py:199"
+				#try:
+					f = open (os.path.join (utils.UPDT_DIR, ".checklist"), "w")
+					for i in self.checklist:
+						f.write (i + "\n")
+					f.close ()
+				#except:
+				#	print "Error while writing the checklist"
 		
 	def exit (self, *w):
 		self.hide ()
