@@ -6,6 +6,22 @@ Collegamenti elettrici:
   GND (pin 40 FOX ) -- GND
 ****************************************************/
 
+/*********************************************
+
+Qua e da fare la modifica perche con i pin di sopra 
+nn funziona
+
+2) Andrea suggests me to use OG25 J7.13 as SCL
+and IOG24 J7.21 as SDA. So the us_i2c.c change :
+
+#define I2C_DATA_LINE        1<<24
+#define I2C_CLOCK_LINE        1<<25
+
+and in the function i2c_open we must use
+i2c_fd = open("/dev/gpiog", O_RDWR);
+instead of /dev/gpiob
+*********************************************/
+
 #include "unistd.h"    
 #include "sys/ioctl.h"
 #include "fcntl.h"     
