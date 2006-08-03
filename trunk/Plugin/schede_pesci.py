@@ -24,6 +24,7 @@
 import app
 import gtk
 import os
+import ConfigParser
 import files.utils as utils
 
 # creiamo le dir se non ci sono gia dove contenere le schede dei pesci
@@ -64,7 +65,22 @@ class schede_pesci(gtk.Window):
 		self.item.show ()
 		menu.append (self.item)
 	def create_gui(self):
-		print "gui"
+	
+		box = gtk.VBox()
+		box.set_spacing(4)
+		box.set_border_width(4)
+		
+		tbl = gtk.Table(11, 3)
+		tbl.set_border_width(5)
+		
+		tbl.attach(utils.new_label(_('Nome Scientifico')), 0, 1, 0, 1, yoptions=gtk.SHRINK)
+		
+		#self.ph_minimo = utils.FloatEntry (); self.ph_massimo = utils.FloatEntry ()
+		
+		#tbl.attach(self.ph_minimo, 1, 2, 1, 2, yoptions=gtk.SHRINK)
+		
+		#self.ph_minimo.set_text (str (impostazioni.minph)); self.ph_massimo.set_text (str (impostazioni.maxph))
+		
 		
 	def stop (self):
 		print "** Stopping", self.__name__
