@@ -39,12 +39,26 @@ else:
 	else:
 		pass
 		
+par = os.path.join('Schede', 'Pesci', 'chanda_ranga', 'chanda_ranga.cfg')
+
+cfg = ConfigParser.ConfigParser()
+
+	
+cfg.read(par)
+global nomeporco
+			
+nomeporco = cfg.get("nomescientifico", "nm")
+	
+		
+	
+	
+		
 #qua dopo aver creato le dir in futuro bisognera decomprimere il file con tutte le schede
 #oppure far in modo di scaricarle da internet
 		
 class schede_pesci(gtk.Window):
 	__name__ = "Schede Pesci"
-	__desc__ = "Plugin per schede dei pesci"
+	__desc__ = "Plugin per schede pesci"
 	__ver__ = "0.0.1"
 	__author__ = "PyAcqua team"
 
@@ -78,11 +92,13 @@ class schede_pesci(gtk.Window):
 		
 		self.nome_scientifico = gtk.Entry ()
 		
-		tbl.attach(self.nome_scientifico, 1, 2, 1, 2, yoptions=gtk.SHRINK)
+		tbl.attach(self.nome_scientifico, 1, 2, 0, 1, yoptions=gtk.SHRINK)
 		
-		#self.ph_minimo.set_text (str (impostazioni.minph)); self.ph_massimo.set_text (str (impostazioni.maxph))
+		self.nome_scientifico.set_text (str (nomeporco))
 		box.pack_start(tbl)
+		self.add(box)
 		
+		self.connect ('delete_event', self.exit)
 		
 	def stop (self):
 		print "** Stopping", self.__name__
