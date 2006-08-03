@@ -63,8 +63,9 @@ class schede_pesci(gtk.Window):
 		self.item = gtk.MenuItem ("Schede Pesci")
 		self.item.connect ('activate', self.on_activated)
 		self.item.show ()
+		
 		menu.append (self.item)
-	def create_gui(self):
+	def create_gui (self):
 	
 		box = gtk.VBox()
 		box.set_spacing(4)
@@ -75,11 +76,12 @@ class schede_pesci(gtk.Window):
 		
 		tbl.attach(utils.new_label(_('Nome Scientifico')), 0, 1, 0, 1, yoptions=gtk.SHRINK)
 		
-		#self.ph_minimo = utils.FloatEntry (); self.ph_massimo = utils.FloatEntry ()
+		self.nome_scientifico = gtk.Entry ()
 		
-		#tbl.attach(self.ph_minimo, 1, 2, 1, 2, yoptions=gtk.SHRINK)
+		tbl.attach(self.nome_scientifico, 1, 2, 1, 2, yoptions=gtk.SHRINK)
 		
 		#self.ph_minimo.set_text (str (impostazioni.minph)); self.ph_massimo.set_text (str (impostazioni.maxph))
+		box.pack_start(tbl)
 		
 		
 	def stop (self):
