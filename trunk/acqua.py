@@ -27,15 +27,18 @@ import webbrowser
 import locale
 import gettext
 import sys
+
+import files.utils as utils
+
+utils.prepare_enviroment ()
+
 import files.impostazioni
 
 APP = 'acqua'
 DIR = 'locale'
 
 try:
-	files.impostazioni.refresh ()
-
-	if files.impostazioni.lang.lower () == "en":
+	if files.impostazioni.get ("lang").lower () == "en":
 		en = gettext.translation (APP, DIR, ["en"])
 		en.install ()
 		try:
@@ -73,15 +76,13 @@ except:
 
 import app
 import files.engine
-import files.utils as utils
 
-utils.prepare_enviroment ()
-
-if not os.path.exists("Data/db"):
-	connessione=sqlite.connect("Data/db")
+path = os.path.join (utils.DATA_DIR, "db")
+if not os.path.exists (path):
+	connessione=sqlite.connect (path)
 	cursore=connessione.cursor()
 	cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT)")
+	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
 	cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")

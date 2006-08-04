@@ -397,8 +397,14 @@ def make_thumb (twh, w, h):
 		y = int (float (x * h) / float (w))
 		return x, y
 
+def connect ():
+	if os.path.exists (os.path.join (DATA_DIR, "db")):
+		return sqlite.connect (os.path.join (DATA_DIR, "db"))
+	else:
+		raise Exception ("Cannot find the db in DATA_DIR")
+	
 def cmd (txt, *w):
-	conn = sqlite.connect (os.path.join ('Data', 'db'))
+	conn = connect ()
 	cur = conn.cursor ()
 
 	cur.execute (txt, w)
@@ -406,7 +412,7 @@ def cmd (txt, *w):
 	conn.commit ()
 
 def get (txt):
-	conn = sqlite.connect (os.path.join ('Data', 'db'))
+	conn = connect ()
 	cur = conn.cursor ()
 	cur.execute (txt)
 

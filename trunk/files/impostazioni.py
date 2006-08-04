@@ -19,159 +19,261 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os
+import os, os.path
 import sys
-import ConfigParser
+import utils
+from xml.dom.minidom import parse, getDOMImplementation
 
-#TODO: imposta i valori di default
-minph = maxph = 0
-minkh = maxkh = 0
-mingh = maxgh = 0
-minno2 = maxno2 = 0
-minno3 = maxno3 = 0
-mincon = maxcon = 0
-minam = maxam = 0
-minfe = maxfe = 0
-minra = maxra = 0
-minfo = maxfo = 0
-mincal = maxcal = 0
-minmag = maxmag = 0
-minden = maxden = 0
-show_tips = "1"
-skin = "default"
-lang = "it"
+# Valori per il tipo dolce
+dolce_values = {
+	'ph' :	(6, 8, None),
+	'kh' :	(3, 8, None),
+	'gh' :	(7, 20, None),
+	'no2' :	(0, 0.7, None),
+	'no3' :	(20, 100, None),
+	'con' :	(100, 1500, None),
+	'am' :	(0, 0.5, None),
+	'fe' :	(3, 6, None),
+	'ra' :	(0, 0.3, None),
+	'fo' :	(0, 3, None),
+	
+	# Questi tre nn vengono utilizzati attualmente
+	
+	'cal' :	(None, None, None),	# valore marino (inutilizzato qui)
+	'mag' :	(None, None, None),	# idem
+	'den' :	(None, None, None)	# lo stesso
+}
 
-def save():
-	try:
-		par = open(os.path.join('files', 'config.cfg'), 'w')
-		
-		cfg = ConfigParser.ConfigParser()
-		
-		cfg.add_section("ph")
-		cfg.add_section("kh")
-		cfg.add_section("gh")
-		cfg.add_section("no2")
-		cfg.add_section("no3")
-		cfg.add_section("conducibilita")
-		cfg.add_section("ammoniaca")
-		cfg.add_section("ferro")
-		cfg.add_section("rame")
-		cfg.add_section("fosfati")
-		cfg.add_section("calcio")
-		cfg.add_section("magnesio")
-		cfg.add_section("densita")
-		cfg.add_section("GUI")
-		
-		global show_tips
-		global sfondo
-		global minph, maxph, minkh, maxkh
-		global minam, maxam, minfe, maxfe
-		global minra, maxra, minfo, maxfo
-		global mingh, maxgh, minno2, maxno2
-		global minno3, maxno3, mincom, maxcon
-		global mincal, maxcal, minmag, maxmag
-		global minden, maxden
-		
-		cfg.set("ph", "min", minph)
-		cfg.set("ph", "max", maxph)
-		
-		cfg.set("kh", "min", minkh)
-		cfg.set("kh", "max", maxkh)
-		
-		cfg.set("gh", "min", mingh)
-		cfg.set("gh", "max", maxgh)
-		
-		cfg.set("no2", "min", minno2)
-		cfg.set("no2", "max", maxno2)
-		
-		cfg.set("no3", "min", minno3)
-		cfg.set("no3", "max", maxno3)
-		
-		cfg.set("conducibilita", "min", mincon)
-		cfg.set("conducibilita", "max", maxcon)
-		
-		cfg.set("ammoniaca", "min", minam)
-		cfg.set("ammoniaca", "max", maxam)
-		
-		cfg.set("ferro", "min", minfe)
-		cfg.set("ferro", "max", maxfe)
-		
-		cfg.set("rame", "min", minra)
-		cfg.set("rame", "max", maxra)
-		
-		cfg.set("fosfati", "min", minfo)
-		cfg.set("fosfati", "max", maxfo)
-		
-		cfg.set("calcio", "min", mincal)
-		cfg.set("calcio", "max", maxcal)
-		
-		cfg.set("magnesio", "min", minmag)
-		cfg.set("magnesio", "max", maxmag)
-		
-		cfg.set("densita", "min", minden)
-		cfg.set("densita", "max", maxden)
-		
-		cfg.set("GUI", "show_tips", show_tips)
-		cfg.set("GUI", "skin", skin)
-		cfg.set("GUI", "lang", lang)
-		cfg.write(par)
-		
-		par.flush()
-		par.close()
-	except:
-		print _("Errore nel salvataggio del file di configurazione (%s)") % sys.exc_value
-		
-def refresh():
-	par = os.path.join('files', 'config.cfg')
+# Valori per il tipo marino
+marino_values = {
+	'ph' :	(7.7, 8.5, None),
+	'kh' :	(4, 11, None),
+	'gh' :	(None, None, None),	# inutilizzato.. valore troppo alto
+	'no2' :	(0, 0.5, None),		# 0 valore ideale
+	'no3' :	(0, 50,	None),		# idem
+	'con' :	(None, None, None),	# inutilizzato
+	'am' :	(0, 0.5, None),
+	'fe' :	(0, 3, None),
+	'ra' :	(0, 0.5, None),
+	'fo' :	(0, 0.7, None),
 	
-	cfg = ConfigParser.ConfigParser()
+	# Non vengono utilizzati
 	
-	if os.path.isfile(par):
-		try:
-			cfg.read(par)
+	'cal' :	(300, 500, None),
+	'mag' :	(1100, 1500, None),
+	'den' :	(1020, 1028, None)
+}
+
+gui_values = {
+	'show_tips' :	True,
+	'skin' :	'default',
+	'lang' :	'it'
+}
+
+class Prefs(object):
+	def __init__ (self):
+		self.values = gui_values
+		self.collection = {"dolce" : dolce_values, "marino" : marino_values}
+	def Dump (self):
+		print self.values
+		print self.collection
+	def Load (self):
+		doc = parse (os.path.join (utils.HOME_DIR, "pyacqua.xml"))
+		
+		if doc.documentElement.tagName == "pyacqua": # Seems valid
 			
-			global show_tips
-			global skin, lang
-			global minph, maxph, minkh, maxkh
-			global minam, maxam, minfe, maxfe
-			global minra, maxra, minfo, maxfo
-			global mingh, maxgh, minno2, maxno2
-			global minno3, maxno3, mincom, maxcon
-			global mincal, maxcal, minmag, maxmag
-			global minden, maxden
-
-			minph = cfg.get("ph","min")
-			maxph = cfg.get("ph","max")
-			minkh = cfg.get("kh","min")
-			maxkh = cfg.get("kh","max")
-			mingh = cfg.get("gh","min")
-			maxgh = cfg.get("gh","max")
-			minno2 = cfg.get("no2","min")
-			maxno2 = cfg.get("no2","max")
-			minno3 = cfg.get("no3","min")
-			maxno3 = cfg.get("no3","max")
-			mincon = cfg.get("conducibilita","min")
-			maxcon = cfg.get("conducibilita","max")
-			minam = cfg.get("ammoniaca","min")
-			maxam = cfg.get("ammoniaca","max")
-			minfe = cfg.get("ferro","min")
-			maxfe = cfg.get("ferro","max")
-			minra = cfg.get("rame","min")
-			maxra = cfg.get("rame","max")
-			minfo = cfg.get("fosfati","min")
-			maxfo = cfg.get("fosfati","max")
-			mincal = cfg.get("calcio","min")
-			maxcal = cfg.get("calcio","max")
-			minmag = cfg.get("magnesio","min")
-			maxmag = cfg.get("magnesio","max")
-			minden = cfg.get("densita","min")
-			maxden = cfg.get("densita","max")
-			show_tips = cfg.get("GUI", "show_tips")
-			skin = cfg.get("GUI", "skin")
-			lang = cfg.get("GUI", "lang")
+			for node in doc.documentElement.childNodes:
+				
+				if node.nodeName == "values":
+					self.parseValues (node)
+					
+				if node.nodeName == "preferences":
+					self.parsePreferences (node)
+	
+	def parseValues (self, node):
+		for i in node.childNodes:
+			if i.nodeName == "collection":
+				self.parseCollection (i.attributes ["name"].nodeValue, i)
+	
+	def parseCollection (self, name, node):
+		dict = {}
+		for i in node.childNodes:
+			if i.nodeName == "value":
+				try:
+					id = i.attributes ["id"].nodeValue
+					min, max, ide = None, None, None
+					
+					if i.attributes.has_key ("min"):
+						min = float (i.attributes ["min"].nodeValue)
+					if i.attributes.has_key ("max"):
+						max = float (i.attributes ["max"].nodeValue)
+					if i.attributes.has_key ("ideal"):
+						ide = float (i.attributes ["ideal"].nodeValue)
+					
+					dict [id] = (min, max, ide)
+				except:
+					print "Float error in", id
+		
+		if len (dict) > 0:
+			self.collection [name] = dict
+	
+	def parsePreferences (self, node):
+		for i in node.childNodes:
+			if i.nodeName == "bool": self.parseWithConverter (i, bool)
+			if i.nodeName == "string": self.parseWithConverter (i, str)
+			if i.nodeName == "float": self.parseWithConverter (i, float)
+			if i.nodeName == "int": self.parseWithConverter (i, int)
+	
+	def parseWithConverter (self, node, converter):
+		id = node.attributes ["id"].nodeValue
+		val = node.attributes ["value"].nodeValue
+		
+		try:
+			if converter == bool:
+				if val.lower () == "true":
+					val = True
+				else:
+					val = False #diamo maggior priorita' al false
+			else:
+				val = converter (val)
+			
+			old = self.values [id]
+			
+			if old != None:
+				if type (old) == type (val):
+					print "Same type.. nice"
+					self.values [id] = val
+				else:
+					print "Type mismatch in", id
+					print "Ignoring the new value", val, "old =", old
+			else:
+				self.values[id] = val
 		except:
-			print _("Errore nel caricamento dei valori.. uso quelli di default")
-	else:
-		print _("File config.cfg non trovato.. salvo la configurazione di default")
-		save()
-refresh()
+			print "Error while converting", id, "to", converter
+	
+	def get (self, me):
+		your_girlfriend = self.values
+		if me in your_girlfriend:
+			return your_girlfriend [me]
+		else:
+			return None
+		
+	def set (self, name, val):
+		self.values [name] = val
+	
+	def save (self):
+		doc = getDOMImplementation ().createDocument (None, "pyacqua", None)
+		
+		values = doc.createElement ("values")
+		prefs  = doc.createElement ("preferences")
+		
+		root = doc.documentElement
+		root.appendChild (values); root.appendChild (prefs)
+		
+		self.dump_collections (values, doc)
+		self.dump_preferences (prefs, doc)
+		
+		try:
+			writer = open (os.path.join (utils.HOME_DIR, "pyacqua.xml"), "w")
+			doc.writexml (writer, '\t', '\t', '\n')
+			writer.close ()
+		except:
+			print "Error while saving pyacqua.xml"
+	
+	def dump_collections (self, node, doc):
+		element = None
+		
+		for i in self.collection:
+			element = doc.createElement ("collection"); element.setAttribute ("name", i)
+			node.appendChild (element)
+			
+			for x in self.collection[i]:
+				tup = self.collection[i][x]
+				
+				if tup != (None, None, None):
+					current = doc.createElement ("value")
+					current.setAttribute ("id", x)
+					
+					if tup [0]:
+						current.setAttribute ("min", str (tup[0]))
+					if tup [1]:
+						current.setAttribute ("max", str (tup[1]))
+					if tup [2]:
+						current.setAttribute ("ideal", str (tup[2]))
+					
+					element.appendChild (current)
+	
+	def dump_preferences (self, node, doc):
+		element = None
+		
+		for i in self.values:
+			if type (self.values[i]) == bool:
+				element = doc.createElement ("bool")
+			elif type (self.values[i]) == str:
+				element = doc.createElement ("string")
+			elif type (self.values[i]) == int:
+				element = doc.createElement ("int")
+			elif type (self.values[i]) == float:
+				element = doc.createElement ("float")
+			
+			if element != None:
+				element.setAttribute ("id", i)
+				element.setAttribute ("value", str (self.values[i]))
+				node.appendChild (element)
+	
+	def get_collection (self, name):
+		if self.collection.has_key (name):
+			return self.collection[name]
+		else:
+			return None
+	
+	def get_names_of_collections (self):
+		lst = []
+		
+		for i in self.collection:
+			lst.append (i)
+		
+		return lst
+
+# Magari sarebbe stato meglio un approccio singletons?
+m_pref = None
+
+def check_instance ():
+	global m_pref
+	
+	if not m_pref:
+		m_pref = Prefs ()
+		m_pref.Load ()
+
+def get (name):
+	global m_pref
+	
+	check_instance ()
+	return m_pref.get (name)
+
+def set (name, val):
+	global m_pref
+	
+	check_instance ()
+	ret = m_pref.get (name)
+	
+	if ret == None or (type (ret) == type (val)):
+		m_pref.set (name, val)
+
+def get_collection (name):
+	global m_pref
+	
+	check_instance ()
+	return m_pref.get_collection (name)
+
+def get_names_of_collections ():
+	global m_pref
+	
+	check_instance ()
+	return m_pref.get_names_of_collections ()
+
+def save ():
+	global m_pref
+	
+	check_instance ()
+	m_pref.save ()

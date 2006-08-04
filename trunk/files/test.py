@@ -32,25 +32,13 @@ import dbwindow
 import datetime
 import impostazioni
 
-# I love chicken
-checks = (
-	(impostazioni.minph, impostazioni.maxph),
-	(impostazioni.minkh, impostazioni.maxkh),
-	(impostazioni.mingh, impostazioni.maxgh),
-	(impostazioni.minno2, impostazioni.maxno2),
-	(impostazioni.minno3, impostazioni.maxno3),
-	(impostazioni.mincon, impostazioni.maxcon),
-	(impostazioni.minam, impostazioni.maxam),
-	(impostazioni.minfe, impostazioni.maxfe),
-	(impostazioni.minra, impostazioni.maxra),
-	(impostazioni.minfo, impostazioni.maxfo)
-)
-
-gcolor = (
+# Listiamo altrimenti nn ci permette la modifica
+gcolor = [
 	gtk.gdk.color_parse ('#bcfffc'), # Minore
 	gtk.gdk.color_parse ('#ff8080'), # Maggiore
-	gtk.gdk.color_parse ('#80ff80')  # OK
-)
+	gtk.gdk.color_parse ('#80ff80'), # OK
+	None  # Non settato.. lo prendo dal gtk.Style
+]
 
 class GraphPage (gtk.ScrolledWindow):
 	
@@ -224,6 +212,8 @@ class GraphPage (gtk.ScrolledWindow):
 		
 		# In caso si usi l'inglese meglio %m-%d
 		window.axis.xaxis.set_major_formatter (DateFormatter(_('%d/%m')))
+		
+		print "limite", window.axis.xaxis.xlim
 		window.axis.legend ()
 		window.canvas.draw ()
 		
@@ -286,6 +276,7 @@ class Test (dbwindow.DBWindow):
 			float,	# calcio
 			float,	# magnesio
 			float,	# densita
+			str,	# Limiti
 			
 			gtk.gdk.Color,	# PH
 			gtk.gdk.Color,	# KH
@@ -296,11 +287,14 @@ class Test (dbwindow.DBWindow):
 			gtk.gdk.Color,	# AMMO
 			gtk.gdk.Color,	# FERRO
 			gtk.gdk.Color,	# RAME
-			gtk.gdk.Color)	# FOSFATI
+			gtk.gdk.Color,	# FOSFATI
+			gtk.gdk.Color,	# CALCIO
+			gtk.gdk.Color,	# MAGNESIO
+			gtk.gdk.Color)	# DENSITA'
 
 		cols = [_('Id'), _('Data'), _('Vasca'), _('Ph'), _('Kh'), _('Gh'), _('No2'), _('No3'),
 			_('Conducibilita\''), _('Ammoniaca'), _('Ferro'), _('Rame'), _('Fosfati'),
-			_('Calcio'), _('Magnesio'), _('Densita\'')]
+			_('Calcio'), _('Magnesio'), _('Densita\''), _('Limiti')]
 		
 		inst = [utils.DataButton (), utils.Combo ()]
 		
@@ -308,21 +302,27 @@ class Test (dbwindow.DBWindow):
 			spin = utils.FloatEntry ()
 			spin.connect ('output', self.on_spin_change)
 			inst.append (spin)
+		
+		inst.append (utils.Combo ()) # Combo per i limiti
 
 		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst,
 									True) # different renderer
 		
 		for y in utils.get ('select * from test'):
 			lst.append ([y[0], y[1], y[2], y[3], y[4],
-					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15],
-					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2]])
+					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15], y[16],
+					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2]])
 		
 		for y in utils.get ('select * from vasca'):
 			self.vars[1].append_text (y[3])
 		
+		# Riempo con i limiti
+		for y in impostazioni.get_names_of_collections ():
+			self.vars[15].append_text (y)
+		
 		# Scan sulle colonne
-		for i in self.view.get_columns ()[3:13]:
-			i.add_attribute (i.get_cell_renderers ()[0], 'cell_background-gdk', self.view.get_columns().index (i) + 13)
+		for i in self.view.get_columns ()[3:16]:
+			i.add_attribute (i.get_cell_renderers ()[0], 'cell_background-gdk', self.view.get_columns().index (i) + 14)
 		
 		mod = self.view.get_model ()
 		it = mod.get_iter_first ()
@@ -330,6 +330,9 @@ class Test (dbwindow.DBWindow):
 		while it != None:
 			self.check_iterator (mod, it)
 			it = mod.iter_next (it)
+		
+		
+		gcolor[3] = self.get_style ().copy ().bg[gtk.STATE_NORMAL]
 
 		self.set_title (_("Test"))
 		self.set_size_request (600, 400)
@@ -413,8 +416,9 @@ class Test (dbwindow.DBWindow):
 		calcio = self.vars[12].get_text ()
 		magnesio = self.vars[13].get_text ()
 		densita = self.vars[14].get_text ()
+		limiti = self.vars[15].get_text ()
 		
-		utils.cmd("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)s' where id=%(id)s" % vars ())
+		utils.cmd("update test set date='%(data)s', vasca='%(vasca)s', ph='%(ph)s', kh='%(kh)s', gh='%(gh)s', no='%(no)s', noo='%(no2)s', con='%(cond)s', amm='%(ammo)s', fe='%(ferro)s', ra='%(rame)s', fo='%(fosfati)s', calcio='%(calcio)s', magnesio='%(magnesio)s', densita='%(densita)s', limiti='%(limiti)s' where id=%(id)s" % vars ())
 		
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row Aggiornata (ID: %d") % id)
 		
@@ -425,7 +429,7 @@ class Test (dbwindow.DBWindow):
 
 		id = mod.get_value (it, 0)
 		
-		utils.cmd ('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', id,
+		utils.cmd ('insert into test values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', id,
 				self.vars[0].get_text (),
 				self.vars[1].get_text (),
 				self.vars[2].get_text (),
@@ -440,7 +444,8 @@ class Test (dbwindow.DBWindow):
 				self.vars[11].get_text (),
 				self.vars[12].get_text (),
 				self.vars[13].get_text (),
-				self.vars[14].get_text ()
+				self.vars[14].get_text (),
+				self.vars[15].get_text ()
 		)
 
 		self.update_status(dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
@@ -462,13 +467,38 @@ class Test (dbwindow.DBWindow):
 		id = self.vars.index (widget)
 		id -= 2
 		
-		#print id
-		if id < 10:
+		if id < 16:
+			mod, it = self.view.get_selection ().get_selected ()
+			
+			if it == None: return
+			
+			checks = impostazioni.get_collection (mod.get_value (it, 16))
+			keys = ('ph', 'kh', 'gh', 'no2', 'no3', 'con', 'am', 'fe', 'ra', 'fo', 'cal', 'mag', 'den')
+			
+			# Resettiamo il colore iniziale
+			widget.modify_bg (gtk.STATE_NORMAL, gcolor[3])
+			
+			if not checks.has_key (keys[id]):
+				widget.set_sensitive (False)
+				return
+			else:
+				widget.set_sensitive (True)
+			
+			check = checks [keys [id]]
+			# FIXME: levami di torno :(
+			print keys[id], check
+			
 			val = widget.get_value ()
 			
-			if val < float (checks[id][0]):
+			if check[0] == None and check[1] == None:
+				widget.set_sensitive (False)
+				return
+			else:
+				widget.set_sensitive (True)
+			
+			if val < check[0]:
 				widget.modify_bg (gtk.STATE_NORMAL, gcolor[0])
-			elif val > float (checks[id][1]):
+			elif val > check[1]:
 				widget.modify_bg (gtk.STATE_NORMAL, gcolor[1])
 			else:
 				widget.modify_bg (gtk.STATE_NORMAL, gcolor[2])
@@ -493,18 +523,30 @@ class Test (dbwindow.DBWindow):
 			self.grapher.plot (lst)
 	
 	def check_iterator (self, mod, it):
-		for i in range (len (checks)):
-			val = mod.get_value (it, i + 3)
-			
-			col = self.view.get_column (i + 3)
-			cell = col.get_cell_renderers ()[0]
-			
-			if val < float (checks[i][0]):
-				mod.set_value (it, i + 13 + 3, gcolor[0])
-			elif val > float (checks[i][1]):
-				mod.set_value (it, i + 13 + 3, gcolor[1])
-			else:
-				mod.set_value (it, i + 13 + 3, gcolor[2])
+		# TODO: implementare i valori ideali
+		
+		if it == None: return
+		
+		checks = impostazioni.get_collection (mod.get_value (it, 16))
+		
+		if checks == None: return
+		
+		keys = ('ph', 'kh', 'gh', 'no2', 'no3', 'con', 'am', 'fe', 'ra', 'fo', 'cal', 'mag', 'den')
+		x = 0
+		
+		for i in keys:
+			if checks.has_key (i):
+				val = mod.get_value (it, x + 3)
+				
+				if val < checks[i][0]:
+					mod.set_value (it, x + 14 + 3, gcolor[0])
+				elif val > checks[i][1]:
+					mod.set_value (it, x + 14 + 3, gcolor[1])
+				#elif val == checks[i][2]:
+				#	print "Ideal value"
+				else:
+					mod.set_value (it, x + 14 + 3, gcolor[2])
+			x += 1
 
 try:
 	import matplotlib

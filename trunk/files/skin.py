@@ -22,7 +22,7 @@
 import gtk
 import os
 import utils
-import impostazioni
+from impostazioni import set, save
 
 class Skin (gtk.Window):
 	def __init__ (self):
@@ -138,8 +138,8 @@ class Skin (gtk.Window):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		if it != None:
-			impostazioni.skin = mod.get_value (it, 0)
-			impostazioni.save ()
+			set ("skin", mod.get_value (it, 0))
+			save ()
 			self.exit ()
 
 	def on_delete (self, widget):

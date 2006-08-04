@@ -22,7 +22,7 @@
 import gtk
 import random
 import os.path
-import impostazioni
+from impostazioni import get, set, save
 
 class TipsDialog(gtk.Dialog):
 	exist = False
@@ -53,7 +53,7 @@ class TipsDialog(gtk.Dialog):
 
 		self.check = gtk.CheckButton(_('Non mostrare al prossimo avvio'))
 		
-		if impostazioni.show_tips == "1":
+		if get ("show_tips"):
 			self.check.set_active(False)
 		else:
 			self.check.set_active(True)
@@ -73,20 +73,20 @@ class TipsDialog(gtk.Dialog):
 			self.hide()
 			
 			if self.check.get_active():
-				impostazioni.show_tips = "0"
+				set ("show_tips", False)
 			else:
-				impostazioni.show_tips = "1"
-
-			impostazioni.save()
+				set ("show_tips", True)
+			
+			save()
 			
 			self.destroy()
-
+			
 			TipsDialog.exist = False
 	
 	def tip(self):
 
 #FIXME: il file dei tips e' codificato male
-#		if impostazioni.lang.lower() == "en":
+#		if get ("lang").lower() == "en":
 #			tip_file = open(os.path.join('files', 'tip_of_the_day_en.txt'), 'r')
 #		else:
 		tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')

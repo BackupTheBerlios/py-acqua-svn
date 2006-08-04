@@ -21,7 +21,7 @@
 
 
 import gtk
-import impostazioni
+from impostazioni import set, get, save
 
 class LangWindow (gtk.Window):
 	def __init__ (self):
@@ -75,9 +75,9 @@ class LangWindow (gtk.Window):
 
 		self.add (mbox)
 
-		if impostazioni.lang.lower () == "it":
+		if get("lang").lower () == "it":
 			it.set_active (True)
-		elif impostazioni.lang.lower () == "en":
+		elif get("lang").lower () == "en":
 			en.set_active (True)
 
 		self.show_all ()
@@ -87,11 +87,11 @@ class LangWindow (gtk.Window):
 	
 	def on_ok (self, widget):
 		if self.en.get_active ():
-			impostazioni.lang = "en"
+			set ("lang", "en")
 		elif self.it.get_active ():
-			impostazioni.lang = "it"
+			set ("lang", "it")
 		else:
 			return
 
-		impostazioni.save ()
+		save ()
 		self.exit ()

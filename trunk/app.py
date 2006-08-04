@@ -20,6 +20,8 @@
 
 import gtk
 import os
+import files.utils as utils
+from files.impostazioni import get
 
 App = None
 
@@ -146,16 +148,13 @@ class Gui(gtk.Window):
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
 		
-		import files.impostazioni
-		import files.utils		
-		
 		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
 		image = gtk.Image()
 		
-		file = os.path.join(files.utils.SKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
+		file = os.path.join (utils.SKIN_DIR, os.path.join (get ("skin"), "main.png"))
 		
 		if not os.path.exists (file):
-			file = os.path.join(files.utils.DSKIN_DIR, os.path.join(files.impostazioni.skin, "main.png"))
+			file = os.path.join (utils.DSKIN_DIR, os.path.join (get ("skin"), "main.png"))
 		
 		if os.path.exists (file):
 			image.set_from_file(file)
@@ -172,8 +171,7 @@ class Gui(gtk.Window):
 		self.show_all()
 		self.connect('destroy', self.exit)
 		
-		import files.impostazioni
-		if files.impostazioni.show_tips == "1":
+		if get ("show_tips"):
 			import files.tips
 			files.tips.TipsDialog()
   
