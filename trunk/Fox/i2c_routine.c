@@ -28,8 +28,8 @@ instead of /dev/gpiob
 #include "asm/etraxgpio.h"
 
 
-#define I2C_DATA_LINE       1<<7
-#define I2C_CLOCK_LINE      1<<6
+#define I2C_DATA_LINE       1<<24
+#define I2C_CLOCK_LINE      1<<25
 
 #ifndef IO_SETGET_INPUT
   #define IO_SETGET_INPUT   0x12
