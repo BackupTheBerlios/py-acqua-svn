@@ -26,6 +26,7 @@ instead of /dev/gpiob
 #include "sys/ioctl.h"
 #include "fcntl.h"     
 #include "asm/etraxgpio.h"
+#include "stdio.h"
 
 
 #define I2C_DATA_LINE       1<<24
@@ -401,7 +402,6 @@ void timenow (int modo)
  }
 }
 
-
 void datanow (void)
 {
  int gio,mes,ann;
@@ -432,7 +432,6 @@ system ("clear");
 giorno_in=read_day();
 mese_in=read_month();
 anno_in=read_year();
-
 
 printf ("Giorno (gg): (%02X)  ",giorno_in);scanf ("%X",&giorno_in);
 printf ("Mese (mm): (%02X)  ",mese_in);scanf ("%X",&mese_in);
@@ -550,9 +549,12 @@ int  main (void)
 	ds1307_init();
 
 	input_data();
-	set_data(giorno_in,mese_in,anno_in);
+	set_data(26,7,2006);
+	input_data();
+	printf (" \r\n");
 	input_ora();
-	set_ora(ora_in,minuto_in);
+	set_ora(20,30);
+	input_ora();
 
         //timenow(0);
         //datanow();
