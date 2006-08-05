@@ -78,7 +78,11 @@ class Prefs(object):
 		print self.values
 		print self.collection
 	def Load (self):
-		doc = parse (os.path.join (utils.HOME_DIR, "pyacqua.xml"))
+		try:
+			doc = parse (os.path.join (utils.HOME_DIR, "pyacqua.xml"))
+		except:
+			print "pyacqua.xml not found.. using default values"
+			return
 		
 		if doc.documentElement.tagName == "pyacqua": # Seems valid
 			
