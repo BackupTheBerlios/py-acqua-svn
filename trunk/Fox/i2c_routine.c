@@ -133,7 +133,7 @@ void i2c_dir_in(void) {
 
 // Open the GPIOB dev 
 int i2c_open(void) {
-  i2c_fd = open("/dev/gpiog", O_RDWR);
+  i2c_fd = open("/dev/gpiob", O_RDWR);
   i2c_data(1);
   i2c_dir_out();
   i2c_clk(1);
