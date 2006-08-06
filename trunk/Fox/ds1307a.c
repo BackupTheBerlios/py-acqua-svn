@@ -201,65 +201,61 @@ void i2c_stop(void) {
 
 // Send a byte to the I2C bus and return the ack sequence from slave
 int i2c_outbyte(unsigned char x) {
-  int i;
-  int ack;
-
-  i2c_clk(0);
-  for (i=0;i<8;i++) {
-    if (x & 0x80) 
-      i2c_data(1);
-    else
-      i2c_data(0);
-    i2c_clk(1);
-    udelay(5);
+    int i;
+    int ack;
+    
     i2c_clk(0);
-    udelay(5);
-    x <<= 1;
-  }
-  i2c_data(0);
-  i2c_dir_in();
-  i2c_clk(1);
-  ack=i2c_getbit();
-  i2c_clk(0);
-  i2c_dir_out();
-  if (ack==0)
-    return 1;
-  else 
-    return 0;
+    for (i=0;i<8;i++) {
+        if (x & 0x80) 
+        i2c_data(1);
+        else
+        i2c_data(0);
+        i2c_clk(1);
+        udelay(5);
+        i2c_clk(0);
+        udelay(5);
+        x <<= 1;
+    }
+    i2c_data(0);
+    i2c_dir_in();
+    i2c_clk(1);
+    ack=i2c_getbit();
+    i2c_clk(0);
+    i2c_dir_out();
+    if (ack==0)
+        return 1;
+    else 
+        return 0;
 }
-
-
 //LETTURA PRESSIONE
 float PressureRead (void){
-  unsigned char buf[2];
-  int i;
-  float pressure;
-  
-  i2c_stop();
-  i2c_start();
-  if (i2c_outbyte(0xF1)==0) {
-    i2c_stop();
-    printf("Ricevuto NACK 1\n");
-    return -1;
-  }
-  buf[0]=i2c_inbyte(1); 
-  buf[1]=i2c_inbyte(0); 
-  i2c_stop();
+    unsigned char buf[2];
+    int i;
+    float pressure;
 
-  printf ("Byte 1: [%03d] Byte 2 [%03d]\n",buf[0],buf[1]);
-  
-  // Converto in float
-  i=buf[0];
-  i<<=8;
-  i+=buf[1];
-  pressure=0.09375*i+762.5;
-  
-  return pressure;
+    i2c_stop();
+    i2c_start();
+    if (i2c_outbyte(0xF1)==0) {
+        i2c_stop();
+        printf("Ricevuto NACK 1\n");
+        return -1;
+    }
+    buf[0]=i2c_inbyte(1); 
+    buf[1]=i2c_inbyte(0); 
+    i2c_stop();
+
+    printf ("Byte 1: [%03d] Byte 2 [%03d]\n",buf[0],buf[1]);
+
+    // Converto in float
+    i=buf[0];
+    i<<=8;
+    i+=buf[1];
+    pressure=0.09375*i+762.5;
+
+    return pressure;
 }
 
-
-short int read_sec (void)
-{
+short int read_sec (void) {
     short int secs;
     i2c_stop();
     i2c_start();
@@ -272,8 +268,7 @@ short int read_sec (void)
     return secs;
 }
 
-short int read_min (void)
-{
+short int read_min (void) {
     short int mins;
     i2c_stop();
     i2c_start();
@@ -286,8 +281,7 @@ short int read_min (void)
     return mins;
 }
 
-short int read_hour (void)
-{
+short int read_hour (void) {
     short int hours;
     i2c_stop();
     i2c_start();
@@ -300,8 +294,7 @@ short int read_hour (void)
     return hours;
 }
 
-short int read_daysett (void)
-{
+short int read_daysett (void) {
     short int daysett;
     i2c_stop();
     i2c_start();
@@ -314,8 +307,7 @@ short int read_daysett (void)
     return daysett;
 }
 
-short int read_day (void)
-{
+short int read_day (void) {
     short int days;
     i2c_stop();
     i2c_start();
@@ -328,8 +320,7 @@ short int read_day (void)
     return days;
 }
 
-short int read_month (void)
-{
+short int read_month (void) {
     short int months;
     i2c_stop();
     i2c_start();
@@ -342,8 +333,7 @@ short int read_month (void)
     return months;
 }
 
-short int read_year (void)
-{
+short int read_year (void) {
     short int years;
     i2c_stop();
     i2c_start();
@@ -356,9 +346,7 @@ short int read_year (void)
     return years;
 }
 
-//INIZIALIZZAZIONE RTC_DS1307
-void ds1307_init (void)
-{
+void ds1307_init (void) {
     short int secondi;
     secondi=read_sec();
     i2c_stop();
@@ -550,7 +538,10 @@ int  main (void) {
 
     input_ora();
     set_ora(ora_in,minuto_in);
-    printf("Ora sul DS1307: %d:%d",read_hour(),read_min());
+    while (1){
+        printf("Ora sul DS1307: %d:%d:%d",read_hour(),read_min(),read_sec());
+        sleep(10);
+    }
 
     //timenow(0);
     //datanow();
