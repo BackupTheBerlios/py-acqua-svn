@@ -490,6 +490,7 @@ void set_ora (short int o_in, short int min_in) {
 }
 
 void setsystemdate (void) {
+
     int giorno,mese,anno,ore,minuti;
 
     char comando[20]="date ";
@@ -526,6 +527,8 @@ void setsystemdate (void) {
 
     system(comando);
 }
+
+
 
 int  main (void) {
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }

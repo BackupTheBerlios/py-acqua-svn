@@ -55,6 +55,8 @@
 
 int i2c_fd;
 
+
+
 // Get the SDA line state - OK
 int i2c_getbit(void) {
 	unsigned int value;
@@ -90,7 +92,7 @@ void i2c_dir_in(void) {
 }
 
 // Read a byte from I2C bus and send the ack sequence - From kernel and tanzilli code (da rivedere)
-unsigned char i2c_inbyte(void) {
+unsigned char i2c_inbyte(int ack) {
 	unsigned char value = 0;
 	int bitvalue;
 	int i;
