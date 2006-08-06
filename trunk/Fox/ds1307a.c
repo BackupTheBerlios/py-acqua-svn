@@ -54,8 +54,7 @@ int giorno_in,mese_in,anno_in,ora_in,minuto_in;
 //-----------------------------
 
 
-void itoa(int valore, int base)
-{
+void itoa(int valore, int base){
   int i, tmp;
  
   for (i=2-1; i>=0; i--)
@@ -66,7 +65,6 @@ void itoa(int valore, int base)
      valore=valore/base;
     }
 }
-
 
 // Software delay in us
 void udelay(int us) {
@@ -81,7 +79,6 @@ void udelay(int us) {
     }
   }  
 }   
-
 
 // Software delay in ms
 void msDelay(int ms) {
@@ -227,6 +224,9 @@ int i2c_outbyte(unsigned char x) {
     else 
         return 0;
 }
+
+
+
 //LETTURA PRESSIONE
 float PressureRead (void){
     unsigned char buf[2];
@@ -534,25 +534,13 @@ int  main (void) {
 
     input_data();
     set_data(giorno_in,mese_in,anno_in);
-    printf("Data sul DS1307: %d/%d/%d",read_day(),read_month(),read_year());
+    printf("Data sul DS1307: %d/%d/%d\r\n",read_day(),read_month(),read_year());
 
     input_ora();
     set_ora(ora_in,minuto_in);
     while (1){
-        printf("Ora sul DS1307: %d:%d:%d",read_hour(),read_min(),read_sec());
+        printf("Ora sul DS1307: %d:%d:%d\r\n",read_hour(),read_min(),read_sec());
         sleep(10);
     }
-
-    //timenow(0);
-    //datanow();
-    //printf ("%s \r\n", " ");
-    //printf("Data: %s \r\n",data_attuale);
-    //printf("Ora: %s \r\n",orario);
-    //printf ("%s \r\n", " ");
-
-    //printf ("%s \r\n", " ");
-    //setsystemdate();
-    //printf ("%s \r\n", " ");
-
     return 1;
 }
