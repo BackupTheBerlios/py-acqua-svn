@@ -33,10 +33,10 @@ instead of /dev/gpiob
 #define I2C_CLOCK_LINE      1<<25
 
 #ifndef IO_SETGET_INPUT
-  #define IO_SETGET_INPUT   0x12
+#define IO_SETGET_INPUT   0x12
 #endif
 #ifndef IO_SETGET_OUTPUT
-  #define IO_SETGET_OUTPUT  0x13
+#define IO_SETGET_OUTPUT  0x13
 #endif
 
 int i2c_fd;
@@ -133,7 +133,7 @@ void i2c_dir_in(void) {
 
 // Open the GPIOB dev 
 int i2c_open(void) {
-  i2c_fd = open("/dev/gpiob", O_RDWR);
+  i2c_fd = open("/dev/gpiog", O_RDWR);
   i2c_data(1);
   i2c_dir_out();
   i2c_clk(1);
