@@ -1,33 +1,19 @@
-/*************************************************
-Collegamenti elettrici:
-  PB7 (pin 37 FOX) --> SDA
-  PB6 (pin 38 FOX) --> SCK
-  VCC +5V (pin 12 FOX ) -- VCC
-  GND (pin 40 FOX ) -- GND
-****************************************************/
-
-/*********************************************
-
-Qua e da fare la modifica perche con i pin di sopra 
-nn funziona
-
-2) Andrea suggests me to use OG25 J7.13 as SCL
-and IOG24 J7.21 as SDA. So the us_i2c.c change :
-
-#define I2C_DATA_LINE        1<<24
-#define I2C_CLOCK_LINE        1<<25
-
-and in the function i2c_open we must use
-i2c_fd = open("/dev/gpiog", O_RDWR);
-instead of /dev/gpiob
-*********************************************/
 
 #include "unistd.h"    
 #include "sys/ioctl.h"
 #include "fcntl.h"     
 #include "asm/etraxgpio.h"
-#include "stdio.h"
 
+#define CLOCK_LOW_TIME            8
+#define CLOCK_HIGH_TIME           8
+#define START_CONDITION_HOLD_TIME 8
+#define STOP_CONDITION_HOLD_TIME  8
+#define ENABLE_OUTPUT 0x01
+#define ENABLE_INPUT 0x00
+#define I2C_CLOCK_HIGH 1
+#define I2C_CLOCK_LOW 0
+#define I2C_DATA_HIGH 1
+#define I2C_DATA_LOW 0
 
 #define I2C_DATA_LINE       1<<24
 #define I2C_CLOCK_LINE      1<<25
@@ -38,6 +24,8 @@ instead of /dev/gpiob
 #ifndef IO_SETGET_OUTPUT
 #define IO_SETGET_OUTPUT  0x13
 #endif
+
+#define i2c_delay(usecs) usleep(usecs)
 
 int i2c_fd;
 char orario[9];
@@ -132,15 +120,26 @@ void i2c_dir_in(void) {
 }
 
 // Open the GPIOB dev 
+//int i2c_open(void) {
+//  i2c_fd = open("/dev/gpiog", O_RDWR);
+//  i2c_data(1);
+//  i2c_dir_out();
+//  i2c_clk(1);
+//  i2c_data(1);
+//  udelay(100);
+//  return i2c_fd;
+//}
+
 int i2c_open(void) {
   i2c_fd = open("/dev/gpiog", O_RDWR);
-  i2c_data(1);
-  i2c_dir_out();
-  i2c_clk(1);
-  i2c_data(1);
-  udelay(100);
+	i2c_data(I2C_DATA_HIGH);
+ 	i2c_dir_out();
+	i2c_clk(I2C_CLOCK_HIGH);
+	i2c_data(I2C_DATA_HIGH);
+	i2c_delay(100);
   return i2c_fd;
 }
+
 
 // Close the GPIOB dev 
 void i2c_close(void) {
@@ -402,6 +401,7 @@ void timenow (int modo)
  }
 }
 
+
 void datanow (void)
 {
  int gio,mes,ann;
@@ -432,6 +432,7 @@ system ("clear");
 giorno_in=read_day();
 mese_in=read_month();
 anno_in=read_year();
+
 
 printf ("Giorno (gg): (%02X)  ",giorno_in);scanf ("%X",&giorno_in);
 printf ("Mese (mm): (%02X)  ",mese_in);scanf ("%X",&mese_in);
@@ -542,6 +543,7 @@ comando[17]='\0';
 system(comando);
 }
 
+
 int  main (void)
 {
      if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
@@ -549,12 +551,9 @@ int  main (void)
 	ds1307_init();
 
 	input_data();
-	set_data(26,7,2006);
-	input_data();
-	printf (" \r\n");
+	set_data(giorno_in,mese_in,anno_in);
 	input_ora();
-	set_ora(20,30);
-	input_ora();
+	set_ora(ora_in,minuto_in);
 
         //timenow(0);
         //datanow();
@@ -564,7 +563,7 @@ int  main (void)
 	//printf("Ora: %s \r\n",orario);
 	//printf ("%s \r\n", " ");
 	
-	//printf ("%s \r\n", " ");
-	//setsystemdate();
-	//printf ("%s \r\n", " ");
+	printf ("%s \r\n", " ");
+	setsystemdate();
+	printf ("%s \r\n", " ");
 }
