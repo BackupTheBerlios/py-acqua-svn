@@ -21,6 +21,7 @@
 
 
 import gtk
+import utils
 from impostazioni import set, get, save
 
 class LangWindow (gtk.Window):
@@ -29,7 +30,9 @@ class LangWindow (gtk.Window):
 
 		self.set_title (_("PyAcqua - Selezione Lingua"))
 		self.set_size_request (400, 200)
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
+		
 		self.connect ('delete-event', self.exit)
 
 		mbox = gtk.VBox ()

@@ -58,6 +58,8 @@ class Vasca (dbwindow.DBWindow):
 		self.set_title (_("Vasche"))
 		self.set_size_request (700, 500)
 		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
 
 		self.menu = gtk.Menu ()
 

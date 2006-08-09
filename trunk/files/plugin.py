@@ -34,7 +34,8 @@ class Plugin(gtk.Window):
 		gtk.Window.__init__(self)
 		self.set_title(_("Plug-in"))
 		self.set_resizable(False)
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
 		self.set_size_request(500, 150)
 				
 		box = gtk.VBox()

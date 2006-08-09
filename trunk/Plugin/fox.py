@@ -30,6 +30,7 @@ class fox(gtk.Window):
 	__desc__ = "Plugin per fox"
 	__ver__ = "0.0.1"
 	__author__ = "PyAcqua team"
+	__preferences__ = {}
 
 	def __init__(self):
 		gtk.Window.__init__ (self)

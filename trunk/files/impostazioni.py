@@ -26,42 +26,42 @@ from xml.dom.minidom import parse, getDOMImplementation
 
 # Valori per il tipo dolce
 dolce_values = {
-	'ph' :	(6, 8, None),
-	'kh' :	(3, 8, None),
-	'gh' :	(7, 20, None),
-	'no2' :	(0, 0.7, None),
-	'no3' :	(20, 100, None),
-	'con' :	(100, 1500, None),
-	'am' :	(0, 0.5, None),
-	'fe' :	(3, 6, None),
-	'ra' :	(0, 0.3, None),
-	'fo' :	(0, 3, None),
+	'ph' :	[6, 8, None],
+	'kh' :	[3, 8, None],
+	'gh' :	[7, 20, None],
+	'no2' :	[0, 0.7, None],
+	'no3' :	[20, 100, None],
+	'con' :	[100, 1500, None],
+	'am' :	[0, 0.5, None],
+	'fe' :	[3, 6, None],
+	'ra' :	[0, 0.3, None],
+	'fo' :	[0, 3, None],
 	
 	# Questi tre nn vengono utilizzati attualmente
 	
-	'cal' :	(None, None, None),	# valore marino (inutilizzato qui)
-	'mag' :	(None, None, None),	# idem
-	'den' :	(None, None, None)	# lo stesso
+	'cal' :	[None, None, None],	# valore marino (inutilizzato qui)
+	'mag' :	[None, None, None],	# idem
+	'den' :	[None, None, None]	# lo stesso
 }
 
 # Valori per il tipo marino
 marino_values = {
-	'ph' :	(7.7, 8.5, None),
-	'kh' :	(4, 11, None),
-	'gh' :	(None, None, None),	# inutilizzato.. valore troppo alto
-	'no2' :	(0, 0.5, None),		# 0 valore ideale
-	'no3' :	(0, 50,	None),		# idem
-	'con' :	(None, None, None),	# inutilizzato
-	'am' :	(0, 0.5, None),
-	'fe' :	(0, 3, None),
-	'ra' :	(0, 0.5, None),
-	'fo' :	(0, 0.7, None),
+	'ph' :	[7.7, 8.5, None],
+	'kh' :	[4, 11, None],
+	'gh' :	[None, None, None],	# inutilizzato.. valore troppo alto
+	'no2' :	[0, 0.5, None],		# 0 valore ideale
+	'no3' :	[0, 50,	None],		# idem
+	'con' :	[None, None, None],	# inutilizzato
+	'am' :	[0, 0.5, None],
+	'fe' :	[0, 3, None],
+	'ra' :	[0, 0.5, None],
+	'fo' :	[0, 0.7, None],
 	
 	# Non vengono utilizzati
 	
-	'cal' :	(300, 500, None),
-	'mag' :	(1100, 1500, None),
-	'den' :	(1020, 1028, None)
+	'cal' :	[300, 500, None],
+	'mag' :	[1100, 1500, None],
+	'den' :	[1020, 1028, None]
 }
 
 gui_values = {
@@ -141,7 +141,10 @@ class Prefs(object):
 			else:
 				val = converter (val)
 			
-			old = self.values [id]
+			old = None
+			
+			if self.values.has_key(id):
+				old = self.values [id]
 			
 			if old != None:
 				if type (old) == type (val):
@@ -238,6 +241,13 @@ class Prefs(object):
 			lst.append (i)
 		
 		return lst
+	
+	def delete_collection (self, name):
+		if self.collection.has_key (name):
+			del self.collection[name]
+	
+	def add_collection (self, name, collection):
+		self.collection [name] = collection
 
 # Magari sarebbe stato meglio un approccio singletons?
 m_pref = None
@@ -275,6 +285,18 @@ def get_names_of_collections ():
 	
 	check_instance ()
 	return m_pref.get_names_of_collections ()
+
+def delete_collection (name):
+	global m_pref
+	
+	check_instance ()
+	m_pref.delete_collection (name)
+
+def add_collection (name, collection):
+	global m_pref
+	
+	check_instance ()
+	m_pref.add_collection (name, collection)
 
 def save ():
 	global m_pref

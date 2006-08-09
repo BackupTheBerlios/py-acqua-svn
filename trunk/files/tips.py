@@ -22,6 +22,7 @@
 import gtk
 import random
 import os.path
+import utils
 from impostazioni import get, set, save
 
 class TipsDialog(gtk.Dialog):
@@ -42,7 +43,9 @@ class TipsDialog(gtk.Dialog):
 		self.textview = gtk.TextView()
 		self.textview.set_wrap_mode(gtk.WRAP_WORD)
 		self.textbuffer = self.textview.get_buffer()
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
+		
 		sw = gtk.ScrolledWindow()
 		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)

@@ -57,7 +57,9 @@ class Importa (gtk.Window):
 		gtk.Window.__init__ (self)
 
 		self.set_title (_("Importa/Esporta Database"))
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
+		
 		self.connect ('delete-event', self.exit)
 	
 		vbox = gtk.VBox()

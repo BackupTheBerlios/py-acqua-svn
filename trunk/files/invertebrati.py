@@ -39,7 +39,7 @@ class Invertebrati (dbwindow.DBWindow):
 		
 		self.set_title (_("Invertebrati"))
 		self.set_size_request (600, 400)
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		utils.set_icon (self)
 
 	def after_refresh (self, it):
 		mod, it = self.view.get_selection ().get_selected ()

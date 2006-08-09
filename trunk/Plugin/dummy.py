@@ -1,14 +1,23 @@
 import app
 import gtk
+import files.impostazioni as impostazioni
 
 class dummy:
 	__name__ = "dummy plugin"
 	__desc__ = "a dummy plugin"
 	__ver__ = "0.0.1"
 	__author__ = "PyAcqua team"
+	__preferences__ = {
+		'dummy_nervose_mode' : False
+	}
 
 	def start (self):
 		print ">> Starting", self.__name__
+		
+		print ">> Dummy.. showtips :", impostazioni.get("show_tips")
+		
+		if impostazioni.get("dummy_nervose_mode"):
+			print "Porcoddio -.-"
 		
 		menu = app.App.get_plugin_menu ()
 

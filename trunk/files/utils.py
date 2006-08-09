@@ -22,6 +22,7 @@
 import gtk
 import os
 import os.path
+import sys
 from pysqlite2 import dbapi2 as sqlite
 
 HOME_DIR = None
@@ -31,7 +32,7 @@ UPDT_DIR = None
 SKIN_DIR = None
 
 # FIXME: prima della release
-DHOME_DIR = os.getcwd ()	# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
+DHOME_DIR = sys.path[0]		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
 				# o robe simili
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
@@ -163,6 +164,37 @@ class FloatEntry(gtk.SpinButton):
 	
 	def get_text(self):
 		return self.get_value()
+
+class CheckedFloatEntry (gtk.HBox):
+	def __init__ (self, min=0, max=9999, inc=0.1, page=1):
+		gtk.HBox.__init__ (self, 0, False)
+		
+		self.check = gtk.CheckButton ()
+		self.check.connect ('toggled', self.on_switch)
+		
+		self.float_entry = FloatEntry (min, max, inc, page)
+		
+		self.pack_start (self.check, False, False, 0)
+		self.pack_start (self.float_entry, False, False, 0)
+		
+		self.check.set_active (True)
+	
+	def on_switch (self, widget):
+		self.float_entry.set_sensitive (widget.get_active ())
+		
+	def set_text (self, value):
+		self.float_entry.set_text (value)
+		
+		if value == None:
+			self.check.set_active (False)
+		else:
+			self.check.set_active (True)
+	
+	def get_text (self):
+		if self.check.get_active ():
+			return self.float_entry.get_value ()
+		else:
+			return None
 
 class IntEntry(FloatEntry):
 	def __init__(self):
@@ -354,6 +386,21 @@ class FileChooser(gtk.FileChooserDialog):
 		
 		chooser.set_preview_widget_active(True)
 
+def msg (text, type=gtk.MESSAGE_WARNING, flags=gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT, parent=None, buttons=gtk.BUTTONS_OK):
+	d = gtk.MessageDialog (parent, flags, type, buttons, text)
+	
+	d.run ()
+	d.hide (); d.destroy ()
+
+def warning (text):
+	msg (text)
+
+def info (text):
+	msg (text, gtk.MESSAGE_INFO)
+
+def error (text):
+	msg (text, gtk.MESSAGER_ERROR)
+
 def new_label (txt, bold=True, x=0, y=0):
 	lbl = gtk.Label ()
 	
@@ -384,7 +431,10 @@ def new_button (txt, stock=None):
 	button.add (hb)
 	
 	return button
-				
+
+def set_icon (window):
+	window.set_icon_from_file (os.path.join (DPIXM_DIR, "logopyacqua.jpg"))
+
 def make_thumb (twh, w, h):
 	if w == h:
 		return twh, twh

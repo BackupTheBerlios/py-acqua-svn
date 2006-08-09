@@ -336,7 +336,8 @@ class Test (dbwindow.DBWindow):
 
 		self.set_title (_("Test"))
 		self.set_size_request (600, 400)
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		
+		utils.set_icon (self)
 		
 		self.note.set_current_page (0)
 		self.show_all ()

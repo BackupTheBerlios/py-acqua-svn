@@ -21,7 +21,7 @@
 
 import os
 __builtins__.__dict__["_"] = lambda x : x
-os.environ['PATH'] += r";lib;etc;bin;ghost\gs8.53\bin"
+os.environ['PATH'] += r";lib;etc;bin"
 
 import webbrowser
 import locale
@@ -79,7 +79,7 @@ import files.engine
 
 path = os.path.join (utils.DATA_DIR, "db")
 if not os.path.exists (path):
-	connessione=sqlite.connect (path)
+	connessione=utils.connect ()
 	cursore=connessione.cursor()
 	cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
@@ -100,3 +100,6 @@ if __name__ == "__main__":
 	gtk.gdk.threads_enter ()
 	app.App.main()
 	gtk.gdk.threads_leave ()
+	
+	print "Saving preferences before exiting..."
+	files.impostazioni.save ()

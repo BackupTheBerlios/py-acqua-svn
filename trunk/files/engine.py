@@ -24,12 +24,14 @@
 import os
 import glob
 import sys
+import impostazioni
 
 class Plugin:
 	__name__ = ""
 	__desc__ = ""
 	__ver__ = ""
 	__author__ = ""
+	__preferences__ = {}
 	
 	def start (self):
 		pass
@@ -72,6 +74,18 @@ class PluginEngine:
 					return False
 			
 			plugin = instance ()
+			
+			# Roba di preferenze... raccomandati di merda -.- gh
+			
+			for i in plugin.__preferences__:
+				ret = impostazioni.get (i)
+				
+				if ret == None:
+					impostazioni.set (i, plugin.__preferences__[i])
+				else:
+					if type (ret) == type (plugin.__preferences__[i]):
+						plugin.__preferences__[i] = ret
+			
 			plugin.start ()
 			
 			self.array.append (plugin)

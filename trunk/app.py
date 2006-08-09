@@ -148,7 +148,8 @@ class Gui(gtk.Window):
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
 		
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		utils.set_icon (self)
+		
 		image = gtk.Image()
 		
 		file = os.path.join (utils.SKIN_DIR, os.path.join (get ("skin"), "main.png"))
@@ -158,6 +159,20 @@ class Gui(gtk.Window):
 		
 		if os.path.exists (file):
 			image.set_from_file(file)
+		
+		# Proviamo ad applicare lo stile gtk se presente
+		path = os.path.join (get ("skin"), "gtkrc")
+		
+		if os.path.exists (os.path.join (utils.SKIN_DIR, path)):
+			path = os.path.join (utils.SKIN_DIR, path)
+		elif os.path.exists (os.path.join (utils.DSKIN_DIR, path)):
+			path = os.path.join (utils.DSKIN_DIR, path)
+		else:
+			path = None
+		
+		if path:
+			gtk.rc_set_default_files ([path])
+			gtk.rc_reparse_all_for_settings (gtk.settings_get_default (), True)
 		
 		# Menu
 		self.create_menu()

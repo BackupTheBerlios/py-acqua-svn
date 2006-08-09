@@ -29,7 +29,8 @@ class Skin (gtk.Window):
 		gtk.Window.__init__ (self)
 		self.set_title (_("Skin"))
 		
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
+		utils.set_icon (self)
+		
 		self.set_resizable (False)
 		
 		self.path = utils.SKIN_DIR
