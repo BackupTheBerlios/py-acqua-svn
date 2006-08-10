@@ -192,6 +192,9 @@ class GraphPage (gtk.ScrolledWindow):
 		dates = []
 		valori = []
 		
+		limite_sup = 0
+		limite_inf = 0
+		
 		for i in values:
 			if type (i) == int:
 				label = labels [i]
@@ -206,14 +209,28 @@ class GraphPage (gtk.ScrolledWindow):
 					
 				# Sort su dates
 				self.parallel_sort (dates, valori)
+				
+				
+				if limite_inf > valori[0]:
+					limite_inf = valori[0]
+				if limite_sup < valori[len(valori)-1]:
+					limite_sup = valori[len(valori)-1]
+				
+				
 				window.axis.plot_date (date2num (dates), valori, colors[color] + 'o--', label="%s %s" % (x[1], label))
 				valori = []; dates = []
 				color += 1
 		
 		# In caso si usi l'inglese meglio %m-%d
 		window.axis.xaxis.set_major_formatter (DateFormatter(_('%d/%m')))
+		window.axis.autoscale_view ()
 		
-		print "limite", window.axis.xaxis.xlim
+		limite_sup += 2
+		limite_inf -= 2
+		
+		print limite_sup, limite_inf
+		print window.axis.set_ylim (limite_inf, limite_sup)
+		
 		window.axis.legend ()
 		window.canvas.draw ()
 		
@@ -245,7 +262,10 @@ class GraphPage (gtk.ScrolledWindow):
 		ret = utils.FileChooser (_("Salva Grafico..."), window, None, True, gtk.FILE_CHOOSER_ACTION_SAVE).run ()
 		window.figure.savefig (ret)
 		
-	def exit (self, widget, window):
+	def exit (self, widget, window, unz=None):
+		if unz:
+			window = unz
+		
 		window.hide ()
 		window.destroy ()
 
