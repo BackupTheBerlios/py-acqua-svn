@@ -189,10 +189,16 @@ class Gui(gtk.Window):
 		if get ("show_tips"):
 			import files.tips
 			files.tips.TipsDialog()
-  
+			
 	def exit(*w):
-		gtk.main_quit()
+		message = gtk.MessageDialog(None, gtk.MESSAGE_INFO, gtk.BUTTONS_OK, gtk.BUTTONS_CLOSE, "Chiudi o nascondi")
+		message.show()
+		resp = message.run()
+		if resp == gtk.RESPONSE_CLOSE:
 		
+			gtk.main_quit()
+		else:
+			print "ciao"
 	def calcoli_apri(self, widget, data=None):
 		import files.calcoli
 		return files.calcoli.Calcoli()
