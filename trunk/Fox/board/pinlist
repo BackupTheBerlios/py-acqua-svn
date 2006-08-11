@@ -1,0 +1,379 @@
+Pinlist
+
+Exported from rele V2.sch at  8/10/2006 18:42:17 
+
+EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
+
+Part     Pad      Pin        Dir      Net
+
+D1       A        A          Pas      N$21
+         C        C          Pas      VCC
+
+D2       A        A          Pas      N$20
+         C        C          Pas      VCC
+
+D3       A        A          Pas      N$18
+         C        C          Pas      VCC
+
+D4       A        A          Pas      N$16
+         C        C          Pas      VCC
+
+D5       A        A          Pas      N$14
+         C        C          Pas      VCC
+
+D6       A        A          Pas      N$15
+         C        C          Pas      VCC
+
+D7       A        A          Pas      N$17
+         C        C          Pas      VCC
+
+D8       A        A          Pas      N$19
+         C        C          Pas      VCC
+
+IC1      1        INT\       Out               *** unconnected ***
+         2        A1         In       VCC
+         3        A2         In       VCC
+         4        I/O0.0     I/O      N$23
+         5        I/O0.1     I/O      N$30
+         6        I/O0.2     I/O      N$44
+         7        I/O0.3     I/O      N$45
+         8        I/O0.4     I/O      N$46
+         9        I/O0.5     I/O      N$47
+         10       I/O0.6     I/O      N$48
+         11       I/O0.7     I/O      N$49
+         12       VSS        Pwr      GND
+         13       I/O1.0     I/O      N$50
+         14       I/O1.1     I/O      N$51
+         15       I/O1.2     I/O      N$52
+         16       I/O1.3     I/O      N$53
+         17       I/O1.4     I/O      N$54
+         18       I/O1.5     I/O      N$55
+         19       I/O1.6     I/O      N$56
+         20       I/O1.7     I/O      N$57
+         21       A0         In       GND
+         22       SCL        In       N$11
+         23       SDA        I/O      N$12
+         24       VDD        Pwr      VCC
+
+IC2      1        G1         In       GND
+         2        A1         In       N$8
+         3        A2         In       N$7
+         4        A3         In       N$6
+         5        A4         In       N$5
+         6        A5         In       N$4
+         7        A6         In       N$3
+         8        A7         In       N$2
+         9        A8         In       N$1
+         10       GND        Pwr      GND
+         11       Y8         Hiz      N$14
+         12       Y7         Hiz      N$15
+         13       Y6         Hiz      N$16
+         14       Y5         Hiz      N$17
+         15       Y4         Hiz      N$18
+         16       Y3         Hiz      N$21
+         17       Y2         Hiz      N$20
+         18       Y1         Hiz      N$19
+         19       G2         In       GND
+         20       VCC        Pwr      VCC
+
+IC3      1        A0         In       VCC
+         2        A1         In       VCC
+         3        A2         In       VCC
+         4        P0         I/O      N$8
+         5        P1         I/O      N$7
+         6        P2         I/O      N$6
+         7        P3         I/O      N$5
+         8        VSS        Pwr      GND
+         9        P4         I/O      N$4
+         10       P5         I/O      N$3
+         11       P6         I/O      N$2
+         12       P7         I/O      N$1
+         13       INT\       Out               *** unconnected ***
+         14       SCL        In       N$11
+         15       SDA        I/O      N$12
+         16       VDD        Pwr      VCC
+
+IC4      1        AIN0       In       N$9
+         2        AIN1       In       N$10
+         3        AIN2       In       N$13
+         4        AIN3       In       N$22
+         5        A0         In       VCC
+         6        A1         In       VCC
+         7        A2         In       GND
+         8        VSS        Pwr      GND
+         9        SDA        I/O      N$12
+         10       SCL        In       N$11
+         11       OSC        In                *** unconnected ***
+         12       EXT        In                *** unconnected ***
+         13       AGND       Pwr      AGND
+         14       VREF       In       VCC
+         15       AOUT       Out               *** unconnected ***
+         16       VDD        Pwr      VCC
+
+IC5      1        ON1        Pas               *** unconnected ***
+         2        -IN        In                *** unconnected ***
+         3        +IN        In                *** unconnected ***
+         4        V-         Pwr      GND
+         5        ON2        Pas               *** unconnected ***
+         6        OUT        Out      N$9
+         7        V+         Pwr      VCC
+         8        OPT        Pas               *** unconnected ***
+
+IC6      1        ON1        Pas               *** unconnected ***
+         2        -IN        In                *** unconnected ***
+         3        +IN        In                *** unconnected ***
+         4        V-         Pwr      GND
+         5        ON2        Pas               *** unconnected ***
+         6        OUT        Out      N$10
+         7        V+         Pwr      VCC
+         8        OPT        Pas               *** unconnected ***
+
+IC7      1        ON1        Pas               *** unconnected ***
+         2        -IN        In                *** unconnected ***
+         3        +IN        In                *** unconnected ***
+         4        V-         Pwr      GND
+         5        ON2        Pas               *** unconnected ***
+         6        OUT        Out      N$13
+         7        V+         Pwr      VCC
+         8        OPT        Pas               *** unconnected ***
+
+IC8      1        ON1        Pas               *** unconnected ***
+         2        -IN        In                *** unconnected ***
+         3        +IN        In                *** unconnected ***
+         4        V-         Pwr      GND
+         5        ON2        Pas               *** unconnected ***
+         6        OUT        Out      N$22
+         7        V+         Pwr      VCC
+         8        OPT        Pas               *** unconnected ***
+
+K1       1        1          Pas      VCC
+         2        2          Pas      N$20
+         O        O          Pas      N$25
+         P        P          Pas      N$24
+         S        S          Pas      N$26
+
+K2       1        1          Pas      N$21
+         2        2          Pas      VCC
+         O        O          Pas      N$42
+         P        P          Pas      N$24
+         S        S          Pas      N$43
+
+K3       1        1          Pas      VCC
+         2        2          Pas      N$18
+         O        O          Pas      N$40
+         P        P          Pas      N$24
+         S        S          Pas      N$41
+
+K4       1        1          Pas      N$17
+         2        2          Pas      VCC
+         O        O          Pas      N$38
+         P        P          Pas      N$24
+         S        S          Pas      N$39
+
+K5       1        1          Pas      VCC
+         2        2          Pas      N$16
+         O        O          Pas      N$36
+         P        P          Pas      N$24
+         S        S          Pas      N$37
+
+K6       1        1          Pas      N$15
+         2        2          Pas      VCC
+         O        O          Pas      N$34
+         P        P          Pas      N$24
+         S        S          Pas      N$35
+
+K7       1        1          Pas      VCC
+         2        2          Pas      N$14
+         O        O          Pas      N$32
+         P        P          Pas      N$24
+         S        S          Pas      N$33
+
+K8       1        1          Pas      N$19
+         2        2          Pas      VCC
+         O        O          Pas      N$27
+         P        P          Pas      N$24
+         S        S          Pas      N$28
+
+R1       1        1          Pas      N$12
+         2        2          Pas      VCC
+
+R2       1        1          Pas      N$11
+         2        2          Pas      VCC
+
+RN1      1        1          Pas      VCC
+         2        1          Pas      N$57
+         3        1          Pas      N$56
+         4        1          Pas      N$55
+         5        1          Pas      N$54
+         6        1          Pas      N$53
+         7        1          Pas      N$52
+         8        1          Pas      N$51
+         9        1          Pas      N$50
+
+RN2      1        1          Pas      VCC
+         2        1          Pas      N$23
+         3        1          Pas      N$30
+         4        1          Pas      N$44
+         5        1          Pas      N$45
+         6        1          Pas      N$46
+         7        1          Pas      N$47
+         8        1          Pas      N$48
+         9        1          Pas      N$49
+
+S1       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S2       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S3       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S4       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S5       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S6       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S7       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+S8       1        S          Pas               *** unconnected ***
+         2        S1         Pas               *** unconnected ***
+         3        P          Pas               *** unconnected ***
+         4        P1         Pas               *** unconnected ***
+
+SV2      1        1          Pas      GND
+         2        2          Pas      GND
+         3        3          Pas               *** unconnected ***
+         4        4          Pas               *** unconnected ***
+         5        5          Pas               *** unconnected ***
+         6        6          Pas               *** unconnected ***
+         7        7          Pas               *** unconnected ***
+         8        8          Pas               *** unconnected ***
+         9        9          Pas               *** unconnected ***
+         10       10         Pas               *** unconnected ***
+         11       11         Pas               *** unconnected ***
+         12       12         Pas               *** unconnected ***
+         13       13         Pas               *** unconnected ***
+         14       14         Pas               *** unconnected ***
+         15       15         Pas               *** unconnected ***
+         16       16         Pas               *** unconnected ***
+         17       17         Pas               *** unconnected ***
+         18       18         Pas               *** unconnected ***
+         19       19         Pas               *** unconnected ***
+         20       20         Pas               *** unconnected ***
+         21       21         Pas               *** unconnected ***
+         22       22         Pas               *** unconnected ***
+         23       23         Pas               *** unconnected ***
+         24       24         Pas               *** unconnected ***
+         25       25         Pas               *** unconnected ***
+         26       26         Pas               *** unconnected ***
+         27       27         Pas               *** unconnected ***
+         28       28         Pas               *** unconnected ***
+         29       29         Pas               *** unconnected ***
+         30       30         Pas               *** unconnected ***
+         31       31         Pas               *** unconnected ***
+         32       32         Pas               *** unconnected ***
+         33       33         Pas               *** unconnected ***
+         34       34         Pas               *** unconnected ***
+         35       35         Pas               *** unconnected ***
+         36       36         Pas               *** unconnected ***
+         37       37         Pas               *** unconnected ***
+         38       38         Pas               *** unconnected ***
+         39       39         Pas               *** unconnected ***
+         40       40         Pas               *** unconnected ***
+
+SV3      1        1          Pas               *** unconnected ***
+         2        2          Pas               *** unconnected ***
+         3        3          Pas               *** unconnected ***
+         4        4          Pas               *** unconnected ***
+         5        5          Pas               *** unconnected ***
+         6        6          Pas               *** unconnected ***
+         7        7          Pas               *** unconnected ***
+         8        8          Pas               *** unconnected ***
+         9        9          Pas               *** unconnected ***
+         10       10         Pas               *** unconnected ***
+         11       11         Pas               *** unconnected ***
+         12       12         Pas               *** unconnected ***
+         13       13         Pas               *** unconnected ***
+         14       14         Pas               *** unconnected ***
+         15       15         Pas               *** unconnected ***
+         16       16         Pas               *** unconnected ***
+         17       17         Pas               *** unconnected ***
+         18       18         Pas               *** unconnected ***
+         19       19         Pas               *** unconnected ***
+         20       20         Pas               *** unconnected ***
+         21       21         Pas               *** unconnected ***
+         22       22         Pas               *** unconnected ***
+         23       23         Pas               *** unconnected ***
+         24       24         Pas               *** unconnected ***
+         25       25         Pas               *** unconnected ***
+         26       26         Pas               *** unconnected ***
+         27       27         Pas               *** unconnected ***
+         28       28         Pas               *** unconnected ***
+         29       29         Pas               *** unconnected ***
+         30       30         Pas               *** unconnected ***
+         31       31         Pas      N$11
+         32       32         Pas      N$12
+         33       33         Pas               *** unconnected ***
+         34       34         Pas               *** unconnected ***
+         35       35         Pas               *** unconnected ***
+         36       36         Pas               *** unconnected ***
+         37       37         Pas               *** unconnected ***
+         38       38         Pas               *** unconnected ***
+         39       39         Pas      GND
+         40       40         Pas      GND
+
+X2       1        S          Pas      N$29
+         2        S          Pas      N$28
+         3        S          Pas      N$27
+
+X3       1        S          Pas      N$29
+         2        S          Pas      N$26
+         3        S          Pas      N$25
+
+X4       1        S          Pas      N$29
+         2        S          Pas      N$43
+         3        S          Pas      N$42
+
+X5       1        S          Pas      N$29
+         2        S          Pas      N$41
+         3        S          Pas      N$40
+
+X6       1        S          Pas      N$29
+         2        S          Pas      N$39
+         3        S          Pas      N$38
+
+X7       1        S          Pas      N$29
+         2        S          Pas      N$37
+         3        S          Pas      N$36
+
+X8       1        S          Pas      N$29
+         2        S          Pas      N$35
+         3        S          Pas      N$34
+
+X9       1        S          Pas      N$29
+         2        S          Pas      N$33
+         3        S          Pas      N$32
+
+X10      1        S          Pas      N$29
+         2        S          Pas      N$24
+
