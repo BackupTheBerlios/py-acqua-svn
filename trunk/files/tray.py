@@ -21,13 +21,19 @@
 
 
 import pygtk
-pygtk.require("2.0")
+#pygtk.require("2.0")
 import gtk
 import egg.trayicon
-t = egg.trayicon.TrayIcon("Pyacqua")
-t.add(gtk.Button("Py"))
-t.connect ('clicked', apri)
-def apri():
-	os.exec
-t.show_all()
-gtk.main()
+
+def Tray():
+
+	t = egg.trayicon.TrayIcon("Pyacqua")
+	t.add(gtk.Button("Py"))
+	t.connect('clicked', apri)
+
+	t.show_all()
+	gtk.main()
+	
+def apri(self):
+	app.App.show()
+	print "apri"
