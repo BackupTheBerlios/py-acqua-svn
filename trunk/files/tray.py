@@ -19,7 +19,7 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
+import app
 import pygtk
 #pygtk.require("2.0")
 import gtk
@@ -28,12 +28,13 @@ import egg.trayicon
 def Tray():
 
 	t = egg.trayicon.TrayIcon("Pyacqua")
-	t.add(gtk.Button("Py"))
-	t.connect('clicked', apri)
+	button = gtk.Button("Acqua")
+	t.add(button)
+	button.connect('clicked', apri)
 
 	t.show_all()
 	gtk.main()
 	
 def apri(self):
 	app.App.show()
-	print "apri"
+	print "apriamo"
