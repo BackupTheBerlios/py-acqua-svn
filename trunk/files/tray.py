@@ -33,11 +33,12 @@ def Tray():
 	button.set_relief (gtk.RELIEF_NONE)
 	button.add(image)
 	t.add(button)
-	#t.add(image)
 	button.connect('clicked', apri)
 	
 	t.show_all()
 	gtk.main()
 	
 def apri(self):
+	
 	app.App.show()
+	return True
