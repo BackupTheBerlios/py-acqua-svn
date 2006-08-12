@@ -21,20 +21,23 @@
 
 import app
 import pygtk
-#pygtk.require("2.0")
 import gtk
 import egg.trayicon
 
 def Tray():
 
 	t = egg.trayicon.TrayIcon("Pyacqua")
-	button = gtk.Button("Acqua")
+	image = gtk.Image()
+	image.set_from_file('/home/luca/.pyacqua/pixmaps/tray.gif')
+	button = gtk.Button()
+	button.set_relief (gtk.RELIEF_NONE)
+	button.add(image)
 	t.add(button)
+	#t.add(image)
 	button.connect('clicked', apri)
-
+	
 	t.show_all()
 	gtk.main()
 	
 def apri(self):
 	app.App.show()
-	print "apriamo"
