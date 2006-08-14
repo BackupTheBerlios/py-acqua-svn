@@ -116,13 +116,13 @@ class Calcoli(gtk.Window):
 		#tbl.set_row_spacings(4)
 		
 		self.mar_volume = utils.new_label('0', False)
-		self.mar_piante = utils.new_label('0', False)
+		#self.mar_piante = utils.new_label('0', False)
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
-		tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 1, 2)
+		#tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 1, 2)
 		
 		tbl.attach(self.mar_volume, 1, 2, 0, 1)
-		tbl.attach(self.mar_piante, 1, 2, 1, 2)
+		#tbl.attach(self.mar_piante, 1, 2, 1, 2)
 		
 		# Da definire cosa aggiungere.. ecc :p
 
