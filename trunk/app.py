@@ -46,6 +46,7 @@ def fix_actions(actions, instance):
 class Gui(gtk.Window):
 	
 	def create_menu(self):
+		
 		w = [
 		('Acquario', None, _('_Acquario')),
 			('Calcoli', None, _('_Calcoli'), '<control>C', _('Calcoli...'), 'calcoli_apri'),
@@ -301,6 +302,7 @@ class Gui(gtk.Window):
 		files.webupdate.WebUpdate()
 		
 	def main(self):
+		self.active_toggle = False
 		gtk.main()
 	
 	def get_plugin_menu(self):
