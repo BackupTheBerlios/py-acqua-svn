@@ -190,19 +190,30 @@ class Gui(gtk.Window):
 		if get ("show_tips"):
 			import files.tips
 			files.tips.TipsDialog()
-			
+		self.tray=False
 	def exit(self, *w):
 		message = gtk.MessageDialog(None, 0, gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, "Vuoi uscire o ridurre a icona?")
 		resp = message.run()
+		
 		if resp == gtk.RESPONSE_YES:
 		
 			gtk.main_quit()
 		else:
 			
-			self.hide()
-			message.hide()
-			import files.tray
-			return files.tray.Tray()
+			if self.tray == True:
+				
+				self.hide()
+				message.hide()
+				app.App.active_toggle = True
+				
+			else:
+				self.hide()
+				message.hide()
+				import files.tray
+				return files.tray.Tray()
+				app.App.active_toggle = True
+				self.tray = !self.tray
+			
 			
 	def calcoli_apri(self, widget, data=None):
 		import files.calcoli

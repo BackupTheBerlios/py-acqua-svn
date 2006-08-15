@@ -39,10 +39,19 @@ def Tray():
 	gtk.main()
 	
 def apri(self):
-	if app.App.active_toggle:
-		app.App.hide()
-	else:
+	if app.App.active_toggle == False:
 		app.App.show()
 		return True
+		tray = !tray
+		print "if"
+	else:
+		app.App.hide()
+		print "else"
+	
+#	if App.app.tray == False:
+#  App.app.hide()
+#else:
+#  App.app.show()
+#App.app.tray = !App.app.tray
 		
 	#app.App.active_toggle = !app.App.active_toggle
