@@ -578,6 +578,8 @@ try:
 	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
 	from matplotlib.numerix import arange
 	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
+
+	Test.Chart = True # probabilmente nn funzionera' per pietro :-P
 	
 except:
 	Test.Chart = False
