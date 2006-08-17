@@ -212,7 +212,7 @@ class Gui(gtk.Window):
 				import files.tray
 				return files.tray.Tray()
 				app.App.active_toggle = True
-				self.tray = !self.tray
+				#self.tray = !self.tray
 			
 			
 	def calcoli_apri(self, widget, data=None):
