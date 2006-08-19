@@ -42,7 +42,7 @@ def apri(self):
 	if app.App.active_toggle == False:
 		app.App.show()
 		return True
-		tray = !tray
+		self.tray = !=self.tray
 		print "if"
 	else:
 		app.App.hide()

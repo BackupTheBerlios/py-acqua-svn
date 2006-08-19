@@ -204,15 +204,15 @@ class Gui(gtk.Window):
 				
 				self.hide()
 				message.hide()
-				app.App.active_toggle = True
+				#app.App.active_toggle = True
 				
 			else:
 				self.hide()
 				message.hide()
 				import files.tray
 				return files.tray.Tray()
-				app.App.active_toggle = True
-				#self.tray = !self.tray
+				#app.App.active_toggle = True
+				self.tray = !self.tray
 			
 			
 	def calcoli_apri(self, widget, data=None):
