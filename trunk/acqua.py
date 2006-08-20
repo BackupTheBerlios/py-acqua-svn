@@ -96,10 +96,13 @@ if __name__ == "__main__":
 	
 	app.App = app.Gui()
 	app.App.p_engine = files.engine.PluginEngine ()
-
+	
+	utils.tray_apri()
+	
 	gtk.gdk.threads_enter ()
 	app.App.main()
 	gtk.gdk.threads_leave ()
+	
 	
 	print "Saving preferences before exiting..."
 	files.impostazioni.save ()

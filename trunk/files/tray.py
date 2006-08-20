@@ -25,33 +25,38 @@ import gtk
 import egg.trayicon
 
 def Tray():
-
+	
 	t = egg.trayicon.TrayIcon("Pyacqua")
 	image = gtk.Image()
 	image.set_from_file('/home/luca/.pyacqua/pixmaps/tray.gif')
-	button = gtk.Button()
+	#self.but_on.connect("toggled", self.on_toggled)
+	#button = gtk.Button()
+	button = gtk.ToggleButton ()
 	button.set_relief (gtk.RELIEF_NONE)
 	button.add(image)
 	t.add(button)
-	button.connect('clicked', apri)
+	#button.connect('clicked', apri)
+	button.connect("toggled", apri_2)
 	
 	t.show_all()
 	gtk.main()
 	
-def apri(self):
-	if app.App.active_toggle == False:
+#def apri(self):
+	#if app.App.active_toggle == False:
+	#app.App.show()
+	#return True
+	#self.tray = True
+	#print "if"
+	#else:
+	#	app.App.hide()
+	#	print "else"
+def apri_2(widget):
+	if widget.get_active():
 		app.App.show()
 		return True
-		self.tray = !=self.tray
-		print "if"
+		print "active"
+		#self.po = True
 	else:
+		#widget.set_label("Offline")
 		app.App.hide()
-		print "else"
-	
-#	if App.app.tray == False:
-#  App.app.hide()
-#else:
-#  App.app.show()
-#App.app.tray = !App.app.tray
-		
-	#app.App.active_toggle = !app.App.active_toggle
+		print "deactive"

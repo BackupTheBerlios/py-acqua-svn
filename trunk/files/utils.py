@@ -42,6 +42,10 @@ DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
 def prepare_enviroment ():
 	init_dir_structure ()
 
+def tray_apri():#self, widget, data=None):
+	import files.tray
+	return files.tray.Tray()
+
 def init_dir_structure ():
 	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR
 	
