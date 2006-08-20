@@ -192,7 +192,7 @@ class Gui(gtk.Window):
 			import files.tips
 			files.tips.TipsDialog()
 		
-	def exit(self, *w):
+	def exit(*w):
 		#message = gtk.MessageDialog(None, 0, gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, "Vuoi uscire o ridurre a icona?")
 		#resp = message.run()
 		

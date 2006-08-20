@@ -53,8 +53,10 @@ def Tray():
 def apri_2(widget):
 	if widget.get_active():
 		app.App.show()
-		return True
 		print "active"
+		#return True
+		#print "active"
+		#widget.set_active(False)
 		#self.po = True
 	else:
 		#widget.set_label("Offline")
