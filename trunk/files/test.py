@@ -228,8 +228,7 @@ class GraphPage (gtk.ScrolledWindow):
 		limite_sup += 2
 		limite_inf -= 2
 		
-		print limite_sup, limite_inf
-		print window.axis.set_ylim (limite_inf, limite_sup)
+		window.axis.set_ylim (limite_inf, limite_sup)
 		
 		window.axis.legend ()
 		window.canvas.draw ()

@@ -187,6 +187,8 @@ class Gui(gtk.Window):
 		self.add(vbox)
 		self.show_all()
 		self.connect('destroy', self.exit)
+
+		self.tray = True
 		
 		if get ("show_tips"):
 			import files.tips

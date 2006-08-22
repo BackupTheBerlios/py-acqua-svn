@@ -23,42 +23,47 @@ import app
 import pygtk
 import gtk
 import egg.trayicon
+import os.path
+import utils
 
-def Tray():
-	
-	t = egg.trayicon.TrayIcon("Pyacqua")
-	image = gtk.Image()
-	image.set_from_file('/home/luca/.pyacqua/pixmaps/tray.gif')
-	#self.but_on.connect("toggled", self.on_toggled)
-	#button = gtk.Button()
-	button = gtk.ToggleButton ()
-	button.set_relief (gtk.RELIEF_NONE)
-	button.add(image)
-	t.add(button)
-	#button.connect('clicked', apri)
-	button.connect("toggled", apri_2)
-	
-	t.show_all()
-	gtk.main()
-	
-#def apri(self):
-	#if app.App.active_toggle == False:
-	#app.App.show()
-	#return True
-	#self.tray = True
-	#print "if"
-	#else:
-	#	app.App.hide()
-	#	print "else"
-def apri_2(widget):
-	if widget.get_active():
-		app.App.show()
-		print "active"
-		#return True
-		#print "active"
-		#widget.set_active(False)
-		#self.po = True
-	else:
-		#widget.set_label("Offline")
-		app.App.hide()
-		print "deactive"
+class TrayIcon (egg.trayicon.TrayIcon):
+	def __init__ (self):
+		egg.trayicon.TrayIcon.__init__ (self, "PyAcqua")
+		
+		image = gtk.Image ()
+		image.set_from_file (os.path.join (utils.DPIXM_DIR, "logopyacqua.jpg"))
+
+		eb = gtk.EventBox ()
+		eb.add (image)
+
+		self.add (eb)
+
+		self.menu = gtk.Menu ()
+		
+		it = gtk.ImageMenuItem (gtk.STOCK_QUIT)
+		it.connect ('activate', self.on_quit)
+		
+		self.menu.append (it)
+
+		eb.connect ('button-press-event', self.on_button)
+
+		self.show_all ()
+
+	def on_button (self, widget, event):
+		# se == 1 e' il sinistro -> mostra/nascondi
+		# se == 3 e' il destro -> popup menu
+		print "button", event.button
+
+		if event.button == 1:
+			if app.App.tray:
+				app.App.hide ()
+			else:
+				app.App.show ()
+
+			app.App.tray = not app.App.tray
+		elif event.button == 3:
+			self.menu.popup (None, None, None, event.button, event.time)
+			self.menu.show_all ()
+
+	def on_quit (self, item):
+		gtk.main_quit ()
