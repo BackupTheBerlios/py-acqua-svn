@@ -80,7 +80,7 @@ import files.engine
 
 path = os.path.join (utils.DATA_DIR, "db")
 if not os.path.exists (path):
-	connessione=utils.connect ()
+	connessione=sqlite.connect (os.path.join (DATA_DIR, "db")) # Smazza altrimenti.. se nn c'e' lo crea
 	cursore=connessione.cursor()
 	cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
