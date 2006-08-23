@@ -569,16 +569,37 @@ class Test (dbwindow.DBWindow):
 			x += 1
 
 try:
+	print ">> import matplotlib", 
 	import matplotlib
+	print "ok"
 	
+	print ">> matplotlib.use ('GTKAgg')",
 	matplotlib.use ('GTKAgg')
-	from matplotlib.figure import Figure
-	from matplotlib.axes import Subplot
-	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
-	from matplotlib.numerix import arange
-	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
+	print "ok"
 
+	print ">> from matplotlib.figure import Figure",
+	from matplotlib.figure import Figure
+	print "ok"
+
+	print ">> from matplotlib.axes import Subplot",
+	from matplotlib.axes import Subplot
+	print "ok"
+
+	print ">> from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar",
+	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
+	print "ok"
+
+	print ">> from matplotlib.numerix import arange",
+	from matplotlib.numerix import arange
+	print "ok"
+
+	print ">> from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num",
+	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
+	print "ok"
+
+	print ">> Setting chart to True (if you are pietro this doesn't work :P)",
 	Test.Chart = True # probabilmente nn funzionera' per pietro :-P
+	print "ok"
 	
 except:
 	Test.Chart = False
