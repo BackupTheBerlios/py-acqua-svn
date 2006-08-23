@@ -124,6 +124,7 @@ class Gui(gtk.Window):
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
 			<menuitem action='Update'/>
+			<menuitem action='Help'/>
 		</menu>
 		</menubar></ui>"""
 		
@@ -153,7 +154,9 @@ class Gui(gtk.Window):
 		utils.set_icon (self)
 		
 		image = gtk.Image()
-		
+
+		# Settiamo lo skin
+
 		file = os.path.join (utils.SKIN_DIR, os.path.join (get ("skin"), "main.png"))
 		
 		if not os.path.exists (file):
@@ -195,31 +198,8 @@ class Gui(gtk.Window):
 			files.tips.TipsDialog()
 		
 	def exit(*w):
-		#message = gtk.MessageDialog(None, 0, gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO, "Vuoi uscire o ridurre a icona?")
-		#resp = message.run()
-		
-		#if resp == gtk.RESPONSE_YES:
-		
 		gtk.main_quit()
-		
-		#else:
-			
-			#if self.po == True:
-				
-			#	self.hide()
-			#	message.hide()
-				#app.App.active_toggle = True
-				
-			#else:
-			#	self.hide()
-			#	message.hide()
-			#	import files.tray
-			#	return files.tray.Tray()
-				#app.App.active_toggle = True
-				#self.tray =! self.tray
-		
-		
-			
+
 	def calcoli_apri(self, widget, data=None):
 		import files.calcoli
 		return files.calcoli.Calcoli()
@@ -310,9 +290,8 @@ class Gui(gtk.Window):
 		dialog.show()
 		
 	def aiuto_apri(self, widget, data=None):
-	# il wikipedia e da fare nn ce piu
-		pass
-		#webbrowser.open('http://pyacqua.netsons.org/wiki/index.php/Wikipedia')
+		utils.info (_("Prova a vedere su http://pyacqua.altervista.org"))
+
 	def open_update(self, widget, data=None):
 		import files.webupdate
 		files.webupdate.WebUpdate()

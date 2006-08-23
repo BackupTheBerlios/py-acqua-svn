@@ -22,6 +22,7 @@
 import os
 __builtins__.__dict__["_"] = lambda x : x
 os.environ['PATH'] += r";lib;etc;bin"
+
 if os.environ.has_key ('PYTHONPATH'):
 	os.environ['PYTHONPATH'] += r";eggmini"
 else:
@@ -53,6 +54,7 @@ try:
 	else:
 		os.environ['LANG'] = "it_IT"
 		__builtins__.__dict__["_"] = lambda x : x
+
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
 	__builtins__.__dict__["_"] = lambda x : x

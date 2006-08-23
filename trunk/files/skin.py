@@ -99,13 +99,22 @@ class Skin (gtk.Window):
 	
 	def reload (self):
 		
+		# Carichiamo gli skin personali
+
+		def go ():
+			for file in os.listdir (path):
+				current = os.path.join (path, file)
+				
+				if os.path.isdir (current):
+					self.add_skin (current, self.list)
+
 		path = utils.SKIN_DIR
-		
-		for file in os.listdir (path):
-			current = os.path.join (path, file)
-			
-			if os.path.isdir (current):
-				self.add_skin (current, self.list)
+		go ()
+
+		path = utils.DSKIN_DIR
+		go ()
+
+		# FIXME: set the selection on the current skin
 		
 	def add_skin (self, path, list):
 		back = os.path.join (path, "main.png")
@@ -141,6 +150,7 @@ class Skin (gtk.Window):
 		if it != None:
 			set ("skin", mod.get_value (it, 0))
 			save ()
+			utils.info (_("Devi riavviare per far si che tutte le modifiche siano applicate."))
 			self.exit ()
 
 	def on_delete (self, widget):
