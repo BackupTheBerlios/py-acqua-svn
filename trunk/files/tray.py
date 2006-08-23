@@ -22,13 +22,13 @@
 import app
 import pygtk
 import gtk
-import egg.trayicon
+import eggmini.trayicon as eggmini
 import os.path
 import utils
 
-class TrayIcon (egg.trayicon.TrayIcon):
+class TrayIcon (eggmini.TrayIcon):
 	def __init__ (self):
-		egg.trayicon.TrayIcon.__init__ (self, "PyAcqua")
+		eggmini.TrayIcon.__init__ (self, "PyAcqua")
 		
 		image = gtk.Image ()
 		image.set_from_file (os.path.join (utils.DPIXM_DIR, "logopyacqua.jpg"))
