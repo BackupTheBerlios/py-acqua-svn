@@ -22,7 +22,10 @@
 import os
 __builtins__.__dict__["_"] = lambda x : x
 os.environ['PATH'] += r";lib;etc;bin"
-os.environ['PYTHONPATH'] += r";eggmini"
+if os.environ.has_key ('PYTHONPATH'):
+	os.environ['PYTHONPATH'] += r";eggmini"
+else:
+	os.environ['PYTHONPATH'] = r";eggmini"
 
 import webbrowser
 import locale
