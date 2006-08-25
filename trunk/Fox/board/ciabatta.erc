@@ -1,6 +1,6 @@
 EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
 
-Electrical Rule Check for /home/gio/eagle/pyacqua/ciabatta.sch at  8/25/2006 12:50:04 
+Electrical Rule Check for /home/gio/pyacqua/trunk/Fox/board/ciabatta.sch at  8/25/2006 13:57:25 
 
 WARNING: Sheet 1/1: unconnected Pin: X2-3 S
 WARNING: Sheet 1/1: unconnected Pin: X3-2 S
