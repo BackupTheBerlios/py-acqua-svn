@@ -1,11 +1,11 @@
-import files.utils as utils
 import os.path
+import files.utils as utils
 import files.generate as generate
 
 def fill_fs_structure (path):
 	lst = path.split (os.path.sep); lst.pop () # Eliminiamo la parte del file
 
-	current = "/home/stack/.pyacqua/Update"
+	current = utils.UPDT_DIR
 
 	for i in lst:
 		current = os.path.join (current, i)
@@ -39,8 +39,7 @@ def removeall(path):
 			rmgeneric(fullpath, f)
 
 def update ():
-	#path = os.path.join (utils.UPDT_DIR, ".checklist")
-	path = os.path.join ("/home/stack/.pyacqua/Update",  ".checklist")
+	path = os.path.join (utils.UPDT_DIR, ".checklist")
 	
 	if not os.path.exists (path):
 		return
@@ -53,8 +52,7 @@ def update ():
 		line = i[:-1]
 		name, bytes, sum = line.split ("|")
 		
-		#path = os.path.join (utils.UPDT_DIR, name)
-		path = os.path.join ("/home/stack/.pyacqua/Update", name)
+		path = os.path.join (utils.UPDT_DIR, name)
 
 		new_path = os.path.join (".", name)
 
@@ -91,7 +89,11 @@ def update ():
 				print "!! Error in checksum"
 	
 	print "Cleaning Update dir"
-	remove_all ("/home/stack/.pyacqua/Update")
+	removeall (utils.UPDT_DIR)
 
-if __name__ == "__main__":
-	update ()
+def check_for_updates ():
+	if os.path.exists (os.path.join (utils.UPDT_DIR, ".checklist")):
+		print ">> Proceding with update ()"
+		update ()
+	else:
+		print ">> No files to merge"

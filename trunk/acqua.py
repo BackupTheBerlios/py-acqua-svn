@@ -28,7 +28,6 @@ if os.environ.has_key ('PYTHONPATH'):
 else:
 	os.environ['PYTHONPATH'] = r";eggmini"
 
-import webbrowser
 import locale
 import gettext
 import sys
@@ -82,6 +81,7 @@ except:
 
 import app
 import files.engine
+import merger
 
 path = os.path.join (utils.DATA_DIR, "db")
 if not os.path.exists (path):
@@ -98,6 +98,8 @@ if not os.path.exists (path):
 	connessione.commit()
 
 if __name__ == "__main__":
+	merger.check_for_updates () #Controlliamo se ci sono update da fare
+
 	gobject.threads_init ()
 	
 	app.App = app.Gui()

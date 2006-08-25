@@ -159,8 +159,8 @@ class WebUpdate (gtk.Window):
 		if not data:
 			print "No file to receive"
 		if response.status != 200:
-			print "Some errors occurred"
-			print response.status
+			print "Some errors occurred", response.status
+			print "The suspect is", self.file
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()

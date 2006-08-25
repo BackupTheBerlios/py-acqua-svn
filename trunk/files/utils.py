@@ -72,7 +72,23 @@ def create_dir (path, name):
 		print "Already present", temp
 	
 	return temp
+###
+# From http://www.decafbad.com/trac/browser/trunk/feedreactor/lib/jon/cgi.py
+###
+_url_ch = re.compile(r'[^A-Za-z0-9_.!~*()-]') # RFC 2396 section 2.3
+_url_decre = re.compile(r"%([0-9A-Fa-f]{2})"
 
+def url_encode(raw):
+	"""Return the string parameter URL-encoded."""
+	if not isinstance(raw, unicode):
+	raw = str(raw)
+	return re.sub(_url_encre, lambda m: "%%%02X" % ord(m.group(0)), raw
+
+def url_decode(enc):
+	"""Return the string parameter URL-decoded (including '+' -> ' ')."""
+	s = enc.replace("+", " ")
+	return re.sub(_url_decre, lambda m: chr(int(m.group(1), 16)), s
+###
 
 class DataButton(gtk.Button):
 	def __init__(self, label=None, set_cb=None, get_cb=None):
