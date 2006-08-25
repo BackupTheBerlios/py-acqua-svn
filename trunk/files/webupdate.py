@@ -7,6 +7,14 @@ import utils
 import os.path
 import sys
 
+#REPOSITORY_ADDRESS = "http://pyacqua.altervista.org/"
+#BASE_DIR = "/update/source/"
+#LIST_FILE = "/update/list.txt"
+
+REPOSITORY_ADDRESS = "localhost"
+BASE_DIR = "~stack/update/source/"
+LIST_FILE = "~stack/update/list.txt"
+
 class Fetcher(threading.Thread):
 	def __init__ (self, callback, url):
 		self.data = None
@@ -16,7 +24,7 @@ class Fetcher(threading.Thread):
 
 	def run (self):
 		try:
-			conn = httplib.HTTPConnection ("localhost")
+			conn = httplib.HTTPConnection (REPOSITORY_ADDRESS)
 			conn.request ("GET", self.url)
 			self.response = conn.getresponse ()
 			self.data = self.response.read ()
@@ -80,9 +88,10 @@ class WebUpdate (gtk.Window):
 		self.checklist = []
 		
 		self.actual_data = generate.Generator.ParseDir (".")
-		self.thread (self.populate_tree, "/~stack/update/list.txt")
+		self.thread (self.populate_tree, LIST_FILE)
 	
 	def thread (self, callback, url):
+		print ">> Creating thread for", url
 		f = Fetcher (callback, url)
 		f.setDaemon (True)
 		f.start ()
@@ -199,7 +208,7 @@ class WebUpdate (gtk.Window):
 			self.file = self.tree.get_model ().get_value (self.it, 0)
 			
 			if self.tree.get_model ().get_value (self.it, 5) == True:
-				self.thread (self.update_file, "/~stack/source/" + self.file)
+				self.thread (self.update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				print "this file must be deleted (adding 0 as checksum)"
 				self.checklist.append ("%s|0|0" % self.file)
