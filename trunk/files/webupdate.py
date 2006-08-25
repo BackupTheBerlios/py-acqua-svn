@@ -18,7 +18,8 @@ class Fetcher(threading.Thread):
 		try:
 			conn = httplib.HTTPConnection ("localhost")
 			conn.request ("GET", self.url)
-			self.data = conn.getresponse ().read ()
+			self.response = conn.getresponse ()
+			self.data = self.response.read ()
 		finally:
 			gobject.idle_add (self.on_data)
 
@@ -26,7 +27,7 @@ class Fetcher(threading.Thread):
 		gtk.gdk.threads_enter ()
 		
 		try:
-			self.callback (self.data)
+			self.callback (self.data, self.response)
 		finally:
 			gtk.gdk.threads_leave ()
 		
@@ -38,7 +39,7 @@ class WebUpdate (gtk.Window):
 
 		vbox = gtk.VBox (False, 2)
 
-		self.store = gtk.ListStore (str, str, int, str, int)
+		self.store = gtk.ListStore (str, str, int, str, int, bool) #il bool finale: to_add?
 		self.tree = gtk.TreeView (self.store)
 
 		rend = gtk.CellRendererText (); id = 0
@@ -96,7 +97,7 @@ class WebUpdate (gtk.Window):
 		
 		return dict
 
-	def populate_tree (self, data):
+	def populate_tree (self, data, response):
 		if data == None: return
 
 		data = self.convert_to_dict (data)
@@ -130,15 +131,15 @@ class WebUpdate (gtk.Window):
 				data.pop (i)
 			else:
 				print "uhm.. This file must be deleted... mumble mumble"
-				self.store.append ([i, _("Elimina"), int (o_bytes), o_sum, 0])
+				self.store.append ([i, _("Elimina"), int (o_bytes), o_sum, 0, False])
 				
 			if to_add:
-				self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0])
+				self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
 		
 		for i in data:
 			n_bytes, n_sum = data[i].split("|")
 			print "This file is recomended -.- so must be added by default", i
-			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0])
+			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
 		
 		self.button.set_sensitive (True)
 	
@@ -146,7 +147,7 @@ class WebUpdate (gtk.Window):
 		self.it = self.tree.get_model ().get_iter_first ()
 		self.update_from_iter ()
 		
-	def update_file (self, data):
+	def update_file (self, data, response):
 		# Dovremmo semplicemente salvare in una directory temporanea
 		# del tipo ~/.pyacqua/.update o .update nella directory corrente
 		# insieme ad una lista di file|bytes|checksum per il controllo sull'update
@@ -157,12 +158,15 @@ class WebUpdate (gtk.Window):
 		
 		if not data:
 			print "No file to receive"
+		if response.status != 200:
+			print "Some errors occurred"
+			print response.status
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
 		path = utils.UPDT_DIR
 		
-		print "!! Aggiungi check prima della versione finale webupdate.py:164"
+		#print "!! Aggiungi check prima della versione finale webupdate.py:164"
 		#try:
 		for i in dirs:
 			path = os.path.join (path, i)
@@ -193,7 +197,13 @@ class WebUpdate (gtk.Window):
 	def update_from_iter (self):
 		if self.it != None:
 			self.file = self.tree.get_model ().get_value (self.it, 0)
-			self.thread (self.update_file, "/~stack/source/" + self.file)
+			
+			if self.tree.get_model ().get_value (self.it, 5) == True:
+				self.thread (self.update_file, "/~stack/source/" + self.file)
+			else:
+				print "this file must be deleted (adding 0 as checksum)"
+				self.checklist.append ("%s|0|0" % self.file)
+				self.go_with_next_iter ()
 		else:
 			# Probabilmente abbiamo finito.. controlliamo la checklist e via
 			if len (self.checklist) > 0:
@@ -203,6 +213,8 @@ class WebUpdate (gtk.Window):
 					for i in self.checklist:
 						f.write (i + "\n")
 					f.close ()
+
+					utils.info (_("Riavvia per procedere all'aggiornamento di PyAcqua"))
 				#except:
 				#	print "Error while writing the checklist"
 		
