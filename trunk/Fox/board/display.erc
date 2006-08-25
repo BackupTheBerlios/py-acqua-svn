@@ -1,6 +1,6 @@
 EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
 
-Electrical Rule Check for /home/gio/eagle/pyacqua/display.sch at  8/25/2006 12:50:26 
+Electrical Rule Check for /home/gio/eagle/pyacqua/display.sch at  8/25/2006 13:05:25 
 
 WARNING: Sheet 1/1: SUPPLY Pin +5V overwritten with VCC
 ERROR: Sheet 1/1: SUPPLY Pin +5V overwritten with more than one signal (VCC, +5V)
