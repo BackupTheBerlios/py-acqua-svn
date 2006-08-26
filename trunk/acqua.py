@@ -30,7 +30,6 @@ else:
 
 import locale
 import gettext
-import sys
 
 import files.utils as utils
 

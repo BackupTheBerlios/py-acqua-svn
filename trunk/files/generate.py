@@ -2,8 +2,6 @@ import os
 from os.path import join, getsize
 import md5
 
-__rev__ = 1
-
 class Generator (object):
 	def checksum (path):
 		fobj = file (path, 'rb')

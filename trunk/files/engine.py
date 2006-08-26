@@ -56,7 +56,7 @@ class PluginEngine:
 				if base != "__init__.py":
 					print _("Carico <%s>") % base[:-3]
 					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
-					if self.load (path, base[:-3], base[:-3]) == False:
+					if not self.load (path, base[:-3], base[:-3]):
 						print _("Errori... Ignoro")
 		
 	def load (self, path, name, klass):
@@ -100,6 +100,3 @@ class PluginEngine:
 
 		#	print "!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type)
 		#	return False
-
-if __name__ == "__main__":
-	e = Engine ()

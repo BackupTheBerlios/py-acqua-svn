@@ -21,10 +21,6 @@
 
 import gtk
 import os
-import glob
-import sys
-import shutil
-import time
 import utils
 from app import App
 

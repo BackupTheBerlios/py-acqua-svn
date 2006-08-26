@@ -140,7 +140,7 @@ class DBWindow (gtk.Window):
 		edt_frame = gtk.Frame ("Editing:")
 		edt_frame.set_shadow_type (gtk.SHADOW_ETCHED_IN)
 		
-		if self.custom_page(edt_frame) == False:
+		if not self.custom_page(edt_frame):
 			self.vbox.pack_start (edt_frame, False, False, 0)
 		
 		# Eliminiamo la colonna id che nn ci serve
@@ -299,7 +299,7 @@ class DBWindow (gtk.Window):
 		# in base al contenuto delle entry
 		
 		if it != None:
-			id = int (self.store.get_value (it, 0))
+			#id = int (self.store.get_value (it, 0))
 			x = 0
 
 			for tmp in self.vars:

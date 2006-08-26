@@ -207,7 +207,7 @@ class WebUpdate (gtk.Window):
 		if self.it != None:
 			self.file = self.tree.get_model ().get_value (self.it, 0)
 			
-			if self.tree.get_model ().get_value (self.it, 5) == True:
+			if self.tree.get_model ().get_value (self.it, 5):
 				self.thread (self.update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				print "this file must be deleted (adding 0 as checksum)"

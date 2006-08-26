@@ -197,7 +197,7 @@ class Gui(gtk.Window):
 			import files.tips
 			files.tips.TipsDialog()
 		
-	def exit(*w):
+	def exit(self, *w):
 		gtk.main_quit()
 
 	def calcoli_apri(self, widget, data=None):

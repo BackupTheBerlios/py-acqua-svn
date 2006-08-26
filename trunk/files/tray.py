@@ -20,7 +20,6 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import app
-import pygtk
 import gtk
 import eggmini.trayicon as eggmini
 import os.path

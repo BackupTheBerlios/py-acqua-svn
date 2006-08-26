@@ -28,6 +28,7 @@ import re
 
 HOME_DIR = None
 PLUG_DIR = None
+IMGS_DIR = None
 DATA_DIR = None
 UPDT_DIR = None
 SKIN_DIR = None
@@ -48,7 +49,7 @@ def tray_apri():#self, widget, data=None):
 	return tray.TrayIcon()
 
 def init_dir_structure ():
-	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR
+	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR, IMGS_DIR
 	
 	path = os.environ["HOME"]
 	print "Creating %s/.pyacqua" % path
@@ -160,7 +161,7 @@ class TimeEntry(gtk.HBox):
 		try:
 			lst = value.split (':')
 			self.spin_h.set_value (float (lst[0]))
-			self.spin_m.set_value (fload (lst[1]))
+			self.spin_m.set_value (float (lst[1]))
 		except:
 			pass
 	
@@ -351,7 +352,7 @@ class FileChooser(gtk.FileChooserDialog):
 			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
 			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 		
-		if for_images == True:
+		if for_images:
 			self.set_use_preview_label(False)
 			
 			img = gtk.Image()
@@ -419,7 +420,7 @@ def info (text):
 	msg (text, gtk.MESSAGE_INFO)
 
 def error (text):
-	msg (text, gtk.MESSAGER_ERROR)
+	msg (text, gtk.MESSAGE_ERROR)
 
 def new_label (txt, bold=True, x=0, y=0):
 	lbl = gtk.Label ()

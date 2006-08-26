@@ -21,8 +21,6 @@
 
 import gtk
 import gobject
-import os
-import sys
 import utils
 import dbwindow
 import pango

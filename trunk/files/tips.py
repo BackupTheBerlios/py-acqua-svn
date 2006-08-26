@@ -31,7 +31,7 @@ class TipsDialog(gtk.Dialog):
 
 		# Controlliamo l'esistenza di un'altra istanza
 		
-		if TipsDialog.exist == False:
+		if not TipsDialog.exist:
 			TipsDialog.exist = True
 		else:
 			return

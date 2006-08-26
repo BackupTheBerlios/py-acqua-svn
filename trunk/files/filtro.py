@@ -21,8 +21,6 @@
 
 import gtk
 import gobject
-import os
-import sys
 import utils
 import dbwindow
 
@@ -76,7 +74,4 @@ class Filtro (dbwindow.DBWindow):
 		utils.cmd ("update filtro set id=%d where id=%d" % (id -1, id))
 			
 	def on_row_activated(self, tree, path, col):
-		mod = self.view.get_model ()
-		it = mod.get_iter_from_string (str (path[0]))
-
 		utils.InfoDialog (self, _("Riepilogo"), self.col_lst, self.vars)

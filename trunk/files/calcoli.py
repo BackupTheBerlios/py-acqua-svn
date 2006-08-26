@@ -184,12 +184,13 @@ class Calcoli(gtk.Window):
 		self.dlc_watt_poco_esigenti.set_text(str(l))
 		
 		self.mar_volume.set_text(str(e))
-		self.mar_piante.set_text(str(e))
+		#self.mar_piante.set_text(str(e))
 	
 	def pulisci_calcoli(self, obj):
-		self.entry1.set_text("")
-		self.entry2.set_text("")
-		self.entry3.set_text("")
+		#self.entry1.set_text("")
+		#self.entry2.set_text("")
+		#self.entry3.set_text("")
+		pass
 		
 	def on_aggiorna(self, widget):
 		# Questa è chiamata dal bottone aggiungi ! (nn so cosa deve fare quindi passo :p)
