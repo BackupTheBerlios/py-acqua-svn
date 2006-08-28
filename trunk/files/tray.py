@@ -21,7 +21,13 @@
 
 import app
 import gtk
-import eggmini.trayicon as eggmini
+try:
+	import eggmini.trayicon as eggmini
+except:
+	try:
+		import egg.trayicon as eggmini
+	except:
+		print _("!! Errore: il modulo per la tray non puo' essere importato")
 import os.path
 import utils
 

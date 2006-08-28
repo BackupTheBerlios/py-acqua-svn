@@ -62,11 +62,7 @@ try:
 	# Richiediamo gtk2
 	import pygtk
 	pygtk.require('2.0')
-except:
-	# Gtk2 assente proviamo lo stesso con gtk
-	pass
 
-try:
 	import gtk
 	import gobject
 except:
