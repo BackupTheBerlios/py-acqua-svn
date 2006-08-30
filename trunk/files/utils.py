@@ -25,7 +25,12 @@ import os.path
 import sys
 from pysqlite2 import dbapi2 as sqlite
 import re
-import _winreg
+if os.name == 'nt':
+	try:
+		import _winreg
+	except:
+		print "!! Cannot import _winreg module"
+
 
 HOME_DIR = None
 PLUG_DIR = None
