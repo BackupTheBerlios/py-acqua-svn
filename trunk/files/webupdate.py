@@ -11,9 +11,9 @@ import sys
 #BASE_DIR = "/update/source/"
 #LIST_FILE = "/update/list.txt"
 
-REPOSITORY_ADDRESS = "localhost"
-BASE_DIR = "~stack/update/source/"
-LIST_FILE = "~stack/update/list.txt"
+REPOSITORY_ADDRESS = r"localhost"
+BASE_DIR = r"/~stack/update/source/"
+LIST_FILE = r"/~stack/update/list.txt"
 
 class Fetcher(threading.Thread):
 	def __init__ (self, callback, url):
@@ -71,11 +71,15 @@ class WebUpdate (gtk.Window):
 		bb = gtk.HButtonBox ()
 		bb.set_layout (gtk.BUTTONBOX_END)
 		
-		self.button = btn = utils.new_button (_("Aggiorna"), gtk.STOCK_REFRESH)
+		self.update_btn = btn = utils.new_button (_("Aggiorna"), gtk.STOCK_REFRESH)
 		btn.connect ('clicked', self.on_start_update)
 		bb.pack_start (btn)
-		
+
 		btn.set_sensitive (False)
+
+		self.get_btn = btn = utils.new_button (_("Controlla Aggiornamenti"), gtk.STOCK_APPLY)
+		btn.connect ('clicked', self.on_get_list)
+		bb.pack_start (btn)
 		
 		vbox.pack_start (bb, False, False, 0)
 
@@ -92,6 +96,10 @@ class WebUpdate (gtk.Window):
 		self.checklist = []
 		
 		self.actual_data = generate.Generator.ParseDir (".")
+
+	def on_get_list (self, widget):
+		widget.set_sensitive (False)
+		self.store.clear ()
 		self.thread (self.populate_tree, LIST_FILE)
 	
 	def thread (self, callback, url):
@@ -111,8 +119,15 @@ class WebUpdate (gtk.Window):
 		return dict
 
 	def populate_tree (self, data, response):
+		self.get_btn.set_sensitive (True)
+
 		if data == None:
 			self.status.push (0, _("Impossibile recuperare la lista dei file dal server."))
+			return
+
+		if response.status != 200:
+			self.status.push (0, _("Errore durante lo scaricamento della lista dei file (HTTP %d)") % response.status)
+			return
 
 		data = self.convert_to_dict (data)
 		
@@ -155,7 +170,7 @@ class WebUpdate (gtk.Window):
 			print "This file is recomended -.- so must be added by default", i
 			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
 		
-		self.button.set_sensitive (True)
+		self.update_btn.set_sensitive (True)
 	
 	def on_start_update (self, widget):
 		self.it = self.tree.get_model ().get_iter_first ()
@@ -194,10 +209,14 @@ class WebUpdate (gtk.Window):
 		f.close ()
 		
 		self.update_check_list ()
+		self.update_percentage ()
 		self.go_with_next_iter ()
 		#except:
 		#	print "Error while updating (%s %s)" % (sys.exc_value, sys.exc_type)
 	
+	def update_percentage (self):
+		self.tree.get_model ().set_value (self.it, 4, 100)
+
 	def update_check_list (self):
 		bytes = self.tree.get_model ().get_value (self.it, 2)
 		sum = self.tree.get_model ().get_value (self.it, 3)
@@ -217,6 +236,7 @@ class WebUpdate (gtk.Window):
 			else:
 				print "this file must be deleted (adding 0 as checksum)"
 				self.checklist.append ("%s|0|0" % self.file)
+				self.update_percentage ()
 				self.go_with_next_iter ()
 		else:
 			# Probabilmente abbiamo finito.. controlliamo la checklist e via
