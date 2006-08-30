@@ -19,6 +19,12 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+try:
+	import pygtk
+	pygtk.require ('2.0')
+except:
+	print "!! PyGtk Not present"
+
 import os
 __builtins__.__dict__["_"] = lambda x : x
 os.environ['PATH'] += r";lib;etc;bin"
@@ -60,13 +66,10 @@ except (IOError, locale.Error), e:
 
 try:
 	# Richiediamo gtk2
-	import pygtk
-	pygtk.require('2.0')
-
 	import gtk
 	import gobject
 except:
-	print _("You need to install pyGTK or GTKv2")
+	print _("You need to install GTKv2")
 
 try:
 	#import pysqlite2 as sqlite

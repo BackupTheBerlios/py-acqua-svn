@@ -24,10 +24,14 @@ class Fetcher(threading.Thread):
 
 	def run (self):
 		try:
-			conn = httplib.HTTPConnection (REPOSITORY_ADDRESS)
-			conn.request ("GET", self.url)
-			self.response = conn.getresponse ()
-			self.data = self.response.read ()
+			self.response = None; self.data = None
+			try:
+				conn = httplib.HTTPConnection (REPOSITORY_ADDRESS)
+				conn.request ("GET", self.url)
+				self.response = conn.getresponse ()
+				self.data = self.response.read ()
+			except:
+				print "!! Error while getting", self.url
 		finally:
 			gobject.idle_add (self.on_data)
 
@@ -107,7 +111,8 @@ class WebUpdate (gtk.Window):
 		return dict
 
 	def populate_tree (self, data, response):
-		if data == None: return
+		if data == None:
+			self.status.push (0, _("Impossibile recuperare la lista dei file dal server."))
 
 		data = self.convert_to_dict (data)
 		

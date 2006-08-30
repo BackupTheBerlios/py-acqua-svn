@@ -25,6 +25,7 @@ import os.path
 import sys
 from pysqlite2 import dbapi2 as sqlite
 import re
+import _winreg
 
 HOME_DIR = None
 PLUG_DIR = None
@@ -34,7 +35,7 @@ UPDT_DIR = None
 SKIN_DIR = None
 
 # FIXME: prima della release
-DHOME_DIR = sys.path[0]		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
+DHOME_DIR = os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
 				# o robe simili
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
@@ -51,7 +52,12 @@ def tray_apri():#self, widget, data=None):
 def init_dir_structure ():
 	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR, IMGS_DIR
 	
-	path = os.environ["HOME"]
+	if os.name != "nt":
+		path = os.environ["HOME"]
+	else:
+		hkey = _winreg.OpenKey (_winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders")
+		path, type = _winreg.QueryValueEx (hkey, "AppData")
+
 	print "Creating %s/.pyacqua" % path
 	
 	HOME_DIR = create_dir (path, ".pyacqua")
