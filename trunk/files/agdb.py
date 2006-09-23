@@ -55,5 +55,5 @@ class dbupdate:
 		check ("alter table fertilizzante add note VARCHAR(500)")
 		check ("alter table spese add note VARCHAR(500)")
 		check ("alter table filtro add note VARCHAR(500)")
-
+		check ("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
 		connessione.commit ()

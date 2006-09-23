@@ -87,7 +87,9 @@ class Vasca (dbwindow.DBWindow):
 		
 		self.menu.show_all ()
 		self.view.connect ('button-press-event', self.on_btn)
-	
+
+#dovrebbe servire per settare il tab alla pagina 0
+		self.note.set_current_page(0)
 	def on_btn (self, widget, evt):
 		if evt.type == gtk.gdk.BUTTON_PRESS and evt.button == 3:
 			self.menu.popup (None, None, None, evt.button, evt.time)
@@ -193,3 +195,45 @@ class Vasca (dbwindow.DBWindow):
 		it = mod.get_iter_from_string(str(path[0]))
 
 		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
+	### in base alla scelta del menu ti fa vedere la pagina
+	def on_change_view (self, widget):
+		id = widget.get_active ()
+		
+		if id == 1:
+			#self.on_draw_graph (None)
+			self.note.set_current_page (id)
+		else:
+			self.note.set_current_page (id)
+	###aggiunge il menu a tendina
+	def pack_before_button_box (self, hb):
+		cmb = utils.Combo ()
+		
+		cmb.append_text (_("Modifica"))
+		
+		cmb.append_text (_("Manutenzione"))
+		
+		cmb.set_active (0)
+		
+		cmb.connect ('changed', self.on_change_view)
+		
+		align = gtk.Alignment (0, 0.5)
+		align.add (cmb)
+		
+		hb.pack_start (align, False, True, 0)
+		
+		cmb.show ()
+	#il notebook dove sono nascosti i tab e bravo stack antigraffio ;)
+	def custom_page (self, edt_frame):
+		import files.manutenzione
+		
+		self.note = gtk.Notebook ()
+		self.vbox.pack_start (self.note, False, False, 0)
+		
+		self.note.set_show_tabs (False)
+		self.note.set_show_border (False)
+		self.note.append_page (edt_frame)
+		
+		self.note.append_page (files.manutenzione.Manutenzione ())
+		
+		# C'e' la custom page qui :P
+		return True
