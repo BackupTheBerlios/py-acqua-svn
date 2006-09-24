@@ -70,7 +70,7 @@ class Manutenzione(gtk.ScrolledWindow):
 		self.e_data = utils.DataButton ()
 		self.e_tipo = utils.Combo ([_("Fertilizzante"), _("Filtro")])
 		self.e_nome = gtk.Entry()
-		self.e_quantita = utils.FloatEntry ()
+		self.e_quantita = utils.IntEntry ()
 		self.e_prossima = utils.DataButton()
 		self.e_note = utils.NoteEntry()
 		tbl.attach(self.e_vasca, 1, 2, 0, 1, xoptions=0)

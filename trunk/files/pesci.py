@@ -105,28 +105,27 @@ class Pesci (dbwindow.DBWindow):
 		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
 
 	def pack_before_button_box (self, hb):
-		# Creiamo un filtro
-		#btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
-		#btn.set_relief (gtk.RELIEF_NONE)
-
-		#btn.connect ("clicked", self.apply)
-		#btn.connect ("button_press_event", self.on_popup)
-		
-		#alg = gtk.Alignment (0, 0.5)
-		#alg.add (btn)
-
-		#hb.pack_start (alg, False, True, 0)
-	
 		cmb = utils.Combo ()
 		cmb.append_text (_("Modifica"))
 		cmb.append_text (_("Spesa"))
-		cmb.append_text (_("Filtro"))
 		cmb.set_active (0)
 		cmb.connect ('changed', self.on_change_view)
 		align = gtk.Alignment (0, 0.5)
 		align.add (cmb)
 		hb.pack_start (align, False, True, 0)
 		cmb.show ()
+		
+		# Creiamo un filtro
+		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
+		btn.set_relief (gtk.RELIEF_NONE)
+
+		btn.connect ("clicked", self.apply)
+		btn.connect ("button_press_event", self.on_popup)
+		
+		alg = gtk.Alignment (1, 0.5)
+		alg.add (btn)
+
+		hb.pack_start (alg, False, True, 0)
 	def on_change_view (self, widget):
 		id = widget.get_active ()
 		
@@ -136,11 +135,6 @@ class Pesci (dbwindow.DBWindow):
 		else:
 			self.note.set_current_page (id)
 			#self.on_popup
-		if id == 2:
-			self.on_popup()
-
-		else:
-			self.note.set_current_page (id)
 	def custom_page (self, edt_frame):
 		import files.spesa
 		
