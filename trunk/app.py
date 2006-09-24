@@ -72,6 +72,8 @@ class Gui(gtk.Window):
 			
 			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 
+			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), 'open_update'),
+
 			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
 
 		('Plugins', None, _('Plugins')),
@@ -83,7 +85,7 @@ class Gui(gtk.Window):
 		('Aiuto', None, _('_Aiuto')),
 		
 			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
-			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), 'open_update'),
+			
 			
 			('Help', None, _('_Aiuto'), None, _('Aiuto...'), 'aiuto_apri'),
 		]
@@ -104,6 +106,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu action='Impostazioni'>
 			<menuitem action='Tips Tricks'/>
+			<menuitem action='Update'/>
 			<separator/>
 			<menuitem action='Lingua'/>
 			<menuitem action='Skin'/>
@@ -114,7 +117,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu name='AboutMenu' action='Aiuto'>
 			<menuitem action='Info'/>
-			<menuitem action='Update'/>
+			
 			<menuitem action='Help'/>
 		</menu>
 		</menubar></ui>"""
