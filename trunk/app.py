@@ -70,12 +70,6 @@ class Gui(gtk.Window):
 		
 			('Tips Tricks',	gtk.STOCK_DIALOG_INFO, _('_Tips Tricks'), None, _('Tips and Tricks...'), 'tips_apri'),
 			
-			('Fertilizzante', None, _('_Fertilizzante'), None, _('fertilizzante...'), 'fertilizzante_apri'),
-			
-			('Filtro', None, _('_Filtro'), None, _('filtro...'), 'filtro_apri'),
-			
-			('Spese', None, _('_Spese'), None, _('Spese...'), 'spese_apri'),
-			
 			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), 'skin_apri'),
 
 			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
@@ -110,9 +104,6 @@ class Gui(gtk.Window):
 		</menu>
 		<menu action='Impostazioni'>
 			<menuitem action='Tips Tricks'/>
-			<menuitem action='Fertilizzante'/>
-			<menuitem action='Filtro'/>
-			<menuitem action='Spese'/>
 			<separator/>
 			<menuitem action='Lingua'/>
 			<menuitem action='Skin'/>
@@ -228,21 +219,9 @@ class Gui(gtk.Window):
 		import files.tips
 		files.tips.TipsDialog()	
 		
-	def spese_apri(self, widget, data=None):
-		import files.spese
-		files.spese.Spese()
-		
 	def skin_apri(self, widget, data=None):
 		import files.skin
 		files.skin.Skin()
-		
-	def fertilizzante_apri(self, widget, data=None):
-		import files.fertilizzante
-		files.fertilizzante.Fertilizzante()
-		
-	def filtro_apri(self, widget, data=None):
-		import files.filtro
-		files.filtro.Filtro()
 		
 	def plugin_apri(self, widget, data=None):
 		import files.plugin

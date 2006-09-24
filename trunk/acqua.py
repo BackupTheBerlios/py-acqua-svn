@@ -93,6 +93,7 @@ if not os.path.exists (path):
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC, note VARCHAR(500))")
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
+	cursore.execute("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
 	connessione.commit()
 
 if __name__ == "__main__":
