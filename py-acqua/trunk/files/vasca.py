@@ -55,7 +55,6 @@ class Vasca (dbwindow.DBWindow):
 		
 		self.set_title (_("Vasche"))
 		self.set_size_request (700, 500)
-		self.set_icon_from_file ("pixmaps/logopyacqua.jpg")
 		
 		utils.set_icon (self)
 
@@ -88,8 +87,9 @@ class Vasca (dbwindow.DBWindow):
 		self.menu.show_all ()
 		self.view.connect ('button-press-event', self.on_btn)
 
-#dovrebbe servire per settare il tab alla pagina 0
+		#dovrebbe servire per settare il tab alla pagina 0
 		self.note.set_current_page(0)
+		
 	def on_btn (self, widget, evt):
 		if evt.type == gtk.gdk.BUTTON_PRESS and evt.button == 3:
 			self.menu.popup (None, None, None, evt.button, evt.time)

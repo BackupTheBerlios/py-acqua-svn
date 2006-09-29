@@ -40,7 +40,7 @@ UPDT_DIR = None
 SKIN_DIR = None
 
 # FIXME: prima della release
-DHOME_DIR = os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
+DHOME_DIR = sys.path[1]#os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
 				# o robe simili
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
@@ -450,8 +450,13 @@ def new_label (txt, bold=True, x=0, y=0):
 	
 	return lbl
 
-def new_button (txt, stock=None):
-	button = gtk.Button ()
+def new_button (txt, stock=None, toggle=False):
+	
+	if toggle:
+		button = gtk.ToggleButton ()
+	else:
+		button = gtk.Button ()
+		
 	hb = gtk.HBox (0, False)
 	
 	if stock:
@@ -459,7 +464,10 @@ def new_button (txt, stock=None):
 		img.set_from_stock (stock, gtk.ICON_SIZE_MENU)
 		#img.set_size_request (8, 6)
 		hb.add (img)
-	hb.add (gtk.Label (txt))
+		
+	if txt:
+		hb.add (gtk.Label (txt))
+		
 	button.add (hb)
 	
 	return button

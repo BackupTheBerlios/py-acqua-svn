@@ -31,9 +31,9 @@ class Manutenzione(gtk.ScrolledWindow):
 		
 		self.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		
-		box = gtk.VBox()
-		box.set_spacing(4)
-		box.set_border_width(4)
+		box = gtk.VBox ()
+		box.set_spacing (4)
+		box.set_border_width (4)
 		
 		# Iniziamo con la tabella
 		tbl = gtk.Table (6, 2, False)
@@ -63,39 +63,38 @@ class Manutenzione(gtk.ScrolledWindow):
 		for i in labels:
 			tbl.attach (utils.new_label (i), 0, 1, x, x+1)
 			x += 1
-	
 		
-	
-		self.e_vasca = utils.Combo()
+		self.e_vasca = utils.Combo ()
 		self.e_data = utils.DataButton ()
 		self.e_tipo = utils.Combo ([_("Fertilizzante"), _("Filtro")])
-		self.e_nome = gtk.Entry()
+		self.e_nome = gtk.Entry ()
 		self.e_quantita = utils.IntEntry ()
-		self.e_prossima = utils.DataButton()
-		self.e_note = utils.NoteEntry()
-		tbl.attach(self.e_vasca, 1, 2, 0, 1, xoptions=0)
-		tbl.attach(self.e_data, 1, 2, 1, 2, xoptions=0)
-		tbl.attach(self.e_tipo, 1, 2, 2, 3, xoptions=0)
-		tbl.attach(self.e_nome, 1, 2, 3, 4, xoptions=0)
-		tbl.attach(self.e_quantita, 1, 2, 4, 5, xoptions=0)
-		tbl.attach(self.e_prossima, 1, 2, 5, 6, xoptions=0)
-		tbl.attach(self.e_note, 1, 2, 6, 7, xoptions=0)
+		self.e_prossima = utils.DataButton ()
+		self.e_note = utils.NoteEntry ()
+		
+		tbl.attach (self.e_vasca, 1, 2, 0, 1)
+		tbl.attach (self.e_data, 1, 2, 1, 2)
+		tbl.attach (self.e_tipo, 1, 2, 2, 3)
+		tbl.attach (self.e_nome, 1, 2, 3, 4)
+		tbl.attach (self.e_quantita, 1, 2, 4, 5)
+		tbl.attach (self.e_prossima, 1, 2, 5, 6)
+		tbl.attach (self.e_note, 1, 2, 6, 7)
+		
 		for y in utils.get ("select * from vasca"):
 			self.e_vasca.append_text (y[3])
 		
+		# Stringiamo un po' la disposizione
+		box.pack_start(tbl, False, False, 0)
 		
-		box.pack_start(tbl)
+		bb = gtk.HButtonBox ()
+		bb.set_layout (gtk.BUTTONBOX_END)
+		bb.set_spacing (4)
 		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		bb.set_spacing(4)
-		
-		btn = gtk.Button(stock=gtk.STOCK_APPLY)
-		btn.connect('clicked', self.on_apply_changes)
+		btn = gtk.Button (stock=gtk.STOCK_APPLY)
+		btn.connect ('clicked', self.on_apply_changes)
 		btn.set_relief (gtk.RELIEF_NONE)
-		bb.pack_start(btn)
-		box.pack_start(bb, False, False, 0)
-		
+		bb.pack_start (btn)
+		box.pack_start (bb, False, False, 0)
 		
 		self.add_with_viewport (box)
 		self.show_all ()

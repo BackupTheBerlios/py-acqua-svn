@@ -41,7 +41,7 @@ class Spesa(gtk.ScrolledWindow):
 		self.store = gtk.ListStore (str)
 		self.view = gtk.TreeView (self.store)
 		
-		self.view.append_column ( gtk.TreeViewColumn (None, gtk.CellRendererText (), text=0) )
+		self.view.append_column (gtk.TreeViewColumn (None, gtk.CellRendererText (), text=0) )
 		self.view.set_headers_visible (False)
 		
 		#self.view.get_selection ().connect ('changed', self.on_change_selection)
@@ -65,37 +65,37 @@ class Spesa(gtk.ScrolledWindow):
 			tbl.attach (utils.new_label (i), 0, 1, x, x+1)
 			x += 1
 
-		self.e_vasca = utils.Combo()
+		self.e_vasca = utils.Combo ()
 		self.e_data = utils.DataButton ()
 		self.e_tipo = utils.Combo ([_("Vasca"), _("Pesci"), _("Piante"), _("Invertebrato"), _("Fertilizzante"), _("Filtro"), _("Varie")])
 		self.e_quantita = utils.IntEntry ()
-		self.e_nome = gtk.Entry()
+		self.e_nome = gtk.Entry ()
 		self.e_prezzo = utils.FloatEntry ()
-		self.e_note = utils.NoteEntry()
-		self.e_immagine = utils.ImgEntry()
-		tbl.attach(self.e_vasca, 1, 2, 0, 1, xoptions=0)
-		tbl.attach(self.e_data, 1, 2, 1, 2, xoptions=0)
-		tbl.attach(self.e_tipo, 1, 2, 2, 3, xoptions=0)
-		tbl.attach(self.e_quantita, 1, 2, 3, 4, xoptions=0)
-		tbl.attach(self.e_nome, 1, 2, 4, 5, xoptions=0)
-		tbl.attach(self.e_prezzo, 1, 2, 5, 6, xoptions=0)
-		tbl.attach(self.e_note, 1, 2, 6, 7, xoptions=0)
-		tbl.attach(self.e_immagine, 1, 2, 7, 8, xoptions=0)
+		self.e_note = utils.NoteEntry ()
+		self.e_immagine = utils.ImgEntry ()
+		tbl.attach (self.e_vasca, 1, 2, 0, 1)
+		tbl.attach (self.e_data, 1, 2, 1, 2)
+		tbl.attach (self.e_tipo, 1, 2, 2, 3)
+		tbl.attach (self.e_quantita, 1, 2, 3, 4)
+		tbl.attach (self.e_nome, 1, 2, 4, 5)
+		tbl.attach (self.e_prezzo, 1, 2, 5, 6)
+		tbl.attach (self.e_note, 1, 2, 6, 7)
+		tbl.attach (self.e_immagine, 1, 2, 7, 8)
 		for y in utils.get ("select * from vasca"):
 			self.e_vasca.append_text (y[3])
 		
 		
-		box.pack_start(tbl)
+		box.pack_start (tbl)
 		
-		bb = gtk.HButtonBox()
-		bb.set_layout(gtk.BUTTONBOX_END)
-		bb.set_spacing(4)
+		bb = gtk.HButtonBox ()
+		bb.set_layout (gtk.BUTTONBOX_END)
+		bb.set_spacing (4)
 		
-		btn = gtk.Button(stock=gtk.STOCK_APPLY)
-		btn.connect('clicked', self.on_apply_changes)
+		btn = gtk.Button (stock=gtk.STOCK_APPLY)
+		btn.connect ('clicked', self.on_apply_changes)
 		btn.set_relief (gtk.RELIEF_NONE)
-		bb.pack_start(btn)
-		box.pack_start(bb, False, False, 0)
+		bb.pack_start (btn)
+		box.pack_start (bb, False, False, 0)
 		
 		
 		self.add_with_viewport (box)
@@ -124,7 +124,7 @@ class Spesa(gtk.ScrolledWindow):
 				self.e_prossima,
 				self.e_note
 		)
-		pass
+		
 	def exit(self, *w):
 		# dovrebbe bastare
 		impostazioni.save ()

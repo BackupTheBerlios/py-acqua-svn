@@ -30,6 +30,7 @@ class NotifyType:
 	SAVE = 0
 	ADD  = 1
 	DEL  = 2
+	LOCK = 3
 
 class DBWindow (gtk.Window):
 
@@ -39,7 +40,9 @@ class DBWindow (gtk.Window):
 		
 		# Inizializziamo la finestra
 		gtk.Window.__init__ (self)
-
+		
+		self.vpaned = gtk.VPaned ()
+		self._vbox = gtk.VBox ()
 		self.vbox = gtk.VBox ()
 
 		# Creiamo la store e la view
@@ -107,8 +110,11 @@ class DBWindow (gtk.Window):
 
 		# Pacchiamo
 		self.sw.add (self.view)
-		self.vbox.pack_start(self.sw)
-
+		self._vbox.pack_start(self.sw)
+		
+		# HBox per la striscia di editing
+		hb = gtk.HBox (2, False)
+		
 		# La ButtonBox per le modifiche
 		self.button_box = bb = gtk.HButtonBox ()
 		bb.set_layout (gtk.BUTTONBOX_END)
@@ -116,25 +122,28 @@ class DBWindow (gtk.Window):
 		btn = gtk.Button (stock=gtk.STOCK_ADD)
 		btn.set_relief (gtk.RELIEF_NONE)
 		btn.connect ('clicked', self.on_add)
-		bb.pack_start(btn)
+		bb.pack_start (btn)
 
 		btn = gtk.Button (stock=gtk.STOCK_REFRESH)
 		btn.set_relief (gtk.RELIEF_NONE)
 		btn.connect ('clicked', self.on_refresh)
-		bb.pack_start(btn)
+		bb.pack_start (btn)
 
 		btn = gtk.Button (stock=gtk.STOCK_REMOVE)
 		btn.set_relief (gtk.RELIEF_NONE)
 		btn.connect ('clicked', self.on_remove)
-		bb.pack_start(btn)
+		bb.pack_start (btn)
 		
-		hb = gtk.HBox (2, False)
+		btn = utils.new_button (None, gtk.STOCK_DIALOG_AUTHENTICATION, True)
+		btn.set_relief (gtk.RELIEF_NONE)
+		btn.connect ('toggled', self.on_edit_mode, hb, bb)
+		bb.pack_start (btn)
 		
 		self.pack_before_button_box (hb)
 		
 		hb.pack_start (bb)
 		
-		self.vbox.pack_start(hb, False, False, 0)
+		self._vbox.pack_start(hb, False, False, 0)
 
 		# Creiamo la zona editing
 		edt_frame = gtk.Frame ("Editing:")
@@ -181,9 +190,14 @@ class DBWindow (gtk.Window):
 		hbox.pack_start (self.image, False, False)
 		hbox.pack_start (self.status)
 		
-		self.vbox.pack_start (hbox, False, False, 0)
-
-		self.add (self.vbox)
+		self.vpaned.pack1 (self._vbox, True, False)
+		self.vpaned.pack2 (self.vbox, False, True) #L'ultima va a True se puo' essere coperto
+		
+		mbox = gtk.VBox ()
+		mbox.pack_start (self.vpaned)
+		mbox.pack_start (hbox, False, False, 0)
+		
+		self.add (mbox)
 		self.show_all ()
 
 		self.image.hide ()
@@ -212,6 +226,8 @@ class DBWindow (gtk.Window):
 			self.image.set_from_stock (gtk.STOCK_ADD, gtk.ICON_SIZE_MENU)
 		if type == NotifyType.DEL:
 			self.image.set_from_stock (gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
+		if type == NotifyType.LOCK:
+			self.image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION, gtk.ICON_SIZE_MENU)
 	
 		if self.timeoutid != None:
 			gobject.source_remove(self.timeoutid)
@@ -251,6 +267,21 @@ class DBWindow (gtk.Window):
 
 	def on_row_activated (self, tree, path, col):
 		pass
+	
+	def on_edit_mode (self, widget, hb, bb):
+		if widget.get_active ():
+			self.vbox.hide ()
+			hb.hide_all ()
+			bb.show ()
+			widget.show_all ()
+			hb.show ()
+			
+			self.update_status (NotifyType.LOCK, "ReadOnly mode: On")
+		else:
+			self.vbox.show ()
+			hb.show_all()
+			
+			self.update_status (NotifyType.LOCK, "ReadOnly mode: Off")
 	
 	def on_add (self, widget):
 		mod = self.store
