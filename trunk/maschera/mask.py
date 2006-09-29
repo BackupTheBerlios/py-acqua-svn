@@ -1,6 +1,6 @@
 import gtk
 import sys
-from xml.dom.minidom import getDOMImplementation
+from xml.dom.minidom import getDOMImplementation, parse
 
 class Mask (gtk.Window):
 	def __init__ (self):
@@ -23,8 +23,9 @@ class Mask (gtk.Window):
 		btn.connect ("clicked", self.on_open)
 		tbl.attach (btn, 0, 1, 3, 4)
 
-		# delete event da collegare
-		# qui!
+		self.connect ("delete-event", lambda *k: gtk.main_quit ())
+
+		self.edit_file = None
 
 		vbox = gtk.VBox (2, False)
 		vbox.pack_start (tbl, False, False, 0)
@@ -40,6 +41,14 @@ class Mask (gtk.Window):
 		self.pvt_dict [x] = widget
 
 		return widget
+	
+	def set (self, key, node):
+		try:
+			print node.attributes["name"].nodeValue
+			self.pvt_dict[key].set_text (node.attributes ["name"].nodeValue)
+		except:
+			print "Some errors here"
+			return
 	
 	def get (self, value):
 		"""Ritorna il valore della chiave \(puo' tornare \"\" se nn e' inserito nulla nella entry\)
@@ -60,15 +69,36 @@ class Mask (gtk.Window):
 		# Qui non so come dovrebbe essere la struttura in generale prendiamo i campi
 		# generici. L'annnidamento si vede in seguito.
 
+		if not self.edit_file:
+			filter = gtk.FileFilter ()
+			filter.add_pattern ("*.xml")
+			filter.set_name ("PyAcqua fish (xml based)")
+			
+			chooser = gtk.FileChooserDialog ("Salva scheda pesce...", self, 
+				gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_SAVE, 0, gtk.STOCK_CANCEL, 1))
+			chooser.add_filter (filter)
+			
+			id = chooser.run ()
+			chooser.hide ()
+			
+			file_name = chooser.get_filename ()
+			
+			chooser.destroy ()
+			
+			if file_name == None or id == 1:
+				return
+		else:
+			file_name = self.edit_file
+
+		try:
+			f = open (file_name, "w+")
+		except:
+			print "ERRORACCIO"
+			return
+
 		name = self.get ("Nome")
 		fam  = self.get ("Famiglia")
 		ufam = self.get ("SottoFamiglia")
-
-		# Dopo aver preso i vari campi apriamo un file e scriviamoci su
-
-		# Per la scelta del nome del file di output serve na FileChooser.
-		#
-		# f = open ("file_out", "w")
 
 		# NB: Per adesso stampiamo solamente sullo stdout
 
@@ -95,24 +125,46 @@ class Mask (gtk.Window):
 		# Scriviamo sullo stdout..
 		# Se vuoi la scrittura su file decommenta sotto e commenta esto :P
 		# ... ah .. devi decommentare su pure :P
-		doc.writexml (sys.stdout, '\t', '\t', '\n')
+		# doc.writexml (sys.stdout, '\t', '\t', '\n')
 
-		# doc.writexml (f, '\t', '\t', '\n')
-		# f = close ()
-
+		doc.writexml (f, '\t', '\t', '\n')
+		f.close ()
 	
 	def on_open (self, widget):
-		# NB: qui ce vole na FileChooser per l'apertura..
-		# Per il caricamento dei file xml puoi vedere impostazioni.py
-		
-		# In linea di massima se fa cosi'
-		# doc = parse ("/home/stack/file.xml")
-		# if doc.documentElement.tagName == "pyacqua": # Seems valid
-		# for node in doc.documentElement.childNodes:
-		#	if node.nodeName == "fish": # e prendi gli attributi
-		#		node.nodeName.attributes ["name"].nodeValue # ecc
+		filter = gtk.FileFilter ()
+		filter.add_pattern ("*.xml")
+		filter.set_name ("PyAcqua fish (xml based)")
 
-		pass
+		chooser = gtk.FileChooserDialog ("Salva scheda pesce...", self, 
+			gtk.FILE_CHOOSER_ACTION_OPEN, (gtk.STOCK_OPEN, 0, gtk.STOCK_CANCEL, 1))
+		chooser.add_filter (filter)
+
+		id = chooser.run ()
+		chooser.hide ()
+
+		file_name = chooser.get_filename ()
+
+		chooser.destroy ()
+
+		if file_name == None or id == 1:
+			return
+		try:
+			doc = parse (file_name)
+		except:
+			print "uhm"
+			return
+		
+		if doc.documentElement.tagName == "pyacqua": # Seems valid
+			for node in doc.documentElement.childNodes:
+				if node.nodeName == "fish": # e prendi gli attributi
+					self.set ("Nome", node)
+					for x in node.childNodes:
+						if x.nodeName == "family":
+							self.set ("Famiglia", x)
+						elif x.nodeName == "subfamily":
+							self.set ("SottoFamiglia", x)
+
+		self.edit_file = file_name
 
 if __name__ == "__main__":
 	Mask ()
