@@ -25,32 +25,29 @@ import app
 import gtk
 import os
 import ConfigParser
-import files.utils as utils
+import utils
 
 # creiamo le dir se non ci sono gia dove contenere le schede dei pesci
 
-if not os.path.exists ("Schede"):
-	os.mkdir('Schede')
-	
-else:
-	
-	if not os.path.exists ("Schede/Pesci"):
-		os.mkdir('Schede/Pesci')
-	else:
-		pass
-		
-par = os.path.join('Schede', 'Pesci', 'chanda_ranga', 'chanda_ranga.cfg')
-
-cfg = ConfigParser.ConfigParser()
-
-	
-cfg.read(par)
-global nomeporco
-			
-nomeporco = cfg.get("nomescientifico", "nm")
-	
-		
-	
+#if not os.path.exists ("Schede"):
+#	os.mkdir('Schede')
+#	
+#else:
+#	
+#	if not os.path.exists ("Schede/Pesci"):
+#		os.mkdir('Schede/Pesci')
+#	else:
+#		pass
+#		
+#par = os.path.join('Schede', 'Pesci', 'chanda_ranga', 'chanda_ranga.cfg')
+#
+#cfg = ConfigParser.ConfigParser()
+#
+#	
+#cfg.read(par)
+#global nomeporco
+#			
+#nomeporco = cfg.get("nomescientifico", "nm")
 	
 		
 #qua dopo aver creato le dir in futuro bisognera decomprimere il file con tutte le schede
@@ -68,7 +65,7 @@ class schede_pesci(gtk.Window):
 		self.create_gui ()
 		self.set_title(_("Schede Pesci"))
 		self.set_size_request (600, 400)
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		utils.set_icon (self)
 
 	def start (self):
 		print ">> Starting", self.__name__
@@ -95,7 +92,7 @@ class schede_pesci(gtk.Window):
 		
 		tbl.attach(self.nome_scientifico, 1, 2, 0, 1, yoptions=gtk.SHRINK)
 		
-		self.nome_scientifico.set_text (str (nomeporco))
+		#self.nome_scientifico.set_text (str (nomeporco))
 		box.pack_start(tbl)
 		self.add(box)
 		

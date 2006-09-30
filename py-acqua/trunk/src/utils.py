@@ -40,7 +40,7 @@ UPDT_DIR = None
 SKIN_DIR = None
 
 # FIXME: prima della release
-DHOME_DIR = sys.path[1]#os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
+DHOME_DIR = os.path.split (sys.path[1])[0]#os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
 				# o robe simili
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")

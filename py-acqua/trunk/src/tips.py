@@ -90,9 +90,10 @@ class TipsDialog(gtk.Dialog):
 
 #FIXME: il file dei tips e' codificato male
 #		if get ("lang").lower() == "en":
-#			tip_file = open(os.path.join('files', 'tip_of_the_day_en.txt'), 'r')
+#			tip_file = open(os.path.join('src', 'tip_of_the_day_en.txt'), 'r')
 #		else:
-		tip_file = open(os.path.join('files', 'tip_of_the_day.txt'),'r')
+		#FIXME: probabilmente bug qui
+		tip_file = open(os.path.join('src', 'tip_of_the_day.txt'),'r')
 	
 		testo = tip_file.read()
 		

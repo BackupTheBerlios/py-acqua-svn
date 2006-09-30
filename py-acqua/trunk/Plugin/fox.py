@@ -23,7 +23,7 @@
 
 import app
 import gtk
-import files.utils as utils
+import utils
 
 class fox(gtk.Window):
 	__name__ = "Fox"
@@ -37,7 +37,7 @@ class fox(gtk.Window):
 		self.create_gui ()
 		self.set_title(_("Fox Plugin"))
 		self.set_size_request (600, 400)
-		self.set_icon_from_file("pixmaps/logopyacqua.jpg")
+		utils.set_icon (self)
 
 	def start (self):
 		print ">> Starting", self.__name__

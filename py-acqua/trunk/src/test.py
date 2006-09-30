@@ -398,8 +398,8 @@ class Test (dbwindow.DBWindow):
 		cmb.show ()
 	
 	def custom_page (self, edt_frame):
-		import files.inserisci
-		#import files.manutenzione
+		import inserisci
+		#import manutenzione
 		self.note = gtk.Notebook ()
 		self.vbox.pack_start (self.note, False, False, 0)
 		
@@ -411,8 +411,8 @@ class Test (dbwindow.DBWindow):
 			self.grapher = GraphPage ()
 			self.note.append_page (self.grapher)
 		
-		self.note.append_page (files.inserisci.Inserisci ())
-		#self.note.append_page (files.manutenzione.Manutenzione ())
+		self.note.append_page (inserisci.Inserisci ())
+		#self.note.append_page (manutenzione.Manutenzione ())
 		# C'e' la custom page qui :P
 		return True
 		

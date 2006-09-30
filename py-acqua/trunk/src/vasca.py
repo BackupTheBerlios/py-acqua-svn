@@ -200,7 +200,6 @@ class Vasca (dbwindow.DBWindow):
 		id = widget.get_active ()
 		
 		if id == 1:
-			#self.on_draw_graph (None)
 			self.note.set_current_page (id)
 		else:
 			self.note.set_current_page (id)
@@ -226,8 +225,8 @@ class Vasca (dbwindow.DBWindow):
 		cmb.show ()
 	#il notebook dove sono nascosti i tab e bravo stack antigraffio ;)
 	def custom_page (self, edt_frame):
-		import files.manutenzione
-		import files.spesa
+		import manutenzione
+		import spesa
 		
 		self.note = gtk.Notebook ()
 		self.vbox.pack_start (self.note, False, False, 0)
@@ -236,7 +235,7 @@ class Vasca (dbwindow.DBWindow):
 		self.note.set_show_border (False)
 		self.note.append_page (edt_frame)
 		
-		self.note.append_page (files.manutenzione.Manutenzione ())
-		self.note.append_page (files.spesa.Spesa ())
+		self.note.append_page (manutenzione.Manutenzione ())
+		self.note.append_page (spesa.Spesa ())
 		# C'e' la custom page qui :P
 		return True

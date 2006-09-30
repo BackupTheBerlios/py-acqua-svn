@@ -1,6 +1,6 @@
 import app
 import gtk
-import files.impostazioni as impostazioni
+import impostazioni
 
 class dummy:
 	__name__ = "dummy plugin"

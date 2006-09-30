@@ -136,7 +136,7 @@ class Pesci (dbwindow.DBWindow):
 			self.note.set_current_page (id)
 			#self.on_popup
 	def custom_page (self, edt_frame):
-		import files.spesa
+		import spesa
 		
 		self.note = gtk.Notebook ()
 		self.vbox.pack_start (self.note, False, False, 0)
@@ -146,7 +146,7 @@ class Pesci (dbwindow.DBWindow):
 		self.note.append_page (edt_frame)
 		
 		
-		self.note.append_page (files.spesa.Spesa ())
+		self.note.append_page (spesa.Spesa ())
 		#self.on_popup
 		# C'e' la custom page qui :P
 		return True

@@ -1,10 +1,13 @@
 INSTALLAZIONE
+================================================================================
 
-PY-ACQUA - programma in licenza GPL per la gestione dell'acquario - è scritto in linguaggio Python. Per questo motivo funziona su ogni sistema operativo che supporti Python. PY-ACQUA funziona quindi su WINDOWS e su  LINUX/UNIX, FREEBSD.
+PY-ACQUA - programma in licenza GPL per la gestione dell'acquario - è scritto in
+linguaggio Python. Per questo motivo funziona su ogni sistema operativo che
+supporti Python. PY-ACQUA funziona quindi su WINDOWS e su  LINUX/UNIX, FREEBSD.
 
-Installare PY-ACQUA sotto Windows
+-> Installare PY-ACQUA sotto Windows
 
-Per far funzionare ACQUA-PY sotto  windows bisogna installare
+Per far funzionare PY-ACQUA sotto windows bisogna installare
 
    1. Python - (http://www.python.org/)
    2. Le Librerie Gtk - (http://gladewin32.sourceforge.net/)
@@ -16,14 +19,22 @@ Dopo aver installato il tutto basta lanciare il file acqua.py
 
 Installare PY-ACQUA su sistemi operativi GNU/Linux/FREEBSD
 
-Su questi sistemi operativi Python viene generalmente installato di default (per scoprirlo aprite una shell e digitate python):  nella maggior parte dei casi vi basta installare solo le pygtk, pysqlite2 e pychart (vedi punti 3, 4 e 5 della installazione sotto windows). Se Python non fosse installato, semplicemente seguite i passaggi descritti per l'installazione di Windows.
+Su questi sistemi operativi Python viene generalmente installato di default (per
+scoprirlo aprite una shell e digitate python):  nella maggior parte dei casi vi
+basta installare solo le pygtk, pysqlite2 e pychart (vedi punti 3, 4 e 5 della
+installazione sotto windows). Se Python non fosse installato, semplicemente
+seguite i passaggi descritti per l'installazione di Windows.
 
 Dopo aver installato il tutto basta lanciare il file acqua.py
 
-Se per caso state aggiornando da una versione precedente, scompattate il nuovo archivio del programma direttamente su quello nuovo e sovrascrivere i file, poi lanciate agdb.py che serve per aggiornare il database. Se tutto e andato bene 
+Se per caso state aggiornando da una versione precedente, scompattate il nuovo
+archivio del programma direttamente su quello nuovo e sovrascrivere i file, poi
+lanciate agdb.py che serve per aggiornare il database. Se tutto e andato bene 
 potete usare il programma lanciando acqua.py 
 
 LICENZA
+================================================================================
+
 This file is part of Py-Acqua
 
 Copyright (C) 2005, 2006 Luca Sanna - Italy
@@ -51,8 +62,15 @@ Py-Acqua refers to the following libraries under GPL or other Free Licenses:
     * PYCHART (http://home.gna.org/pychart/)
 
 
-Py-Acqua is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+Py-Acqua is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
 
-Py-Acqua is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+Py-Acqua is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Py-Acqua; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+You should have received a copy of the GNU General Public License along with
+Py-Acqua; if not, write to the Free Software Foundation, Inc., 51 Franklin St,
+Fifth Floor, Boston, MA  02110-1301  USA

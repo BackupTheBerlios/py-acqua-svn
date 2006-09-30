@@ -1,6 +1,6 @@
 import os.path
-import files.utils as utils
-import files.generate as generate
+import utils
+import generate
 
 def fill_fs_structure (path):
 	lst = path.split (os.path.sep); lst.pop () # Eliminiamo la parte del file

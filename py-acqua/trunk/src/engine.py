@@ -25,6 +25,7 @@ import os
 import glob
 import sys
 import impostazioni
+import utils
 
 class Plugin:
 	__name__ = ""
@@ -46,7 +47,7 @@ class PluginEngine:
 	def load_defaults (self):
 		# Carichiamo tutti i plugin presenti in Plugin/
 		
-		path = os.path.join(os.getcwd(), 'Plugin')
+		path = os.path.join(utils.DHOME_DIR, 'Plugin')
 
 		for i in glob.glob(path + "/*.py"):
 			if os.path.isfile(os.path.join(path, i)):

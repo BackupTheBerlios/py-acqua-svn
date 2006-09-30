@@ -37,17 +37,17 @@ else:
 import locale
 import gettext
 
-import files.utils as utils
+import utils
 
 utils.prepare_enviroment ()
 
-import files.impostazioni
+import impostazioni
 
 APP = 'acqua'
 DIR = 'locale'
 
 try:
-	if files.impostazioni.get ("lang").lower () == "en":
+	if impostazioni.get ("lang").lower () == "en":
 		en = gettext.translation (APP, DIR, ["en"])
 		en.install ()
 		try:
@@ -78,7 +78,7 @@ except:
 	print _("You need to install pysqlite")
 
 import app
-import files.engine
+import engine
 import merger
 
 path = os.path.join (utils.DATA_DIR, "db")
@@ -96,13 +96,13 @@ if not os.path.exists (path):
 	cursore.execute("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
 	connessione.commit()
 
-if __name__ == "__main__":
+def main ():
 	merger.check_for_updates () #Controlliamo se ci sono update da fare
 
 	gobject.threads_init ()
 	
 	app.App = app.Gui()
-	app.App.p_engine = files.engine.PluginEngine ()
+	app.App.p_engine = engine.PluginEngine ()
 	
 	utils.tray_apri()
 	
@@ -112,4 +112,7 @@ if __name__ == "__main__":
 	
 	
 	print "Saving preferences before exiting..."
-	files.impostazioni.save ()
+	impostazioni.save ()
+
+if __name__ == "__main__":
+	main ()

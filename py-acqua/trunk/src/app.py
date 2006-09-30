@@ -20,8 +20,8 @@
 
 import gtk
 import os
-import files.utils as utils
-from files.impostazioni import get
+import utils
+from impostazioni import get
 
 App = None
 
@@ -188,55 +188,55 @@ class Gui(gtk.Window):
 		self.tray = True
 		
 		if get ("show_tips"):
-			import files.tips
-			files.tips.TipsDialog()
+			import tips
+			tips.TipsDialog()
 		
 	def exit(self, *w):
 		gtk.main_quit()
 
 	def calcoli_apri(self, widget, data=None):
-		import files.calcoli
-		return files.calcoli.Calcoli()
+		import calcoli
+		return calcoli.Calcoli()
 	
 	def test_apri(self, widget, data=None):
-		import files.test
-		return files.test.Test()
+		import test
+		return test.Test()
 		
 	def pesci_apri(self, widget, data=None):
-		import files.pesci
-		return files.pesci.Pesci()
+		import pesci
+		return pesci.Pesci()
 		
 	def piante_apri(self, widget, data=None):
-		import files.piante
-		return files.piante.Piante()
+		import piante
+		return piante.Piante()
 		
 	def invertebrati_apri(self, widget, data=None):
-		import files.invertebrati
-		return files.invertebrati.Invertebrati()
+		import invertebrati
+		return invertebrati.Invertebrati()
 		
 	def vasca_apri(self, widget, data=None):
-		import files.vasca
-		return files.vasca.Vasca()
+		import vasca
+		return vasca.Vasca()
 		
 	def tips_apri(self, widget, data=None):
-		import files.tips
-		files.tips.TipsDialog()	
+		import tips
+		tips.TipsDialog()	
 		
 	def skin_apri(self, widget, data=None):
-		import files.skin
-		files.skin.Skin()
+		import skin
+		skin.Skin()
 		
 	def plugin_apri(self, widget, data=None):
-		import files.plugin
-		files.plugin.Plugin()
+		import plugin
+		plugin.Plugin()
 	
 	def lang_open(self, widget, data=None):
-		import files.lang
-		files.lang.LangWindow()
+		import lang
+		lang.LangWindow()
 		
 	def importa_apri(self, widget, data=None):
-		import files.importa
-		files.importa.Importa()
+		import importa
+		importa.Importa()
 		
 	def informazioni_apri(self, widget, data=None):
 		dialog = gtk.AboutDialog()
@@ -275,8 +275,8 @@ class Gui(gtk.Window):
 		utils.info (_("Prova a vedere su http://pyacqua.altervista.org"))
 
 	def open_update(self, widget, data=None):
-		import files.webupdate
-		files.webupdate.WebUpdate()
+		import webupdate
+		webupdate.WebUpdate()
 		
 	def main(self):
 		self.active_toggle = False
