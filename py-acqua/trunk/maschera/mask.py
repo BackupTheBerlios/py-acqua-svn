@@ -5,23 +5,33 @@ from xml.dom.minidom import getDOMImplementation, parse
 class Mask (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
-		self.set_title ("Maschera Pesci")
+		self.set_title ("Maschera Pesci Dolce")
 
 		self.pvt_dict = {}
 
 		self.tbl = tbl = gtk.Table (5, 2)
 
-		self.nome = self.dummy_attach ("Nome", 0)
-		self.family = self.dummy_attach ("Famiglia", 1)
-		self.und_family = self.dummy_attach ("SottoFamiglia", 2)
+		self.nome_scientifico = self.dummy_attach ("Nome scientifico", 0)
+		self.nome_comune = self.dummy_attach ("Nome comune", 1)
+		self.famiglia = self.dummy_attach ("Famiglia", 2)
+		self.sottofamiglia = self.dummy_attach ("Sottofamiglia", 3)
+		self.luogo_provenienza = self.dummy_attach ("Luogo di provenienza" , 4)
+		self.allevamento = self.dummy_attach ("Allevamento e caratteristiche", 5)
+		self.riproduzione = self.dummy_attach ("Riproduzione", 6)
+		self.temperatura = self.dummy_attach ("Temperatura", 7)
+		self.dgh = self.dummy_attach ("Valore dGH", 8)
+		self.ph = self.dummy_attach ("Valore pH", 9)
+		self.dimensioni = self.dummy_attach ("Dimensioni", 10)
+		self.livello_nuoto = self.dummy_attach ("Livello di nuoto", 11)
+		
 
 		btn = gtk.Button (stock = gtk.STOCK_SAVE)
 		btn.connect ("clicked", self.on_save)
-		tbl.attach (btn, 1, 2, 3, 4)
+		tbl.attach (btn, 1, 2, 13, 14)
 
 		btn = gtk.Button (stock = gtk.STOCK_OPEN)
 		btn.connect ("clicked", self.on_open)
-		tbl.attach (btn, 0, 1, 3, 4)
+		tbl.attach (btn, 0, 1, 13, 14)
 
 		self.connect ("delete-event", lambda *k: gtk.main_quit ())
 
