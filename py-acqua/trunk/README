@@ -13,7 +13,7 @@ Per far funzionare PY-ACQUA sotto windows bisogna installare
    2. Le Librerie Gtk - (http://gladewin32.sourceforge.net/)
    3. Le Librerie Pygtk - (http://www.pcpm.ucl.ac.be)
    4. Pysqlite2 - (http://initd.org/pub/software/pysqlite/)
-   5. Py-Chart - (http://home.gna.org/pychart/)
+   5. Matplotlib - (http://matplotlib.sourceforge.net/)
 
 Dopo aver installato il tutto basta lanciare il file acqua.py
 
@@ -21,7 +21,7 @@ Installare PY-ACQUA su sistemi operativi GNU/Linux/FREEBSD
 
 Su questi sistemi operativi Python viene generalmente installato di default (per
 scoprirlo aprite una shell e digitate python):  nella maggior parte dei casi vi
-basta installare solo le pygtk, pysqlite2 e pychart (vedi punti 3, 4 e 5 della
+basta installare solo le pygtk, pysqlite2 e matplotlib (vedi punti 3, 4 e 5 della
 installazione sotto windows). Se Python non fosse installato, semplicemente
 seguite i passaggi descritti per l'installazione di Windows.
 
@@ -40,27 +40,6 @@ This file is part of Py-Acqua
 Copyright (C) 2005, 2006 Luca Sanna - Italy
 Web:       http://pyacqua.altervista.org
 email:     pyacqua@gmail.com  
-
-Team Members:
-
-LUCA SANNA -  	Founder and lead developer - pyacqua@gmail.com 
-ENRICO GIUBERTONI  - Web Site Manager - enrico.giubertoni@gmail.com 
-FEDERICO DEGRANDIS - Developer - danger90@gmail.com 
-MASSIMILIANO SIST - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com
-PIETRO GRASSI - Release Tester - gnatophillum@gmail.com
-PIERO MUSU - Graphic Designer - admin@irk.it
-FRANCESCO PICCININO - Developer - stack.box@gmail.com
-
-Please Refer to AUTHORS file for more Information
-
-Py-Acqua refers to the following libraries under GPL or other Free Licenses:
-
-    * PYTHON (http://www.python.org/psf/license.html)
-    * PYGTK (http://www.pygtk.org/about.html),
-    * PYSQLITE2 (http://initd.org/pub/software/pysqlite/)
-    * GTK (http://gladewin32.sourceforge.net/)
-    * PYCHART (http://home.gna.org/pychart/)
-
 
 Py-Acqua is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
