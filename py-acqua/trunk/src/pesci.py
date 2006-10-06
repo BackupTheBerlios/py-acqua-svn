@@ -51,7 +51,7 @@ class Pesci (dbwindow.DBWindow):
 			self.menu.append (w)
 
 		self.filter = lst.filter_new ()
-		self.filter.set_visible_func (self.apply_filter)
+		self.filter.set_visible_func (self._apply_filter)
 		self.view.set_model (self.filter)
 		
 		self.note.set_current_page(0)
@@ -119,8 +119,8 @@ class Pesci (dbwindow.DBWindow):
 		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
 		btn.set_relief (gtk.RELIEF_NONE)
 
-		btn.connect ("clicked", self.apply)
-		btn.connect ("button_press_event", self.on_popup)
+		btn.connect ("clicked", self._on_apply_clicked)
+		btn.connect ("button_press_event", self._on_popup)
 		
 		alg = gtk.Alignment (1, 0.5)
 		alg.add (btn)
@@ -149,10 +149,10 @@ class Pesci (dbwindow.DBWindow):
 		#self.on_popup
 		return self.note
 	
-	def apply (self, widget):
+	def _on_apply_clicked (self, widget):
 		self.filter.refilter ()
 
-	def apply_filter (self, mod, iter):
+	def _apply_filter (self, mod, iter):
 		filters = list ()
 
 		for i in self.menu.get_children ():
@@ -167,7 +167,7 @@ class Pesci (dbwindow.DBWindow):
 		else:
 			return False
 
-	def on_popup (self, widget, event):
+	def _on_popup (self, widget, event):
 		if event.button == 3:
 			self.menu.popup (None, None, None, event.button, event.time)
 			self.menu.show_all ()

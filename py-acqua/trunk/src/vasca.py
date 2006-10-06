@@ -36,7 +36,7 @@ class Vasca (dbwindow.DBWindow):
 		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 
 		tmp = utils.Combo ([_("Dolce"), _("Dolce Tropicale"), _("Marino"), _("Marino Mediterraneo"), _("Paludario"), _("Salmastro")])
-		tmp.connect ('changed', self.aggiorna)
+		tmp.connect ('changed', self._aggiorna)
 
 		self.col_lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
 			_('Tipo Acquario'), _('Tipo Filtro'),
@@ -64,65 +64,65 @@ class Vasca (dbwindow.DBWindow):
 		self.menu = gtk.Menu ()
 
 		it = gtk.RadioMenuItem (None, label=_("Dolce"))
-		it.connect ('activate', self.show_dolce)
+		it.connect ('activate', self._show_dolce)
 		self.menu.append (it)
 		
 		it = gtk.RadioMenuItem (it, label=_("Dolce Tropicale"))
-		it.connect ('activate', self.show_dolce)
+		it.connect ('activate', self._show_dolce)
 		self.menu.append (it)
 
 		it = gtk.RadioMenuItem (it, label=_("Marino"))
-		it.connect ('activate', self.reset)
+		it.connect ('activate', self._reset)
 		self.menu.append (it)
 
 		it = gtk.RadioMenuItem (it, label=_("Marino Mediterraneo"))
-		it.connect ('activate', self.reset)
+		it.connect ('activate', self._reset)
 		self.menu.append (it)
 
 		it = gtk.RadioMenuItem (it, label=_("Paludario"))
-		it.connect ('activate', self.show_dolce)
+		it.connect ('activate', self._show_dolce)
 		self.menu.append (it)
 
 		it = gtk.RadioMenuItem (it, label=_("Salmastro"))
-		it.connect ('activate', self.show_dolce)
+		it.connect ('activate', self._show_dolce)
 		self.menu.append (it)
 		
 		self.menu.show_all ()
-		self.view.connect ('button-press-event', self.on_btn)
+		self.view.connect ('button-press-event', self._on_popup)
 		
 		self.manutenzione.bind_context ()
 		#spesa.Spesa (self)
 		
-	def on_btn (self, widget, evt):
+	def _on_popup (self, widget, evt):
 		if evt.type == gtk.gdk.BUTTON_PRESS and evt.button == 3:
 			self.menu.popup (None, None, None, evt.button, evt.time)
 	
-	def show_dolce (self, *w):
-		self.reset ()
+	def _show_dolce (self, *w):
+		self._reset ()
 		self.view.get_column (8).set_visible (False)
 		self.view.get_column (9).set_visible (False)
 	
-	def reset (self, *w):
+	def _reset (self, *w):
 		for i in range (len (self.col_lst)):
 			self.view.get_column (i).set_visible (True)
 		
-	def aggiorna(self, widget):
+	def _aggiorna(self, widget):
 		id = self.vars[0].get_active()
 
 		for i in self.vars:
-			self.reactivate (i)
+			self._reactivate (i)
 		
 		if id == 0 or id == 1: # Dolce || Dolce Tropicale
 			# Reattore di calcio e Schiumatoio disabilitati
-			self.deactivate (8, _("Assente"))
-			self.deactivate (9, _("Assente"))
+			self._deactivate (8, _("Assente"))
+			self._deactivate (9, _("Assente"))
 		elif id == 2 or id == 3: # Marino || Marino Mediterraneo
 			pass
 		elif id == 4 or id == 5: # Paludario
-			self.deactivate (8, _("Assente"))
-			self.deactivate (9, _("Assente"))
+			self._deactivate (8, _("Assente"))
+			self._deactivate (9, _("Assente"))
 	
-	def reactivate (self, widget):
+	def _reactivate (self, widget):
 		ret = widget.get_data ('old-value')
 
 		if ret != None:
@@ -130,7 +130,7 @@ class Vasca (dbwindow.DBWindow):
 
 		widget.set_property ('sensitive', True)
 
-	def deactivate (self, id, txt=None):
+	def _deactivate (self, id, txt=None):
 		self.vars[id].set_property ('sensitive', False)
 		
 		if txt != None:

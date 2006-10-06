@@ -34,7 +34,7 @@ class LangWindow (gtk.Window):
 		
 		utils.set_icon (self)
 		
-		self.connect ('delete-event', self.exit)
+		self.connect ('delete-event', self._on_delete_event)
 
 		mbox = gtk.VBox ()
 		vbox = gtk.VBox ()
@@ -68,11 +68,11 @@ class LangWindow (gtk.Window):
 		bb.set_layout (gtk.BUTTONBOX_END)
 
 		btn = gtk.Button (stock=gtk.STOCK_CANCEL)
-		btn.connect ('clicked', self.exit)
+		btn.connect ('clicked', self._on_delete_event)
 		bb.pack_start (btn)
 
 		btn = gtk.Button (stock=gtk.STOCK_OK)
-		btn.connect ('clicked', self.on_ok)
+		btn.connect ('clicked', self._on_ok)
 		bb.pack_start (btn)
 
 		mbox.pack_start (bb, False, False, 0)
@@ -86,10 +86,10 @@ class LangWindow (gtk.Window):
 
 		self.show_all ()
 	
-	def exit (self, *w):
+	def _on_delete_event (self, *w):
 		self.hide ()
 	
-	def on_ok (self, widget):
+	def _on_ok (self, widget):
 		if self.en.get_active ():
 			set ("lang", "en")
 		elif self.it.get_active ():
@@ -98,4 +98,4 @@ class LangWindow (gtk.Window):
 			return
 
 		save ()
-		self.exit ()
+		self._on_delete_event ()

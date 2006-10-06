@@ -24,70 +24,72 @@ import utils
 from impostazioni import get
 
 App = None
-
-def fix_actions(actions, instance):
-	retval = []
-	
-	# Iteriamo l'array e sostituiamo la stringa della callback
-	# con l'indirizzo del metodo
-	
-	for i in range(len(actions)):
-		curr = actions[i]
-		if len(curr) > 5:
-			curr = list(curr)
-			curr[5] = getattr(instance, curr[5])
-			curr = tuple(curr)
-
-		retval.append(curr)
-	
-	# Ritorniamo la lista con le modifiche
-	return retval
 	
 class Gui(gtk.Window):
+	"""
+	Questa e' la classe che rappresenta la finestra principale di PyAcqua.
+	"""
 	
+	def _fix_actions(self, actions, instance):
+		retval = []
+		
+		# Iteriamo l'array e sostituiamo la stringa della callback
+		# con l'indirizzo del metodo
+		
+		for i in range(len(actions)):
+			curr = actions[i]
+			if len(curr) > 5:
+				curr = list(curr)
+				curr[5] = getattr(instance, curr[5])
+				curr = tuple(curr)
 	
-	def create_menu(self):
+			retval.append(curr)
+		
+		# Ritorniamo la lista con le modifiche
+		return retval
+	
+	def _create_menu(self):
 		
 		w = [
 		('Acquario', None, _('_Acquario')),
-			('Calcoli', None, _('_Calcoli'), '<control>C', _('Calcoli...'), 'calcoli_apri'),
+			('Calcoli', None, _('_Calcoli'), '<control>C', _('Calcoli...'), '_on_open_calcoli'),
 			
-			('Vasche', None, _('_Vasche'), '<control>V', _('Vasche...'), 'vasca_apri'),
+			('Vasche', None, _('_Vasche'), '<control>V', _('Vasche...'), '_on_open_vasca'),
 			
-			('Test', None, _('_Test'), '<control>T', _('Test'), 'test_apri'),
+			('Test', None, _('_Test'), '<control>T', _('Test'), '_on_open_test'),
 			
-			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci...'), 'pesci_apri'),
+			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci...'), '_on_open_pesci'),
 			
-			('Piante', None, _('_Piante'), '<control>I', _('Piante...'), 'piante_apri'),
+			('Piante', None, _('_Piante'), '<control>I', _('Piante...'), '_on_open_piante'),
 			
-			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), 'invertebrati_apri'),
+			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), '_on_open_invertebrati'),
 			
-			('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), 'importa_apri'),
+			('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), '_on_open_importa'),
 			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
 			
 		('Impostazioni', None, _('_Impostazioni')),
 		
-			('Tips Tricks',	gtk.STOCK_DIALOG_INFO, _('_Tips Tricks'), None, _('Tips and Tricks...'), 'tips_apri'),
+			('Tips Tricks',	gtk.STOCK_DIALOG_INFO, _('_Tips Tricks'), None, _('Tips and Tricks...'), '_on_open_tips'),
 			
-			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), 'skin_apri'),
+			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), '_on_open_skin'),
 
-			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), 'open_update'),
+			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), '_on_open_update'),
 
-			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), 'lang_open'),
+			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), '_on_open_lang'),
 
 		('Plugins', None, _('Plugins')),
 
-			('PluginManager', gtk.STOCK_INDEX, _('_Manager'), None, _('Plug-in...'), 'plugin_apri'),
+			('PluginManager', gtk.STOCK_INDEX, _('_Manager'), None, _('Plug-in...'), '_on_open_plugin'),
 
 			# i vari Plugin aggiungeranno qui le entry
 		
 		('Aiuto', None, _('_Aiuto')),
 		
-			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), 'informazioni_apri'),
+			('Info', gtk.STOCK_ABOUT, _('_Informazioni'), None, _('Riguardo Py-Acqua'), '_on_open_info'),
 			
 			
-			('Help', None, _('_Aiuto'), None, _('Aiuto...'), 'aiuto_apri'),
+			('Help', None, _('_Aiuto'), None, _('Aiuto...'), '_on_open_help'),
 		]
 		
 		ui = """<ui>
@@ -124,7 +126,7 @@ class Gui(gtk.Window):
 		
 		ag = gtk.ActionGroup('WindowActions')
 		
-		actions = fix_actions(w, self)
+		actions = self._fix_actions(w, self)
 		
 		# Aggiungiamo le varie azioni.. (vedi
 		# gtk.ActionGroup.add_actions)
@@ -174,7 +176,7 @@ class Gui(gtk.Window):
 			gtk.rc_reparse_all_for_settings (gtk.settings_get_default (), True)
 		
 		# Menu
-		self.create_menu()
+		self._create_menu()
 		
 		vbox = gtk.VBox()
 		
@@ -194,51 +196,51 @@ class Gui(gtk.Window):
 	def exit(self, *w):
 		gtk.main_quit()
 
-	def calcoli_apri(self, widget, data=None):
+	def _on_open_calcoli(self, widget, data=None):
 		import calcoli
 		return calcoli.Calcoli()
 	
-	def test_apri(self, widget, data=None):
+	def _on_open_test(self, widget, data=None):
 		import test
 		return test.Test()
 		
-	def pesci_apri(self, widget, data=None):
+	def _on_open_pesci(self, widget, data=None):
 		import pesci
 		return pesci.Pesci()
 		
-	def piante_apri(self, widget, data=None):
+	def _on_open_piante(self, widget, data=None):
 		import piante
 		return piante.Piante()
 		
-	def invertebrati_apri(self, widget, data=None):
+	def _on_open_invertebrati(self, widget, data=None):
 		import invertebrati
 		return invertebrati.Invertebrati()
 		
-	def vasca_apri(self, widget, data=None):
+	def _on_open_vasca(self, widget, data=None):
 		import vasca
 		return vasca.Vasca()
 		
-	def tips_apri(self, widget, data=None):
+	def _on_open_tips(self, widget, data=None):
 		import tips
 		tips.TipsDialog()	
 		
-	def skin_apri(self, widget, data=None):
+	def _on_open_skin(self, widget, data=None):
 		import skin
 		skin.Skin()
 		
-	def plugin_apri(self, widget, data=None):
+	def _on_open_plugin(self, widget, data=None):
 		import plugin
 		plugin.Plugin()
 	
-	def lang_open(self, widget, data=None):
+	def _on_open_lang(self, widget, data=None):
 		import lang
 		lang.LangWindow()
 		
-	def importa_apri(self, widget, data=None):
+	def _on_open_importa(self, widget, data=None):
 		import importa
 		importa.Importa()
 		
-	def informazioni_apri(self, widget, data=None):
+	def _on_open_info(self, widget, data=None):
 		dialog = gtk.AboutDialog()
 	
 		dialog.set_name("PyAcqua 0.9")
@@ -271,10 +273,10 @@ class Gui(gtk.Window):
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
 		
-	def aiuto_apri(self, widget, data=None):
+	def _on_open_help(self, widget, data=None):
 		utils.info (_("Prova a vedere su http://pyacqua.altervista.org"))
 
-	def open_update(self, widget, data=None):
+	def _on_open_update(self, widget, data=None):
 		import webupdate
 		webupdate.WebUpdate()
 		
@@ -283,4 +285,9 @@ class Gui(gtk.Window):
 		gtk.main()
 	
 	def get_plugin_menu(self):
+		"""
+		Ritorna il menu dei plugin.
+		Questo metodo viene utilizzato dai plugin per aggiungere MenuItem al
+		menu Plugins di questa classe.
+		"""
 		return self.ui.get_widget('/Menubar/Plugins').get_submenu()

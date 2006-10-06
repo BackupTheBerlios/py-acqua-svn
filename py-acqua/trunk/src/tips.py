@@ -63,15 +63,15 @@ class TipsDialog(gtk.Dialog):
 		
 		self.vbox.pack_start(self.check, False, False, 0)
 
-		self.connect('response', self.on_response)
-		self.tip()
+		self.connect('response', self._on_response)
+		self._tip()
 		
 		self.set_size_request(400, 250)
 		self.show_all()
 	
-	def on_response(self, dialog, rsp_id):
+	def _on_response(self, dialog, rsp_id):
 		if rsp_id == gtk.RESPONSE_NONE:
-			self.tip()
+			self._tip()
 		if rsp_id == gtk.RESPONSE_OK:
 			self.hide()
 			
@@ -86,7 +86,7 @@ class TipsDialog(gtk.Dialog):
 			
 			TipsDialog.exist = False
 	
-	def tip(self):
+	def _tip(self):
 
 #FIXME: il file dei tips e' codificato male
 #		if get ("lang").lower() == "en":

@@ -319,7 +319,7 @@ class Test (dbwindow.DBWindow):
 		
 		for i in range (13):
 			spin = utils.FloatEntry ()
-			spin.connect ('output', self.on_spin_change)
+			spin.connect ('output', self._on_spin_change)
 			inst.append (spin)
 		
 		inst.append (utils.Combo ()) # Combo per i limiti
@@ -347,7 +347,7 @@ class Test (dbwindow.DBWindow):
 		it = mod.get_iter_first ()
 		
 		while it != None:
-			self.check_iterator (mod, it)
+			self._check_iterator (mod, it)
 			it = mod.iter_next (it)
 		
 		
@@ -401,7 +401,6 @@ class Test (dbwindow.DBWindow):
 		import inserisci
 		#import manutenzione
 		self.note = gtk.Notebook ()
-		self.vbox.pack_start (self.note, False, False, 0)
 		
 		self.note.set_show_tabs (False)
 		self.note.set_show_border (False)
@@ -443,7 +442,7 @@ class Test (dbwindow.DBWindow):
 		
 		self.update_status (dbwindow.NotifyType.SAVE, _("Row Aggiornata (ID: %d") % id)
 		
-		self.check_iterator (mod, it)
+		self._check_iterator (mod, it)
 
 	def add_entry (self, it):
 		mod, id = self.view.get_selection ().get_selected ()
@@ -471,7 +470,7 @@ class Test (dbwindow.DBWindow):
 
 		self.update_status(dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
-		self.check_iterator (mod, it)
+		self._check_iterator (mod, it)
 		
 	def remove_id (self, id):
 		utils.cmd ('delete from test where id=%d' % id)
@@ -479,12 +478,8 @@ class Test (dbwindow.DBWindow):
 	
 	def decrement_id (self, id):
 		utils.cmd ('update test set id=%d where id=%d' % (id - 1, id))
-		
-	def after_selection_changed (self, mod, it):
-		# Checckiamo un po'
-		pass
 	
-	def on_spin_change (self, widget):
+	def _on_spin_change (self, widget):
 		id = self.vars.index (widget)
 		id -= 2
 		
@@ -524,7 +519,7 @@ class Test (dbwindow.DBWindow):
 			else:
 				widget.modify_bg (gtk.STATE_NORMAL, gcolor[2])
 
-	def on_draw_graph (self, widget):
+	def _on_draw_graph (self, widget):
 		if Test.Chart:
 			mod, it = self.view.get_selection ().get_selected ()
 			
@@ -543,7 +538,7 @@ class Test (dbwindow.DBWindow):
 			
 			self.grapher.plot (lst)
 	
-	def check_iterator (self, mod, it):
+	def _check_iterator (self, mod, it):
 		# TODO: implementare i valori ideali
 		
 		if it == None: return
@@ -570,37 +565,15 @@ class Test (dbwindow.DBWindow):
 			x += 1
 
 try:
-	print ">> import matplotlib", 
+	# TODO: implementa il caching delle import
 	import matplotlib
-	print "ok"
-	
-	print ">> matplotlib.use ('GTKAgg')",
 	matplotlib.use ('GTKAgg')
-	print "ok"
-
-	print ">> from matplotlib.figure import Figure",
 	from matplotlib.figure import Figure
-	print "ok"
-
-	print ">> from matplotlib.axes import Subplot",
 	from matplotlib.axes import Subplot
-	print "ok"
-
-	print ">> from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar",
 	from matplotlib.backends.backend_gtk import FigureCanvasGTK, NavigationToolbar
-	print "ok"
-
-	print ">> from matplotlib.numerix import arange",
 	from matplotlib.numerix import arange
-	print "ok"
-
-	print ">> from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num",
 	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
-	print "ok"
-
-	print ">> Setting chart to True (if you are pietro this doesn't work :P)",
-	Test.Chart = True # probabilmente nn funzionera' per pietro :-P
-	print "ok"
+	Test.Chart = True
 	
 except:
 	Test.Chart = False

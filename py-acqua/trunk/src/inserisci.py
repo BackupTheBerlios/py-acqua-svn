@@ -22,7 +22,6 @@
 import gtk
 import utils
 import impostazioni
-#from inserisci import *
 from pysqlite2 import dbapi2 as sqlite
 from copy import copy
 
@@ -45,7 +44,7 @@ class Inserisci(gtk.ScrolledWindow):
 		self.view.append_column ( gtk.TreeViewColumn (None, gtk.CellRendererText (), text=0) )
 		self.view.set_headers_visible (False)
 		
-		self.view.get_selection ().connect ('changed', self.on_change_selection)
+		self.view.get_selection ().connect ('changed', self._on_change_selection)
 		
 		sw = gtk.ScrolledWindow ()
 		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -57,18 +56,18 @@ class Inserisci(gtk.ScrolledWindow):
 		
 		
 		btn = gtk.Button (stock=gtk.STOCK_REMOVE)
-		btn.connect ('clicked', self.on_del_collection)
+		btn.connect ('clicked', self._on_del_collection)
 		
 		tbl.attach (btn, 3, 4, 0, 1)
 		
 		btn = gtk.Button (stock=gtk.STOCK_ADD)
-		btn.connect ('clicked', self.on_add_collection)
+		btn.connect ('clicked', self._on_add_collection)
 		
 		tbl.attach (btn, 3, 4, 1, 2)
 		
 		self.combo = utils.Combo ()
 		
-		self.populate_combo ()
+		self._populate_combo ()
 		
 		self.combo.set_active (0)
 		
@@ -119,7 +118,7 @@ class Inserisci(gtk.ScrolledWindow):
 		bb.set_spacing(4)
 		
 		btn = gtk.Button(stock=gtk.STOCK_APPLY)
-		btn.connect('clicked', self.on_apply_changes)
+		btn.connect('clicked', self._on_apply_changes)
 		btn.set_relief (gtk.RELIEF_NONE)
 		bb.pack_start(btn)
 		box.pack_start(bb, False, False, 0)
@@ -128,7 +127,7 @@ class Inserisci(gtk.ScrolledWindow):
 		self.add_with_viewport (box)
 		self.show_all ()
 	
-	def on_change_selection (self, selection):
+	def _on_change_selection (self, selection):
 		mod, it = selection.get_selected ()
 		
 		if it != None:
@@ -149,21 +148,21 @@ class Inserisci(gtk.ScrolledWindow):
 				
 				x += 1
 	
-	def populate_combo (self):
+	def _populate_combo (self):
 		self.combo.append_text (_("Nessuna base"))
 		
 		for i in impostazioni.get_names_of_collections ():
 			self.combo.append_text (i)
 			self.store.append ([i])
 	
-	def on_del_collection (self, widget):
+	def _on_del_collection (self, widget):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		if it != None:
 			impostazioni.delete_collection (mod.get_value (it, 0))
 			self.store.remove (it)
 			
-	def on_add_collection (self, widget):
+	def _on_add_collection (self, widget):
 		name = utils.InputDialog (None, _("Nome per la nuova collezione:")).run ()
 		
 		if impostazioni.get_collection (name) != None:
@@ -194,7 +193,7 @@ class Inserisci(gtk.ScrolledWindow):
 			self.store.append ([name])
 			impostazioni.add_collection (name, collection)
 	
-	def on_apply_changes (self, widget):
+	def _on_apply_changes (self, widget):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		if it != None:
@@ -215,7 +214,8 @@ class Inserisci(gtk.ScrolledWindow):
 				collection [i] = [min, max, ide]
 				
 				x += 1
-	def exit(self, *w):
+				
+	def _on_delete_event(self, *w):
 		# dovrebbe bastare
 		impostazioni.save ()
 		

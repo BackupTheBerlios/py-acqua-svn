@@ -74,10 +74,12 @@ class Prefs(object):
 	def __init__ (self):
 		self.values = gui_values
 		self.collection = {"dolce" : dolce_values, "marino" : marino_values}
-	def Dump (self):
+		
+	def dump (self):
 		print self.values
 		print self.collection
-	def Load (self):
+		
+	def load (self):
 		try:
 			doc = parse (os.path.join (utils.HOME_DIR, "pyacqua.xml"))
 		except:
@@ -89,17 +91,17 @@ class Prefs(object):
 			for node in doc.documentElement.childNodes:
 				
 				if node.nodeName == "values":
-					self.parseValues (node)
+					self._parse_values (node)
 					
 				if node.nodeName == "preferences":
-					self.parsePreferences (node)
+					self._parse_preferences (node)
 	
-	def parseValues (self, node):
+	def _parse_values (self, node):
 		for i in node.childNodes:
 			if i.nodeName == "collection":
-				self.parseCollection (i.attributes ["name"].nodeValue, i)
+				self._parse_collection (i.attributes ["name"].nodeValue, i)
 	
-	def parseCollection (self, name, node):
+	def _parse_collection (self, name, node):
 		dict = {}
 		for i in node.childNodes:
 			if i.nodeName == "value":
@@ -121,14 +123,14 @@ class Prefs(object):
 		if len (dict) > 0:
 			self.collection [name] = dict
 	
-	def parsePreferences (self, node):
+	def _parse_preferences (self, node):
 		for i in node.childNodes:
-			if i.nodeName == "bool": self.parseWithConverter (i, bool)
-			if i.nodeName == "string": self.parseWithConverter (i, str)
-			if i.nodeName == "float": self.parseWithConverter (i, float)
-			if i.nodeName == "int": self.parseWithConverter (i, int)
+			if i.nodeName == "bool": self._parse_with_converter (i, bool)
+			if i.nodeName == "string": self._parse_with_converter (i, str)
+			if i.nodeName == "float": self._parse_with_converter (i, float)
+			if i.nodeName == "int": self._parse_with_converter (i, int)
 	
-	def parseWithConverter (self, node, converter):
+	def _parse_with_converter (self, node, converter):
 		id = node.attributes ["id"].nodeValue
 		val = node.attributes ["value"].nodeValue
 		
@@ -177,8 +179,8 @@ class Prefs(object):
 		root = doc.documentElement
 		root.appendChild (values); root.appendChild (prefs)
 		
-		self.dump_collections (values, doc)
-		self.dump_preferences (prefs, doc)
+		self._dump_collections (values, doc)
+		self._dump_preferences (prefs, doc)
 		
 		try:
 			writer = open (os.path.join (utils.HOME_DIR, "pyacqua.xml"), "w")
@@ -187,7 +189,7 @@ class Prefs(object):
 		except:
 			print _("!! Errore mentre salvavo pyacqua.xml")
 	
-	def dump_collections (self, node, doc):
+	def _dump_collections (self, node, doc):
 		element = None
 		
 		for i in self.collection:
@@ -210,7 +212,7 @@ class Prefs(object):
 					
 					element.appendChild (current)
 	
-	def dump_preferences (self, node, doc):
+	def _dump_preferences (self, node, doc):
 		element = None
 		
 		for i in self.values:
@@ -257,7 +259,7 @@ def check_instance ():
 	
 	if not m_pref:
 		m_pref = Prefs ()
-		m_pref.Load ()
+		m_pref.load ()
 
 def get (name):
 	global m_pref

@@ -56,7 +56,7 @@ class Skin (gtk.Window):
 		self.view = view = gtk.TreeView (list)
 		
 		view.append_column (gtk.TreeViewColumn(_("Skin"), gtk.CellRendererText (), text=0))
-		view.get_selection ().connect ('changed', self.on_selection_changed)
+		view.get_selection ().connect ('changed', self._on_selection_changed)
 
 		sw.add (view)
 
@@ -71,33 +71,33 @@ class Skin (gtk.Window):
 
 		self.box.pack_start (hbox)
 
-		self.reload ()
+		self._reload ()
 
 		bb = gtk.HButtonBox ()
 		bb.set_layout (gtk.BUTTONBOX_END)
 		bb.set_spacing (5)
 		
 		btn = gtk.Button (stock=gtk.STOCK_OK)
-		btn.connect ('clicked', self.on_skin_ok)
+		btn.connect ('clicked', self._on_skin_ok)
 		bb.pack_start (btn)
 		
 		btn = gtk.Button (stock=gtk.STOCK_DELETE)
-		btn.connect ('clicked', self.on_delete)
+		btn.connect ('clicked', self._on_delete)
 		bb.pack_start (btn)
 		
 		btn = gtk.Button (stock=gtk.STOCK_CLOSE)
-		btn.connect ('clicked', self.exit)
+		btn.connect ('clicked', self._on_delete_event)
 		bb.pack_start (btn)
 		
 		btn = gtk.Button (stock=gtk.STOCK_ADD)
-		btn.connect ('clicked', self.insert_skin)
+		btn.connect ('clicked', self._insert_skin)
 		bb.pack_start (btn)
 		self.box.pack_start (bb, False, False, 0)
 		
 		self.add (self.box)
 		self.show_all ()
 	
-	def reload (self):
+	def _reload (self):
 		
 		# Carichiamo gli skin personali
 
@@ -106,7 +106,7 @@ class Skin (gtk.Window):
 				current = os.path.join (path, file)
 				
 				if os.path.isdir (current):
-					self.add_skin (current, self.list)
+					self._add_skin (current, self.list)
 
 		path = utils.SKIN_DIR
 		go ()
@@ -116,25 +116,25 @@ class Skin (gtk.Window):
 
 		# FIXME: set the selection on the current skin
 		
-	def add_skin (self, path, list):
+	def _add_skin (self, path, list):
 		back = os.path.join (path, "main.png")
 		
 		if os.path.exists (back):
 			list.append ([os.path.basename (path), back])
 	
-	def on_selection_changed (self, selection):
+	def _on_selection_changed (self, selection):
 		mod, it = selection.get_selected ()
 		
 		if it != None:
-			self.update_image (mod.get_value (it, 1))
+			self._update_image (mod.get_value (it, 1))
 	
-	def update_image (self, path):
+	def _update_image (self, path):
 		self.image.set_from_file(path)
 		
-	def exit (self, *w):
+	def _on_delete_event (self, *w):
 		self.hide ()
 		
-	def insert_skin (self, widget):
+	def _insert_skin (self, widget):
 		id = utils.FileChooser ( _("Seleziona Immagine"), self).run ()
 
 		if id != None:
@@ -142,18 +142,18 @@ class Skin (gtk.Window):
 			utils.create_skin (name, id)
 
 		self.list.clear ()
-		self.reload ()
+		self._reload ()
 		
-	def on_skin_ok (self, widget):
+	def _on_skin_ok (self, widget):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		if it != None:
 			set ("skin", mod.get_value (it, 0))
 			save ()
 			utils.info (_("Devi riavviare per far si che tutte le modifiche siano applicate."))
-			self.exit ()
+			self._on_delete_event ()
 
-	def on_delete (self, widget):
+	def _on_delete (self, widget):
 		mod, it = self.view.get_selection ().get_selected ()
 		
 		file = mod.get_value (it, 1)
@@ -164,4 +164,4 @@ class Skin (gtk.Window):
 
 		# Rimuoviamo dalla store
 		self.list.clear ()
-		self.reload ()
+		self._reload ()

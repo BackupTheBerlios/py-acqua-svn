@@ -61,20 +61,20 @@ class Plugin(gtk.Window):
 		bb.set_layout(gtk.BUTTONBOX_END)
 		
 		btn = gtk.Button(stock=gtk.STOCK_ADD)
-		btn.connect('clicked', self.on_add)
+		btn.connect('clicked', self._on_add)
 		bb.pack_start(btn)
 		
 		btn = gtk.Button(stock=gtk.STOCK_REMOVE)
-		btn.connect('clicked', self.on_unload)
+		btn.connect('clicked', self._on_unload)
 		bb.pack_start(btn)
 		
 		box.pack_start(bb, False, False, 0)
 		
 		self.add(box)
-		self.fillstore()
+		self._fillstore()
 		self.show_all()
 			
-	def on_unload(self, widget):
+	def _on_unload(self, widget):
 		mod, it = self.view.get_selection().get_selected()
 		
 		if it != None:
@@ -85,9 +85,9 @@ class Plugin(gtk.Window):
 			App.p_engine.array.remove(plug)
 			
 			self.store.clear()
-			self.fillstore()
+			self._fillstore()
 		
-	def on_add(self, widget):
+	def _on_add(self, widget):
 		filter = gtk.FileFilter()
 		filter.set_name(_("PyAcqua Plugins"))
 		filter.add_pattern("*.py")
@@ -101,8 +101,8 @@ class Plugin(gtk.Window):
 			App.p_engine.load (os.path.join (os.path.abspath (os.getcwd ()), "Plugin"), name, name)
 			
 			self.store.clear ()
-			self.fillstore ()
+			self._fillstore ()
 			
-	def fillstore(self):
+	def _fillstore(self):
 		for i in App.p_engine.array:
 			self.store.append([App.p_engine.array.index(i), i.__name__, i.__desc__, i.__ver__, i.__author__])

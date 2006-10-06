@@ -60,7 +60,7 @@ class Calcoli(gtk.Window):
 		self.e_vasca.set_active(0)
 
 		# Quando si sceglie marino o dolce invochiamo aggiorna()
-		self.e_vasca.connect('changed', self.aggiorna)
+		self.e_vasca.connect('changed', self._on_change_vasca)
 		
 		# Creiamo le entry per la tabella valori
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
@@ -142,7 +142,7 @@ class Calcoli(gtk.Window):
 		bb.set_layout(gtk.BUTTONBOX_END)
 		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
-		btn.connect('clicked', self.on_refresh)
+		btn.connect('clicked', self._on_refresh)
 		bb.pack_start(btn)
 		
 		vbox.pack_start(bb, False, False, 0)
@@ -151,7 +151,7 @@ class Calcoli(gtk.Window):
 		
 		self.show_all()
 		
-	def on_refresh(self, widget):
+	def _on_refresh(self, widget):
 		
 		# FIXME: i nomi delle variabili sono da cambiare...
 		# tipo self.dlc_volume robe del genere :p
@@ -186,15 +186,11 @@ class Calcoli(gtk.Window):
 		self.mar_volume.set_text(str(e))
 		#self.mar_piante.set_text(str(e))
 	
-	def pulisci_calcoli(self, obj):
+	def _pulisci_calcoli(self, obj):
 		#self.entry1.set_text("")
 		#self.entry2.set_text("")
 		#self.entry3.set_text("")
 		pass
-		
-	def on_aggiorna(self, widget):
-		# Questa è chiamata dal bottone aggiungi ! (nn so cosa deve fare quindi passo :p)
-		pass
-		
-	def aggiorna(self, widget):
+			
+	def _on_change_vasca(self, widget):
 		self.notebook.set_current_page(self.e_vasca.get_active())

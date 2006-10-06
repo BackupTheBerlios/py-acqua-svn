@@ -325,7 +325,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	
 	def _on_edit_mode (self, widget, hb, bb):
 		if widget.get_active ():
-			self.vbox.hide ()
+			self.e_vbox.hide ()
 			hb.hide_all ()
 			bb.show ()
 			widget.show_all ()
@@ -333,7 +333,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 			
 			self.update_status (NotifyType.LOCK, _("Modalita' sola Lettura: Abilitata"))
 		else:
-			self.vbox.show ()
+			self.e_vbox.show ()
 			hb.show_all()
 			
 			self.update_status (NotifyType.LOCK, _("Modalita' sola Lettura: Disabilitata"))

@@ -56,15 +56,15 @@ if os.name != 'nt':
 			self.menu = gtk.Menu ()
 			
 			it = gtk.ImageMenuItem (gtk.STOCK_QUIT)
-			it.connect ('activate', self.on_quit)
+			it.connect ('activate', self._on_quit)
 			
 			self.menu.append (it)
 			
-			eb.connect ('button-press-event', self.on_button)
+			eb.connect ('button-press-event', self._on_button)
 			
 			self.show_all ()
 			
-		def on_button (self, widget, event):
+		def _on_button (self, widget, event):
 			# se == 1 e' il sinistro -> mostra/nascondi
 			# se == 3 e' il destro -> popup menu
 			print "button", event.button
@@ -80,7 +80,7 @@ if os.name != 'nt':
 				self.menu.popup (None, None, None, event.button, event.time)
 				self.menu.show_all ()
 				
-		def on_quit (self, item):
+		def _on_quit (self, item):
 			gtk.main_quit ()
 else:
 	class TrayIcon (object):
@@ -91,18 +91,18 @@ else:
 			self.menu = gtk.Menu ()
 			
 			it = gtk.ImageMenuItem (gtk.STOCK_QUIT)
-			it.connect ('activate', self.on_quit)
+			it.connect ('activate', self._on_quit)
 			
 			self.menu.append (it)
 			self.menu.show_all ()
 
 			self.win32ext.notify_icon.menu = self.menu
 			self.win32ext.message_map ({
-				win32utils.WM_TRAYMESSAGE: self.on_notifyicon_activity
+				win32utils.WM_TRAYMESSAGE: self._on_notifyicon_activity
 				})
 			self.win32ext.show_balloon_tooltip (_("PyAcqua"), _("PyAcqua avviato.\nPremi su questa icona per ridurlo a icona.\nRipremi su questa icona per ripristinare."), 5, win32gui.NIIF_INFO)
 
-		def on_notifyicon_activity(self, hwnd, message, wparam, lparam):
+		def _on_notifyicon_activity(self, hwnd, message, wparam, lparam):
 			if lparam == win32con.WM_RBUTTONDOWN:
 				self.win32ext.notify_icon.menu.popup(None, None, None, 3, 0)
 			elif lparam == win32con.WM_LBUTTONUP:
@@ -115,5 +115,5 @@ else:
 					
 				app.App.tray = not app.App.tray
 
-		def on_quit (self, item):
+		def _on_quit (self, item):
 			gtk.main_quit ()

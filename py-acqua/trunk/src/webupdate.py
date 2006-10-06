@@ -33,9 +33,9 @@ class Fetcher(threading.Thread):
 			except:
 				print _("!! Errore mentre scaricavo da %s") % self.url
 		finally:
-			gobject.idle_add (self.on_data)
+			gobject.idle_add (self._on_data)
 
-	def on_data (self):
+	def _on_data (self):
 		gtk.gdk.threads_enter ()
 		
 		try:
@@ -72,13 +72,13 @@ class WebUpdate (gtk.Window):
 		bb.set_layout (gtk.BUTTONBOX_END)
 		
 		self.update_btn = btn = utils.new_button (_("Aggiorna"), gtk.STOCK_REFRESH)
-		btn.connect ('clicked', self.on_start_update)
+		btn.connect ('clicked', self._on_start_update)
 		bb.pack_start (btn)
 
 		btn.set_sensitive (False)
 
 		self.get_btn = btn = utils.new_button (_("Controlla Aggiornamenti"), gtk.STOCK_APPLY)
-		btn.connect ('clicked', self.on_get_list)
+		btn.connect ('clicked', self._on_get_list)
 		bb.pack_start (btn)
 		
 		vbox.pack_start (bb, False, False, 0)
@@ -89,7 +89,7 @@ class WebUpdate (gtk.Window):
 		self.add (vbox)
 		self.show_all ()
 		
-		self.connect ('delete-event', self.exit)
+		self.connect ('delete-event', self._on_delete_event)
 		
 		self.file = None
 		self.it = None
@@ -97,18 +97,18 @@ class WebUpdate (gtk.Window):
 		
 		self.actual_data = generate.Generator.ParseDir (utils.HOME_DIR)
 
-	def on_get_list (self, widget):
+	def _on_get_list (self, widget):
 		widget.set_sensitive (False)
 		self.store.clear ()
-		self.thread (self.populate_tree, LIST_FILE)
+		self._thread (self._populate_tree, LIST_FILE)
 	
-	def thread (self, callback, url):
+	def _thread (self, callback, url):
 		print _(">> Creo un thread per %s") % url
 		f = Fetcher (callback, url)
 		f.setDaemon (True)
 		f.start ()
 	
-	def convert_to_dict(self, data):
+	def _convert_to_dict(self, data):
 		data = data.splitlines()
 		dict = {}
 		
@@ -118,7 +118,7 @@ class WebUpdate (gtk.Window):
 		
 		return dict
 
-	def populate_tree (self, data, response):
+	def _populate_tree (self, data, response):
 		self.get_btn.set_sensitive (True)
 
 		if data == None:
@@ -129,7 +129,7 @@ class WebUpdate (gtk.Window):
 			self.status.push (0, _("Errore durante lo scaricamento della lista dei file (HTTP %d)") % response.status)
 			return
 
-		data = self.convert_to_dict (data)
+		data = self._convert_to_dict (data)
 		
 		precheck = len (data) - len (self.actual_data)
 		
@@ -172,11 +172,11 @@ class WebUpdate (gtk.Window):
 		
 		self.update_btn.set_sensitive (True)
 	
-	def on_start_update (self, widget):
+	def _on_start_update (self, widget):
 		self.it = self.tree.get_model ().get_iter_first ()
-		self.update_from_iter ()
+		self._update_from_iter ()
 		
-	def update_file (self, data, response):
+	def _update_file (self, data, response):
 		# Dovremmo semplicemente salvare in una directory temporanea
 		# del tipo ~/.pyacqua/.update o .update nella directory corrente
 		# insieme ad una lista di file|bytes|checksum per il controllo sull'update
@@ -207,36 +207,36 @@ class WebUpdate (gtk.Window):
 		f.write (data)
 		f.close ()
 		
-		self.update_check_list ()
-		self.update_percentage ()
-		self.go_with_next_iter ()
+		self._update_check_list ()
+		self._update_percentage ()
+		self._go_with_next_iter ()
 		#except:
 		#	print "Error while updating (%s %s)" % (sys.exc_value, sys.exc_type)
 	
-	def update_percentage (self):
+	def _update_percentage (self):
 		self.tree.get_model ().set_value (self.it, 4, 100)
 
-	def update_check_list (self):
+	def _update_check_list (self):
 		bytes = self.tree.get_model ().get_value (self.it, 2)
 		sum = self.tree.get_model ().get_value (self.it, 3)
 		
 		self.checklist.append ("%s|%d|%s" % (self.file, bytes, sum))
 		
-	def go_with_next_iter (self):
+	def _go_with_next_iter (self):
 		self.it = self.tree.get_model ().iter_next (self.it)
-		self.update_from_iter ()
+		self._update_from_iter ()
 		
-	def update_from_iter (self):
+	def _update_from_iter (self):
 		if self.it != None:
 			self.file = self.tree.get_model ().get_value (self.it, 0)
 			
 			if self.tree.get_model ().get_value (self.it, 5):
-				self.thread (self.update_file, utils.url_encode (BASE_DIR + self.file))
+				self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				print _(">> Questo file deve essere aggiunto (setto 0 come checksum)")
 				self.checklist.append ("%s|0|0" % self.file)
-				self.update_percentage ()
-				self.go_with_next_iter ()
+				self._update_percentage ()
+				self._go_with_next_iter ()
 		else:
 			# Probabilmente abbiamo finito.. controlliamo la checklist e via
 			if len (self.checklist) > 0:
@@ -251,5 +251,5 @@ class WebUpdate (gtk.Window):
 				#except:
 				#	print "Error while writing the checklist"
 		
-	def exit (self, *w):
+	def _on_delete_event (self, *w):
 		self.hide ()
