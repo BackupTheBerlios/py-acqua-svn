@@ -93,7 +93,7 @@ class TipsDialog(gtk.Dialog):
 #			tip_file = open(os.path.join('src', 'tip_of_the_day_en.txt'), 'r')
 #		else:
 		#FIXME: probabilmente bug qui
-		tip_file = open(os.path.join('src', 'tip_of_the_day.txt'),'r')
+		tip_file = open(os.path.join (utils.DHOME_DIR, os.path.join('src', 'tip_of_the_day.txt')),'r')
 	
 		testo = tip_file.read()
 		

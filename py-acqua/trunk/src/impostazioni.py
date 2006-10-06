@@ -81,7 +81,7 @@ class Prefs(object):
 		try:
 			doc = parse (os.path.join (utils.HOME_DIR, "pyacqua.xml"))
 		except:
-			print "pyacqua.xml not found.. using default values"
+			#print _("!! Il file pyacqua.xml non e' stato trovato. Uso i valori di default.")
 			return
 		
 		if doc.documentElement.tagName == "pyacqua": # Seems valid
@@ -148,15 +148,15 @@ class Prefs(object):
 			
 			if old != None:
 				if type (old) == type (val):
-					print "Same type.. nice"
+					#print "Same type.. nice"
 					self.values [id] = val
 				else:
-					print "Type mismatch in", id
-					print "Ignoring the new value", val, "old =", old
+					print _("** Errore nel tipo in %s") % id
+					print _("** Ignoro il nuovo valore %s (usero' il vecchio %s)") % (val, old)
 			else:
 				self.values[id] = val
 		except:
-			print "Error while converting", id, "to", converter
+			print _("!! Errore nella conversione (%s -> %s)") % (id, converter)
 	
 	def get (self, me):
 		your_girlfriend = self.values
@@ -185,7 +185,7 @@ class Prefs(object):
 			doc.writexml (writer, '\t', '\t', '\n')
 			writer.close ()
 		except:
-			print "Error while saving pyacqua.xml"
+			print _("!! Errore mentre salvavo pyacqua.xml")
 	
 	def dump_collections (self, node, doc):
 		element = None

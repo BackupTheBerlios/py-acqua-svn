@@ -31,7 +31,7 @@ class Fetcher(threading.Thread):
 				self.response = conn.getresponse ()
 				self.data = self.response.read ()
 			except:
-				print "!! Error while getting", self.url
+				print _("!! Errore mentre scaricavo da %s") % self.url
 		finally:
 			gobject.idle_add (self.on_data)
 
@@ -95,7 +95,7 @@ class WebUpdate (gtk.Window):
 		self.it = None
 		self.checklist = []
 		
-		self.actual_data = generate.Generator.ParseDir (".")
+		self.actual_data = generate.Generator.ParseDir (utils.HOME_DIR)
 
 	def on_get_list (self, widget):
 		widget.set_sensitive (False)
@@ -103,7 +103,7 @@ class WebUpdate (gtk.Window):
 		self.thread (self.populate_tree, LIST_FILE)
 	
 	def thread (self, callback, url):
-		print ">> Creating thread for", url
+		print _(">> Creo un thread per %s") % url
 		f = Fetcher (callback, url)
 		f.setDaemon (True)
 		f.start ()
@@ -134,9 +134,9 @@ class WebUpdate (gtk.Window):
 		precheck = len (data) - len (self.actual_data)
 		
 		if precheck > 0:
-			print "New Files added since last update"
+			print _(">> Nuovi file aggiunti dall'ultimo update.")
 		elif precheck < 0:
-			print "Some Files zapped since last update"
+			print _(">> Qualche file e' stato zappato dall'ultimo update.")
 		
 		for i in self.actual_data:
 			n_bytes, n_sum = "0", "0"
@@ -148,18 +148,18 @@ class WebUpdate (gtk.Window):
 				n_bytes, n_sum = data[i].split("|")
 				
 				if n_sum != o_sum:
-					print "unz", i
+					print _(">> Il checksum e' differente. Aggiungo il file %s") % i
 					to_add = True
 				else:
 					if n_bytes == o_bytes:
-						print "Ohh great! -.- a lot of work for nothing!"
+						print _(">> Bene! Tutto questo lavoro per niente!")
 					else:
-						print "Cool! MD5 collision detected for file", i
-						print "However this file must be added -_-"
+						print _(">> U0z! Collisione di MD5 per il file %s") % i
+						print _(">> Comunque il file deve essere aggiunto -_-")
 						to_add = True
 				data.pop (i)
 			else:
-				print "uhm.. This file must be deleted... mumble mumble"
+				print _(">> Questo file deve essere cancellato %s") % i
 				self.store.append ([i, _("Elimina"), int (o_bytes), o_sum, 0, False])
 				
 			if to_add:
@@ -167,7 +167,7 @@ class WebUpdate (gtk.Window):
 		
 		for i in data:
 			n_bytes, n_sum = data[i].split("|")
-			print "This file is recomended -.- so must be added by default", i
+			print _(">> Questo file deve essere aggiunto %s") % i
 			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
 		
 		self.update_btn.set_sensitive (True)
@@ -186,10 +186,9 @@ class WebUpdate (gtk.Window):
 		# TODO: da finire
 		
 		if not data:
-			print "No file to receive"
+			print _(">> Nessun file da ricevere")
 		if response.status != 200:
-			print "Some errors occurred", response.status
-			print "The suspect is", self.file
+			print _("!! Errori. Il sospetto e' %s (response: %d)") % (self.file, response.status)
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
@@ -202,7 +201,7 @@ class WebUpdate (gtk.Window):
 			if not os.path.exists (path):
 				os.mkdir (path)
 	
-		print "File received", self.file
+		print _(">> File ricevuto %s") % self.file
 	
 		f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
 		f.write (data)
@@ -234,7 +233,7 @@ class WebUpdate (gtk.Window):
 			if self.tree.get_model ().get_value (self.it, 5):
 				self.thread (self.update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
-				print "this file must be deleted (adding 0 as checksum)"
+				print _(">> Questo file deve essere aggiunto (setto 0 come checksum)")
 				self.checklist.append ("%s|0|0" % self.file)
 				self.update_percentage ()
 				self.go_with_next_iter ()

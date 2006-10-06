@@ -55,10 +55,12 @@ try:
 		except: pass
 	else:
 		os.environ['LANG'] = "it_IT"
+		it = gettext.translation (APP, DIR, [])
+		it.install ()
 
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
-	gettext.install ()
+	__builtins__.__dict__["_"] = gettext.gettext
 
 try:
 	# Richiediamo gtk2
@@ -89,7 +91,7 @@ if not os.path.exists (path):
 	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC, note VARCHAR(500))")
 	cursore.execute("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, note VARCHAR(500), img TEXT)")
 	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
-	cursore.execute("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
+	cursore.execute("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500))")
 	connessione.commit()
 
 def main ():
@@ -107,7 +109,7 @@ def main ():
 	gtk.gdk.threads_leave ()
 	
 	
-	print "Saving preferences before exiting..."
+	print _(">> Salvo le impostazioni prima di uscire")
 	impostazioni.save ()
 
 if __name__ == "__main__":

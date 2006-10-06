@@ -19,8 +19,6 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-
 import os
 import glob
 import sys
@@ -55,10 +53,10 @@ class PluginEngine:
 				base = os.path.basename(file)
 				
 				if base != "__init__.py":
-					print _("Carico <%s>") % base[:-3]
+					print _(">> Carico <%s>") % base[:-3]
 					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
 					if not self.load (path, base[:-3], base[:-3]):
-						print _("Errori... Ignoro")
+						print _(">> Errori... Ignoro")
 		
 	def load (self, path, name, klass):
 		# Aggiungiamo la path
@@ -91,7 +89,7 @@ class PluginEngine:
 			
 			self.array.append (plugin)
 			
-			print ">> Restoring path"
+			print _(">> Ripristino il path originale")
 			sys.path = old
 
 			return True

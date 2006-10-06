@@ -64,7 +64,7 @@ def init_dir_structure ():
 		hkey = _winreg.OpenKey (_winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders")
 		path, type = _winreg.QueryValueEx (hkey, "AppData")
 
-	print "Creating %s/.pyacqua" % path
+	#print "Creating %s/.pyacqua" % path
 	
 	HOME_DIR = create_dir (path, ".pyacqua")
 	
@@ -82,8 +82,8 @@ def create_dir (path, name):
 	
 	if not os.path.exists (temp):
 		os.mkdir (temp)
-	else:
-		print "Already present", temp
+	#else:
+	#	print "Already present", temp
 	
 	return temp
 ###

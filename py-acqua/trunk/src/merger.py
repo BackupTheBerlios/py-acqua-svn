@@ -10,33 +10,33 @@ def fill_fs_structure (path):
 	for i in lst:
 		current = os.path.join (current, i)
 
-		print ">> Checking", current,
+		print _(">> Controllo"), current,
 		
 		if not os.path.exists (current):
 			os.mkdir (current)
-			print "created"
+			print _("creato.")
 
 def rmgeneric(path, __func__):
 	try:
-		__func__(path)
-		print '>> Removed ', path
+		__func__ (path)
+		print _(">> Path Rimosso (%s)") % path
 	except OSError, (errno, strerror):
-		print "!! Error while removing %s (%s)" % (path, strerror)
+		print _("!! Errore mentre rimuovevo %s (%s)") % (path, strerror)
             
-def removeall(path):
-	if not os.path.isdir(path):
+def removeall (path):
+	if not os.path.isdir (path):
 		return
-	files=os.listdir(path)
+	files=os.listdir (path)
 	
 	for x in files:
-		fullpath=os.path.join(path, x)
-		if os.path.isfile(fullpath):
+		fullpath=os.path.join (path, x)
+		if os.path.isfile (fullpath):
 			f=os.remove
-			rmgeneric(fullpath, f)
-		elif os.path.isdir(fullpath):
-			removeall(fullpath)
+			rmgeneric (fullpath, f)
+		elif os.path.isdir (fullpath):
+			removeall (fullpath)
 			f=os.rmdir
-			rmgeneric(fullpath, f)
+			rmgeneric (fullpath, f)
 
 def update ():
 	path = os.path.join (utils.UPDT_DIR, ".checklist")
@@ -58,42 +58,42 @@ def update ():
 
 		bytes = int (bytes)
 
-		print ">> File", path
+		print _(">> File %s") % path
 
 		if sum == '0':
 			# Questo file deve essere zappato via.. via!
-			print ">> Deleting", name, 
+			print _(">> Elimino %s") % name, 
 
 			if os.path.isfile (new_path):
 				os.remove (new_path)
-				print "file OK"
+				print _("OK (file)")
 			elif os.path.isdir (new_path):
 				os.rmdir (new_path)
-				print "dir OK"
+				print _("OK (dir)")
 		else:
 			# File da aggiornare.. controlla il checksum se corretto sposta
 			new_sum = generate.Generator.checksum (path)
 
 			if new_sum == sum:
-				print ">> Sum is ok.. Moving ;)",
+				print _(">> Checksum corretto. Adesso sposto ;)"),
 				if os.path.isfile (new_path):
 					os.remove (new_path)
-					print "file OK"
+					print _("OK (file)")
 				elif os.path.isdir (new_path):
 					os.rmdir (new_path)
-					print "dir OK"
+					print _("OK (dir)")
 
 				fill_fs_structure (name)
 				os.rename (path, new_path)			
 			else:
-				print "!! Error in checksum"
+				print _("!! Errore nel checksum")
 	
-	print "Cleaning Update dir"
+	print _(">> Pulisco la directory dell'Update")
 	removeall (utils.UPDT_DIR)
 
 def check_for_updates ():
 	if os.path.exists (os.path.join (utils.UPDT_DIR, ".checklist")):
-		print ">> Proceding with update ()"
+		print _(">> Aggiornamento disponibile. Procedo con il merging dei file")
 		update ()
 	else:
-		print ">> No files to merge"
+		print _(">> Nessun aggiornamento da concludere.")
