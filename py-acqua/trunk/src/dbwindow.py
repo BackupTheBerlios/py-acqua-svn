@@ -19,9 +19,6 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-
-
 import gtk
 import gobject
 import utils
@@ -32,51 +29,233 @@ class NotifyType:
 	DEL  = 2
 	LOCK = 3
 
-class DBWindow (gtk.Window):
+class BaseDBWindow (object):
+	"""
+	Questa classe fornisce tutti i metodi pubblici che si utilizzando in
+	una class DBWindow.
+	"""
+	
+	def after_selection_changed (self, mod, it):
+		pass
 
-	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
-
-		assert (len (cols) - 1 == len (widgets))
+	def on_row_activated (self, tree, path, col):
+		pass
 		
-		# Inizializziamo la finestra
+	def after_refresh (self, it):
+		# Implementata dalla sovraclasse
+		pass
+				
+	def add_entry (self, it):
+		# Aggiunge la entry nel database
+		pass
+	
+	def remove_id (self, id):
+		# Passa l'id da rimuovere nel database
+		pass
+	def decrement_id (self, id):
+		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
+		pass
+	
+	def pack_before_button_box (self, hb):
+		pass
+	
+	def custom_page (self, edt_frame):
+		return edt_frame
+
+class DBWindow (gtk.Window, BaseDBWindow):
+	
+	def _get_store (self):
+		#print ">> Getting store from", self.editing
+		return self.stores [self.editing]
+	
+	def _get_view (self):
+		#print ">> Getting view from", self.editing
+		return self.views [self.editing]
+	
+	def _get_last (self):
+		#print ">> Getting last from", self.editing
+		return self.lasts [self.editing]
+	
+	def _get_vars (self):
+		#print ">> Getting vars from", self.editing
+		return self._vars [self.editing]
+	
+	def _get_page (self):
+		return self.editing
+	
+	def _set_store (self, x):
+		print ">> Setting store? ... why? -.-"
+		
+	def _set_view (self, x):
+		print ">> Setting view? ... why? -.-"
+		
+	def _set_last (self, x):
+		self.lasts[-1] = x
+		
+	def _set_vars (self, x):
+		print ">> Setting vars? ... why? -.-"
+		
+	def _set_page (self, x):
+		self.editing = x
+		self.nb_view.set_current_page (self.editing)
+	
+	store = property (_get_store, _set_store)
+	view = property (_get_view, _set_view)
+	last = property (_get_last, _set_last)
+	vars = property (_get_vars, _set_vars)
+	page = property (_get_page, _set_page)
+	
+	def __init__ (self):
+		"""
+		Costruttore da richiamare in caso in cui si debba creare una dbwindow
+		con piu' di una treeview
+		"""
+		self._real_init ()
+	
+	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
+		self._real_init ()
+		self.create_context(n_row, n_col, cols, widgets, lst_store, different_renderer)		
+		
+	def _real_init (self):
 		gtk.Window.__init__ (self)
 		
 		self.vpaned = gtk.VPaned ()
-		self._vbox = gtk.VBox ()
-		self.vbox = gtk.VBox ()
+		self.t_vbox = gtk.VBox () # Quello sopra che contiene le treeview
+		self.e_vbox = gtk.VBox () # Quello sotto per l'editing
+		
+		self.stores = []; self.views = []
+		self.lasts = []; self._vars = []
+		
+		self.editing = 0
+		
+		self.nb_view = gtk.Notebook ()
+		self.nb_edit = gtk.Notebook ()
+		
+		self.nb_view.connect ('switch-page', self._on_switch_page)
+		
+		self.nb_edit.set_show_tabs (False)
+		self.nb_edit.set_show_border (False)
+		
+		hb = gtk.HBox (2, False)
+		self.button_box = self._prepare_button_box (hb)
+		
+		self.pack_before_button_box (hb)
+				
+		hb.pack_start (self.button_box)
+		
+		self.t_vbox.pack_start (self.nb_view)
+		self.t_vbox.pack_start (hb, False, False, 0)
+		
+		self.e_vbox.pack_start (self.nb_edit)
+		
+		self._final_stage ()
+	
+	def _final_stage (self):		
+		self.status = gtk.Statusbar ()
+		self.image = gtk.Image ()
 
-		# Creiamo la store e la view
-		self.store = lst_store
-		self.view = gtk.TreeView (self.store)
-		self.last = len (cols) + 1
-		self.vars = widgets
+		hbox = gtk.HBox ()
+		hbox.pack_start (self.image, False, False)
+		hbox.pack_start (self.status)
+		
+		self.vpaned.pack1 (self.t_vbox, True, False)
+		self.vpaned.pack2 (self.e_vbox, False, True) #L'ultima va a True se puo' essere coperto
+		
+		mbox = gtk.VBox ()
+		mbox.pack_start (self.vpaned)
+		mbox.pack_start (hbox, False, False, 0)
+		
+		self.add (mbox)
+		self.show_all ()
 
-		# Callback per la selection
-		self.view.get_selection ().connect ('changed', self.on_selection_changed)
-		self.view.connect ('row-activated', self.on_row_activated)
+		self.image.hide ()
+		self.timeoutid = None
 
-		#for i in range(len(cols)-1):
-		#	print cols[i+1], widgets[i], lst_store.get_column_type(i+1)
+		self.connect ('delete-event', self._on_delete_event)
+		
+	def _prepare_button_box (self, container):
+		"""
+		Crea la button box
+		"""
+		
+		bb = gtk.HButtonBox ()
+		bb.set_layout (gtk.BUTTONBOX_END)
 
-		# Le Colonne ..
+		btn = gtk.Button (stock=gtk.STOCK_ADD)
+		btn.set_relief (gtk.RELIEF_NONE)
+		btn.connect ('clicked', self._on_add)
+		bb.pack_start (btn)
+
+		btn = gtk.Button (stock=gtk.STOCK_REFRESH)
+		btn.set_relief (gtk.RELIEF_NONE)
+		btn.connect ('clicked', self._on_refresh)
+		bb.pack_start (btn)
+
+		btn = gtk.Button (stock=gtk.STOCK_REMOVE)
+		btn.set_relief (gtk.RELIEF_NONE)
+		btn.connect ('clicked', self._on_remove)
+		bb.pack_start (btn)
+		
+		btn = utils.new_button (None, gtk.STOCK_DIALOG_AUTHENTICATION, True)
+		btn.set_relief (gtk.RELIEF_NONE)
+		btn.connect ('toggled', self._on_edit_mode, container, bb)
+		bb.pack_start (btn)
+		
+		return bb
+	
+	def _prepare_widgets (self, n_row, n_col, cols):
+		"""
+		Crea e alloca i widget per il controllo delle colonne in una tabella
+		che viene ritornata
+		"""
+		
+		e_tbl = gtk.Table (n_row, n_col)
+		e_tbl.set_border_width (4)
+		e_tbl.set_col_spacings (8)
+
+		x, y = 0, 0
+
+		for name in cols:
+			# Se superiamo il limite ci spostiamo sull'altra colonna e resettiamo x
+			
+			idx = cols.index (name)
+			tmp = self.vars[idx]
+
+			#print "Creating e_%s%d at %d %d %d %d" % (name[:5], self.editing, x, x+1, y, y+1)
+			
+			#self.__dict__ ["e_" + name [:5] + str (self.editing)] = tmp
+			e_tbl.attach (tmp, x+1, x+2, y, y+1)
+
+			e_tbl.attach (utils.new_label (name, x=0, y=0.5), x, x+1, y, y+1, yoptions=gtk.SHRINK)
+
+			if idx == n_col:
+				x += 2; y = 0
+			else:
+				y += 1
+		
+		return e_tbl
+	
+	def _prepare_columns (self, different_renderer, cols):
+		"""
+		Prepara e aggiunge alla treeview le colonne richieste
+		"""
 		
 		if not different_renderer:
 			renderer = gtk.CellRendererText ()
 			pix_rend = gtk.CellRendererPixbuf()
 
 		# i nomi sono in cols
+		id = 0
 		for name in cols:
-			id = cols.index (name)
 			
 			#print "Adding %d" % id
-			
 			
 			if self.store.get_column_type (id) == gobject.TYPE_DOUBLE:
 				
 				if different_renderer:
 					renderer = gtk.CellRendererText ()
 				
-				self.view.insert_column_with_data_func (-1, name, renderer, self.float_func, id)
+				self.view.insert_column_with_data_func (-1, name, renderer, self._float_func, id)
 				
 			else:
 				col = None
@@ -100,144 +279,26 @@ class DBWindow (gtk.Window):
 				col.set_resizable (True)
 				
 				self.view.append_column (col)
-
-		#print "Pixmap init at %d" % self.last
-
-		# La ScrolledWindow
-		self.sw = gtk.ScrolledWindow ()
-		self.sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		self.sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
-
-		# Pacchiamo
-		self.sw.add (self.view)
-		self._vbox.pack_start(self.sw)
-		
-		# HBox per la striscia di editing
-		hb = gtk.HBox (2, False)
-		
-		# La ButtonBox per le modifiche
-		self.button_box = bb = gtk.HButtonBox ()
-		bb.set_layout (gtk.BUTTONBOX_END)
-
-		btn = gtk.Button (stock=gtk.STOCK_ADD)
-		btn.set_relief (gtk.RELIEF_NONE)
-		btn.connect ('clicked', self.on_add)
-		bb.pack_start (btn)
-
-		btn = gtk.Button (stock=gtk.STOCK_REFRESH)
-		btn.set_relief (gtk.RELIEF_NONE)
-		btn.connect ('clicked', self.on_refresh)
-		bb.pack_start (btn)
-
-		btn = gtk.Button (stock=gtk.STOCK_REMOVE)
-		btn.set_relief (gtk.RELIEF_NONE)
-		btn.connect ('clicked', self.on_remove)
-		bb.pack_start (btn)
-		
-		btn = utils.new_button (None, gtk.STOCK_DIALOG_AUTHENTICATION, True)
-		btn.set_relief (gtk.RELIEF_NONE)
-		btn.connect ('toggled', self.on_edit_mode, hb, bb)
-		bb.pack_start (btn)
-		
-		self.pack_before_button_box (hb)
-		
-		hb.pack_start (bb)
-		
-		self._vbox.pack_start(hb, False, False, 0)
-
-		# Creiamo la zona editing
-		edt_frame = gtk.Frame ("Editing:")
-		edt_frame.set_shadow_type (gtk.SHADOW_ETCHED_IN)
-		
-		if not self.custom_page(edt_frame):
-			self.vbox.pack_start (edt_frame, False, False, 0)
-		
-		# Eliminiamo la colonna id che nn ci serve
-		cols.remove(cols[0])
-		
-		# Andiamo a creare la table per l'editing		
-		self.table = e_tbl = gtk.Table (n_row, n_col)
-		self.table.set_border_width (4)
-		self.table.set_col_spacings (8)
-
-		x, y = 0, 0
-
-		for name in cols:
-			# Se superiamo il limite ci spostiamo sull'altra colonna e resettiamo x
 			
-			idx = cols.index (name)
-			tmp = self.vars[idx]
-
-			#print "Creating e_%s at %d %d %d %d" % (name[:5], x, x+1, y, y+1)
-			
-			self.__dict__ ["e_" + name [:5]] = tmp
-			e_tbl.attach (tmp, x+1, x+2, y, y+1)
-
-			e_tbl.attach (utils.new_label (name, x=0, y=0.5), x, x+1, y, y+1, yoptions=gtk.SHRINK)
-
-			if idx == n_col:
-				x += 2; y = 0
-			else:
-				y += 1
-		
-		edt_frame.add (e_tbl)
-
-		# Aggiungiamo la StatusBar
-		self.status = gtk.Statusbar ()
-		self.image = gtk.Image ()
-
-		hbox = gtk.HBox ()
-		hbox.pack_start (self.image, False, False)
-		hbox.pack_start (self.status)
-		
-		self.vpaned.pack1 (self._vbox, True, False)
-		self.vpaned.pack2 (self.vbox, False, True) #L'ultima va a True se puo' essere coperto
-		
-		mbox = gtk.VBox ()
-		mbox.pack_start (self.vpaned)
-		mbox.pack_start (hbox, False, False, 0)
-		
-		self.add (mbox)
-		self.show_all ()
-
-		self.image.hide ()
-		self.timeoutid = None
-
-		self.connect ('delete-event', self.on_delete_event)
+			id += 1
 	
-	def on_delete_event (self, widget, event):
+	def _on_switch_page (self, nb, page, page_num):
+		self.nb_edit.set_current_page (page_num)
+		self.editing = page_num
+	
+	def _on_delete_event (self, widget, event):
 		if self.timeoutid != None:
 			gobject.source_remove (self.timeoutid)
 	
-	def float_func (self, col, cell, model, iter, id):
+	def _float_func (self, col, cell, model, iter, id):
 		value = model.get_value (iter, id)
 		cell.set_property ("text", "%.2f" % value)
 	
-	def data_func (self, col, cell, model, iter, id):
+	def _data_func (self, col, cell, model, iter, id):
 		value = model.get_value (iter, id)
 		cell.set_property ("text", value)
-	
-	def update_status (self, type, string):
-		self.image.show ()
 
-		if type == NotifyType.SAVE:
-			self.image.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_MENU)
-		if type == NotifyType.ADD:
-			self.image.set_from_stock (gtk.STOCK_ADD, gtk.ICON_SIZE_MENU)
-		if type == NotifyType.DEL:
-			self.image.set_from_stock (gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
-		if type == NotifyType.LOCK:
-			self.image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION, gtk.ICON_SIZE_MENU)
-	
-		if self.timeoutid != None:
-			gobject.source_remove(self.timeoutid)
-			self.status.pop(0)
-
-		self.status.push(0, string)
-
-		self.timeoutid = gobject.timeout_add(2000, self.callback)
-
-	def callback(self):
+	def _on_timeout(self):
 		self.image.hide()
 		self.status.pop(0)
 
@@ -245,7 +306,7 @@ class DBWindow (gtk.Window):
 		
 		return False
 	
-	def on_selection_changed (self, treeselection):
+	def _on_selection_changed (self, treeselection):
 		mod, it = treeselection.get_selected ()
 
 		if it == None: return
@@ -262,13 +323,7 @@ class DBWindow (gtk.Window):
 
 		self.after_selection_changed (mod, it)
 	
-	def after_selection_changed (self, mod, it):
-		pass
-
-	def on_row_activated (self, tree, path, col):
-		pass
-	
-	def on_edit_mode (self, widget, hb, bb):
+	def _on_edit_mode (self, widget, hb, bb):
 		if widget.get_active ():
 			self.vbox.hide ()
 			hb.hide_all ()
@@ -276,14 +331,14 @@ class DBWindow (gtk.Window):
 			widget.show_all ()
 			hb.show ()
 			
-			self.update_status (NotifyType.LOCK, "ReadOnly mode: On")
+			self.update_status (NotifyType.LOCK, _("Modalita' sola Lettura: Abilitata"))
 		else:
 			self.vbox.show ()
 			hb.show_all()
 			
-			self.update_status (NotifyType.LOCK, "ReadOnly mode: Off")
+			self.update_status (NotifyType.LOCK, _("Modalita' sola Lettura: Disabilitata"))
 	
-	def on_add (self, widget):
+	def _on_add (self, widget):
 		mod = self.store
 		it = mod.get_iter_first ()
 		id = 0
@@ -316,12 +371,8 @@ class DBWindow (gtk.Window):
 				self.store.set_value (it, self.vars.index (tmp) + 1, tmp.get_text ())
 
 		self.add_entry (it)
-	
-	def add_entry (self, it):
-		# Aggiunge la entry nel database
-		pass
 
-	def on_refresh (self, widget):
+	def _on_refresh (self, widget):
 		
 		# Prendiamo l'iter e il modello dalla selezione		
 		mod, it = self.view.get_selection ().get_selected ()
@@ -345,12 +396,8 @@ class DBWindow (gtk.Window):
 					self.store.set_value (it, self.vars.index (tmp) + 1, tmp.get_text ())
 
 			self.after_refresh (it)
-	
-	def after_refresh (self, it):
-		# Implementata dalla sovraclasse
-		pass
 			
-	def on_remove (self, widget):
+	def _on_remove (self, widget):
 		
 		# Prendiamo l'iter selezionato ed elimianiamolo dalla store
 		mod, it = self.view.get_selection ().get_selected ()
@@ -377,19 +424,64 @@ class DBWindow (gtk.Window):
 					self.decrement_id (tmp)
 				
 				it = mod.iter_next (it)
+				
+	def create_context (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
+		assert (len (cols) - 1 == len (widgets))
+		
+		self.stores.append (lst_store)
+		self.views.append (gtk.TreeView (lst_store))
+		self.lasts.append (len(cols) + 1)
+		self._vars.append (widgets)
+		
+		c_id = len (lst_store) - 1
+		
+		view = self.views[c_id]
+		view.get_selection ().connect ('changed', self._on_selection_changed)
+		view.connect ('row-activated', self.on_row_activated)
+		
+		self.editing = c_id
+		self._prepare_columns (different_renderer, cols)
+		
+		sw = gtk.ScrolledWindow ()
+		sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		sw.set_shadow_type (gtk.SHADOW_ETCHED_IN)
+		
+		sw.add (view)
+		
+		c_id = self.nb_view.append_page (sw)
+		
+		self.editing = c_id
+		
+		cols.remove (cols[0])
+		
+		page = self.custom_page (self._prepare_widgets(n_row, n_col, cols))
+		
+		self.nb_edit.append_page (page)
+		
+		self.nb_edit.show_all ()
+		self.nb_view.show_all ()
+		
+		return c_id
 	
-	def remove_id (self, id):
-		# Passa l'id da rimuovere nel database
-		pass
-	def decrement_id (self, id):
-		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
-		pass
+	def update_status (self, type, string):
+		self.image.show ()
+
+		if type == NotifyType.SAVE:
+			self.image.set_from_stock (gtk.STOCK_SAVE, gtk.ICON_SIZE_MENU)
+		if type == NotifyType.ADD:
+			self.image.set_from_stock (gtk.STOCK_ADD, gtk.ICON_SIZE_MENU)
+		if type == NotifyType.DEL:
+			self.image.set_from_stock (gtk.STOCK_REMOVE, gtk.ICON_SIZE_MENU)
+		if type == NotifyType.LOCK:
+			self.image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION, gtk.ICON_SIZE_MENU)
 	
-	def pack_before_button_box (self, hb):
-		pass
-	
-	def custom_page (self, edt_frame):
-		return False
+		if self.timeoutid != None:
+			gobject.source_remove (self.timeoutid)
+			self.status.pop (0)
+
+		self.status.push (0, string)
+
+		self.timeoutid = gobject.timeout_add (2000, self._on_timeout)
 
 class Test(DBWindow):
 	def __init__(self):

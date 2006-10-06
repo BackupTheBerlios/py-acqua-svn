@@ -24,9 +24,13 @@ import gobject
 import utils
 import dbwindow
 import pango
+import manutenzione
+import spesa
 
 class Vasca (dbwindow.DBWindow):
-	def __init__ (self): 
+	def __init__ (self):
+		
+		self.manutenzione = manutenzione.Manutenzione (self)
 
 		# id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, img TEXT
 		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
@@ -43,7 +47,6 @@ class Vasca (dbwindow.DBWindow):
 				[tmp, utils.DataButton (), gtk.Entry (), utils.FloatEntry (),
 				 gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (),
 				 gtk.Entry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
-
 
 		for y in utils.get ('select * from vasca'):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
@@ -86,9 +89,9 @@ class Vasca (dbwindow.DBWindow):
 		
 		self.menu.show_all ()
 		self.view.connect ('button-press-event', self.on_btn)
-
-		#dovrebbe servire per settare il tab alla pagina 0
-		self.note.set_current_page(0)
+		
+		self.manutenzione.bind_context ()
+		#spesa.Spesa (self)
 		
 	def on_btn (self, widget, evt):
 		if evt.type == gtk.gdk.BUTTON_PRESS and evt.button == 3:
@@ -135,79 +138,96 @@ class Vasca (dbwindow.DBWindow):
 			self.vars[id].set_text (txt)
 
 	def after_refresh (self, it):
-		mod, it = self.view.get_selection ().get_selected ()
-		
-		id = mod.get_value (it, 0)
-		
-		text  = self.vars[0].get_text ()
-		date  = self.vars[1].get_text ()
-		name  = self.vars[2].get_text ()
-		litri = self.vars[3].get_text ()
-		tacq  = self.vars[4].get_text ()
-		tflt  = self.vars[5].get_text ()
-		ico2  = self.vars[6].get_text ()
-		illu  = self.vars[7].get_text ()
-		reat  = self.vars[8].get_text ()
-		schiu = self.vars[9].get_text ()
-		risca = self.vars[10].get_text ()
-		note  = self.vars[11].get_text ()
-		img   = self.vars[12].get_text ()
-
-		utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
-		
-		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		if self.page == 0:
+			mod, it = self.view.get_selection ().get_selected ()
+			
+			id = mod.get_value (it, 0)
+			
+			text  = self.vars[0].get_text ()
+			date  = self.vars[1].get_text ()
+			name  = self.vars[2].get_text ()
+			litri = self.vars[3].get_text ()
+			tacq  = self.vars[4].get_text ()
+			tflt  = self.vars[5].get_text ()
+			ico2  = self.vars[6].get_text ()
+			illu  = self.vars[7].get_text ()
+			reat  = self.vars[8].get_text ()
+			schiu = self.vars[9].get_text ()
+			risca = self.vars[10].get_text ()
+			note  = self.vars[11].get_text ()
+			img   = self.vars[12].get_text ()
+	
+			utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
+			
+			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+			
+		elif self.page == 1:
+			self.manutenzione.after_refresh (it)
 
 	def add_entry (self, it):
-		mod, id = self.view.get_selection ().get_selected ()
-
-		id = mod.get_value (it, 0)
-
-		#for i in self.vars:
-		#	print i.get_text ()
+		if self.page == 0:
+			mod, id = self.view.get_selection ().get_selected ()
+	
+			id = mod.get_value (it, 0)
+	
+			#for i in self.vars:
+			#	print i.get_text ()
+			
+			utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+					id,
+					self.vars[0].get_text (),
+					self.vars[1].get_text (),
+					self.vars[2].get_text (),
+					self.vars[3].get_text (),
+					self.vars[4].get_text (),
+					self.vars[5].get_text (),
+					self.vars[6].get_text (),
+					self.vars[7].get_text (),
+					self.vars[8].get_text (),
+					self.vars[9].get_text (),
+					self.vars[10].get_text (),
+					self.vars[11].get_text (),
+					self.vars[12].get_text ())
+			
+			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
-		utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-				id,
-				self.vars[0].get_text (),
-				self.vars[1].get_text (),
-				self.vars[2].get_text (),
-				self.vars[3].get_text (),
-				self.vars[4].get_text (),
-				self.vars[5].get_text (),
-				self.vars[6].get_text (),
-				self.vars[7].get_text (),
-				self.vars[8].get_text (),
-				self.vars[9].get_text (),
-				self.vars[10].get_text (),
-				self.vars[11].get_text (),
-				self.vars[12].get_text ())
-		
-		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		elif self.page == 1:
+			self.manutenzione.add_entry (it)
 		
 	def remove_id (self, id):
-		utils.cmd ('delete from vasca where id=%d' % id)
-		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+		if self.page == 0:
+			utils.cmd ('delete from vasca where id=%d' % id)
+			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+			
+		elif self.page == 1:
+			self.manutenzione.remove_id (id)
 	
 	def decrement_id (self, id):
-		utils.cmd ("update vasca set id=%d where id=%d" % (id - 1, id))
+		if self.page == 0:
+			utils.cmd ("update vasca set id=%d where id=%d" % (id - 1, id))
+			
+		elif self.page == 1:
+			self.manutenzione.decrement_id (id)
 
 	def on_row_activated(self, tree, path, col):
-		mod = self.view.get_model()
-		it = mod.get_iter_from_string(str(path[0]))
-
-		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
-	### in base alla scelta del menu ti fa vedere la pagina
-	def on_change_view (self, widget):
+		if self.page == 0:
+			mod = self.view.get_model()
+			it = mod.get_iter_from_string(str(path[0]))
+	
+			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
+		
+		elif self.page == 1:
+			self.manutenzione.on_row_activated (tree, path, col)
+			
+	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		
-		if id == 1:
-			self.note.set_current_page (id)
-		else:
-			self.note.set_current_page (id)
-	###aggiunge il menu a tendina
+		self.page = id
+		
 	def pack_before_button_box (self, hb):
 		cmb = utils.Combo ()
 		
-		cmb.append_text (_("Modifica"))
+		cmb.append_text (_("Modifica Vasche"))
 		
 		cmb.append_text (_("Manutenzione"))
 		
@@ -215,7 +235,7 @@ class Vasca (dbwindow.DBWindow):
 		
 		cmb.set_active (0)
 		
-		cmb.connect ('changed', self.on_change_view)
+		cmb.connect ('changed', self._on_change_view)
 		
 		align = gtk.Alignment (0, 0.5)
 		align.add (cmb)
@@ -223,19 +243,3 @@ class Vasca (dbwindow.DBWindow):
 		hb.pack_start (align, False, True, 0)
 		
 		cmb.show ()
-	#il notebook dove sono nascosti i tab e bravo stack antigraffio ;)
-	def custom_page (self, edt_frame):
-		import manutenzione
-		import spesa
-		
-		self.note = gtk.Notebook ()
-		self.vbox.pack_start (self.note, False, False, 0)
-		
-		self.note.set_show_tabs (False)
-		self.note.set_show_border (False)
-		self.note.append_page (edt_frame)
-		
-		self.note.append_page (manutenzione.Manutenzione ())
-		self.note.append_page (spesa.Spesa ())
-		# C'e' la custom page qui :P
-		return True

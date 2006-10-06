@@ -361,7 +361,7 @@ class Test (dbwindow.DBWindow):
 		self.note.set_current_page (0)
 		self.show_all ()
 	
-	def on_change_view (self, widget):
+	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		
 		if Test.Chart and id == 1:
@@ -382,7 +382,7 @@ class Test (dbwindow.DBWindow):
 		
 		cmb.set_active (0)
 		
-		cmb.connect ('changed', self.on_change_view)
+		cmb.connect ('changed', self._on_change_view)
 		
 		align = gtk.Alignment (0, 0.5)
 		align.add (cmb)
@@ -405,6 +405,7 @@ class Test (dbwindow.DBWindow):
 		
 		self.note.set_show_tabs (False)
 		self.note.set_show_border (False)
+		
 		self.note.append_page (edt_frame)
 		
 		if Test.Chart:
@@ -413,8 +414,8 @@ class Test (dbwindow.DBWindow):
 		
 		self.note.append_page (inserisci.Inserisci ())
 		#self.note.append_page (manutenzione.Manutenzione ())
-		# C'e' la custom page qui :P
-		return True
+		
+		return self.note
 		
 	def after_refresh (self, it):
 		mod, it = self.view.get_selection().get_selected()

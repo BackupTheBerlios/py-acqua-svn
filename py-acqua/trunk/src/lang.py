@@ -22,6 +22,7 @@
 
 import gtk
 import utils
+import os.path
 from impostazioni import set, get, save
 
 class LangWindow (gtk.Window):
@@ -45,8 +46,8 @@ class LangWindow (gtk.Window):
 		self.en = en = gtk.RadioButton (it, _("Inglese"))
 
 		it_icon = gtk.Image (); en_icon = gtk.Image ()
-		it_icon.set_from_file ("pixmaps/it.xpm")
-		en_icon.set_from_file ("pixmaps/en.xpm")
+		it_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "it.xpm"))
+		en_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "en.xpm"))
 
 		box = gtk.HBox ()
 		box.pack_start (it_icon, False, False, 0)

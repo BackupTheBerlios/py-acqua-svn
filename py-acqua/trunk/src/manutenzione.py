@@ -22,109 +22,59 @@
 import gtk
 import utils
 import impostazioni
+from dbwindow import BaseDBWindow
 from pysqlite2 import dbapi2 as sqlite
 from copy import copy
 
-class Manutenzione(gtk.ScrolledWindow):
-	def __init__(self):
-		gtk.ScrolledWindow.__init__(self)
+class Manutenzione(BaseDBWindow):
+	def __init__(self, window_db):
+		self.main_db = window_db
+	
+	def bind_context (self):
+		lst = gtk.ListStore (int, str, str, str, str, str, str, str)
 		
-		self.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		
-		box = gtk.VBox ()
-		box.set_spacing (4)
-		box.set_border_width (4)
-		
-		# Iniziamo con la tabella
-		tbl = gtk.Table (6, 2, False)
-		
-		self.store = gtk.ListStore (str)
-		self.view = gtk.TreeView (self.store)
-		
-		self.view.append_column ( gtk.TreeViewColumn (None, gtk.CellRendererText (), text=0) )
-		self.view.set_headers_visible (False)
-		
-		#self.view.get_selection ().connect ('changed', self.on_change_selection)
-		
-		
-		labels = (
-			 _('Vasca'),
-			 _('Data'),
-			 _('Tipo'),
-			 _('Nome'),
-			 _('Quantita'),
-			 _('Prossima volta'),
-			 _('Note')
-		)
-		
-		self.widgets = []
-		
-		x = 0
-		for i in labels:
-			tbl.attach (utils.new_label (i), 0, 1, x, x+1)
-			x += 1
-		
-		self.e_vasca = utils.Combo ()
-		self.e_data = utils.DataButton ()
-		self.e_tipo = utils.Combo ([_("Fertilizzante"), _("Filtro")])
-		self.e_nome = gtk.Entry ()
-		self.e_quantita = utils.IntEntry ()
-		self.e_prossima = utils.DataButton ()
-		self.e_note = utils.NoteEntry ()
-		
-		tbl.attach (self.e_vasca, 1, 2, 0, 1)
-		tbl.attach (self.e_data, 1, 2, 1, 2)
-		tbl.attach (self.e_tipo, 1, 2, 2, 3)
-		tbl.attach (self.e_nome, 1, 2, 3, 4)
-		tbl.attach (self.e_quantita, 1, 2, 4, 5)
-		tbl.attach (self.e_prossima, 1, 2, 5, 6)
-		tbl.attach (self.e_note, 1, 2, 6, 7)
+		self.context_id = self.main_db.create_context (1, 7, [_('Id'),
+									  _('Vasca'),
+									  _('Data'),
+									  _('Tipo'),
+									  _('Nome'),
+									  _('Quantita'),
+									  _('Prossima volta'),
+									  _('Note')],
+									 [utils.Combo (),
+									  utils.DataButton (),
+									  utils.Combo ([_("Fertilizzante"), _("Filtro")]),
+									  gtk.Entry (),
+									  utils.IntEntry (),
+									  utils.DataButton (),
+									  utils.NoteEntry ()], lst, True)
 		
 		for y in utils.get ("select * from vasca"):
-			self.e_vasca.append_text (y[3])
-		
-		# Stringiamo un po' la disposizione
-		box.pack_start(tbl, False, False, 0)
-		
-		bb = gtk.HButtonBox ()
-		bb.set_layout (gtk.BUTTONBOX_END)
-		bb.set_spacing (4)
-		
-		btn = gtk.Button (stock=gtk.STOCK_APPLY)
-		btn.connect ('clicked', self.on_apply_changes)
-		btn.set_relief (gtk.RELIEF_NONE)
-		bb.pack_start (btn)
-		box.pack_start (bb, False, False, 0)
-		
-		self.add_with_viewport (box)
-		self.show_all ()
+			self.main_db.vars[0].append_text (y[3])
 	
-	def on_change_selection (self, selection):
+	# TODO:
+	# Qui ci pensi te luca... odio ripetermi :P
+	
+	def after_selection_changed (self, mod, it):
+		pass
+
+	def on_row_activated (self, tree, path, col):
+		pass
+		
+	def after_refresh (self, it):
+		# Implementata dalla sovraclasse
+		pass
+				
+	def add_entry (self, it):
+		# Aggiunge la entry nel database
 		pass
 	
-	def populate_combo (self):
+	def remove_id (self, id):
+		# Passa l'id da rimuovere nel database
+		pass
+	def decrement_id (self, id):
+		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
 		pass
 	
-	def on_del_collection (self, widget):
+	def pack_before_button_box (self, hb):
 		pass
-			
-	def on_add_collection (self, widget):
-		pass
-	
-	def on_apply_changes (self, widget):
-		utils.cmd ('insert into manutenzione values (?,?,?,?,?,?,?)', 
-				id, 
-				self.e_vasca, 
-				self.e_data, 
-				self.e_tipo, 
-				self.e_nome,
-				self.e_quantita,
-				self.e_prossima,
-				self.e_note
-		)
-		pass
-	def exit(self, *w):
-		# dovrebbe bastare
-		impostazioni.save ()
-		
-		self.hide()

@@ -26,7 +26,6 @@ except:
 	print "!! PyGtk Not present"
 
 import os
-__builtins__.__dict__["_"] = lambda x : x
 os.environ['PATH'] += r";lib;etc;bin"
 
 if os.environ.has_key ('PYTHONPATH'):
@@ -44,7 +43,7 @@ utils.prepare_enviroment ()
 import impostazioni
 
 APP = 'acqua'
-DIR = 'locale'
+DIR = os.path.join (utils.DHOME_DIR, "locale")
 
 try:
 	if impostazioni.get ("lang").lower () == "en":
@@ -52,17 +51,14 @@ try:
 		en.install ()
 		try:
 			os.environ['LANG'] = "en_US"
-			__builtins__.__dict__.delete("_")
 			locale.setlocale (locale.LC_MESSAGES, "en_US")
 		except: pass
 	else:
 		os.environ['LANG'] = "it_IT"
-		__builtins__.__dict__["_"] = lambda x : x
 
 except (IOError, locale.Error), e:
 	print "(%s): WARNING **: %s" % (APP, e)
-	__builtins__.__dict__["_"] = lambda x : x
-	__builtins__.__dict__["ngettext"] = gettext.ngettext
+	gettext.install ()
 
 try:
 	# Richiediamo gtk2

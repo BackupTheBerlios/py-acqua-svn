@@ -109,7 +109,7 @@ class Pesci (dbwindow.DBWindow):
 		cmb.append_text (_("Modifica"))
 		cmb.append_text (_("Spesa"))
 		cmb.set_active (0)
-		cmb.connect ('changed', self.on_change_view)
+		cmb.connect ('changed', self._on_change_view)
 		align = gtk.Alignment (0, 0.5)
 		align.add (cmb)
 		hb.pack_start (align, False, True, 0)
@@ -126,7 +126,7 @@ class Pesci (dbwindow.DBWindow):
 		alg.add (btn)
 
 		hb.pack_start (alg, False, True, 0)
-	def on_change_view (self, widget):
+	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		
 		if id == 1:
@@ -139,7 +139,6 @@ class Pesci (dbwindow.DBWindow):
 		import spesa
 		
 		self.note = gtk.Notebook ()
-		self.vbox.pack_start (self.note, False, False, 0)
 		
 		self.note.set_show_tabs (False)
 		self.note.set_show_border (False)
@@ -148,8 +147,8 @@ class Pesci (dbwindow.DBWindow):
 		
 		self.note.append_page (spesa.Spesa ())
 		#self.on_popup
-		# C'e' la custom page qui :P
-		return True
+		return self.note
+	
 	def apply (self, widget):
 		self.filter.refilter ()
 
