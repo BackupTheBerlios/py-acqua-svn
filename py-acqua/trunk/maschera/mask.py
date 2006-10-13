@@ -2,6 +2,106 @@ import gtk
 import sys
 from xml.dom.minidom import getDOMImplementation, parse
 
+class FileEntry (gtk.HBox):
+	def __init__ (self):
+		gtk.HBox.__init__ (self)
+
+		self.entry = gtk.Entry ()
+		self.entry.set_property ('editable', False)
+
+		self.btn = gtk.Button (stock=gtk.STOCK_OPEN)
+		self.btn.set_relief (gtk.RELIEF_NONE)
+		self.btn.connect ('clicked', self.callback)
+
+		self.pack_start (self.entry)
+		self.pack_start (self.btn, False, False, 0)
+	def set_text (self, value):
+		self.entry.set_text(value)
+	
+	def get_text (self):
+		return self.entry.get_text()
+	
+	def callback (self, widget):
+		pass
+
+
+class ImgEntry (FileEntry):
+	def __init__ (self):
+		FileEntry.__init__ (self)
+	
+	def callback (self, widget):
+		ret = FileChooser ("Selezione Immagine", None).run ()
+
+		if ret != None:
+			self.set_text(copy_image(ret))
+
+
+class FileChooser(gtk.FileChooserDialog):
+	def __init__(self, text, parent, filter=None, for_images=True, act=gtk.FILE_CHOOSER_ACTION_OPEN):
+		gtk.FileChooserDialog.__init__(
+			self,
+			text,
+			parent,
+			act,
+			buttons=(gtk.STOCK_OK, gtk.RESPONSE_OK,
+			gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+		
+		if for_images:
+			self.set_use_preview_label(False)
+			
+			img = gtk.Image()
+			
+			self.set_preview_widget(img)
+			
+			self.connect('update-preview', self.on_update_preview)
+		
+		#self.set_size_request(128, -1)
+
+		# Creiamo i filtri
+		
+		if filter == None:
+			filter = gtk.FileFilter()
+			filter.set_name(_("Immagini"))
+			filter.add_mime_type("image/png")
+			filter.add_mime_type("image/jpeg")
+			filter.add_mime_type("image/gif")
+			filter.add_pattern("*.png")
+			filter.add_pattern("*.jpg")
+			filter.add_pattern("*.gif")
+			self.add_filter(filter)
+		else:
+			self.add_filter(filter)
+	
+	def run(self):
+		id = gtk.Dialog.run(self)
+
+		self.hide()
+
+		if id == gtk.RESPONSE_OK:
+			ret = self.get_filename()
+		else:
+			ret = None
+
+		self.destroy()
+
+		return ret
+
+	def on_update_preview(self, chooser):
+		uri = chooser.get_uri()
+		try:
+			pixbuf = gtk.gdk.pixbuf_new_from_file(uri[7:])
+			
+			w, h = make_thumb(50, pixbuf.get_width(), pixbuf.get_height())
+			pixbuf = pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR)
+			
+			chooser.get_preview_widget().set_from_pixbuf(pixbuf)
+		except:
+			chooser.get_preview_widget().set_from_stock(gtk.STOCK_DIALOG_QUESTION,
+				gtk.ICON_SIZE_DIALOG)
+		
+		chooser.set_preview_widget_active(True)
+
+
 class Mask (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
@@ -23,6 +123,7 @@ class Mask (gtk.Window):
 		self.ph = self.dummy_attach ("Valore pH", 9)
 		self.dimensioni = self.dummy_attach ("Dimensioni", 10)
 		self.livello_nuoto = self.dummy_attach ("Livello di nuoto", 11)
+		self.immagine = self.dummy_attach ("Immagine", 12)
 		
 
 		btn = gtk.Button (stock = gtk.STOCK_SAVE)
