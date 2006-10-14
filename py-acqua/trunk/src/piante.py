@@ -22,9 +22,12 @@
 import gtk
 import utils
 import dbwindow
+import spesa
 
 class Piante (dbwindow.DBWindow):
 	def __init__(self):
+		
+		self.spesa = spesa.Spesa (self)
 		
 		lst = gtk.ListStore (int, str, str, int, str, str, gtk.gdk.Pixbuf, str)
 		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
@@ -43,22 +46,27 @@ class Piante (dbwindow.DBWindow):
 		
 		utils.set_icon (self)
 		
-	def after_refresh (self, it):
-		mod, it = self.view.get_selection().get_selected()
-		
-		id = mod.get_value (it, 0)
-		
-		date = self.vars[0].get_text ()
-		vasca = self.vars[1].get_text ()
-		quantita = self.vars[2].get_text ()
-		nome = self.vars[3].get_text ()
-		note = self.vars[4].get_text ()
-		img = self.vars [5].get_text ()
-		
-		utils.cmd ("update piante set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
-		
-		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		self.spesa.bind_context ()
 
+		
+	def after_refresh (self, it):
+		if self.page == 0:
+			mod, it = self.view.get_selection().get_selected()
+		
+			id = mod.get_value (it, 0)
+		
+			date = self.vars[0].get_text ()
+			vasca = self.vars[1].get_text ()
+			quantita = self.vars[2].get_text ()
+			nome = self.vars[3].get_text ()
+			note = self.vars[4].get_text ()
+			img = self.vars [5].get_text ()
+		
+			utils.cmd ("update piante set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
+		
+			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		elif self.page == 1:
+			self.spesa.after_refresh (it)
 	def add_entry (self, it):
 		mod, id = self.view.get_selection ().get_selected ()
 
@@ -79,14 +87,36 @@ class Piante (dbwindow.DBWindow):
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
 	def remove_id (self, id):
-		utils.cmd ('delete from piante where id=%d' % id)
-		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
-	
+		if self.page == 0:
+			utils.cmd ('delete from piante where id=%d' % id)
+			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+		elif self.page == 1:
+			self.spesa.remove_id (id)
 	def decrement_id (self, id):
-		utils.cmd ("update piante set id=%d where id=%d" % (id - 1, id))
-
+		if self.page == 0:
+			utils.cmd ("update piante set id=%d where id=%d" % (id - 1, id))
+		elif self.page == 1:
+			self.spesa.decrement_id (id)
 	def on_row_activated(self, tree, path, col):
-		mod = self.view.get_model()
-		it = mod.get_iter_from_string(str(path[0]))
+		if self.page == 0:
+			mod = self.view.get_model()
+			it = mod.get_iter_from_string(str(path[0]))
 
-		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
+			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
+		elif self.page == 1:
+			self.spesa.on_row_activated (tree, path, col)
+			
+	def pack_before_button_box (self, hb):
+		cmb = utils.Combo ()
+		cmb.append_text (_("Modifica"))
+		cmb.append_text (_("Spesa"))
+		cmb.set_active (0)
+		cmb.connect ('changed', self._on_change_view)
+		align = gtk.Alignment (0, 0.5)
+		align.add (cmb)
+		hb.pack_start (align, False, True, 0)
+		cmb.show ()
+		
+	def _on_change_view (self, widget):
+		id = widget.get_active ()
+		self.page = id

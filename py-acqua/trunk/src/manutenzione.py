@@ -19,6 +19,8 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+#create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500))
+
 import gtk
 import utils
 import impostazioni
@@ -59,22 +61,63 @@ class Manutenzione(BaseDBWindow):
 		pass
 
 	def on_row_activated (self, tree, path, col):
-		pass
+		mod = self.view.get_model()
+		it = mod.get_iter_from_string(str(path[0]))
+	
+		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
+		#pass
 		
 	def after_refresh (self, it):
 		# Implementata dalla sovraclasse
-		pass
+		mod, it = self.view.get_selection ().get_selected ()
+			
+		id = mod.get_value (it, 0)
+			
+		vasca  = self.vars[0].get_text ()
+		data  = self.vars[1].get_text ()
+		tipo  = self.vars[2].get_text ()
+		nome = self.vars[3].get_text ()
+		quantita  = self.vars[4].get_text ()
+		giorni  = self.vars[5].get_text ()
+		note  = self.vars[6].get_text ()
+	
+		utils.cmd ("update manutenzione set vasca='%(vasca)s', data='%(data)s', tipo='%(tipo)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s', note='%(note)s' where id = %(id)s" % vars())
+			
+		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		#pass
 				
 	def add_entry (self, it):
 		# Aggiunge la entry nel database
-		pass
+		mod, id = self.view.get_selection ().get_selected ()
+	
+		id = mod.get_value (it, 0)
+	
+			#for i in self.vars:
+			#	print i.get_text ()
+		utils.cmd ('insert into manutenzione values(?,?,?,?,?,?,?,?)',
+					id,
+					self.vars[0].get_text (),
+					self.vars[1].get_text (),
+					self.vars[2].get_text (),
+					self.vars[3].get_text (),
+					self.vars[4].get_text (),
+					self.vars[5].get_text (),
+					self.vars[6].get_text ())
+			
+		
+			
+		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		#pass
 	
 	def remove_id (self, id):
 		# Passa l'id da rimuovere nel database
-		pass
+		utils.cmd ('delete from manutenzione where id=%d' % id)
+		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+		#pass
 	def decrement_id (self, id):
 		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
-		pass
+		utils.cmd ("update manutenzione set id=%d where id=%d" % (id - 1, id))
+		#pass
 	
 	def pack_before_button_box (self, hb):
 		pass

@@ -22,9 +22,12 @@
 import gtk
 import utils
 import dbwindow
+import spesa
 
 class Pesci (dbwindow.DBWindow):
 	def __init__(self):
+	
+		self.spesa = spesa.Spesa (self)
 		
 		lst = gtk.ListStore (int, str, str, int, str, str, gtk.gdk.Pixbuf, str)
 		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
@@ -54,24 +57,27 @@ class Pesci (dbwindow.DBWindow):
 		self.filter.set_visible_func (self._apply_filter)
 		self.view.set_model (self.filter)
 		
-		self.note.set_current_page(0)
+		#self.note.set_current_page(0)
+		
+		self.spesa.bind_context ()
 
 	def after_refresh (self, it):
-		mod, it = self.view.get_selection().get_selected()
+		if self.page == 0:
+			mod, it = self.view.get_selection().get_selected()
 		
-		id = mod.get_value (it, 0)
+			id = mod.get_value (it, 0)
 		
-		date = self.vars[0].get_text ()
-		vasca = self.vars[1].get_text ()
-		quantita = self.vars[2].get_text ()
-		nome = self.vars[3].get_text ()
-		note = self.vars[4].get_text ()
-		img = self.vars[5].get_text ()
+			date = self.vars[0].get_text ()
+			vasca = self.vars[1].get_text ()
+			quantita = self.vars[2].get_text ()
+			nome = self.vars[3].get_text ()
+			note = self.vars[4].get_text ()
+			img = self.vars[5].get_text ()
 		
-		utils.cmd ("update pesci set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
-		
-		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
-
+			utils.cmd ("update pesci set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
+			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		elif self.page == 1:
+			self.spesa.after_refresh (it)
 	def add_entry (self, it):
 		mod = self.store
 
@@ -92,18 +98,24 @@ class Pesci (dbwindow.DBWindow):
 		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
 	def remove_id (self, id):
-		utils.cmd ('delete from pesci where id=%d' % id)
-		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
-	
+		if self.page == 0:
+			utils.cmd ('delete from pesci where id=%d' % id)
+			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+		elif self.page == 1:
+			self.spesa.remove_id (id)
 	def decrement_id (self, id):
-		utils.cmd ("update pesci set id=%d where id=%d" % (id - 1, id))
-			
+		if self.page == 0:
+			utils.cmd ("update pesci set id=%d where id=%d" % (id - 1, id))
+		elif self.page == 1:
+			self.spesa.decrement_id (id)		
 	def on_row_activated(self, tree, path, col):
-		mod = self.view.get_model()
-		it = mod.get_iter_from_string(str(path[0]))
+		if self.page == 0:
+			mod = self.view.get_model()
+			it = mod.get_iter_from_string(str(path[0]))
 
-		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
-
+			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
+		elif self.page == 1:
+			self.spesa.on_row_activated (tree, path, col)
 	def pack_before_button_box (self, hb):
 		cmb = utils.Combo ()
 		cmb.append_text (_("Modifica"))
@@ -128,26 +140,26 @@ class Pesci (dbwindow.DBWindow):
 		hb.pack_start (alg, False, True, 0)
 	def _on_change_view (self, widget):
 		id = widget.get_active ()
-		
-		if id == 1:
+		self.page = id
+		#if id == 1:
 			#self.on_popup
-			self.note.set_current_page (id)
-		else:
-			self.note.set_current_page (id)
+		#	self.note.set_current_page (id)
+		#else:
+		#	self.note.set_current_page (id)
 			#self.on_popup
-	def custom_page (self, edt_frame):
-		import spesa
+	#def custom_page (self, edt_frame):
+	#	import spesa
 		
-		self.note = gtk.Notebook ()
+	#	self.note = gtk.Notebook ()
 		
-		self.note.set_show_tabs (False)
-		self.note.set_show_border (False)
-		self.note.append_page (edt_frame)
+	#	self.note.set_show_tabs (False)
+	#	self.note.set_show_border (False)
+	#	self.note.append_page (edt_frame)
 		
 		
-		self.note.append_page (spesa.Spesa ())
+		#self.note.append_page (spesa.Spesa ())
 		#self.on_popup
-		return self.note
+	#	return self.note
 	
 	def _on_apply_clicked (self, widget):
 		self.filter.refilter ()

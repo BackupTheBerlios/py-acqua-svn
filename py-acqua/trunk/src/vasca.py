@@ -31,7 +31,7 @@ class Vasca (dbwindow.DBWindow):
 	def __init__ (self):
 		
 		self.manutenzione = manutenzione.Manutenzione (self)
-
+		self.spesa = spesa.Spesa (self)
 		# id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, img TEXT
 		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 
@@ -91,6 +91,7 @@ class Vasca (dbwindow.DBWindow):
 		self.view.connect ('button-press-event', self._on_popup)
 		
 		self.manutenzione.bind_context ()
+		self.spesa.bind_context ()
 		#spesa.Spesa (self)
 		
 	def _on_popup (self, widget, evt):
@@ -163,7 +164,8 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.after_refresh (it)
-
+		elif self.page == 2:
+			self.spesa.after_refresh (it)
 	def add_entry (self, it):
 		if self.page == 0:
 			mod, id = self.view.get_selection ().get_selected ()
@@ -193,6 +195,8 @@ class Vasca (dbwindow.DBWindow):
 		
 		elif self.page == 1:
 			self.manutenzione.add_entry (it)
+		elif self.page == 2:
+			self.spesa.add_entry (it)
 		
 	def remove_id (self, id):
 		if self.page == 0:
@@ -201,6 +205,8 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.remove_id (id)
+		elif self.page == 2:
+			self.spesa.remove_id (id)
 	
 	def decrement_id (self, id):
 		if self.page == 0:
@@ -208,6 +214,8 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.decrement_id (id)
+		elif self.page == 2:
+			self.spesa.decrement_id (id)
 
 	def on_row_activated(self, tree, path, col):
 		if self.page == 0:
@@ -218,6 +226,8 @@ class Vasca (dbwindow.DBWindow):
 		
 		elif self.page == 1:
 			self.manutenzione.on_row_activated (tree, path, col)
+		elif self.page == 2:
+			self.spesa.on_row_activated (tree, path, col)
 			
 	def _on_change_view (self, widget):
 		id = widget.get_active ()

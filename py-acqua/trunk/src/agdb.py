@@ -35,7 +35,7 @@ class dbupdate:
 		###################################
 		# Versione 0.7
 		
-		check ("create table spese(id integer, date DATE, vasca FLOAT, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, img TEXT)")
+		check ("create table spesa(id integer, vasca TEXT, date DATE, tipologia TEXT, nome TEXT, quantita NUMERIC, prezzo TEXT, img TEXT)")
 		check ("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, img TEXT)")
 		check ("alter table vasca add reattore TEXT")
 		check ("alter table vasca add schiumatoio TEXT")
@@ -53,7 +53,7 @@ class dbupdate:
 		check ("alter table piante add note VARCHAR(500)")
 		check ("alter table invertebrati add note VARCHAR(500)")
 		check ("alter table fertilizzante add note VARCHAR(500)")
-		check ("alter table spese add note VARCHAR(500)")
+		check ("alter table spesa add note VARCHAR(500)")
 		check ("alter table filtro add note VARCHAR(500)")
-		check ("create table manutenzione(id integer, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
+		check ("create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
 		connessione.commit ()

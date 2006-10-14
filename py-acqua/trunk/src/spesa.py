@@ -19,114 +19,103 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+#create table spese(id integer, vasca TEXT, date DATE, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, note VARCHAR(500), img TEXT)")
 import gtk
 import utils
 import impostazioni
+from dbwindow import BaseDBWindow
 from pysqlite2 import dbapi2 as sqlite
 from copy import copy
 
-class Spesa(gtk.ScrolledWindow):
-	def __init__(self):
-		gtk.ScrolledWindow.__init__(self)
+class Spesa(BaseDBWindow):
+	def __init__(self, window_db):
+		self.main_db = window_db
+	
+	def bind_context (self):
+		lst = gtk.ListStore (int, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		
-		self.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		self.context_id = self.main_db.create_context (1, 7, [_('Id'),
+									  _('Vasca'),
+									  _('Data'),
+									  _('Tipo'),
+									  _('Nome'),
+									  _('Quantita'),
+									  _('Prezzo'),
+									  _('Note'),
+									  _('Immagine')],
+									 [utils.Combo (),
+									  utils.DataButton (),
+									  utils.Combo ([_("Vasca"), _("Pesci"), _("Piante"), _("Fertilizzante"), _("Invertebrati"), _("Varie")]),
+									  gtk.Entry (),
+									  utils.IntEntry (),
+									  gtk.Entry (),
+									  utils.NoteEntry (),
+									  utils.ImgEntry ()], lst, True)
 		
-		box = gtk.VBox()
-		box.set_spacing(4)
-		box.set_border_width(4)
-		
-		# Iniziamo con la tabella
-		tbl = gtk.Table (6, 2, False)
-		
-		self.store = gtk.ListStore (str)
-		self.view = gtk.TreeView (self.store)
-		
-		self.view.append_column (gtk.TreeViewColumn (None, gtk.CellRendererText (), text=0) )
-		self.view.set_headers_visible (False)
-		
-		#self.view.get_selection ().connect ('changed', self.on_change_selection)
-		
-		
-		labels = (
-			 _('Vasca'),
-			 _('Data'),
-			 _('Tipo'),
-			 _('Quantita'),
-			 _('Nome'),
-			 _('Prezzo'),
-			 _('Note'),
-			 _('Immagine')
-		)
-		
-		self.widgets = []
-		
-		x = 0
-		for i in labels:
-			tbl.attach (utils.new_label (i), 0, 1, x, x+1)
-			x += 1
-
-		self.e_vasca = utils.Combo ()
-		self.e_data = utils.DataButton ()
-		self.e_tipo = utils.Combo ([_("Vasca"), _("Pesci"), _("Piante"), _("Invertebrato"), _("Fertilizzante"), _("Filtro"), _("Varie")])
-		self.e_quantita = utils.IntEntry ()
-		self.e_nome = gtk.Entry ()
-		self.e_prezzo = utils.FloatEntry ()
-		self.e_note = utils.NoteEntry ()
-		self.e_immagine = utils.ImgEntry ()
-		tbl.attach (self.e_vasca, 1, 2, 0, 1)
-		tbl.attach (self.e_data, 1, 2, 1, 2)
-		tbl.attach (self.e_tipo, 1, 2, 2, 3)
-		tbl.attach (self.e_quantita, 1, 2, 3, 4)
-		tbl.attach (self.e_nome, 1, 2, 4, 5)
-		tbl.attach (self.e_prezzo, 1, 2, 5, 6)
-		tbl.attach (self.e_note, 1, 2, 6, 7)
-		tbl.attach (self.e_immagine, 1, 2, 7, 8)
 		for y in utils.get ("select * from vasca"):
-			self.e_vasca.append_text (y[3])
-		
-		
-		box.pack_start (tbl)
-		
-		bb = gtk.HButtonBox ()
-		bb.set_layout (gtk.BUTTONBOX_END)
-		bb.set_spacing (4)
-		
-		btn = gtk.Button (stock=gtk.STOCK_APPLY)
-		btn.connect ('clicked', self.on_apply_changes)
-		btn.set_relief (gtk.RELIEF_NONE)
-		bb.pack_start (btn)
-		box.pack_start (bb, False, False, 0)
-		
-		
-		self.add_with_viewport (box)
-		self.show_all ()
+			self.main_db.vars[0].append_text (y[3])
 	
-	def on_change_selection (self, selection):
-		pass
+	# TODO:
+	# Qui ci pensi te luca... odio ripetermi :P
 	
-	def populate_combo (self):
+	def after_selection_changed (self, mod, it):
 		pass
+
+	def on_row_activated (self, tree, path, col):
+		mod = self.view.get_model()
+		it = mod.get_iter_from_string(str(path[0]))
 	
-	def on_del_collection (self, widget):
-		pass
+		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
+		
+	def after_refresh (self, it):
+		# Implementata dalla sovraclasse
+		mod, it = self.view.get_selection ().get_selected ()
 			
-	def on_add_collection (self, widget):
-		pass
+		id = mod.get_value (it, 0)
+			
+		vasca  = self.vars[0].get_text ()
+		data  = self.vars[1].get_text ()
+		tipo  = self.vars[2].get_text ()
+		nome = self.vars[3].get_text ()
+		quantita  = self.vars[4].get_text ()
+		prezzo  = self.vars[5].get_text ()
+		note  = self.vars[6].get_text ()
+		img  = self.vars[7].get_text ()
 	
-	def on_apply_changes (self, widget):
-		utils.cmd ('insert into manutenzione values (?,?,?,?,?,?,?)', 
-				id, 
-				self.e_vasca, 
-				self.e_data, 
-				self.e_tipo, 
-				self.e_nome,
-				self.e_quantita,
-				self.e_prossima,
-				self.e_note
-		)
+		utils.cmd ("update manutenzione set vasca='%(vasca)s', data='%(data)s', tipo='%(tipo)s', nome='%(nome)s', quantita='%(quantita)s', prezzo='%(prezzo)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
+			
+		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+				
+	def add_entry (self, it):
+		# Aggiunge la entry nel database
+		mod, id = self.view.get_selection ().get_selected ()
+	
+		id = mod.get_value (it, 0)
+	
+			#for i in self.vars:
+			#	print i.get_text ()
+		utils.cmd ('insert into spesa values(?,?,?,?,?,?,?,?)',
+					id,
+					self.vars[0].get_text (),
+					self.vars[1].get_text (),
+					self.vars[2].get_text (),
+					self.vars[3].get_text (),
+					self.vars[4].get_text (),
+					self.vars[5].get_text (),
+					self.vars[6].get_text ())
+			
 		
-	def exit(self, *w):
-		# dovrebbe bastare
-		impostazioni.save ()
+			
+		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+	
+	def remove_id (self, id):
+		# Passa l'id da rimuovere nel database
+		utils.cmd ('delete from spesa where id=%d' % id)
+		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		
-		self.hide()
+	def decrement_id (self, id):
+		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
+		utils.cmd ("update spesa set id=%d where id=%d" % (id - 1, id))
+		
+	def pack_before_button_box (self, hb):
+		pass
