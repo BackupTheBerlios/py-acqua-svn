@@ -88,7 +88,7 @@ class Manutenzione(BaseDBWindow):
 				
 	def add_entry (self, it):
 		# Aggiunge la entry nel database
-		mod, id = self.view.get_selection ().get_selected ()
+		mod, id = self.view.get_selection().get_selected()
 	
 		id = mod.get_value (it, 0)
 	

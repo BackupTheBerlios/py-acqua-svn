@@ -111,28 +111,31 @@ class Mask (gtk.Window):
 
 		self.tbl = tbl = gtk.Table (5, 2)
 
-		self.nome_scientifico = self.dummy_attach ("Nome scientifico", 0)
-		self.nome_comune = self.dummy_attach ("Nome comune", 1)
-		self.famiglia = self.dummy_attach ("Famiglia", 2)
-		self.sottofamiglia = self.dummy_attach ("Sottofamiglia", 3)
-		self.luogo_provenienza = self.dummy_attach ("Luogo di provenienza" , 4)
-		self.allevamento = self.dummy_attach ("Allevamento e caratteristiche", 5)
-		self.riproduzione = self.dummy_attach ("Riproduzione", 6)
-		self.temperatura = self.dummy_attach ("Temperatura", 7)
-		self.dgh = self.dummy_attach ("Valore dGH", 8)
-		self.ph = self.dummy_attach ("Valore pH", 9)
-		self.dimensioni = self.dummy_attach ("Dimensioni", 10)
-		self.livello_nuoto = self.dummy_attach ("Livello di nuoto", 11)
-		self.immagine = self.dummy_attach ("Immagine", 12)
+		self.nome_comune = self.dummy_attach ("Nome comune", 0)
+		self.specie = self.dummy_attach ("Specie", 1)
+		self.genere = self.dummy_attach ("Genere", 2)
+		self.famiglia = self.dummy_attach ("Famiglia", 3)
+		self.ordine = self.dummy_attach ("Ordine" , 4)
+		self.luogo_provenienza = self.dummy_attach ("Luogo di provenienza", 5)
+		self.allevamento = self.dummy_attach ("Allevamento", 6)
+		self.compatibilita = self.dummy_attach ("Compatibilità", 7)
+		self.riproduzione = self.dummy_attach ("Riproduzione", 8)
+		self.temperatura = self.dummy_attach ("Temperatura", 9)
+		self.gh = self.dummy_attach ("Gh", 10)
+		self.ph = self.dummy_attach ("pH", 11)
+		self.lunghezza_raggiunta = self.dummy_attach ("Lunghezza raggiunta", 12)
+		self.zona_nuoto = self.dummy_attach ("Zona di nuoto", 13)
+		self.immagine = self.dummy_attach ("Immagine", 14)
+		
 		
 
 		btn = gtk.Button (stock = gtk.STOCK_SAVE)
 		btn.connect ("clicked", self.on_save)
-		tbl.attach (btn, 1, 2, 13, 14)
+		tbl.attach (btn, 1, 2, 15, 16)
 
 		btn = gtk.Button (stock = gtk.STOCK_OPEN)
 		btn.connect ("clicked", self.on_open)
-		tbl.attach (btn, 0, 1, 13, 14)
+		tbl.attach (btn, 0, 1, 15, 16)
 
 		self.connect ("delete-event", lambda *k: gtk.main_quit ())
 
@@ -207,9 +210,21 @@ class Mask (gtk.Window):
 			print "ERRORACCIO"
 			return
 
-		name = self.get ("Nome")
-		fam  = self.get ("Famiglia")
-		ufam = self.get ("SottoFamiglia")
+		nome_com = self.get ("Nome comune")
+		specie_a  = self.get ("Specie")
+		genere_a = self.get ("Genere")
+		famiglia_a = self.get ("Famiglia")
+		ordine_a = self.get ("Ordine")
+		luogo_provenienza_a = self.get ("Luogo di Provenienza")
+		allevamento_a = self.get ("Allevamento")
+		compatibilita_a = self.get ("Compatibilità")
+		riproduzione_a = self.get ("Riproduzione")
+		temperatura_a = self.get ("Temperatura")
+		gh_a = self.get ("Gh")
+		ph_a = self.get ("pH")
+		lunghezza_raggiunta_a = self.get ("Lunghezza raggiunta")
+		zona_nuoto_a = self.get ("Zona di nuoto")
+		
 
 		# NB: Per adesso stampiamo solamente sullo stdout
 
@@ -221,17 +236,17 @@ class Mask (gtk.Window):
 
 		doc.documentElement.appendChild (fish_el) # Appendiamo al documento
 
-		# Creiamo il child Family di fish
-		fami_el = doc.createElement ("family")
-		fami_el.setAttribute ("name", fam)
+		# Creiamo il child nome comune di fish
+		nome_el = doc.createElement ("nome comune")
+		nome_el.setAttribute ("specie", nom)
 
-		fish_el.appendChild (fami_el) # <fish><family /></fish>
+		fish_el.appendChild (nome_el) # <fish><family /></fish>
 		
 		# Child del dell'elemento family che e' child di fish :P
-		sub_fam_el = doc.createElement ("subfamily")
-		sub_fam_el.setAttribute ("name", ufam)
+		specie_el = doc.createElement ("specie")
+		specie_el.setAttribute ("specie", spe)
 
-		fish_el.appendChild (sub_fam_el)
+		fish_el.appendChild (specie_el)
 
 		# Scriviamo sullo stdout..
 		# Se vuoi la scrittura su file decommenta sotto e commenta esto :P
