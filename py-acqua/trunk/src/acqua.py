@@ -102,7 +102,8 @@ def main ():
 	app.App = app.Gui()
 	app.App.p_engine = engine.PluginEngine ()
 	
-	utils.tray_apri()
+	#per il momento finche non si sistema non si usa la tray
+	#utils.tray_apri()
 	
 	gtk.gdk.threads_enter ()
 	app.App.main()

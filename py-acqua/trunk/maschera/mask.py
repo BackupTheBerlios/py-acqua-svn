@@ -238,7 +238,7 @@ class Mask (gtk.Window):
 
 		# Creiamo il child nome comune di fish
 		nome_el = doc.createElement ("nome comune")
-		nome_el.setAttribute ("specie", nom)
+		nome_el.setAttribute ("nome", nom)
 
 		fish_el.appendChild (nome_el) # <fish><family /></fish>
 		
