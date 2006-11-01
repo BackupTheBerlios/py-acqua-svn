@@ -34,8 +34,9 @@ class Pesci (dbwindow.DBWindow):
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
-		
+
 		for y in utils.get ("select * from pesci"):
+			print y
 			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
 		for y in utils.get ("select * from vasca"):
 			self.vars[1].append_text (y[3])
@@ -57,8 +58,6 @@ class Pesci (dbwindow.DBWindow):
 		self.filter.set_visible_func (self._apply_filter)
 		self.view.set_model (self.filter)
 		
-		#self.note.set_current_page(0)
-		
 		self.spesa.bind_context ()
 
 	def after_refresh (self, it):
@@ -79,23 +78,26 @@ class Pesci (dbwindow.DBWindow):
 		elif self.page == 1:
 			self.spesa.after_refresh (it)
 	def add_entry (self, it):
-		mod = self.store
+		if self.page == 0:
+			mod = self.store
 
-		id = mod.get_value (it, 0)
+			id = mod.get_value (it, 0)
 
-		for i in self.vars:
-			print i.get_text ()
-		
-		utils.cmd ('insert into pesci values(?,?,?,?,?,?,?)',
-				id,
-				self.vars[0].get_text (),
-				self.vars[1].get_text (),
-				self.vars[2].get_text (),
-				self.vars[3].get_text (),
-				self.vars[4].get_text (),
-				self.vars[5].get_text ())
-		
-		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+			#for i in self.vars:
+			#	print i.get_text ()
+			
+			utils.cmd ('insert into pesci values(?,?,?,?,?,?,?)',
+					id,
+					self.vars[0].get_text (),
+					self.vars[1].get_text (),
+					self.vars[2].get_text (),
+					self.vars[3].get_text (),
+					self.vars[4].get_text (),
+					self.vars[5].get_text ())
+			
+			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		elif self.page == 1:
+			self.spesa.add_entry (it)
 		
 	def remove_id (self, id):
 		if self.page == 0:
