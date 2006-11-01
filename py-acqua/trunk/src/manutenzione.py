@@ -24,25 +24,26 @@
 import gtk
 import utils
 import impostazioni
-from dbwindow import BaseDBWindow
+from dbwindow import BaseDBWindow, NotifyType
 from pysqlite2 import dbapi2 as sqlite
 from copy import copy
 
 class Manutenzione(BaseDBWindow):
 	def __init__(self, window_db):
 		self.main_db = window_db
+		self.col_lst = [_('Id'),
+				_('Vasca'),
+				_('Data'),
+				_('Tipo'),
+				_('Nome'),
+				_('Quantita'),
+				_('Prossima volta'),
+				_('Note')]
 	
 	def bind_context (self):
 		lst = gtk.ListStore (int, str, str, str, str, str, str, str)
 		
-		self.context_id = self.main_db.create_context (1, 7, [_('Id'),
-									  _('Vasca'),
-									  _('Data'),
-									  _('Tipo'),
-									  _('Nome'),
-									  _('Quantita'),
-									  _('Prossima volta'),
-									  _('Note')],
+		self.context_id = self.main_db.create_context (1, 7, self.col_lst,
 									 [utils.Combo (),
 									  utils.DataButton (),
 									  utils.Combo ([_("Fertilizzante"), _("Filtro")]),
@@ -61,34 +62,33 @@ class Manutenzione(BaseDBWindow):
 		pass
 
 	def on_row_activated (self, tree, path, col):
-		mod = self.view.get_model()
+		mod = self.main_db.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 	
-		utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 14))
-		#pass
+		utils.InfoDialog(self.main_db, _("Riepilogo"), self.col_lst, self.main_db.vars)
 		
 	def after_refresh (self, it):
 		# Implementata dalla sovraclasse
-		mod, it = self.view.get_selection ().get_selected ()
+		mod, it = self.main_db.view.get_selection ().get_selected ()
 			
 		id = mod.get_value (it, 0)
 			
-		vasca  = self.vars[0].get_text ()
-		data  = self.vars[1].get_text ()
-		tipo  = self.vars[2].get_text ()
-		nome = self.vars[3].get_text ()
-		quantita  = self.vars[4].get_text ()
-		giorni  = self.vars[5].get_text ()
-		note  = self.vars[6].get_text ()
+		vasca  = self.main_db.vars[0].get_text ()
+		data  = self.main_db.vars[1].get_text ()
+		tipo  = self.main_db.vars[2].get_text ()
+		nome = self.main_db.vars[3].get_text ()
+		quantita  = self.main_db.vars[4].get_text ()
+		giorni  = self.main_db.vars[5].get_text ()
+		note  = self.main_db.vars[6].get_text ()
 	
 		utils.cmd ("update manutenzione set vasca='%(vasca)s', data='%(data)s', tipo='%(tipo)s', nome='%(nome)s', quantita='%(quantita)s', giorni='%(giorni)s', note='%(note)s' where id = %(id)s" % vars())
 			
-		self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		self.main_db.update_status (NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 		#pass
 				
 	def add_entry (self, it):
 		# Aggiunge la entry nel database
-		mod, id = self.view.get_selection().get_selected()
+		mod, id = self.main_db.view.get_selection().get_selected()
 	
 		id = mod.get_value (it, 0)
 	
@@ -96,23 +96,23 @@ class Manutenzione(BaseDBWindow):
 			#	print i.get_text ()
 		utils.cmd ('insert into manutenzione values(?,?,?,?,?,?,?,?)',
 					id,
-					self.vars[0].get_text (),
-					self.vars[1].get_text (),
-					self.vars[2].get_text (),
-					self.vars[3].get_text (),
-					self.vars[4].get_text (),
-					self.vars[5].get_text (),
-					self.vars[6].get_text ())
+					self.main_db.vars[0].get_text (),
+					self.main_db.vars[1].get_text (),
+					self.main_db.vars[2].get_text (),
+					self.main_db.vars[3].get_text (),
+					self.main_db.vars[4].get_text (),
+					self.main_db.vars[5].get_text (),
+					self.main_db.vars[6].get_text ())
 			
 		
 			
-		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		self.main_db.update_status (NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		#pass
 	
 	def remove_id (self, id):
 		# Passa l'id da rimuovere nel database
 		utils.cmd ('delete from manutenzione where id=%d' % id)
-		self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
+		self.main_db.update_status (NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		#pass
 	def decrement_id (self, id):
 		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
