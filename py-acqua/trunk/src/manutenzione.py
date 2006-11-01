@@ -25,7 +25,7 @@ import gtk
 import utils
 import impostazioni
 from dbwindow import BaseDBWindow, NotifyType
-from pysqlite2 import dbapi2 as sqlite
+#from pysqlite2 import dbapi2 as sqlite
 from copy import copy
 
 class Manutenzione(BaseDBWindow):
@@ -51,6 +51,9 @@ class Manutenzione(BaseDBWindow):
 									  utils.IntEntry (),
 									  utils.DataButton (),
 									  utils.NoteEntry ()], lst, True)
+									  
+		for y in utils.get ("select * from manutenzione"):
+			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7]])
 		
 		for y in utils.get ("select * from vasca"):
 			self.main_db.vars[0].append_text (y[3])

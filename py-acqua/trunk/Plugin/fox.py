@@ -319,11 +319,6 @@ class fox(gtk.Window):
 		self.val_ph.set_range (0, 10)
 		tbl_alba.attach(self.val_ph, 1, 2, 3, 4, xoptions=gtk.SHRINK)
 		
-		
-		
-		
-		
-		
 		f0.add(tbl_con)
 		f2.add(tbl)
 		f3.add(tbl_alba)
