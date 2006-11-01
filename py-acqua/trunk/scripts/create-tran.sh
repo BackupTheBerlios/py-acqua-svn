@@ -1,3 +1,4 @@
+#per creare il file messages.pot 
 #!/bin/sh
 if [ -f messages.pot ]; then
 	if [ -f $1 ]; then

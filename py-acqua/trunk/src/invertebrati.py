@@ -65,23 +65,27 @@ class Invertebrati (dbwindow.DBWindow):
 		elif self.page == 1:
 			self.spesa.after_refresh (it)
 	def add_entry (self, it):
-		mod, id = self.view.get_selection ().get_selected ()
+		if self.page == 0:
+			mod, id = self.view.get_selection ().get_selected ()
 
-		id = mod.get_value (it, 0)
+			id = mod.get_value (it, 0)
 
-		for i in self.vars:
-			print i.get_text ()
+			for i in self.vars:
+				print i.get_text ()
 		
-		utils.cmd ('insert into invertebrati values(?,?,?,?,?,?,?)',
-				id,
-				self.vars[0].get_text (),
-				self.vars[1].get_text (),
-				self.vars[2].get_text (),
-				self.vars[3].get_text (),
-				self.vars[4].get_text (),
-				self.vars[5].get_text ())
+			utils.cmd ('insert into invertebrati values(?,?,?,?,?,?,?)',
+					id,
+					self.vars[0].get_text (),
+					self.vars[1].get_text (),
+					self.vars[2].get_text (),
+					self.vars[3].get_text (),
+					self.vars[4].get_text (),
+					self.vars[5].get_text ())
 		
-		self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
+		
+		elif self.page == 1:
+			self.spesa.add_entry (it)
 		
 	def remove_id (self, id):
 		if self.page == 0:

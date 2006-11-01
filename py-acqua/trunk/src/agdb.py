@@ -23,7 +23,7 @@ from pysqlite2 import dbapi2 as sqlite
 
 class dbupdate:
 	def updatedb (self):
-		connessione=sqlite.connect ("Data/db")
+		connessione=sqlite.connect (utils.DATA_DIR, "db")
 		cursore=connessione.cursor ()
 
 		def check (query):
@@ -49,11 +49,11 @@ class dbupdate:
 		# Versione 1.0
 
 		check ("alter table vasca add note VARCHAR(500)")
+		check ("create table spesa(id integer, vasca TEXT, date DATE, tipologia TEXT, nome TEXT, quantita NUMERIC, soldi TEXT, note VARCHAR(500), img TEXT)")
 		check ("alter table pesci add note VARCHAR(500)")
 		check ("alter table piante add note VARCHAR(500)")
 		check ("alter table invertebrati add note VARCHAR(500)")
 		check ("alter table fertilizzante add note VARCHAR(500)")
-		check ("alter table spesa add note VARCHAR(500)")
 		check ("alter table filtro add note VARCHAR(500)")
 		check ("create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500)")
 		connessione.commit ()
