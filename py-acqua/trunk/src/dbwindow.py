@@ -111,6 +111,12 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		con piu' di una treeview
 		"""
 		self._real_init ()
+		
+		#per il filtro ma nn so se va bene qua :)
+		
+		self.filter = lst.filter_new ()
+		self.filter.set_visible_func (self._apply_filter)
+		self.view.set_model (self.filter)
 	
 	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
 		self._real_init ()
@@ -133,6 +139,10 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		
 		self.nb_view.connect ('switch-page', self._on_switch_page)
 		
+		#per nascondere i tab sulle varie finestre lato treeview
+		self.nb_view.set_show_tabs (False)
+		
+		#per nascondere i tab sulle varie finestre lato modifica
 		self.nb_edit.set_show_tabs (False)
 		self.nb_edit.set_show_border (False)
 		
@@ -199,6 +209,13 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		btn = utils.new_button (None, gtk.STOCK_DIALOG_AUTHENTICATION, True)
 		btn.set_relief (gtk.RELIEF_NONE)
 		btn.connect ('toggled', self._on_edit_mode, container, bb)
+		bb.pack_start (btn)
+		
+		
+		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
+		btn.set_relief (gtk.RELIEF_NONE)
+		#btn.connect ("clicked", self._on_apply_clicked)
+		#btn.connect ("button_press_event", self._on_popup)
 		bb.pack_start (btn)
 		
 		return bb
@@ -482,6 +499,30 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.status.push (0, string)
 
 		self.timeoutid = gobject.timeout_add (2000, self._on_timeout)
+		
+	#questa parte e per il pulsante filtro 
+	def _on_apply_clicked (self, widget):
+		self.filter.refilter ()
+		
+	def _apply_filter (self, mod, iter):
+		filters = list ()
+
+		for i in self.menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+		print filters
+		val = mod.get_value (iter, 2)
+		print val
+		
+		if val in filters:
+			return True
+		else:
+			return False
+
+	def _on_popup (self, widget, event):
+		if event.button == 3:
+			self.menu.popup (None, None, None, event.button, event.time)
+			self.menu.show_all ()
 
 class Test(DBWindow):
 	def __init__(self):
@@ -496,6 +537,9 @@ class Test(DBWindow):
 
 	def remove_id (self, id):
 		self.update_status(NotifyType.SAVE, "Immagine Rimossa! :)")
+		
+	
+
 
 if __name__ == "__main__":
 	Test()

@@ -53,10 +53,6 @@ class Pesci (dbwindow.DBWindow):
 			w = gtk.CheckMenuItem (y[3])
 			w.set_property ("active", True)
 			self.menu.append (w)
-
-		self.filter = lst.filter_new ()
-		self.filter.set_visible_func (self._apply_filter)
-		self.view.set_model (self.filter)
 		
 		self.spesa.bind_context ()
 
@@ -129,59 +125,6 @@ class Pesci (dbwindow.DBWindow):
 		hb.pack_start (align, False, True, 0)
 		cmb.show ()
 		
-		# Creiamo un filtro
-		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
-		btn.set_relief (gtk.RELIEF_NONE)
-
-		btn.connect ("clicked", self._on_apply_clicked)
-		btn.connect ("button_press_event", self._on_popup)
-		
-		alg = gtk.Alignment (1, 0.5)
-		alg.add (btn)
-
-		hb.pack_start (alg, False, True, 0)
 	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		self.page = id
-		#if id == 1:
-			#self.on_popup
-		#	self.note.set_current_page (id)
-		#else:
-		#	self.note.set_current_page (id)
-			#self.on_popup
-	#def custom_page (self, edt_frame):
-	#	import spesa
-		
-	#	self.note = gtk.Notebook ()
-		
-	#	self.note.set_show_tabs (False)
-	#	self.note.set_show_border (False)
-	#	self.note.append_page (edt_frame)
-		
-		
-		#self.note.append_page (spesa.Spesa ())
-		#self.on_popup
-	#	return self.note
-	
-	def _on_apply_clicked (self, widget):
-		self.filter.refilter ()
-
-	def _apply_filter (self, mod, iter):
-		filters = list ()
-
-		for i in self.menu.get_children ():
-			if i.active:
-				filters.append (i.get_children ()[0].get_text ())
-		print filters
-		val = mod.get_value (iter, 2)
-		print val
-		
-		if val in filters:
-			return True
-		else:
-			return False
-
-	def _on_popup (self, widget, event):
-		if event.button == 3:
-			self.menu.popup (None, None, None, event.button, event.time)
-			self.menu.show_all ()
