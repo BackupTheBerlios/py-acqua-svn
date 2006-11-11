@@ -70,6 +70,7 @@ class Piante (dbwindow.DBWindow):
 	def add_entry (self, it):
 		if self.page == 0:
 			mod, id = self.view.get_selection ().get_selected ()
+			mod = self.store
 
 			id = mod.get_value (it, 0)
 

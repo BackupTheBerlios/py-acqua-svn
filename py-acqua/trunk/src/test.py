@@ -446,6 +446,7 @@ class Test (dbwindow.DBWindow):
 
 	def add_entry (self, it):
 		mod, id = self.view.get_selection ().get_selected ()
+		mod = self.store
 
 		id = mod.get_value (it, 0)
 		
@@ -489,6 +490,9 @@ class Test (dbwindow.DBWindow):
 			if it == None: return
 			
 			checks = impostazioni.get_collection (mod.get_value (it, 16))
+			# Nessun filtro selezionato! (colonna limiti)
+			if checks == None: return
+
 			keys = ('ph', 'kh', 'gh', 'no2', 'no3', 'con', 'am', 'fe', 'ra', 'fo', 'cal', 'mag', 'den')
 			
 			# Resettiamo il colore iniziale
@@ -542,6 +546,10 @@ class Test (dbwindow.DBWindow):
 		# TODO: implementare i valori ideali
 		
 		if it == None: return
+
+		if type (mod) != gtk.ListStore:
+			it = mod.convert_iter_to_child_iter (it)
+			mod = self.store
 		
 		checks = impostazioni.get_collection (mod.get_value (it, 16))
 		

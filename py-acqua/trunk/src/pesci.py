@@ -47,12 +47,10 @@ class Pesci (dbwindow.DBWindow):
 		
 		utils.set_icon (self)
 
-		self.menu = gtk.Menu ()
-
 		for y in utils.get ('select * from vasca'):
 			w = gtk.CheckMenuItem (y[3])
 			w.set_property ("active", True)
-			self.menu.append (w)
+			self.filter_menu.append (w)
 		
 		self.spesa.bind_context ()
 
@@ -128,3 +126,22 @@ class Pesci (dbwindow.DBWindow):
 	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		self.page = id
+	
+	def filter_func (self, mod, iter):
+                filters = list ()
+
+                for i in self.filter_menu.get_children ():
+                        if i.active:
+                                filters.append (i.get_children ()[0].get_text ())
+                print ">> Active filters:", filters
+                val = mod.get_value (iter, 2)
+                print ">> Value to be filtered:", val
+
+		if not val:
+			return True
+                
+                if val in filters:
+                        return True
+                else:
+                        return False
+

@@ -51,6 +51,9 @@ class Vasca (dbwindow.DBWindow):
 		for y in utils.get ('select * from vasca'):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
 					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
+			w = gtk.CheckMenuItem (y[3])
+			w.set_property ("active", True)
+			self.filter_menu.append (w)
 		
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize-set', True)
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize', pango.ELLIPSIZE_END)
@@ -169,6 +172,7 @@ class Vasca (dbwindow.DBWindow):
 	def add_entry (self, it):
 		if self.page == 0:
 			mod, id = self.view.get_selection ().get_selected ()
+			mod = self.store
 	
 			id = mod.get_value (it, 0)
 	

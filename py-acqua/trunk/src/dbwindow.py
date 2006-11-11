@@ -59,8 +59,13 @@ class BaseDBWindow (object):
 	def pack_before_button_box (self, hb):
 		pass
 	
+	def filter_func (self, mod, iter):
+		return True
+
 	def custom_page (self, edt_frame):
-		return edt_frame
+		al = gtk.Alignment (0.2, xscale=1.0)
+		al.add (edt_frame)
+		return al
 
 class DBWindow (gtk.Window, BaseDBWindow):
 	
@@ -83,6 +88,12 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def _get_page (self):
 		return self.editing
 	
+	def _get_menu (self):
+		return self.f_menus [self.editing]
+	
+	def _get_filt (self):
+		return self.f_filters [self.editing]
+	
 	def _set_store (self, x):
 		print ">> Setting store? ... why? -.-"
 		
@@ -98,12 +109,20 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def _set_page (self, x):
 		self.editing = x
 		self.nb_view.set_current_page (self.editing)
+
+	def _set_menu (self, x):
+		print ">> Setting menu? ... why? -.-"
+
+	def _set_filt (self, x):
+		print ">> Setting filter? ... why? -.-"
 	
 	store = property (_get_store, _set_store)
 	view = property (_get_view, _set_view)
 	last = property (_get_last, _set_last)
 	vars = property (_get_vars, _set_vars)
 	page = property (_get_page, _set_page)
+	filter_menu = property (_get_menu, _set_menu)
+	filter = property (_get_filt, _set_filt)
 	
 	def __init__ (self):
 		"""
@@ -111,14 +130,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		con piu' di una treeview
 		"""
 		self._real_init ()
-		
-		#per il filtro ma nn so se va bene qua :)
-		
-		self.filter = lst.filter_new ()
-		self.filter.set_visible_func (self._apply_filter)
-		self.view.set_model (self.filter)
 	
-	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
+	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False, use_filter=False):
 		self._real_init ()
 		self.create_context(n_row, n_col, cols, widgets, lst_store, different_renderer)		
 		
@@ -131,6 +144,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		
 		self.stores = []; self.views = []
 		self.lasts = []; self._vars = []
+		self.f_filters = []; self.f_menus = []
 		
 		self.editing = 0
 		
@@ -169,7 +183,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		hbox.pack_start (self.status)
 		
 		self.vpaned.pack1 (self.t_vbox, True, False)
-		self.vpaned.pack2 (self.e_vbox, False, True) #L'ultima va a True se puo' essere coperto
+		self.vpaned.pack2 (self.e_vbox, False, False) #L'ultima va a True se puo' essere coperto
 		
 		mbox = gtk.VBox ()
 		mbox.pack_start (self.vpaned)
@@ -214,8 +228,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		
 		btn = utils.new_button (_("Filtro"), gtk.STOCK_APPLY)
 		btn.set_relief (gtk.RELIEF_NONE)
-		#btn.connect ("clicked", self._on_apply_clicked)
-		#btn.connect ("button_press_event", self._on_popup)
+		btn.connect ("clicked", self._on_filter_clicked)
+		btn.connect ("button_press_event", self._on_popup)
 		bb.pack_start (btn)
 		
 		return bb
@@ -391,8 +405,10 @@ class DBWindow (gtk.Window, BaseDBWindow):
 
 	def _on_refresh (self, widget):
 		
-		# Prendiamo l'iter e il modello dalla selezione		
+		# Prendiamo l'iter e il modello dalla selezione
 		mod, it = self.view.get_selection ().get_selected ()
+
+		it = self.filter.convert_iter_to_child_iter (it)
 		
 		# Se esiste una selezione aggiorniamo la row
 		# in base al contenuto delle entry
@@ -418,6 +434,9 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		
 		# Prendiamo l'iter selezionato ed elimianiamolo dalla store
 		mod, it = self.view.get_selection ().get_selected ()
+
+		it = self.filter.convert_iter_to_child_iter (it)
+		mod = self.store
 
 		if it != None:
 			# Questo e' il valore da confrontare
@@ -449,10 +468,21 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.views.append (gtk.TreeView (lst_store))
 		self.lasts.append (len(cols) + 1)
 		self._vars.append (widgets)
-		
+
 		c_id = len (lst_store) - 1
-		
+
 		view = self.views[c_id]
+
+		# Filtro proviamo cosi'
+		filter = lst_store.filter_new ()
+		self.f_filters.append (filter)
+		
+		filter.set_visible_func (self._apply_filter)
+		view.set_model (filter)
+
+		menu = gtk.Menu ()
+		self.f_menus.append (menu)
+		
 		view.get_selection ().connect ('changed', self._on_selection_changed)
 		view.connect ('row-activated', self.on_row_activated)
 		
@@ -501,13 +531,17 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.timeoutid = gobject.timeout_add (2000, self._on_timeout)
 		
 	#questa parte e per il pulsante filtro 
-	def _on_apply_clicked (self, widget):
+	def _on_filter_clicked (self, widget):
 		self.filter.refilter ()
 		
 	def _apply_filter (self, mod, iter):
+		print self.editing
+		return self.filter_func (mod, iter)
+		
+		#TODO: elimina
 		filters = list ()
 
-		for i in self.menu.get_children ():
+		for i in self.filter_menu.get_children ():
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
 		print filters
@@ -521,8 +555,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 
 	def _on_popup (self, widget, event):
 		if event.button == 3:
-			self.menu.popup (None, None, None, event.button, event.time)
-			self.menu.show_all ()
+			self.filter_menu.popup (None, None, None, event.button, event.time)
+			self.filter_menu.show_all ()
 
 class Test(DBWindow):
 	def __init__(self):

@@ -101,6 +101,7 @@ class Spesa(BaseDBWindow):
 	def add_entry (self, it):
 		# Aggiunge la entry nel database
 		mod, id = self.main_db.view.get_selection ().get_selected ()
+		mod = self.store
 	
 		id = mod.get_value (it, 0)
 	
