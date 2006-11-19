@@ -172,8 +172,10 @@ class Importa (gtk.Window):
 						
 			try:
 				agdb.dbupdate
+				print "update attuale riuscito"
 			except:
 				pass
+				print "errore update attuale"
 						
 
 	def on_cancel (self, widget):
