@@ -124,25 +124,30 @@ class Importa (gtk.Window):
 			a.hide (); a.destroy ()
 
 			return r
+			
+		if self.ver_sette.get_active():
+			print "sette"
+			self.esporta_db.set_text("~/.pyacqua/Data/db")
+			if in_db == "":
+				msg (_("Seleziona un database da convertire"))
+				
+			#elif out_db == "":
+			#	msg (_("Seleziona il file su cui salvare"))
+			else:
+				if os.path.exists(out_db):
+					a = msg (_("Il file esiste. Sovrascrivere?"), gtk.BUTTONS_YES_NO)
 
-		if in_db == "":
-			msg (_("Seleziona un database da convertire"))
-		elif out_db == "":
-			msg (_("Seleziona il file su cui salvare"))
-		else:
-			if os.path.exists(out_db):
-				a = msg (_("Il file esiste. Sovrascrivere?"), gtk.BUTTONS_YES_NO)
-
-				if a != gtk.RESPONSE_YES:
-					return
-				else:
-					
+					if a != gtk.RESPONSE_YES:
+						return
+					else:
+						#self.esporta_db.set_text("~/.pyacqua/Data/db")
 					# Procediamo alla conversione
 					# marcare le sezione di codice per la conversione con try/except
 					# onde evitare errori. Il file da convertire e' in_db
 					# Quello su cui salvare out_db
 
-					if self.ver_sette.get_active():
+						#if self.ver_sette.get_active():
+						
 					# per aggiornare il database
 						# da inserire direttamente il file agdb.pyacqua
 						try:
@@ -152,10 +157,24 @@ class Importa (gtk.Window):
 							print "error"
 							pass
 						# TODO: Conversione da versione 7
-					elif self.ver_otto.get_active():
+		elif self.ver_otto.get_active():
 						#questo e la versione attuale deve solo sovrascrivere il file
 						# TODO: Conversione da versione 8
-						pass
+			#self.importa_db.set_visible (False)
+			#self.esporta_db.set_visible (False)
+			print "versione attuale"
+						
+			self.importa_db.set_text("~/.pyacqua/Data/db")
+			self.esporta_db.set_text("~/.pyacqua/Data/db")
+						
+						#in_db == "~/.pyacqua/Data/db"
+						#out_db == "~/.pyacqua/Data/db"
+						
+			try:
+				agdb.dbupdate
+			except:
+				pass
+						
 
 	def on_cancel (self, widget):
 		self.exit ()
