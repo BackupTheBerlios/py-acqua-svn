@@ -126,6 +126,7 @@ class Importa (gtk.Window):
 			return r
 			
 		if self.ver_sette.get_active():
+			
 			print "sette"
 			self.esporta_db.set_text("~/.pyacqua/Data/db")
 			if in_db == "":
@@ -157,18 +158,17 @@ class Importa (gtk.Window):
 							print "error"
 							pass
 						# TODO: Conversione da versione 7
+				else:
+					pass
 		elif self.ver_otto.get_active():
+			
 						#questo e la versione attuale deve solo sovrascrivere il file
 						# TODO: Conversione da versione 8
 			#self.importa_db.set_visible (False)
 			#self.esporta_db.set_visible (False)
-			print "versione attuale"
-						
-			self.importa_db.set_text("~/.pyacqua/Data/db")
-			self.esporta_db.set_text("~/.pyacqua/Data/db")
-						
-						#in_db == "~/.pyacqua/Data/db"
-						#out_db == "~/.pyacqua/Data/db"
+		
+			
+		
 						
 			try:
 				agdb.dbupdate
