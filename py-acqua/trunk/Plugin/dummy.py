@@ -17,7 +17,7 @@ class dummy:
 		print ">> Dummy.. showtips :", impostazioni.get("show_tips")
 		
 		if impostazioni.get("dummy_nervose_mode"):
-			print "Porcoddio -.-"
+			print "Prova"
 		
 		menu = app.App.get_plugin_menu ()
 
