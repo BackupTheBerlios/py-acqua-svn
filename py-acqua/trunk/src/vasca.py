@@ -54,6 +54,8 @@ class Vasca (dbwindow.DBWindow):
 			w = gtk.CheckMenuItem (y[3])
 			w.set_property ("active", True)
 			self.filter_menu.append (w)
+			
+		
 		
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize-set', True)
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize', pango.ELLIPSIZE_END)

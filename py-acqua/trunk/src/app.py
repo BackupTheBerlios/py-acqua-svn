@@ -64,7 +64,7 @@ class Gui(gtk.Window):
 			
 			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), '_on_open_invertebrati'),
 			
-			('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), '_on_open_importa'),
+			#('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), '_on_open_importa'),
 			
 			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
 			
@@ -102,7 +102,6 @@ class Gui(gtk.Window):
 			<menuitem action='Piante'/>
 			<menuitem action='Invertebrati'/>
 			<separator/>
-			<menuitem action='Importa'/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>
@@ -236,9 +235,9 @@ class Gui(gtk.Window):
 		import lang
 		lang.LangWindow()
 		
-	def _on_open_importa(self, widget, data=None):
-		import importa
-		importa.Importa()
+	#def _on_open_importa(self, widget, data=None):
+	#	import importa
+	#	importa.Importa()
 		
 	def _on_open_info(self, widget, data=None):
 		dialog = gtk.AboutDialog()

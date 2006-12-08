@@ -358,6 +358,12 @@ class Test (dbwindow.DBWindow):
 		
 		utils.set_icon (self)
 		
+		for y in utils.get ('select * from vasca'):
+			w = gtk.CheckMenuItem (y[3])
+			w.set_property ("active", True)
+			self.filter_menu.append (w)
+
+		
 		self.note.set_current_page (0)
 		self.show_all ()
 	
@@ -571,6 +577,22 @@ class Test (dbwindow.DBWindow):
 				else:
 					mod.set_value (it, x + 14 + 3, gcolor[2])
 			x += 1
+			
+		
+	def filter_func (self, mod, iter):
+		filters = list ()
+		for i in self.filter_menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+				print ">> Active filters:", filters
+			val = mod.get_value (iter, 2)
+			print ">> Value to be filtered:", val
+			if not val:
+				return True
+				if val in filters:
+					return True
+				else:
+					return False
 
 try:
 	# TODO: implementa il caching delle import
