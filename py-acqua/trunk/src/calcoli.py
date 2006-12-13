@@ -116,13 +116,27 @@ class Calcoli(gtk.Window):
 		#tbl.set_row_spacings(4)
 		
 		self.mar_volume = utils.new_label('0', False)
-		#self.mar_piante = utils.new_label('0', False)
+		self.luce_vasche_pesci = utils.new_label('0', False)
+		self.luce_coralli_molli = utils.new_label('0', False)
+		self.luce_coralli_duri = utils.new_label('0', False)
+		self.totale_litri_movimento = utils.new_label('0', False)
+		self.quantita_sabbia_dsb = utils.new_label('0', False)
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
-		#tbl.attach(utils.new_label(_("Watt per piante:")), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_("Luce per vasche di pesci:")), 0, 1, 1, 2)
+		tbl.attach(utils.new_label(_("Luce per coralli molli:")), 0, 1, 2, 3)
+		tbl.attach(utils.new_label(_("Luce per coralli duri:")), 0, 1, 3, 4)
+		tbl.attach(utils.new_label(_("Totale l/h in movimento:")), 0, 1, 4, 5)
+		tbl.attach(utils.new_label(_("Quantita di sabbia per dsb:")), 0, 1, 5, 6)
+		
 		
 		tbl.attach(self.mar_volume, 1, 2, 0, 1)
-		#tbl.attach(self.mar_piante, 1, 2, 1, 2)
+		tbl.attach(self.luce_vasche_pesci, 1, 2, 1, 2)
+		tbl.attach(self.luce_coralli_molli, 1, 2, 2, 3)
+		tbl.attach(self.luce_coralli_duri, 1, 2, 3, 4)
+		tbl.attach(self.totale_litri_movimento, 1, 2, 4, 5)
+		tbl.attach(self.quantita_sabbia_dsb, 1, 2, 5, 6)
+		
 		
 		# Da definire cosa aggiungere.. ecc :p
 
@@ -174,7 +188,9 @@ class Calcoli(gtk.Window):
 		h = e / (3*6)
 		i = e*0.5
 		l = e*0.35
-		
+		m = e*1.5
+		n = e*10
+		o = b*a*24
 
 		self.dlc_volume.set_text(str(e))
 		self.dlc_piante_inseribili.set_text(str(f))
@@ -184,7 +200,11 @@ class Calcoli(gtk.Window):
 		self.dlc_watt_poco_esigenti.set_text(str(l))
 		
 		self.mar_volume.set_text(str(e))
-		#self.mar_piante.set_text(str(e))
+		self.luce_vasche_pesci.set_text(str(i))
+		self.luce_coralli_molli.set_text(str(e))
+		self.luce_coralli_duri.set_text(str(m))
+		self.totale_litri_movimento.set_text(str(n))
+		self.quantita_sabbia_dsb.set_text(str(o))
 	
 	def _pulisci_calcoli(self, obj):
 		#self.entry1.set_text("")
