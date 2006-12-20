@@ -41,13 +41,7 @@ SKIN_DIR = None
 
 # FIXME: prima della release
 
-print sys.path
-
-DHOME_DIR = os.path.split (sys.path[0])[0]
-					# os.getcwd()
-					# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
-#DHOME_DIR = os.path.split (sys.path[3])[0]
-				# o robe simili
+DHOME_DIR = os.getcwd () + "build/share/pyacqua"
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
 DSKIN_DIR = os.path.join (DHOME_DIR, "Skin")

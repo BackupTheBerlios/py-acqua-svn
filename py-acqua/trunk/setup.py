@@ -2,25 +2,25 @@
 # -*- coding: utf8 -*-
 
 import os
+import sys
 import glob
 from distutils.core import setup
 
-def moon_walk (root_dir):
+###
+def moon_walk (root_dir, repl):
 	packages, data_files = [], []
 	
 	for dirpath, dirnames, filenames in os.walk (root_dir):
 		for i, dirname in enumerate (dirnames):
 			if dirname.startswith('.'): del dirnames[i]
-			if '__init__.py' in filenames:
-				package = dirpath[len_root_dir:].lstrip('/').replace('/', '.')
-				packages.append(package)
-			else:
-				data_files.append((dirpath, [os.path.join(dirpath, f) for f in filenames]))
+			data_files.append(("share/pyacqua/" + repl + dirpath[len(root_dir):], [os.path.join(dirpath, f) for f in filenames]))
 	
 	return data_files
 
-
-setup (
+if __name__ != "__main__":
+	print moon_walk (sys.argv[1])
+else:
+	setup (
 	name="py-acqua",
 	version="1.0",
 	description="PyAcqua program",
@@ -30,9 +30,10 @@ setup (
 	scripts=["src/acqua.py"],
 	package_dir={'pyacqua': 'src'},
 	packages=['pyacqua'],
-	data_files=moon_walk ("Skin") + [
+	data_files=moon_walk ("Skin", "skins") + [
 		#("src", glob.glob ("src/*")),
-		("Plugin", glob.glob ("Plugin/*.py")),
-		("pixmaps", glob.glob ("pixmaps/*"))
+		("share/pyacqua/plugins", glob.glob ("Plugin/*.py")),
+		("share/pyacqua/pixmaps", glob.glob ("pixmaps/*")),
+		("share/pyacqua/tips", ["src/tip_of_the_day_en.txt", "src/tip_of_the_day.txt"])
 	]
-)
+	)
