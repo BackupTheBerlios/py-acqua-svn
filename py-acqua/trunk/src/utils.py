@@ -40,11 +40,14 @@ UPDT_DIR = None
 SKIN_DIR = None
 
 # FIXME: prima della release
-#DHOME_DIR = os.path.split (sys.path[1])[0]#os.getcwd()		# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
-DHOME_DIR = "/usr/home/luca/Documenti/Programmi/py-acqua/svn/py-acqua/py-acqua/trunk"
+
+print sys.path
+
+DHOME_DIR = os.path.split (sys.path[0])[0]
+					# os.getcwd()
+					# N.B. Questa nella release finale dovrebbe essere /usr/share/pyacqua
 #DHOME_DIR = os.path.split (sys.path[3])[0]
 				# o robe simili
-print DHOME_DIR
 DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
 DDATA_DIR = os.path.join (DHOME_DIR, "Data")
 DSKIN_DIR = os.path.join (DHOME_DIR, "Skin")
@@ -477,7 +480,7 @@ def new_button (txt, stock=None, toggle=False):
 
 def set_icon (window):
 	window.set_icon_from_file (os.path.join (DPIXM_DIR, "logopyacqua.jpg"))
-	#pass
+
 def make_thumb (twh, w, h):
 	if w == h:
 		return twh, twh

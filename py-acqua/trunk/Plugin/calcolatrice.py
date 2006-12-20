@@ -35,7 +35,7 @@ class calcolatrice(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__ (self)
 		self.create_gui ()
-		self.set_title(_("Fox Plugin"))
+		self.set_title(_("PyCalc"))
 		self.set_size_request (400, 200)
 		utils.set_icon (self)
 
@@ -118,6 +118,13 @@ class calcolatrice(gtk.Window):
 		self.add(box)
 		
 		self.connect ('delete_event', self.exit)
+		
+		self.number = 0
+	
+	def on_num_pressed (self, widget):
+		self.number = self.number * 10
+		self.number += int (widget.get_label ())
+		self.risultato.set_text (self.risultato.get_text () + widget.get_label ())
 
 	def stop (self):
 		print "** Stopping", self.__name__

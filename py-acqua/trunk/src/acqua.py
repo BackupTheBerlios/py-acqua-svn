@@ -36,32 +36,6 @@ else:
 import locale
 import gettext
 
-import utils
-
-utils.prepare_enviroment ()
-
-import impostazioni
-
-APP = 'acqua'
-DIR = os.path.join (utils.DHOME_DIR, "locale")
-
-try:
-	if impostazioni.get ("lang").lower () == "en":
-		en = gettext.translation (APP, DIR, ["en"])
-		en.install ()
-		try:
-			os.environ['LANG'] = "en_US"
-			locale.setlocale (locale.LC_MESSAGES, "en_US")
-		except: pass
-	else:
-		os.environ['LANG'] = "it_IT"
-		it = gettext.translation (APP, DIR, [])
-		it.install ()
-
-except (IOError, locale.Error), e:
-	print "(%s): WARNING **: %s" % (APP, e)
-	__builtins__.__dict__["_"] = gettext.gettext
-
 try:
 	# Richiediamo gtk2
 	import gtk
@@ -75,26 +49,39 @@ try:
 except:
 	print _("You need to install pysqlite")
 
-import app
-import engine
-import merger
-
-path = os.path.join (utils.DATA_DIR, "db")
-if not os.path.exists (path):
-	connessione=sqlite.connect (os.path.join (utils.DATA_DIR, "db")) # Smazza altrimenti.. se nn c'e' lo crea
-	cursore=connessione.cursor()
-	cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
-	cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC, note VARCHAR(500))")
-	cursore.execute("create table spesa(id integer, vasca TEXT, date DATE, tipologia TEXT, nome TEXT, quantita NUMERIC, soldi TEXT, note VARCHAR(500), img TEXT)")
-	cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
-	cursore.execute("create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500))")
-	connessione.commit()
-
 def main ():
+	
+	try:
+		if impostazioni.get ("lang").lower () == "en":
+			en = gettext.translation (APP, DIR, ["en"])
+			en.install ()
+			try:
+				os.environ['LANG'] = "en_US"
+				locale.setlocale (locale.LC_MESSAGES, "en_US")
+			except: pass
+		else:
+			os.environ['LANG'] = "it_IT"
+			it = gettext.translation (APP, DIR, [])
+			it.install ()
+	except (IOError, locale.Error), e:
+		print "(%s): WARNING **: %s" % (APP, e)
+		__builtins__.__dict__["_"] = gettext.gettext
+	
+	path = os.path.join (utils.DATA_DIR, "db")
+	if not os.path.exists (path):
+		connessione=sqlite.connect (os.path.join (utils.DATA_DIR, "db")) # Smazza altrimenti.. se nn c'e' lo crea
+		cursore=connessione.cursor()
+		cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
+		cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
+		cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
+		cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
+		cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
+		cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC, note VARCHAR(500))")
+		cursore.execute("create table spesa(id integer, vasca TEXT, date DATE, tipologia TEXT, nome TEXT, quantita NUMERIC, soldi TEXT, note VARCHAR(500), img TEXT)")
+		cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
+		cursore.execute("create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500))")
+		connessione.commit()
+	
 	merger.check_for_updates () #Controlliamo se ci sono update da fare
 
 	gobject.threads_init ()
@@ -114,4 +101,34 @@ def main ():
 	impostazioni.save ()
 
 if __name__ == "__main__":
+	# Dobbiamo caricare i moduli come import pyacqua.ecc
+	
+	import pyacqua.utils as utils
+	
+	utils.prepare_enviroment ()
+	
+	APP = 'acqua'
+	DIR = os.path.join (utils.DHOME_DIR, "locale")
+	
+	import pyacqua.app as app
+	import pyacqua.engine as engine
+	import pyacqua.merger as merger
+	import pyacqua.impostazioni as impostazioni
+	
+	main ()
+
+else:
+	
+	import utils
+	
+	utils.prepare_enviroment ()
+	
+	APP = 'acqua'
+	DIR = os.path.join (utils.DHOME_DIR, "locale")
+	
+	import app
+	import engine
+	import merger
+	import impostazioni
+	
 	main ()
