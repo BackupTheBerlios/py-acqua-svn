@@ -1,7 +1,7 @@
-import app
+import pyacqua.app as app
 import gtk
-import impostazioni
-import utils
+import pyacqua.impostazioni as impostazioni
+import pyacqua.utils as utils
 
 class DbEntry (utils.FileEntry):
 	def __init__ (self):

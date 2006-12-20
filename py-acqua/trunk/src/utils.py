@@ -41,11 +41,17 @@ SKIN_DIR = None
 
 # FIXME: prima della release
 
-DHOME_DIR = os.getcwd () + "build/share/pyacqua"
-DPLUG_DIR = os.path.join (DHOME_DIR, "Plugin")
-DDATA_DIR = os.path.join (DHOME_DIR, "Data")
-DSKIN_DIR = os.path.join (DHOME_DIR, "Skin")
+DHOME_DIR = os.getcwd () + "/build/share/pyacqua"
+DPLUG_DIR = os.path.join (DHOME_DIR, "plugins")
+DDATA_DIR = os.path.join (DHOME_DIR, "data")
+DSKIN_DIR = os.path.join (DHOME_DIR, "skins")
 DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
+
+print "HOME at: %s" % DHOME_DIR
+print "PLUGINS at: %s" % DPLUG_DIR
+print "DATA at: %s" % DDATA_DIR
+print "SKINS at: %s" % DSKIN_DIR
+print "PIXMAPS at: %s" % DPIXM_DIR
 
 def prepare_enviroment ():
 	init_dir_structure ()
@@ -69,11 +75,11 @@ def init_dir_structure ():
 	
 	path = os.path.join (path, ".pyacqua")
 	
-	IMGS_DIR = create_dir (path, "Immagini")
-	PLUG_DIR = create_dir (path, "Plugin")
-	DATA_DIR = create_dir (path, "Data")
-	UPDT_DIR = create_dir (path, "Update")
-	SKIN_DIR = create_dir (path, "Skins")
+	IMGS_DIR = create_dir (path, "images")
+	PLUG_DIR = create_dir (path, "plugins")
+	DATA_DIR = create_dir (path, "data")
+	UPDT_DIR = create_dir (path, "update")
+	SKIN_DIR = create_dir (path, "skins")
 
 # FIXME: da controllare per eccezioni ecc.. dara' scazzi senza controllo
 def create_dir (path, name):
@@ -510,7 +516,7 @@ def get (txt):
 
 def make_image (name):
 	try:
-		pixbuf = gtk.gdk.pixbuf_new_from_file (os.path.join ('Immagini', name))
+		pixbuf = gtk.gdk.pixbuf_new_from_file (os.path.join (IMGS_DIR, name))
 		w, h = make_thumb (50, pixbuf.get_width (), pixbuf.get_height ())
 		return pixbuf.scale_simple (w, h, gtk.gdk.INTERP_HYPER)
 	except:
@@ -523,7 +529,7 @@ def copy_image (name):
 	if img_dir != name:
 		try:
 			import shutil
-			shutil.copy (name, 'Immagini/')
+			shutil.copy (name, IMGS_DIR)
 		except:
 			print _("Errore mentre copiavo (%s)") % sys.exc_value
 	
@@ -536,7 +542,7 @@ def copy_plugin (name):
 	if plg_dir != name:
 		try:
 			import shutil
-			shutil.copy (name, 'Plugin/')
+			shutil.copy (name, PLUG_DIR)
 		except:
 			print _("Errore mentre copiavo (%s)") % sys.exc_value
 
@@ -574,7 +580,7 @@ class InfoDialog (gtk.Dialog):
 			gimg = gtk.Image ()
 			
 			try:
-				gimg.set_from_file (os.path.join ('Immagini', img))
+				gimg.set_from_file (os.path.join (IMGS_DIR, img))
 			except:
 				gimg.set_from_stock (gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_DIALOG)
 			

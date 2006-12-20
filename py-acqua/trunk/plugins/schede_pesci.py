@@ -21,11 +21,11 @@
 
 
 
-import app
+import pyacqua.app as app
 import gtk
 import os
 import ConfigParser
-import utils
+import pyacqua.utils as utils
 
 # creiamo le dir se non ci sono gia dove contenere le schede dei pesci
 

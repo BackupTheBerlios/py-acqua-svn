@@ -44,8 +44,7 @@ class PluginEngine:
 	
 	def load_defaults (self):
 		# Carichiamo tutti i plugin presenti in Plugin/
-		
-		path = os.path.join(utils.DHOME_DIR, 'Plugin')
+		path = utils.DPLUG_DIR
 
 		for i in glob.glob(path + "/*.py"):
 			if os.path.isfile(os.path.join(path, i)):
@@ -54,6 +53,19 @@ class PluginEngine:
 				
 				if base != "__init__.py":
 					print _(">> Carico <%s>") % base[:-3]
+					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
+					if not self.load (path, base[:-3], base[:-3]):
+						print _(">> Errori... Ignoro")
+		
+		path = utils.PLUG_DIR
+		
+		for i in glob.glob(path + "/*.py"):
+			if os.path.isfile(os.path.join(path, i)):
+				file = os.path.join (path, i)
+				base = os.path.basename(file)
+				
+				if base != "__init__.py":
+					print _(">> Carico <%s> (plugin dell'utente)") % base[:-3]
 					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
 					if not self.load (path, base[:-3], base[:-3]):
 						print _(">> Errori... Ignoro")

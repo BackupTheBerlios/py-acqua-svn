@@ -30,9 +30,9 @@ else:
 	scripts=["src/acqua.py"],
 	package_dir={'pyacqua': 'src'},
 	packages=['pyacqua'],
-	data_files=moon_walk ("Skin", "skins") + [
+	data_files=moon_walk ("skins", "skins") + [
 		#("src", glob.glob ("src/*")),
-		("share/pyacqua/plugins", glob.glob ("Plugin/*.py")),
+		("share/pyacqua/plugins", glob.glob ("plugins/*.py")),
 		("share/pyacqua/pixmaps", glob.glob ("pixmaps/*")),
 		("share/pyacqua/tips", ["src/tip_of_the_day_en.txt", "src/tip_of_the_day.txt"])
 	]
