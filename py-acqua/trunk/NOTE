@@ -59,7 +59,4 @@ $ PYTHONPATH="/home/stack/py-acqua/py-acqua/trunk/build/lib" ./build/bin/acqua.p
 Se trovate qualche problema relativo al programma si prega di segnalarlo in mailing list
 o aggiungerlo sotto questo file se sviluppatori del progetto.
 
-NB:
-La traduzione dovrebbe essere fixata nel prossimo commit
-
 Francesco

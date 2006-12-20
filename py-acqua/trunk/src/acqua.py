@@ -51,6 +51,9 @@ except:
 
 def main ():
 	
+	APP = 'acqua'
+	DIR = os.path.join (utils.DHOME_DIR, "locale")
+	
 	try:
 		if impostazioni.get ("lang").lower () == "en":
 			en = gettext.translation (APP, DIR, ["en"])
@@ -107,9 +110,6 @@ if __name__ == "__main__":
 	
 	utils.prepare_enviroment ()
 	
-	APP = 'acqua'
-	DIR = os.path.join (utils.DHOME_DIR, "locale")
-	
 	import pyacqua.app as app
 	import pyacqua.engine as engine
 	import pyacqua.merger as merger
@@ -122,9 +122,6 @@ else:
 	import utils
 	
 	utils.prepare_enviroment ()
-	
-	APP = 'acqua'
-	DIR = os.path.join (utils.DHOME_DIR, "locale")
 	
 	import app
 	import engine
