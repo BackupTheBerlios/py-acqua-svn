@@ -71,6 +71,7 @@ class Pesci (dbwindow.DBWindow):
 			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 		elif self.page == 1:
 			self.spesa.after_refresh (it)
+	
 	def add_entry (self, it):
 		if self.page == 0:
 			mod = self.store
@@ -99,11 +100,13 @@ class Pesci (dbwindow.DBWindow):
 			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		elif self.page == 1:
 			self.spesa.remove_id (id)
+	
 	def decrement_id (self, id):
 		if self.page == 0:
 			utils.cmd ("update pesci set id=%d where id=%d" % (id - 1, id))
 		elif self.page == 1:
 			self.spesa.decrement_id (id)		
+	
 	def on_row_activated(self, tree, path, col):
 		if self.page == 0:
 			mod = self.view.get_model()
@@ -112,6 +115,7 @@ class Pesci (dbwindow.DBWindow):
 			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
 		elif self.page == 1:
 			self.spesa.on_row_activated (tree, path, col)
+	
 	def pack_before_button_box (self, hb):
 		cmb = utils.Combo ()
 		cmb.append_text (_("Modifica"))
@@ -128,20 +132,20 @@ class Pesci (dbwindow.DBWindow):
 		self.page = id
 	
 	def filter_func (self, mod, iter):
-                filters = list ()
+		filters = list ()
 
-                for i in self.filter_menu.get_children ():
-                        if i.active:
-                                filters.append (i.get_children ()[0].get_text ())
-                print ">> Active filters:", filters
-                val = mod.get_value (iter, 2)
-                print ">> Value to be filtered:", val
-
+		for i in self.filter_menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+		
+		print ">> Active filters:", filters
+		val = mod.get_value (iter, 2)
+		print ">> Value to be filtered:", val
+		
 		if not val:
 			return True
-                
-                if val in filters:
-                        return True
-                else:
-                        return False
-
+		
+		if val in filters:
+			return True
+		else:
+			return False

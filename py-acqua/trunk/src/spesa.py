@@ -66,9 +66,29 @@ class Spesa(BaseDBWindow):
 		
 		for y in utils.get ("select * from vasca"):
 			self.main_db.vars[0].append_text (y[3])
+			self.main_db.filter_menu.append (gtk.CheckMenuItem (y[3]))
 	
-	# TODO:
-	# Qui ci pensi te luca... odio ripetermi :P
+	def filter_func (self, mod, iter):
+		filters = list ()
+
+		for i in self.main_db.filter_menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+		
+		if filters == []:
+			return True
+		
+		print ">> Active filters:", filters
+		val = mod.get_value (iter, 2)
+		print ">> Value to be filtered:", val
+		
+		if not val:
+			return True
+		
+		if val in filters:
+			return True
+		else:
+			return False
 	
 	def after_selection_changed (self, mod, it):
 		pass

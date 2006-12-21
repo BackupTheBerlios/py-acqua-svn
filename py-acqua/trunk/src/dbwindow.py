@@ -535,23 +535,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.filter.refilter ()
 		
 	def _apply_filter (self, mod, iter):
-		print self.editing
+		print "_apply_filter () called for window id", self.editing
 		return self.filter_func (mod, iter)
-		
-		#TODO: elimina
-		filters = list ()
-
-		for i in self.filter_menu.get_children ():
-			if i.active:
-				filters.append (i.get_children ()[0].get_text ())
-		print filters
-		val = mod.get_value (iter, 2)
-		print val
-		
-		if val in filters:
-			return True
-		else:
-			return False
 
 	def _on_popup (self, widget, event):
 		if event.button == 3:

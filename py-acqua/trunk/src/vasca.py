@@ -51,9 +51,9 @@ class Vasca (dbwindow.DBWindow):
 		for y in utils.get ('select * from vasca'):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
 					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
-			w = gtk.CheckMenuItem (y[3])
-			w.set_property ("active", True)
-			self.filter_menu.append (w)
+		#	w = gtk.CheckMenuItem (y[3])
+		#	w.set_property ("active", True)
+		#	self.filter_menu.append (w)
 			
 		
 		
@@ -65,52 +65,43 @@ class Vasca (dbwindow.DBWindow):
 		self.set_size_request (700, 500)
 		
 		utils.set_icon (self)
-
-		self.menu = gtk.Menu ()
-
-		it = gtk.RadioMenuItem (None, label=_("Dolce"))
-		it.connect ('activate', self._show_dolce)
-		self.menu.append (it)
 		
-		it = gtk.RadioMenuItem (it, label=_("Dolce Tropicale"))
-		it.connect ('activate', self._show_dolce)
-		self.menu.append (it)
-
-		it = gtk.RadioMenuItem (it, label=_("Marino"))
-		it.connect ('activate', self._reset)
-		self.menu.append (it)
-
-		it = gtk.RadioMenuItem (it, label=_("Marino Mediterraneo"))
-		it.connect ('activate', self._reset)
-		self.menu.append (it)
-
-		it = gtk.RadioMenuItem (it, label=_("Paludario"))
-		it.connect ('activate', self._show_dolce)
-		self.menu.append (it)
-
-		it = gtk.RadioMenuItem (it, label=_("Salmastro"))
-		it.connect ('activate', self._show_dolce)
-		self.menu.append (it)
+		def unz (txt):
+			w = gtk.CheckMenuItem (txt)
+			self.filter_menu.append (w)
 		
-		self.menu.show_all ()
-		self.view.connect ('button-press-event', self._on_popup)
+		unz (_("Dolce"))
+		unz (_("Dolce Tropicale"))
+		unz (_("Marino"))
+		unz (_("Marino Mediterraneo"))
+		unz (_("Paludario"))
+		unz (_("Salmastro"))
 		
 		self.manutenzione.bind_context ()
 		self.spesa.bind_context ()
 		#spesa.Spesa (self)
+	
+	def filter_func (self, mod, iter):
+		filters = []
 		
-	def _on_popup (self, widget, evt):
-		if evt.type == gtk.gdk.BUTTON_PRESS and evt.button == 3:
-			self.menu.popup (None, None, None, evt.button, evt.time)
-	
-	def _show_dolce (self, *w):
-		self._reset ()
-		self.view.get_column (8).set_visible (False)
-		self.view.get_column (9).set_visible (False)
-	
-	def _reset (self, *w):
-		for i in range (len (self.col_lst)):
-			self.view.get_column (i).set_visible (True)
+		for i in self.filter_menu.get_children ():
+			if i.active:
+				filters.append (i.get_children ()[0].get_text ())
+		
+		if filters == []:
+			return True
+		
+		print ">> Active filter:", filters
+		val = mod.get_value (iter, 1)
+		print ">> Value to be filtered:", val
+		
+		if not val:
+			return True
+		
+		if val in filters:
+			return True
+		else:
+			return False
 		
 	def _aggiorna(self, widget):
 		id = self.vars[0].get_active()
