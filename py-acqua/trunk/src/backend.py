@@ -1,0 +1,75 @@
+# -*- coding: utf-8 -*-
+# Copyright © 2005 Francesco Piccinno (stack.box@gmail.com)
+#
+# This file is part of PyAcqua.
+#
+# PyAcqua is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# PyAcqua is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with PyAcqua; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  
+# USA
+
+import os
+import os.path
+
+class ColumnType:
+	"""
+	Valori maggiori di 5 vengono trattati come varchar.
+	In questo caso per un varchar (500) sarebbe un =>
+	ColumnType.VARCHAR + 500
+	"""
+	INTEGER, FLOAT, DATE, TEXT, NUMERIC = range (5)
+	VARCHAR = 5
+
+class BackendFE(object):
+	"""
+	BackendFE per la gestione standardizzata dei vari database.
+	"""
+	def __init__(self, filename):
+		self.filename = filename
+		print "Initing a backend DB"
+	
+	def check_database(self):
+		return os.path.exists (self.filename)
+	
+	def get_type (self, type_col):
+		"""
+		Ritorna una stringa per il tipo di dati rappresentato
+		"""
+		if type_col == ColumnType.INTEGER:
+			return "INTEGER"
+		elif type_col == ColumnType.FLOAT:
+			return "FLOAT"
+		elif type_col == ColumnType.DATE:
+			return "DATE"
+		elif type_col == ColumnType.TEXT:
+			return "TEXT"
+		elif type_col == ColumnType.NUMERIC:
+			return "NUMERIC"
+		elif type_col >= ColumnType.VARCHAR:
+			return "VARCHAR(%d)" % (type_col - ColumnType.VARCHAR)
+		
+		raise "Cannot find an adeguate type"
+		
+	def create_table (self, name, columns, types):
+		"""
+		Crea una tabella di nome name
+		columns => una lista contenente il nome delle colonne (["nome", "id"] ad esempio)
+		types => una lista ColumnType con il tipo di colonne ([ColumnType.TEXT, ColumnType.INTEGER] ad esempio)
+		"""
+		raise "Not implemented"
+	
+	def select (self, what, table):
+		"""
+		Fa una (select %s from %s) % (what, table)
+		"""
+		raise "Not implemented"
