@@ -41,6 +41,9 @@ class BackendFE(object):
 	def check_database(self):
 		return os.path.exists (self.filename)
 	
+	def safe_value_convert (self, value):
+		return value.replace ("'", "''")
+	
 	def get_type (self, type_col):
 		"""
 		Ritorna una stringa per il tipo di dati rappresentato
@@ -71,5 +74,39 @@ class BackendFE(object):
 	def select (self, what, table):
 		"""
 		Fa una (select %s from %s) % (what, table)
+		"""
+		raise "Not implemented"
+	
+	def update (self, table, colums, values):
+		"""
+		Fa un update sulla tabella selezionata (table)
+		columns => le colonne da aggiornare in una lista (["nome", "cognome"] ad esempio)
+		values => i valori per le rispettive colonne in lista (["mio_nome", "mio_cognome"] ad esempio)
+		
+		l'ultima colonna dovrebbe anche contenere il valore per il WHERE come anche values
+		in questo la query si trasforma in
+		
+		self.update ("tabella", ["nome", "id"], ["francesco", 1]) =>
+			UPDATE tabella SET NOME="francesco" WHERE id=1
+		"""
+		raise "Not implemented"
+	
+	def insert (self, table, values):
+		"""
+		Inserisce dei valori in una tabella
+		table => tabella in cui inserire i valori
+		values => lista con i valori da inserire
+		"""
+		raise "Not implemented"
+	
+	def delete (self, table, column, value):
+		"""
+		Elimina qualcosa dalla tabella table
+		table => nome della tabella
+		column => la colonna su cui eseguire il matching
+		value => il valore della colonna
+		
+		Si eseguira' in questo caso un
+		DELETE FROM table WHERE column=value
 		"""
 		raise "Not implemented"
