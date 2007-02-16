@@ -67,7 +67,8 @@ marino_values = {
 gui_values = {
 	'show_tips' :	True,
 	'skin' :	'default',
-	'lang' :	'it'
+	'lang' :	'it',
+	'betype' :	'sqlite'
 }
 
 class Prefs(object):

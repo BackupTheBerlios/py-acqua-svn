@@ -20,6 +20,7 @@
 
 import os
 import os.path
+import impostazioni
 
 class ColumnType:
 	"""
@@ -34,15 +35,22 @@ class BackendFE(object):
 	"""
 	BackendFE per la gestione standardizzata dei vari database.
 	"""
-	def __init__(self, filename):
+	def __init__ (self, filename):
 		self.filename = filename
+		self.schema_is_ok = False
 		print "Initing a backend DB"
 	
-	def check_database(self):
+	def check_database (self):
 		return os.path.exists (self.filename)
 	
 	def safe_value_convert (self, value):
 		return value.replace ("'", "''")
+	
+	def set_schema_presents (self, flag):
+		self.schema_is_ok = flag
+		
+	def get_schema_presents (self):
+		return self.schema_is_ok
 	
 	def get_type (self, type_col):
 		"""
@@ -110,3 +118,8 @@ class BackendFE(object):
 		DELETE FROM table WHERE column=value
 		"""
 		raise "Not implemented"
+
+def get_backend_class ():
+	if impostazioni.get ("betype") == "sqlite":
+		import sqlitebe
+		return sqlitebe.sqliteBE

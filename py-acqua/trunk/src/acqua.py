@@ -71,19 +71,109 @@ def main ():
 		__builtins__.__dict__["_"] = gettext.gettext
 	
 	path = os.path.join (utils.DATA_DIR, "db")
-	if not os.path.exists (path):
-		connessione=sqlite.connect (os.path.join (utils.DATA_DIR, "db")) # Smazza altrimenti.. se nn c'e' lo crea
-		cursore=connessione.cursor()
-		cursore.execute("create table vasca(id integer, vasca TEXT, date DATE, nome TEXT, litri FLOAT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, note VARCHAR(500), img TEXT)")
-		cursore.execute("create table test(id integer, date DATE, vasca TEXT, ph FLOAT, kh FLOAT, gh FLOAT, no FLOAT, noo FLOAT, con FLOAT, amm FLOAT, fe FLOAT, ra FLOAT, fo FLOAT, calcio FLOAT, magnesio FLOAT, densita FLOAT, limiti TEXT)")
-		cursore.execute("create table pesci(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-		cursore.execute("create table invertebrati(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-		cursore.execute("create table piante(id integer, date DATE, vasca FLOAT, quantita NUMERIC, nome TEXT, note VARCHAR(500), img TEXT)")
-		cursore.execute("create table fertilizzante (id integer,date DATE, nome TEXT, quantita FLOAT, giorni NUMERIC, note VARCHAR(500))")
-		cursore.execute("create table spesa(id integer, vasca TEXT, date DATE, tipologia TEXT, nome TEXT, quantita NUMERIC, soldi TEXT, note VARCHAR(500), img TEXT)")
-		cursore.execute("create table filtro(id integer,date DATE, giorni NUMERIC, note VARCHAR(500))")
-		cursore.execute("create table manutenzione(id integer, vasca TEXT, data DATE, tipo TEXT, nome TEXT, quantita TEXT, giorni DATE, note VARCHAR(500))")
-		connessione.commit()
+	db = backend.get_backend_class ()(path)
+	
+	if not db.get_schema_presents ():
+		t = backend.ColumnType
+		
+		db.create_table (
+			"vasca",
+			[
+				"id", "vasca", "date", "nome", "litri", "tipo", "filtro", "co",
+				"illuminazione", "reattore", "schiumatoio", "riscaldamento", "note", "img"
+			],
+			[
+				t.INTEGER, t.TEXT, t.DATE, t.TEXT, t.FLOAT, t.TEXT, t.TEXT, t.TEXT,
+				t.TEXT, t.TEXT, t.TEXT, t.TEXT, t.VARCHAR + 500, t.TEXT
+			]
+		)
+		
+		db.create_table (
+			"test",
+			[
+				"id", "date", "vasca", "ph", "kh", "gh", "no", "noo", "con",
+				"amm", "fe", "ra", "fo", "calcio", "magnesio", "densita", "limiti"
+			],
+			[
+				t.INTEGER, t.DATE, t.TEXT, t.FLOAT, t.FLOAT, t.FLOAT, t.FLOAT,
+				t.FLOAT, t.FLOAT, t.FLOAT, t.FLOAT, t.FLOAT, t.FLOAT, t.FLOAT,
+				t.FLOAT, t.FLOAT, t.TEXT
+			]
+		)
+		
+		db.create_table (
+			"pesci",
+			[
+				"id", "date", "vasca", "quantita", "nome", "note", "img"
+			],
+			[
+				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
+			]
+		)
+		
+		db.create_table (
+			"invertebrati",
+			[
+				"id", "date", "vasca", "quantita", "nome", "note", "img"
+			],
+			[
+				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
+			]
+		)
+		
+		db.create_table (
+			"piante",
+			[
+				"id", "date", "vasca", "quantita", "nome", "note", "img"
+			],
+			[
+				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
+			]
+		)
+		
+		db.create_table (
+			"fertilizzante",
+			[
+				"id", "date", "nome", "quantita", "giorni", "note"
+			],
+			[
+				t.INTEGER, t.DATE, t.TEXT, t.FLOAT, t.NUMERIC, t.VARCHAR + 500
+			]
+		)
+		
+		db.create_table (
+			"spesa",
+			[
+				"id", "vasca", "date", "tipologia", "nome", "quantita", "soldi",
+				"note", "img"
+			],
+			[
+				t.INTEGER, t.TEXT, t.DATE, t.TEXT, t.TEXT, t.NUMERIC, t.TEXT,
+				t.VARCHAR + 500, t.TEXT 
+			]
+		)
+		
+		db.create_table (
+			"filtro",
+			[
+				"id", "date", "giorni", "note"
+			],
+			[
+				t.INTEGER, t.DATE, t.NUMERIC, t.VARCHAR + 500
+			]
+		)
+		
+		db.create_table (
+			"manutenzione",
+			[
+				"id", "vasca", "data", "tipo", "nome", "quantita", "giorni", "note"
+			],
+			[
+				t.INTEGER, t.TEXT, t.DATE, t.TEXT, t.TEXT, t.TEXT, t.DATE, t.VARCHAR + 500
+			]
+		)
+		
+		db.set_schema_presents (True)
 	
 	merger.check_for_updates () #Controlliamo se ci sono update da fare
 
@@ -91,6 +181,7 @@ def main ():
 	
 	app.App = app.Gui()
 	app.App.p_engine = engine.PluginEngine ()
+	app.App.p_backend = db
 	
 	#per il momento finche non si sistema non si usa la tray
 	#utils.tray_apri()
@@ -114,6 +205,7 @@ if __name__ == "__main__":
 	import pyacqua.engine as engine
 	import pyacqua.merger as merger
 	import pyacqua.impostazioni as impostazioni
+	import pyacqua.backend as backend
 	
 	main ()
 
@@ -127,5 +219,6 @@ else:
 	import engine
 	import merger
 	import impostazioni
+	import backend
 	
 	main ()

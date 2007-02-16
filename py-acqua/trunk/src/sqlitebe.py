@@ -28,6 +28,9 @@ class sqliteBE(BackendFE):
 	def __init__ (self, filename):
 		BackendFE.__init__ (self, filename)
 		
+		if self.check_database ():
+			self.set_schema_presents (True)
+		
 		#if not self.check_database ():
 		#	raise "Error in check_database ()"
 		
@@ -103,6 +106,8 @@ class sqliteBE(BackendFE):
 		
 		if ret != []:
 			print "sbrah =>", ret
+		
+		self.connection.commit ()
 
 if __name__ == "__main__":
 	# Il risultato dovrebbe essere simile al seguente:
