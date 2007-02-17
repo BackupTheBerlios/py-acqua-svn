@@ -51,13 +51,13 @@ class sqliteBE(BackendFE):
 	def select (self, what, table):
 		req = "SELECT %s FROM %s" % (what, table)
 		
-		self.commit_request (req)
+		return self.commit_select (req)
 	
 	def update (self, table, colums, values):
 		subreq = ""
 		for i in zip (colums[:-1], values[:-1]):
 			if type (i[1]) == int or type (i[1]) == float:
-				subreq += "%s=%d, " % (i[0], self.safe_value_convert (i[1]))
+				subreq += "%s=%d, " % (i[0], i[1])
 			elif type (i[1]) == str:
 				subreq += "%s='%s', " % (i[0], self.safe_value_convert (i[1]))
 			else:
@@ -79,6 +79,7 @@ class sqliteBE(BackendFE):
 	def insert (self, table, values):
 		subreq = ""
 		for i in values:
+			print type (i)
 			if type (i) == str:
 				subreq += "'%s', " % self.safe_value_convert (i)
 			elif type (i) == int or type (i) == float:
@@ -99,6 +100,11 @@ class sqliteBE(BackendFE):
 		
 		self.commit_request (req)
 	
+	def commit_select (self, req):
+		print ">>", req
+		self.cursor.execute (req)
+		return self.cursor.fetchall ()
+		
 	def commit_request (self, req):
 		print ">>", req
 		self.cursor.execute (req)

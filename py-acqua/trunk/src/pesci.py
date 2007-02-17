@@ -23,6 +23,7 @@ import gtk
 import utils
 import dbwindow
 import spesa
+import app
 
 class Pesci (dbwindow.DBWindow):
 	def __init__(self):
@@ -34,20 +35,18 @@ class Pesci (dbwindow.DBWindow):
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
-
-		for y in utils.get ("select * from pesci"):
-			print y
-			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
-		for y in utils.get ("select * from vasca"):
-			self.vars[1].append_text (y[3])
 		
+		for y in app.App.p_backend.select ("*", "pesci"):
+			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
+		for y in app.App.p_backend.select ("*", "vasca"):
+			self.vars[1].append_text (y[3])
 		
 		self.set_title (_("Pesci"))
 		self.set_size_request (600, 400)
 		
 		utils.set_icon (self)
 
-		for y in utils.get ('select * from vasca'):
+		for y in app.App.p_backend.select ("*", "vasca"):
 			w = gtk.CheckMenuItem (y[3])
 			w.set_property ("active", True)
 			self.filter_menu.append (w)
@@ -66,9 +65,19 @@ class Pesci (dbwindow.DBWindow):
 			nome = self.vars[3].get_text ()
 			note = self.vars[4].get_text ()
 			img = self.vars[5].get_text ()
-		
-			utils.cmd ("update pesci set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
+			
+			app.App.p_backend.update (
+				"pesci",
+				[
+					"date", "vasca", "quantita", "nome", "note", "img", "id"
+				],
+				[
+					date, vasca, quantita, nome, note, img, id
+				]
+			)
+			
 			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
+		
 		elif self.page == 1:
 			self.spesa.after_refresh (it)
 	
@@ -81,14 +90,18 @@ class Pesci (dbwindow.DBWindow):
 			#for i in self.vars:
 			#	print i.get_text ()
 			
-			utils.cmd ('insert into pesci values(?,?,?,?,?,?,?)',
+			app.App.p_backend.insert (
+				"pesci",
+				[
 					id,
 					self.vars[0].get_text (),
 					self.vars[1].get_text (),
 					self.vars[2].get_text (),
 					self.vars[3].get_text (),
 					self.vars[4].get_text (),
-					self.vars[5].get_text ())
+					self.vars[5].get_text ()
+				]
+			)
 			
 			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		elif self.page == 1:
@@ -96,14 +109,14 @@ class Pesci (dbwindow.DBWindow):
 		
 	def remove_id (self, id):
 		if self.page == 0:
-			utils.cmd ('delete from pesci where id=%d' % id)
+			app.App.p_backend.delete ("pesci", "id", id)
 			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		elif self.page == 1:
 			self.spesa.remove_id (id)
 	
 	def decrement_id (self, id):
 		if self.page == 0:
-			utils.cmd ("update pesci set id=%d where id=%d" % (id - 1, id))
+			app.App.p_backend.update ("pesci", ["id", "id"], [id - 1, id])
 		elif self.page == 1:
 			self.spesa.decrement_id (id)		
 	
