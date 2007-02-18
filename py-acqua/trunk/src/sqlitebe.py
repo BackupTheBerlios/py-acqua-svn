@@ -129,7 +129,7 @@ if __name__ == "__main__":
 	# >> DELETE FROM unz WHERE id=1
 	# >> SELECT * FROM unz
 
-	a = sqliteBE ("~/database_prova")
+	a = sqliteBE ("/home/luca/database_prova")
 	a.create_table ("unz", ["id", "nome", "cognome"], [ColumnType.INTEGER, ColumnType.TEXT, ColumnType.VARCHAR + 500])
 	a.insert ("unz", [1, "pinco", "pallino"])
 	a.select ("*", "unz")
