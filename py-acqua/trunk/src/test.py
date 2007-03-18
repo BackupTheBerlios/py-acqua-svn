@@ -31,6 +31,8 @@ import utils
 import dbwindow
 import datetime
 import impostazioni
+import app
+
 
 # Listiamo altrimenti nn ci permette la modifica
 gcolor = [

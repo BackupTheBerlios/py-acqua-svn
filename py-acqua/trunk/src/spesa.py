@@ -26,6 +26,7 @@ import impostazioni
 from dbwindow import BaseDBWindow, NotifyType
 #from pysqlite2 import dbapi2 as sqlite
 from copy import copy
+import app
 
 class Spesa(BaseDBWindow):
 	def __init__(self, window_db):
@@ -61,10 +62,10 @@ class Spesa(BaseDBWindow):
 									  utils.NoteEntry (),
 									  utils.ImgEntry ()], lst, True)
 		
-		for y in utils.get ("select * from spesa"):
+		for y in app.App.p_backend.select ("*", "spesa"):
 			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
 		
-		for y in utils.get ("select * from vasca"):
+		for y in app.App.p_backend.select ("*", "vasca"):
 			self.main_db.vars[0].append_text (y[3])
 			self.main_db.filter_menu.append (gtk.CheckMenuItem (y[3]))
 	
@@ -89,7 +90,7 @@ class Spesa(BaseDBWindow):
 			return True
 		else:
 			return False
-	
+		
 	def after_selection_changed (self, mod, it):
 		pass
 
@@ -114,7 +115,17 @@ class Spesa(BaseDBWindow):
 		note  = self.main_db.vars[6].get_text ()
 		img  = self.main_db.vars[7].get_text ()
 	
-		utils.cmd ("update manutenzione set vasca='%(vasca)s', data='%(data)s', tipo='%(tipo)s', nome='%(nome)s', quantita='%(quantita)s', prezzo='%(prezzo)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
+		#utils.cmd ("update manutenzione set vasca='%(vasca)s', data='%(data)s', tipo='%(tipo)s', nome='%(nome)s', quantita='%(quantita)s', prezzo='%(prezzo)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
+		
+		app.App.p_backend.update (
+				"spesa",
+				[
+					"vasca", "data", "tipo", "nome", "quantita", "prezzo", "note", "img", "id"
+				],
+				[
+					vasca, data, tipo, nome, quantita, prezzo, note, img, id
+				]
+			)
 			
 		self.main_db.update_status (NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 				
@@ -127,7 +138,11 @@ class Spesa(BaseDBWindow):
 	
 			#for i in self.vars:
 			#	print i.get_text ()
-		utils.cmd ('insert into spesa values(?,?,?,?,?,?,?,?,?)',
+		#utils.cmd ('insert into spesa values(?,?,?,?,?,?,?,?,?)',
+				   
+		app.App.p_backend.insert (
+				"spesa",
+				[
 					id,
 					self.main_db.vars[0].get_text (),
 					self.main_db.vars[1].get_text (),
@@ -136,19 +151,23 @@ class Spesa(BaseDBWindow):
 					self.main_db.vars[4].get_text (),
 					self.main_db.vars[5].get_text (),
 					self.main_db.vars[6].get_text (),
-					self.main_db.vars[7].get_text ())
+					self.main_db.vars[7].get_text ()
+				]
+			)
 		
 			
 		self.main_db.update_status (NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 	
 	def remove_id (self, id):
 		# Passa l'id da rimuovere nel database
-		utils.cmd ('delete from spesa where id=%d' % id)
+		#utils.cmd ('delete from spesa where id=%d' % id)
+		app.App.p_backend.delete ("spesa", "id", id)
 		self.main_db.update_status (NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		
 	def decrement_id (self, id):
 		# cur.execute("update vasca set id=%d where id=%d" % (id-1, id))
-		utils.cmd ("update spesa set id=%d where id=%d" % (id - 1, id))
+		app.App.p_backend.update ("spesa", ["id", "id"], [id - 1, id])
+		#utils.cmd ("update spesa set id=%d where id=%d" % (id - 1, id))
 		
 	def pack_before_button_box (self, hb):
 		pass

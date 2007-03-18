@@ -26,6 +26,7 @@ import dbwindow
 import pango
 import manutenzione
 import spesa
+import app
 
 class Vasca (dbwindow.DBWindow):
 	def __init__ (self):
@@ -48,7 +49,8 @@ class Vasca (dbwindow.DBWindow):
 				 gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (),
 				 gtk.Entry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
 
-		for y in utils.get ('select * from vasca'):
+		#for y in utils.get ('select * from vasca'):
+		for y in app.App.p_backend.select ("*", "vasca"):
 			lst.append([y[0], y[1], y[2], y[3], y[4],
 					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
 		#	w = gtk.CheckMenuItem (y[3])
@@ -153,8 +155,18 @@ class Vasca (dbwindow.DBWindow):
 			risca = self.vars[10].get_text ()
 			note  = self.vars[11].get_text ()
 			img   = self.vars[12].get_text ()
+			
+			app.App.p_backend.update (
+				"vasca",
+				[
+					"text", "date", "name", "litri", "tacq", "tflt", "ico2", "illu", "reat", "schiu", "risca", "note", "img", "id"
+				],
+				[
+					vasca, date, nome, litri, tipo, filtro, co, illuminazione, reattore, schiumatoio, riscaldamento, note, img, id
+				]
+			)
 	
-			utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
+			#utils.cmd ("update vasca set vasca='%(text)s', date='%(date)s', nome='%(name)s', litri='%(litri)s', tipo='%(tacq)s', filtro='%(tflt)s', co='%(ico2)s', illuminazione='%(illu)s', reattore='%(reat)s', schiumatoio='%(schiu)s', riscaldamento='%(risca)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars())
 			
 			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 			
@@ -172,7 +184,10 @@ class Vasca (dbwindow.DBWindow):
 			#for i in self.vars:
 			#	print i.get_text ()
 			
-			utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			#utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+			app.App.p_backend.insert (
+				"vasca",
+				[
 					id,
 					self.vars[0].get_text (),
 					self.vars[1].get_text (),
@@ -186,7 +201,9 @@ class Vasca (dbwindow.DBWindow):
 					self.vars[9].get_text (),
 					self.vars[10].get_text (),
 					self.vars[11].get_text (),
-					self.vars[12].get_text ())
+					self.vars[12].get_text ()
+				]
+			)
 			
 			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
@@ -197,7 +214,8 @@ class Vasca (dbwindow.DBWindow):
 		
 	def remove_id (self, id):
 		if self.page == 0:
-			utils.cmd ('delete from vasca where id=%d' % id)
+			app.App.p_backend.delete ("vasca", "id", id)
+			#utils.cmd ('delete from vasca where id=%d' % id)
 			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 			
 		elif self.page == 1:
@@ -207,7 +225,8 @@ class Vasca (dbwindow.DBWindow):
 	
 	def decrement_id (self, id):
 		if self.page == 0:
-			utils.cmd ("update vasca set id=%d where id=%d" % (id - 1, id))
+			app.App.p_backend.update ("vasca", ["id", "id"], [id - 1, id])
+			#utils.cmd ("update vasca set id=%d where id=%d" % (id - 1, id))
 			
 		elif self.page == 1:
 			self.manutenzione.decrement_id (id)

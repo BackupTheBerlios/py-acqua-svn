@@ -23,6 +23,7 @@ import gtk
 import utils
 import dbwindow
 import spesa
+import app
 
 class Piante (dbwindow.DBWindow):
 	def __init__(self):
@@ -35,19 +36,19 @@ class Piante (dbwindow.DBWindow):
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
 		
-		for y in utils.get ("select * from piante"):
+		for y in app.App.p_backend.select ("*", "piante"):
 			print y
 			lst.append([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
 		
-		for y in utils.get ("select * from vasca"):
+		for y in app.App.p_backend.select ("*", "vasca"):
 			self.vars[1].append_text (y[3])
-		
+					
 		self.set_title (_("Piante"))
 		self.set_size_request (600, 400)
 		
 		utils.set_icon (self)
 		
-		for y in utils.get ('select * from vasca'):
+		for y in app.App.p_backend.select ("*", "vasca"):
 			w = gtk.CheckMenuItem (y[3])
 			w.set_property ("active", True)
 			self.filter_menu.append (w)
@@ -68,7 +69,17 @@ class Piante (dbwindow.DBWindow):
 			note = self.vars[4].get_text ()
 			img = self.vars [5].get_text ()
 		
-			utils.cmd ("update piante set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
+			#utils.cmd ("update piante set date='%(date)s', vasca='%(vasca)s', quantita='%(quantita)s', nome='%(nome)s', note='%(note)s', img='%(img)s' where id = %(id)s" % vars ())
+			app.App.p_backend.update (
+				"piante",
+				[
+					"date", "vasca", "quantita", "nome", "note", "img", "id"
+				],
+				[
+					date, vasca, quantita, nome, note, img, id
+				]
+			)
+		
 		
 			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 		elif self.page == 1:
@@ -80,17 +91,24 @@ class Piante (dbwindow.DBWindow):
 
 			id = mod.get_value (it, 0)
 
-			for i in self.vars:
-				print i.get_text ()
+			#for i in self.vars:
+			#	print i.get_text ()
 		
-			utils.cmd ('insert into piante values(?,?,?,?,?,?,?)',
+			#utils.cmd ('insert into piante values(?,?,?,?,?,?,?)',
+					   
+			app.App.p_backend.insert (
+				"piante",
+				[
 					id,
 					self.vars[0].get_text (),
 					self.vars[1].get_text (),
 					self.vars[2].get_text (),
 					self.vars[3].get_text (),
 					self.vars[4].get_text (),
-					self.vars[5].get_text ())
+					self.vars[5].get_text ()
+					
+				]
+			)
 		
 			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		
@@ -99,13 +117,15 @@ class Piante (dbwindow.DBWindow):
 		
 	def remove_id (self, id):
 		if self.page == 0:
-			utils.cmd ('delete from piante where id=%d' % id)
+			#utils.cmd ('delete from piante where id=%d' % id)
+			app.App.p_backend.delete ("piante", "id", id)
 			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		elif self.page == 1:
 			self.spesa.remove_id (id)
 	def decrement_id (self, id):
 		if self.page == 0:
-			utils.cmd ("update piante set id=%d where id=%d" % (id - 1, id))
+			#utils.cmd ("update piante set id=%d where id=%d" % (id - 1, id))
+			app.App.p_backend.update ("pesci", ["id", "id"], [id - 1, id])
 		elif self.page == 1:
 			self.spesa.decrement_id (id)
 	def on_row_activated(self, tree, path, col):
@@ -142,7 +162,7 @@ class Piante (dbwindow.DBWindow):
 			print ">> Value to be filtered:", val
 			if not val:
 				return True
-				if val in filters:
-					return True
-				else:
-					return False
+			if val in filters:
+				return True
+			else:
+				return False
