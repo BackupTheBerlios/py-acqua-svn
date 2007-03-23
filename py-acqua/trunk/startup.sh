@@ -7,5 +7,5 @@ rm -rf build/
 unz "Installing pyacqua to `pwd`/build/ ..."
 python setup.py install --prefix=`pwd`/build > /dev/null
 unz "Install complete. Now starting..."
-PYTHONPATH="/home/stack/py-acqua/py-acqua/trunk/build/lib" ./build/bin/acqua.py
+PYTHONPATH="`pwd`/build/lib" ./build/bin/acqua.py
 unz "PyAcqua exited."
