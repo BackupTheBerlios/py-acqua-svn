@@ -59,8 +59,8 @@ class BaseDBWindow (object):
 	def pack_before_button_box (self, hb):
 		pass
 	
-	def filter_func (self, mod, iter):
-		return True
+	#def filter_func (self, mod, iter):
+	#	return True
 
 	def custom_page (self, edt_frame):
 		al = gtk.Alignment (0.2, xscale=1.0)
@@ -133,7 +133,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	
 	def __init__ (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False, use_filter=False):
 		self._real_init ()
-		self.create_context(n_row, n_col, cols, widgets, lst_store, different_renderer)		
+		self.create_context(n_row, n_col, cols, widgets, lst_store, self, different_renderer)		
 		
 	def _real_init (self):
 		gtk.Window.__init__ (self)
@@ -461,8 +461,9 @@ class DBWindow (gtk.Window, BaseDBWindow):
 				
 				it = mod.iter_next (it)
 				
-	def create_context (self, n_row, n_col, cols, widgets, lst_store, different_renderer=False):
+	def create_context (self, n_row, n_col, cols, widgets, lst_store, cb_object, different_renderer=False):
 		assert (len (cols) - 1 == len (widgets))
+		assert (cb_object)
 		
 		self.stores.append (lst_store)
 		self.views.append (gtk.TreeView (lst_store))
@@ -477,7 +478,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		filter = lst_store.filter_new ()
 		self.f_filters.append (filter)
 		
-		filter.set_visible_func (self._apply_filter)
+		filter.set_visible_func (cb_object.filter_func)
 		view.set_model (filter)
 
 		menu = gtk.Menu ()
@@ -533,10 +534,6 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	#questa parte e per il pulsante filtro 
 	def _on_filter_clicked (self, widget):
 		self.filter.refilter ()
-		
-	def _apply_filter (self, mod, iter):
-		print "_apply_filter () called for window id", self.editing
-		return self.filter_func (mod, iter)
 
 	def _on_popup (self, widget, event):
 		if event.button == 3:

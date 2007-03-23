@@ -34,7 +34,12 @@ class Pesci (dbwindow.DBWindow):
 		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
-			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
+			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
+		
+		for y in app.App.p_backend.select ("*", "vasca"):
+			w = gtk.CheckMenuItem (y[3])
+			w.set_property ("active", True)
+			self.filter_menu.append (w)
 		
 		for y in app.App.p_backend.select ("*", "pesci"):
 			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
@@ -45,11 +50,6 @@ class Pesci (dbwindow.DBWindow):
 		self.set_size_request (600, 400)
 		
 		utils.set_icon (self)
-
-		for y in app.App.p_backend.select ("*", "vasca"):
-			w = gtk.CheckMenuItem (y[3])
-			w.set_property ("active", True)
-			self.filter_menu.append (w)
 		
 		self.spesa.bind_context ()
 
@@ -125,7 +125,7 @@ class Pesci (dbwindow.DBWindow):
 			mod = self.view.get_model()
 			it = mod.get_iter_from_string(str(path[0]))
 
-			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 6))
+			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 7))
 		elif self.page == 1:
 			self.spesa.on_row_activated (tree, path, col)
 	
@@ -146,14 +146,14 @@ class Pesci (dbwindow.DBWindow):
 	
 	def filter_func (self, mod, iter):
 		filters = list ()
-
+		
 		for i in self.filter_menu.get_children ():
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
 		
-		print ">> Active filters:", filters
+		#print ">> Active filters:", filters
 		val = mod.get_value (iter, 2)
-		print ">> Value to be filtered:", val
+		#print ">> Value to be filtered:", val
 		
 		if not val:
 			return True

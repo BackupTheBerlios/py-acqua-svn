@@ -565,6 +565,9 @@ class InfoDialog (gtk.Dialog):
 		gtk.Dialog.__init__ (self, text, parent,
 				gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
 		
+		#print lbl_lst
+		#print lst
+		#print "IMG:", img
 		assert len (lbl_lst) == len (lst)
 
 		self.set_size_request (400, 300)

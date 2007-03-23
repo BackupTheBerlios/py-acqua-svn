@@ -159,10 +159,11 @@ class Vasca (dbwindow.DBWindow):
 			app.App.p_backend.update (
 				"vasca",
 				[
-					"text", "date", "name", "litri", "tacq", "tflt", "ico2", "illu", "reat", "schiu", "risca", "note", "img", "id"
+					"vasca", "date", "nome", "litri", "tipo", "filtro", "co", "illuminazione",
+					"reattore", "schiumatoio", "riscaldamento", "note", "img", "id"
 				],
 				[
-					vasca, date, nome, litri, tipo, filtro, co, illuminazione, reattore, schiumatoio, riscaldamento, note, img, id
+					text, date, name, litri, tacq, tflt, ico2, illu, reat, schiu, risca, note, img, id
 				]
 			)
 	

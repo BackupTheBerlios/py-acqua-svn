@@ -31,7 +31,8 @@ import app
 class Spesa(BaseDBWindow):
 	def __init__(self, window_db):
 		self.main_db = window_db
-		self.col_lst = [_('Id'),
+		self.col_lst = [
+				_('Id'),
 				_('Vasca'),
 				_('Data'),
 				_('Tipo'),
@@ -44,30 +45,26 @@ class Spesa(BaseDBWindow):
 	def bind_context (self):
 		lst = gtk.ListStore (int, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 		
-		self.context_id = self.main_db.create_context (1, 7, [_('Id'),
-									  _('Vasca'),
-									  _('Data'),
-									  _('Tipo'),
-									  _('Nome'),
-									  _('Quantita'),
-									  _('Prezzo'),
-									  _('Note'),
-									  _('Immagine')],
+		self.context_id = self.main_db.create_context (1, 7, self.col_lst,
 									 [utils.Combo (),
 									  utils.DataButton (),
-									  utils.Combo ([_("Vasca"), _("Pesci"), _("Piante"), _("Fertilizzante"), _("Invertebrati"), _("Varie")]),
+									  utils.Combo ([
+									  	_("Vasca"), _("Pesci"),
+									  	_("Piante"), _("Fertilizzante"),
+									  	_("Invertebrati"), _("Varie")
+									  ]),
 									  gtk.Entry (),
 									  utils.IntEntry (),
 									  gtk.Entry (),
 									  utils.NoteEntry (),
-									  utils.ImgEntry ()], lst, True)
-		
-		for y in app.App.p_backend.select ("*", "spesa"):
-			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
+									  utils.ImgEntry ()], lst, self, True)
 		
 		for y in app.App.p_backend.select ("*", "vasca"):
 			self.main_db.vars[0].append_text (y[3])
 			self.main_db.filter_menu.append (gtk.CheckMenuItem (y[3]))
+			
+		for y in app.App.p_backend.select ("*", "spesa"):
+			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
 	
 	def filter_func (self, mod, iter):
 		filters = list ()
@@ -78,10 +75,10 @@ class Spesa(BaseDBWindow):
 		
 		if filters == []:
 			return True
-		
-		print ">> Active filters:", filters
-		val = mod.get_value (iter, 2)
-		print ">> Value to be filtered:", val
+
+		print ">> [spesa] Active filters:", filters
+		val = mod.get_value (iter, 1)
+		print ">> [spesa] Value to be filtered:", val
 		
 		if not val:
 			return True
@@ -98,7 +95,7 @@ class Spesa(BaseDBWindow):
 		mod = self.main_db.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 	
-		utils.InfoDialog(self.main_db, _("Riepilogo"), self.col_lst, self.main_db.vars)
+		utils.InfoDialog (self.main_db, _("Riepilogo"), self.col_lst, self.main_db.vars, mod.get_value (it, 9))
 		
 	def after_refresh (self, it):
 		# Implementata dalla sovraclasse

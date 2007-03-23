@@ -51,7 +51,7 @@ class Manutenzione(BaseDBWindow):
 									  gtk.Entry (),
 									  utils.IntEntry (),
 									  utils.DataButton (),
-									  utils.NoteEntry ()], lst, True)
+									  utils.NoteEntry ()], lst, self, True)
 									  
 		for y in app.App.p_backend.select ("*", "manutenzione"):
 			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7]])

@@ -144,7 +144,7 @@ def main ():
 		db.create_table (
 			"spesa",
 			[
-				"id", "vasca", "date", "tipologia", "nome", "quantita", "soldi",
+				"id", "vasca", "data", "tipologia", "nome", "quantita", "soldi",
 				"note", "img"
 			],
 			[
