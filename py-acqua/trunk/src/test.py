@@ -329,6 +329,11 @@ class Test (dbwindow.DBWindow):
 		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst,
 									True) # different renderer
 		
+		for y in utils.get ('select * from vasca'):
+			w = gtk.CheckMenuItem (y[3])
+			w.set_property ("active", True)
+			self.filter_menu.append (w)
+		
 		for y in utils.get ('select * from test'):
 			lst.append ([y[0], y[1], y[2], y[3], y[4],
 					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15], y[16],
@@ -359,12 +364,6 @@ class Test (dbwindow.DBWindow):
 		self.set_size_request (600, 400)
 		
 		utils.set_icon (self)
-		
-		for y in utils.get ('select * from vasca'):
-			w = gtk.CheckMenuItem (y[3])
-			w.set_property ("active", True)
-			self.filter_menu.append (w)
-
 		
 		self.note.set_current_page (0)
 		self.show_all ()
@@ -586,15 +585,17 @@ class Test (dbwindow.DBWindow):
 		for i in self.filter_menu.get_children ():
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
-				print ">> Active filters:", filters
-			val = mod.get_value (iter, 2)
-			print ">> Value to be filtered:", val
-			if not val:
-				return True
-				if val in filters:
-					return True
-				else:
-					return False
+		#print ">> Active filters:", filters
+		val = mod.get_value (iter, 2)
+		#print ">> Value to be filtered:", val
+		
+		if not val:
+			return True
+		
+		if val in filters:
+			return True
+		else:
+			return False
 
 try:
 	# TODO: implementa il caching delle import
