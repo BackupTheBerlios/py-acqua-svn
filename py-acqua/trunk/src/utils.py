@@ -284,8 +284,8 @@ class ImgEntry (FileEntry):
 
 class Combo(gtk.ComboBox):
 	def __init__(self, lst=None):
-		liststore = gtk.ListStore(str)
-		gtk.ComboBox.__init__(self, liststore)
+		self.liststore = gtk.ListStore(str)
+		gtk.ComboBox.__init__(self, self.liststore)
 		
 		cell = gtk.CellRendererText()
 		self.pack_start(cell, True)
@@ -310,6 +310,10 @@ class Combo(gtk.ComboBox):
 				self.set_active_iter(it)
 				return
 			it = mod.iter_next(it)
+	
+	def clear_all (self):
+		self.liststore.clear ()
+	
 class NoteEntry (gtk.Expander):
 	def __init__(self, len=500):
 		gtk.Expander.__init__(self, _("Mostra/Nascondi"))

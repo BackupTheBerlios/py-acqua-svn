@@ -48,16 +48,6 @@ class Vasca (dbwindow.DBWindow):
 				[tmp, utils.DataButton (), gtk.Entry (), utils.FloatEntry (),
 				 gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (), gtk.Entry (),
 				 gtk.Entry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
-
-		#for y in utils.get ('select * from vasca'):
-		for y in app.App.p_backend.select ("*", "vasca"):
-			lst.append([y[0], y[1], y[2], y[3], y[4],
-					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
-		#	w = gtk.CheckMenuItem (y[3])
-		#	w.set_property ("active", True)
-		#	self.filter_menu.append (w)
-			
-		
 		
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize-set', True)
 		self.view.get_column (12).get_cell_renderers ()[0].set_property ('ellipsize', pango.ELLIPSIZE_END)
@@ -68,9 +58,21 @@ class Vasca (dbwindow.DBWindow):
 		
 		utils.set_icon (self)
 		
+		self.manutenzione.bind_context ()
+		self.spesa.bind_context ()
+		#spesa.Spesa (self)
+	
+	def refresh_data (self, islocked):
+		if islocked: return
+		
+		self.store.clear ()
+		
+		for y in app.App.p_backend.select ("*", "vasca"):
+			self.store.append([y[0], y[1], y[2], y[3], y[4],
+				y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], utils.make_image(y[13]), y[13]])
+		
 		def unz (txt):
-			w = gtk.CheckMenuItem (txt)
-			self.filter_menu.append (w)
+			self.filter_menu.append (gtk.CheckMenuItem (txt))
 		
 		unz (_("Dolce"))
 		unz (_("Dolce Tropicale"))
@@ -79,10 +81,6 @@ class Vasca (dbwindow.DBWindow):
 		unz (_("Paludario"))
 		unz (_("Salmastro"))
 		
-		self.manutenzione.bind_context ()
-		self.spesa.bind_context ()
-		#spesa.Spesa (self)
-	
 	def filter_func (self, mod, iter):
 		filters = []
 		
@@ -104,6 +102,9 @@ class Vasca (dbwindow.DBWindow):
 			return True
 		else:
 			return False
+	
+	def post_delete_event (self):
+		app.App.p_window["vasca"] = None
 		
 	def _aggiorna(self, widget):
 		id = self.vars[0].get_active()

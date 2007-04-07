@@ -66,6 +66,9 @@ class BaseDBWindow (object):
 		al = gtk.Alignment (0.2, xscale=1.0)
 		al.add (edt_frame)
 		return al
+	
+	def refresh_data (self, islocked=False):
+		pass
 
 class DBWindow (gtk.Window, BaseDBWindow):
 	
@@ -94,6 +97,9 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def _get_filt (self):
 		return self.f_filters [self.editing]
 	
+	def _get_page_obj (self):
+		return self.p_obj [self.editing]
+	
 	def _set_store (self, x):
 		print ">> Setting store? ... why? -.-"
 		
@@ -116,6 +122,9 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def _set_filt (self, x):
 		print ">> Setting filter? ... why? -.-"
 	
+	def _set_page_obj (self, x):
+		print ">> Setting page_obj? ... why? -.-"
+	
 	store = property (_get_store, _set_store)
 	view = property (_get_view, _set_view)
 	last = property (_get_last, _set_last)
@@ -123,6 +132,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	page = property (_get_page, _set_page)
 	filter_menu = property (_get_menu, _set_menu)
 	filter = property (_get_filt, _set_filt)
+	page_obj = property (_get_page_obj, _set_page_obj)
 	
 	def __init__ (self):
 		"""
@@ -145,8 +155,10 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.stores = []; self.views = []
 		self.lasts = []; self._vars = []
 		self.f_filters = []; self.f_menus = []
+		self.p_obj = []
 		
 		self.editing = 0
+		self.locked_page = -1
 		
 		self.nb_view = gtk.Notebook ()
 		self.nb_edit = gtk.Notebook ()
@@ -320,6 +332,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def _on_delete_event (self, widget, event):
 		if self.timeoutid != None:
 			gobject.source_remove (self.timeoutid)
+		
+		self.post_delete_event ()
 	
 	def _float_func (self, col, cell, model, iter, id):
 		value = model.get_value (iter, id)
@@ -370,6 +384,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 			self.update_status (NotifyType.LOCK, _("Modalita' sola Lettura: Disabilitata"))
 	
 	def _on_add (self, widget):
+		self.lock ()
+		
 		mod = self.store
 		it = mod.get_iter_first ()
 		id = 0
@@ -402,8 +418,10 @@ class DBWindow (gtk.Window, BaseDBWindow):
 				self.store.set_value (it, self.vars.index (tmp) + 1, tmp.get_text ())
 
 		self.add_entry (it)
+		self.unlock ()
 
 	def _on_refresh (self, widget):
+		self.lock ()
 		
 		# Prendiamo l'iter e il modello dalla selezione
 		mod, it = self.view.get_selection ().get_selected ()
@@ -427,10 +445,13 @@ class DBWindow (gtk.Window, BaseDBWindow):
 					x += 1
 				else:
 					self.store.set_value (it, self.vars.index (tmp) + 1, tmp.get_text ())
-
-			self.after_refresh (it)
 			
+			self.after_refresh (it)
+		
+		self.unlock ()
+	
 	def _on_remove (self, widget):
+		self.lock ()
 		
 		# Prendiamo l'iter selezionato ed elimianiamolo dalla store
 		mod, it = self.view.get_selection ().get_selected ()
@@ -460,7 +481,8 @@ class DBWindow (gtk.Window, BaseDBWindow):
 					self.decrement_id (tmp)
 				
 				it = mod.iter_next (it)
-				
+		self.unlock ()
+	
 	def create_context (self, n_row, n_col, cols, widgets, lst_store, cb_object, different_renderer=False):
 		assert (len (cols) - 1 == len (widgets))
 		assert (cb_object)
@@ -469,6 +491,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.views.append (gtk.TreeView (lst_store))
 		self.lasts.append (len(cols) + 1)
 		self._vars.append (widgets)
+		self.p_obj.append (cb_object)
 
 		c_id = len (lst_store) - 1
 
@@ -481,8 +504,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		filter.set_visible_func (cb_object.filter_func)
 		view.set_model (filter)
 
-		menu = gtk.Menu ()
-		self.f_menus.append (menu)
+		self.f_menus.append (None)
 		
 		view.get_selection ().connect ('changed', self._on_selection_changed)
 		view.connect ('row-activated', self.on_row_activated)
@@ -509,7 +531,30 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.nb_edit.show_all ()
 		self.nb_view.show_all ()
 		
+		self.recreate_filter_menu_and_refresh ()
+		
 		return c_id
+	
+	def lock (self):
+		self.locked_page = self.editing
+	def unlock (self):
+		self.locked_page = -1
+	
+	def recreate_filter_menu_and_refresh (self, islocked=False):
+		self.f_menus[self.editing] = gtk.Menu ()
+		self.page_obj.refresh_data (islocked)
+	
+	def refresh_all_pages (self):
+		temp = self.editing
+		
+		for i in range (temp + 1):
+			self.editing = i
+			if i == self.locked_page:
+				self.recreate_filter_menu_and_refresh (True)
+			else:
+				self.recreate_filter_menu_and_refresh (False)
+		
+		self.editing = temp
 	
 	def update_status (self, type, string):
 		self.image.show ()
@@ -530,6 +575,9 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		self.status.push (0, string)
 
 		self.timeoutid = gobject.timeout_add (2000, self._on_timeout)
+	
+	def post_delete_event (self):
+		pass
 		
 	#questa parte e per il pulsante filtro 
 	def _on_filter_clicked (self, widget):

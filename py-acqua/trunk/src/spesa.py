@@ -58,13 +58,26 @@ class Spesa(BaseDBWindow):
 									  gtk.Entry (),
 									  utils.NoteEntry (),
 									  utils.ImgEntry ()], lst, self, True)
+	
+	def refresh_data (self, islocked):
+		if islocked: return
+		
+		self.main_db.store.clear ()
+		self.main_db.vars[0].clear_all ()
+		
+		if self.main_db.filter_menu:
+			tmp = self.main_db.filter_menu
+			self.main_db.filter_menu = gtk.Menu ()
+			del tmp
+		else:
+			self.main_db.filter_menu = gtk.Menu ()
 		
 		for y in app.App.p_backend.select ("*", "vasca"):
 			self.main_db.vars[0].append_text (y[3])
 			self.main_db.filter_menu.append (gtk.CheckMenuItem (y[3]))
 			
 		for y in app.App.p_backend.select ("*", "spesa"):
-			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
+			self.main_db.store.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7], utils.make_image(y[8]), y[8]])
 	
 	def filter_func (self, mod, iter):
 		filters = list ()

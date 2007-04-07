@@ -20,6 +20,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
+import app
 import utils
 
 class Calcoli(gtk.Window):
@@ -163,7 +164,12 @@ class Calcoli(gtk.Window):
 		
 		self.add(vbox)
 		
+		self.connect ('delete-event', self._on_delete_event)
+		
 		self.show_all()
+	
+	def _on_delete_event (self, widget, event):
+		app.App.p_window["calcoli"] = None
 		
 	def _on_refresh(self, widget):
 		

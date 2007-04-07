@@ -94,8 +94,13 @@ class Skin (gtk.Window):
 		bb.pack_start (btn)
 		self.box.pack_start (bb, False, False, 0)
 		
+		self.connect ('delete-event', self._on_delete_event)
+		
 		self.add (self.box)
 		self.show_all ()
+	
+	def _on_delete_event (self, widget, event):
+		app.App.p_window["skin"] = None
 	
 	def _reload (self):
 		

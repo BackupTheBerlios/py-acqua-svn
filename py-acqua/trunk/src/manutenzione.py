@@ -52,9 +52,15 @@ class Manutenzione(BaseDBWindow):
 									  utils.IntEntry (),
 									  utils.DataButton (),
 									  utils.NoteEntry ()], lst, self, True)
-									  
+	
+	def refresh_data (self, islocked):
+		if islocked: return
+		
+		self.main_db.store.clear ()
+		self.main_db.vars[0].clear_all ()
+		
 		for y in app.App.p_backend.select ("*", "manutenzione"):
-			lst.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7]])
+			self.main_db.store.append ([y[0], y[1], y[2], y[3], y[4], y[5], y[6], y[7]])
 		
 		for y in app.App.p_backend.select ("*", "vasca"):
 			self.main_db.vars[0].append_text (y[3])

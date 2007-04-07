@@ -146,6 +146,19 @@ class Gui(gtk.Window):
 		self.set_size_request(467, 332)
 		self.set_resizable(False)
 		
+		self.p_window = {
+			"calcoli" : None,
+			"test" : None,
+			"pesci" : None,
+			"piante" : None,
+			"invertebrati" : None,
+			"vasca" : None,
+			"skin" : None,
+			"plugin" : None,
+			"lang" : None,
+			"update" : None
+		}
+		
 		utils.set_icon (self)
 		
 		image = gtk.Image()
@@ -196,44 +209,53 @@ class Gui(gtk.Window):
 		gtk.main_quit()
 
 	def _on_open_calcoli(self, widget, data=None):
-		import calcoli
-		return calcoli.Calcoli()
+		if not App.p_window["calcoli"]:
+			import calcoli
+			App.p_window["calcoli"] = calcoli.Calcoli()
 	
 	def _on_open_test(self, widget, data=None):
-		import test
-		return test.Test()
+		if not App.p_window["test"]:
+			import test
+			App.p_window["test"] = test.Test()
 		
 	def _on_open_pesci(self, widget, data=None):
-		import pesci
-		return pesci.Pesci()
+		if not App.p_window["pesci"]:
+			import pesci
+			App.p_window["pesci"] = pesci.Pesci()
 		
 	def _on_open_piante(self, widget, data=None):
-		import piante
-		return piante.Piante()
+		if not App.p_window["piante"]:
+			import piante
+			App.p_window["piante"] = piante.Piante()
 		
 	def _on_open_invertebrati(self, widget, data=None):
-		import invertebrati
-		return invertebrati.Invertebrati()
+		if not App.p_window["invertebrati"]:
+			import invertebrati
+			App.p_window["invertebrati"] = invertebrati.Invertebrati()
 		
 	def _on_open_vasca(self, widget, data=None):
-		import vasca
-		return vasca.Vasca()
+		if not App.p_window["vasca"]:
+			import vasca
+			App.p_window["vasca"] = vasca.Vasca()
 		
 	def _on_open_tips(self, widget, data=None):
 		import tips
 		tips.TipsDialog()	
 		
 	def _on_open_skin(self, widget, data=None):
-		import skin
-		skin.Skin()
+		if not App.p_window["skin"]:
+			import skin
+			App.p_window["skin"] = skin.Skin()
 		
 	def _on_open_plugin(self, widget, data=None):
-		import plugin
-		plugin.Plugin()
+		if not App.p_window["plugin"]:
+			import plugin
+			App.p_window["plugin"] = plugin.Plugin()
 	
 	def _on_open_lang(self, widget, data=None):
-		import lang
-		lang.LangWindow()
+		if not App.p_window["lang"]:
+			import lang
+			App.p_window["lang"] = lang.LangWindow()
 		
 	#def _on_open_importa(self, widget, data=None):
 	#	import importa
@@ -268,16 +290,19 @@ class Gui(gtk.Window):
 			"Francesco Piccinno - Developer - stack.box@gmail.com"
 		]
 		
-		dialog.set_authors(text)
+		dialog.set_authors (text)
 		dialog.connect ("response", lambda d, r: d.destroy())
-		dialog.show()
+		dialog.run ()
+		dialog.hide ()
+		dialog.destroy ()
 		
 	def _on_open_help(self, widget, data=None):
 		utils.info (_("Prova a vedere su http://pyacqua.altervista.org"))
 
 	def _on_open_update(self, widget, data=None):
-		import webupdate
-		webupdate.WebUpdate()
+		if not App.p_window["update"]:
+			import webupdate
+			App.p_window["update"] = webupdate.WebUpdate()
 		
 	def main(self):
 		self.active_toggle = False

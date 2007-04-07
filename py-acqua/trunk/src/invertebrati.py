@@ -36,22 +36,27 @@ class Invertebrati (dbwindow.DBWindow):
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
 			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst)
 		
-		for y in app.App.p_backend.select ("*", "invertebrati"):
-			lst.append([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
-		for y in app.App.p_backend.select ("*", "vasca"):
-			self.vars[1].append_text (y[3])
-		
 		self.set_title (_("Invertebrati"))
 		self.set_size_request (600, 400)
 		utils.set_icon (self)
 		
-		for y in app.App.p_backend.select ("*", "vasca"):
-			w = gtk.CheckMenuItem (y[3])
-			w.set_property ("active", True)
-			self.filter_menu.append (w)
-		
 		self.spesa.bind_context ()
-
+	
+	def refresh_data (self, islocked):
+		if islocked: return
+		
+		self.store.clear ()
+		self.vars[1].clear_all ()
+		
+		for y in app.App.p_backend.select ("*", "invertebrati"):
+			self.store.append([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
+		for y in app.App.p_backend.select ("*", "vasca"):
+			self.vars[1].append_text (y[3])
+			self.filter_menu.append (gtk.CheckMenuItem (y[3]))
+		
+	def post_delete_event (self):
+		app.App.p_window["invertebrati"] = None
+	
 	def after_refresh (self, it):
 		if self.page == 0:
 			mod, it = self.view.get_selection ().get_selected ()

@@ -70,10 +70,15 @@ class Plugin(gtk.Window):
 		
 		box.pack_start(bb, False, False, 0)
 		
+		self.connect ('delete-event', self._on_delete_event)
+		
 		self.add(box)
 		self._fillstore()
 		self.show_all()
-			
+	
+	def _on_delete_event (self, widget, event):
+		App.p_window["plugin"] = None
+	
 	def _on_unload(self, widget):
 		mod, it = self.view.get_selection().get_selected()
 		

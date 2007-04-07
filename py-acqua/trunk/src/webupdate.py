@@ -3,6 +3,7 @@ import gobject
 import httplib
 import threading
 import generate
+import app
 import utils
 import os.path
 import sys
@@ -252,4 +253,4 @@ class WebUpdate (gtk.Window):
 				#	print "Error while writing the checklist"
 		
 	def _on_delete_event (self, *w):
-		self.hide ()
+		app.App.p_window["update"] = None

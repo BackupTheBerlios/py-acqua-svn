@@ -326,36 +326,11 @@ class Test (dbwindow.DBWindow):
 		
 		inst.append (utils.Combo ()) # Combo per i limiti
 
-		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst,
-									True) # different renderer
-		
-		for y in utils.get ('select * from vasca'):
-			w = gtk.CheckMenuItem (y[3])
-			w.set_property ("active", True)
-			self.filter_menu.append (w)
-		
-		for y in utils.get ('select * from test'):
-			lst.append ([y[0], y[1], y[2], y[3], y[4],
-					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15], y[16],
-					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2]])
-		
-		for y in utils.get ('select * from vasca'):
-			self.vars[1].append_text (y[3])
-		
-		# Riempo con i limiti
-		for y in impostazioni.get_names_of_collections ():
-			self.vars[15].append_text (y)
+		dbwindow.DBWindow.__init__ (self, 2, 7, cols, inst, lst, True) # different renderer
 		
 		# Scan sulle colonne
 		for i in self.view.get_columns ()[3:16]:
 			i.add_attribute (i.get_cell_renderers ()[0], 'cell_background-gdk', self.view.get_columns().index (i) + 14)
-		
-		mod = self.view.get_model ()
-		it = mod.get_iter_first ()
-		
-		while it != None:
-			self._check_iterator (mod, it)
-			it = mod.iter_next (it)
 		
 		
 		gcolor[3] = self.get_style ().copy ().bg[gtk.STATE_NORMAL]
@@ -367,6 +342,38 @@ class Test (dbwindow.DBWindow):
 		
 		self.note.set_current_page (0)
 		self.show_all ()
+	
+	def refresh_data (self, islocked):
+		if islocked: return
+		
+		self.store.clear ()
+		self.vars[1].clear_all ()
+		self.vars[15].clear_all ()
+		
+		for y in utils.get ('select * from vasca'):
+			self.vars[1].append_text (y[3])
+			self.filter_menu.append (gtk.CheckMenuItem (y[3]))
+		
+		for y in utils.get ('select * from test'):
+			self.store.append ([y[0], y[1], y[2], y[3], y[4],
+					y[5], y[6], y[7], y[8], y[9], y[10], y[11], y[12], y[13], y[14], y[15], y[16],
+					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2],
+					gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2], gcolor[2]])
+		
+		# Riempo con i limiti
+		for y in impostazioni.get_names_of_collections ():
+			self.vars[15].append_text (y)
+		
+		mod = self.view.get_model ()
+		it = mod.get_iter_first ()
+		
+		while it != None:
+			self._check_iterator (mod, it)
+			it = mod.iter_next (it)
+		
+		
+	def post_delete_event (self):
+		app.App.p_window["test"] = None
 	
 	def _on_change_view (self, widget):
 		id = widget.get_active ()
@@ -585,9 +592,11 @@ class Test (dbwindow.DBWindow):
 		for i in self.filter_menu.get_children ():
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
-		#print ">> Active filters:", filters
+		
+		if filters == []:
+			return True
+		
 		val = mod.get_value (iter, 2)
-		#print ">> Value to be filtered:", val
 		
 		if not val:
 			return True

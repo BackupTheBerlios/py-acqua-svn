@@ -114,6 +114,7 @@ class sqliteBE(BackendFE):
 			print "sbrah =>", ret
 		
 		self.connection.commit ()
+		self.refresh_pending_windows ()
 
 if __name__ == "__main__":
 	# Il risultato dovrebbe essere simile al seguente:

@@ -19,7 +19,7 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
+import app
 import gtk
 import utils
 import os.path
@@ -87,7 +87,7 @@ class LangWindow (gtk.Window):
 		self.show_all ()
 	
 	def _on_delete_event (self, *w):
-		self.hide ()
+		app.App.p_window["lang"] = None
 	
 	def _on_ok (self, widget):
 		if self.en.get_active ():

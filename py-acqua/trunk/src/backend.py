@@ -21,6 +21,8 @@
 import os
 import os.path
 import impostazioni
+import app
+from dbwindow import DBWindow
 
 class ColumnType:
 	"""
@@ -118,6 +120,13 @@ class BackendFE(object):
 		DELETE FROM table WHERE column=value
 		"""
 		raise "Not implemented"
+	
+	def refresh_pending_windows (self):
+		for win in app.App.p_window:
+			if app.App.p_window[win]:
+				w = app.App.p_window[win]
+				if isinstance (w, DBWindow):
+					w.refresh_all_pages ()
 
 def get_backend_class ():
 	if impostazioni.get ("betype") == "sqlite":
