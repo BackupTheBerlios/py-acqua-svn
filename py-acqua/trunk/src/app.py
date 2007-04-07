@@ -264,9 +264,9 @@ class Gui(gtk.Window):
 	def _on_open_info(self, widget, data=None):
 		dialog = gtk.AboutDialog()
 	
-		dialog.set_name("PyAcqua 0.9")
-		dialog.set_copyright("\302\251 Copyright (C) 2005, 2006 Luca Sanna - Italy")
-		dialog.set_website("http://pyacqua.altervista.org")
+		dialog.set_name("PyAcqua 1.0")
+		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 Luca Sanna - Italy")
+		dialog.set_website("http://www.pyacqua.net")
 		
 		text = "Py-Acqua is free software; you can redistribute it and/or modify it under\n"
 		text += "the terms of the GNU General Public License as published by the Free Software\n"
@@ -281,13 +281,10 @@ class Gui(gtk.Window):
 		dialog.set_license(text)
 		
 		text = [
-			"Luca Sanna - Founder and lead developer - pyacqua@gmail.com",
-			"Enrico Giubertoni - Web Site Manager - enrico.giubertoni@gmail.com",
-			"Federico Degrandis - Developer - danger90@gmail.com",
-			"Massimiliano Sist - DB and Tips and Tricks Manager -  massimiliano.sist@gmail.com",
-			"Pietro Grassi - Release Tester - gnatophillum@gmail.com",
-			"Piero Musu - Graphic - admin@irk.it",
-			"Francesco Piccinno - Developer - stack.box@gmail.com"
+			"Luca Sanna - Founder and lead developer",
+			"Pietro Grassi - Release Tester",
+			"Francesco Piccinno - Developer"
+			"Giovanni Manzoni - Developer and Electronic"
 		]
 		
 		dialog.set_authors (text)
@@ -297,7 +294,7 @@ class Gui(gtk.Window):
 		dialog.destroy ()
 		
 	def _on_open_help(self, widget, data=None):
-		utils.info (_("Prova a vedere su http://pyacqua.altervista.org"))
+		utils.info (_("Prova a vedere su http://www.pyacqua.net"))
 
 	def _on_open_update(self, widget, data=None):
 		if not App.p_window["update"]:

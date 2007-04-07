@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
+#Copyright (C) 2005, 2007 Luca Sanna - Italy
 #http://pyacqua.altervista.org
 #email: pyacqua@gmail.com  
 #
