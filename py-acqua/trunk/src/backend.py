@@ -122,6 +122,8 @@ class BackendFE(object):
 		raise "Not implemented"
 	
 	def refresh_pending_windows (self):
+		if not app.App: return
+
 		for win in app.App.p_window:
 			if app.App.p_window[win]:
 				w = app.App.p_window[win]
