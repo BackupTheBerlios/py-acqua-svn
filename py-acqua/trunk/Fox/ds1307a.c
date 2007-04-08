@@ -436,11 +436,12 @@ void datanow (void) {
 
 void input_data (void) {
     system ("clear");
+	
 
     giorno_in=read_day();
     mese_in=read_month();
     anno_in=read_year();
-
+	
     printf ("Giorno (DD): (%02X)  ",giorno_in);scanf ("%X",&giorno_in);
     printf ("Mese   (MM): (%02X)  ",mese_in);scanf ("%X",&mese_in);
     printf ("Anno   (YY): (%02X)  ",anno_in);scanf ("%X",&anno_in);
@@ -560,8 +561,8 @@ int  main (void) {
     input_ora();
     set_ora(ora_in,minuto_in);
     while (1){
-		printf("Data sul DS1307: %d/%d/%d\r\n", read_day(), read_month(), read_year());
-        printf("Ora sul DS1307: %d:%d:%d\r\n",read_hour(),read_min(),read_sec());
+		printf("Data sul DS1307: %02X/%02X/%02X\r\n", read_day(), read_month(), read_year());
+        printf("Ora sul DS1307: %02X:%02X:%02X\r\n",read_hour(),read_min(),read_sec());
 		
         sleep(10);
     }

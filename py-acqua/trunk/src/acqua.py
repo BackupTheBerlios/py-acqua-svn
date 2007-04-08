@@ -75,7 +75,7 @@ def main ():
 	
 	if not db.get_schema_presents ():
 		t = backend.ColumnType
-		
+		print "inizio a creare le tabelle"
 		db.create_table (
 			"vasca",
 			[
@@ -87,7 +87,7 @@ def main ():
 				t.TEXT, t.TEXT, t.TEXT, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		
+		print "vasca"
 		db.create_table (
 			"test",
 			[
@@ -100,7 +100,7 @@ def main ():
 				t.FLOAT, t.FLOAT, t.TEXT
 			]
 		)
-		
+		print "test"
 		db.create_table (
 			"pesci",
 			[
@@ -110,7 +110,7 @@ def main ():
 				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		
+		print "pesci"
 		db.create_table (
 			"invertebrati",
 			[
@@ -120,7 +120,7 @@ def main ():
 				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		
+		print "invertebrati"
 		db.create_table (
 			"piante",
 			[
@@ -162,7 +162,7 @@ def main ():
 				t.INTEGER, t.DATE, t.NUMERIC, t.VARCHAR + 500
 			]
 		)
-		
+		print "filtro"
 		db.create_table (
 			"manutenzione",
 			[
