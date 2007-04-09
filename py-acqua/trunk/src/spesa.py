@@ -130,7 +130,7 @@ class Spesa(BaseDBWindow):
 		app.App.p_backend.update (
 				"spesa",
 				[
-					"vasca", "data", "tipo", "nome", "quantita", "prezzo", "note", "img", "id"
+					"vasca", "data", "tipologia", "nome", "quantita", "prezzo", "note", "img", "id"
 				],
 				[
 					vasca, data, tipo, nome, quantita, prezzo, note, img, id

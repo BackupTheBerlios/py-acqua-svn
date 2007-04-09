@@ -547,7 +547,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 	def refresh_all_pages (self):
 		temp = self.editing
 		
-		for i in range (temp + 1):
+		for i in range (len (self.views)):
 			self.editing = i
 			if i == self.locked_page:
 				self.recreate_filter_menu_and_refresh (True)
