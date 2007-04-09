@@ -157,6 +157,8 @@ class Pesci (dbwindow.DBWindow):
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
 		
+		if filters == []:
+			return True
 		#print ">> Active filters:", filters
 		val = mod.get_value (iter, 2)
 		#print ">> Value to be filtered:", val
