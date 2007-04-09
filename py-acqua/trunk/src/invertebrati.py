@@ -155,12 +155,17 @@ class Invertebrati (dbwindow.DBWindow):
 		for i in self.filter_menu.get_children ():
 			if i.active:
 				filters.append (i.get_children ()[0].get_text ())
-				print ">> Active filters:", filters
-			val = mod.get_value (iter, 2)
-			print ">> Value to be filtered:", val
-			if not val:
-				return True
-			if val in filters:
-				return True
-			else:
-				return False
+		
+		if filters == []:
+			return True
+
+		print ">> Active filters:", filters
+		val = mod.get_value (iter, 2)
+		print ">> Value to be filtered:", val
+		
+		if not val:
+			return True
+		if val in filters:
+			return True
+		else:
+			return False
