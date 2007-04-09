@@ -18,11 +18,11 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 try:
 	import pygtk
 	pygtk.require ('2.0')
 except:
+	utils.info (_("PyGtk Not present"))
 	print "!! PyGtk Not present"
 
 import os
@@ -42,13 +42,14 @@ try:
 	import gobject
 except:
 	print _("You need to install GTKv2")
+	utils.info (_("You need to install GTKv2"))
 
 try:
 	#import pysqlite2 as sqlite
 	from pysqlite2 import dbapi2 as sqlite
 except:
 	print _("You need to install pysqlite")
-
+	utils.info (_("You need to install pysqlite2"))
 def main ():
 	
 	APP = 'acqua'
@@ -81,6 +82,7 @@ def main ():
 			[
 				"id", "vasca", "date", "nome", "litri", "tipo", "filtro", "co",
 				"illuminazione", "reattore", "schiumatoio", "riscaldamento", "note", "img"
+			
 			],
 			[
 				t.INTEGER, t.TEXT, t.DATE, t.TEXT, t.FLOAT, t.TEXT, t.TEXT, t.TEXT,
