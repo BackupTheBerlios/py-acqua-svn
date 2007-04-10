@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
+#Copyright (C) 2005, 2006 Py-Acqua
+#http://www.pyacqua.net
 #email: pyacqua@gmail.com  
 #
 #   
@@ -31,7 +31,7 @@ class dbupdate:
 				cursore.execute (query)
 			except:
 				print "Errore nella query (%s)" % query
-
+				utils.info (_("Errore nella Query"))
 		###################################
 		# Versione 0.7
 		

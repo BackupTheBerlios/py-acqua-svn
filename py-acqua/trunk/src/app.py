@@ -1,7 +1,7 @@
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
-#email: pyacqua@gmail.com  
+#Copyright (C) 2005, 2006 Py-Acqua
+#http://www.pyacqua.net
+#email: info@pyacqua.net  
 #
 #   
 #Py-Acqua is free software; you can redistribute it and/or modify
@@ -283,7 +283,7 @@ class Gui(gtk.Window):
 		text = [
 			"Luca Sanna - Founder and lead developer",
 			"Pietro Grassi - Release Tester",
-			"Francesco Piccinno - Developer"
+			"Francesco Piccinno - Developer",
 			"Giovanni Manzoni - Developer and Electronic"
 		]
 		

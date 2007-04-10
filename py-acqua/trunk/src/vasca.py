@@ -1,8 +1,9 @@
+#
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
-#email: pyacqua@gmail.com  
+#Copyright (C) 2005, 2007 Py-Acqua
+#http://www.pyacqua.net
+#email: info@pyacqua.net  
 #
 #   
 #Py-Acqua is free software; you can redistribute it and/or modify
@@ -18,6 +19,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 
 import gtk
 import gobject

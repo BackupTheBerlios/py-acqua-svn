@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
-#email: pyacqua@gmail.com  
+#Copyright (C) 2005, 2007 Py-Acqua
+#http://www.pyacqua.net
+#email: info@pyacqua.net  
 #
 #   
 #Py-Acqua is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ class PluginEngine:
 					#if self.load ("Plugin." + base[:-3], base[:-3]) == False:
 					if not self.load (path, base[:-3], base[:-3]):
 						print _(">> Errori... Ignoro")
-		
+						#utils.info (_("Errori....Ignoro"))
 	def load (self, path, name, klass):
 		# Aggiungiamo la path
 			old = sys.path

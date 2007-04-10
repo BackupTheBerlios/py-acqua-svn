@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2005 Francesco Piccinno (stack.box@gmail.com)
+# Copyright © 2005, 2007 Py-Acqua
+#http://www.pyacqua.net
+#email: info@pyacqua.net
 #
 # This file is part of PyAcqua.
 #
