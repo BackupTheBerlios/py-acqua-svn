@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Py-Acqua
+#Copyright (C) 2005, 2007 Py-Acqua
 #http://www.pyacqua.net
 #email: info@pyacqua.net  
 #
