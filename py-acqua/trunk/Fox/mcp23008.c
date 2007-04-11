@@ -1,6 +1,5 @@
-//#Copyright (C) 2005, 2006 Pyacqua
+//#Copyright (C) 2005, 2006 Luca Sanna - Italy
 //#http://pyacqua.altervista.org
-//#http://www.pyacqua.net
 //#email: pyacqua@gmail.com  
 //#
 //#   
@@ -22,16 +21,14 @@ Collegamenti elettrici:
 IOG25 J7.13 as SCL
 IOG24 J7.21 as SDA. 
 
-PIN DELLA EEPROM: DA 1 A 3 A MASSA
-
-
 #define I2C_DATA_LINE        1<<24
 #define I2C_CLOCK_LINE        1<<25
 
 
 
-i2c_fd = open("/dev/gpiog", O_RDWR);
-instead of /dev/gpiob
+PIN A0,A1,A2 A MASSA
+RESET A VCC
+
 ****************************************************/
 
 #include "stdio.h"
@@ -42,6 +39,154 @@ instead of /dev/gpiob
 #include "sys/ioctl.h"
 #include "fcntl.h"     
 #include "asm/etraxgpio.h"
+
+
+
+
+//REGISTRI
+//x impostare direzione
+// 1 = input
+// 0 = output
+#define	IODIR	0X00	
+	#define IO7	7
+	#define IO6	6
+	#define IO5	5
+	#define IO4	4
+	#define IO3	3
+	#define IO2	2
+	#define IO1	1
+	#define IO0	0
+// INVERTE LETTURA
+// 1 = riflette il livello logico opposto a quello presente sul pin
+// 0 = lettura = stato del pin
+#define	IPOL	0X01 	
+	#define IP7	7
+	#define IP6	6
+	#define IP5	5
+	#define IP4	4
+	#define IP3	3
+	#define IP2	2
+	#define IP1	1
+	#define IP0	0
+// INTERRUPT AD OGNI CAMBIAMENTO
+// 1 = abilitato
+//	N.B.: bisogna configurare anche DEFVAL ed INTCON
+// 0 = disabilitato
+#define	GPINTEN	0X02
+	#define GPINT7	7
+	#define GPINT6	6
+	#define GPINT5	5
+	#define GPINT4	4
+	#define GPINT3	3
+	#define GPINT2	2
+	#define GPINT1	1
+	#define GPINT0	0
+// LIVELLO LOGICO A CUI SI GENERE L'INTERRUPT
+//   l'interrupt si genera quando sul pin c'è un livello 
+//  opposto a quello impostato nel bit associato di questo registro.
+#define	DEFVAL	0X03
+	#define DEF7	7
+	#define DEF6	6
+	#define DEF5	5
+	#define DEF4	4
+	#define DEF3	3
+	#define DEF2	2
+	#define DEF1	1
+	#define DEF0	0
+//REGISTRO DI CONTROLLO DELL'INTERRUPT
+// 1 = IL PIN È COMPARATO CON IL CORRISPONDENTE BIT IN DEFVAL
+// 0 = IL PIN È COMPARATO CON LO STATO PRECEDENTE DELLO STESSO. (DEFVAL VIENE IGNORATO) 
+#define	INTCON	0X04
+	#define IOC7	7
+	#define IOC6	6
+	#define IOC5	5
+	#define IOC4	4
+	#define IOC3	3
+	#define IOC2	2
+	#define IOC1	1
+	#define IOC0	0
+//CONFIGURAZIONE DEI REGISTRI DELL' I/O EXPANDER
+#define	IOCON	0X05
+	//7,6,3,0 NON PRESENTI
+// LETTURA SEQUENZIALE
+// 1 = lettura sequenziale disabilitata, puntatore indirizzi non incrementato
+// 0 = lettura sequenziale abilitata, puntatore indirizzi incrementato
+	#define SREAD	5
+//GESTISCE SLEW RATE DI SDA
+// 1 = disabilitato
+// 0 = abilitato
+	#define DISSLW	4
+//CONFIGURA IL TIPO DI OUTPUT DEGLI 'INT' PIN
+// 1 = open drain
+// 0 = uscita del driver attiva
+	#define ODR	2
+// SETTA LA POLARITÀ DELL'OUTPUT PIN 'INT'
+// 1 = attivo a livello alto
+// 0 = attivo a livello basso
+	#define INTPOL	1
+// Controlla le resistenze di pull-up sugli ingressi
+// 1 = se il pin è configurato come input, viene applicata la resistenza di pullup
+// 0 = nessun pullup
+#define	GPPU	0X06
+	#define PU7	7
+	#define PU6	6
+	#define PU5	5
+	#define PU4	4
+	#define PU3	3
+	#define PU2	2
+	#define PU1	1
+	#define PU0	0
+// Registro x abilitare gli interrupt
+// 1 = interrupot abilitato
+// 0 = interrupt disabilitato
+#define	INTF	0X07
+	#define INT7	7
+	#define INT6	6
+	#define INT5	5
+	#define INT4	4
+	#define INT3	3
+	#define INT2	2
+	#define INT1	1
+	#define INT0	0
+// RIFLETTE I LIVELLI LOGICI DEI PIN IMPOSTATI COME INTERRUPT AL MOMENTO DEL CAMBIAMENTO DI STATO
+// 1 = attivo alto
+// 0 = attivo basso
+#define	INTCAP	0X08
+	#define ICP7	7
+	#define ICP6	6
+	#define ICP5	5
+	#define ICP4	4
+	#define ICP3	3
+	#define ICP2	2
+	#define ICP1	1
+	#define ICP0	0
+// RIFLETTE IL LIVELLO LOGICO DEL PIN
+// 1 = livello logico alto
+// 0 = livelLo logico basso
+#define	GPIO	0X09
+	#define GP7	7
+	#define GP6	6
+	#define GP5	5
+	#define GP4	4
+	#define GP3	3
+	#define GP2	2
+	#define GP1	1
+	#define GP0	0
+// ACCEDE AL VALORE DEI LATCH DI USCITA
+// 1 = livello logico alto
+// 0 = livelLo logico basso
+#define	OLAT	0X0A  //LATCH
+	#define OL7	7
+	#define OL6	6
+	#define OL5	5
+	#define OL4	4
+	#define OL3	3
+	#define OL2	2
+	#define OL1	1
+	#define OL0	0
+
+
+
 
 #define CLOCK_LOW_TIME            8
 #define CLOCK_HIGH_TIME           8
@@ -255,7 +400,6 @@ int ext_eeprom_ready(int id){
 }
 
 
-
 void write_ext_eeprom(int id,long int address, int data){
 
 while(!ext_eeprom_ready(id));
@@ -283,6 +427,9 @@ while(!ext_eeprom_ready(id));
 }
 
 
+
+
+
 int  main (void) {
 int scelta;
 int cella,dato,dato_chek;
@@ -292,31 +439,33 @@ int cella,dato,dato_chek;
 
     for(;;){
 
-	printf("GESTIONE EEPROM 24xx\n");
-	printf("Operazioni possibili:\n");
-	printf("1:Lettura\n");
-	printf("2:Scrittura\n");
-	printf("3:Esci\n");
+	printf("GESTIONE MCP23008\n");
+	printf("perazioni possibili:\n");
+	printf("1:Imposta tutti i pin in ingresso\n");
+	printf("2:Imposta tutti i pin in uscita\n");
+	printf("3:Lettura stato pin\n");
+	printf("4:Scrittura valore dei pin\n");
+	printf("5:Esci\n");
 	
 	scanf ("%X",&scelta);
 	if (scelta==1){
-		printf("Inserisci il numero della cella da leggere ( 0..FF) ");
-		scanf ("%X",&cella);
-		dato=read_ext_eeprom(0xa0,cella);
-		printf("dato= %d\n",dato);
+		
 	}
 	else if (scelta==2){
-		printf("Inserisci il numero della cella (0..FF) da scrivere ");
-		scanf ("%X",&cella);
-		printf("Inserisci il numero del dato (0..FF) da memorizare ");
-		scanf ("%X",&dato);
-		write_ext_eeprom(0xa0,cella,dato); // A0= ID EEPROM OPZIONI: A0,A2,A4,A6,A8,AA,AC,AE
-		//verifica il dato	
-		dato_chek=read_ext_eeprom(0xa0,cella); // A0= ID EEPRM
-		if (dato==dato_chek) printf("dato scritto correttamente");
-		else printf("errore, dato scritto= %d",dato_chek);
+
+
+		
 	}
-	else if (scelta==3) return 1;
+	else if (scelta==3){
+		
+
+	}
+	else if (scelta==4){
+		
+	}
+	else if (scelta==5) return 1;
     
-}
+
+    }
+
 }
