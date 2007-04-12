@@ -29,13 +29,13 @@ import utils
 import os.path
 import sys
 
-#REPOSITORY_ADDRESS = "http://pyacqua.altervista.org/"
-#BASE_DIR = "/update/source/"
-#LIST_FILE = "/update/list.txt"
+REPOSITORY_ADDRESS = "http://www.pyacqua.net"
+BASE_DIR = "/update/source/"
+LIST_FILE = "/update/list.txt"
 
-REPOSITORY_ADDRESS = r"localhost"
-BASE_DIR = r"/~stack/update/source/"
-LIST_FILE = r"/~stack/update/list.txt"
+#REPOSITORY_ADDRESS = r"localhost"
+#BASE_DIR = r"/~stack/update/source/"
+#LIST_FILE = r"/~stack/update/list.txt"
 
 class Fetcher(threading.Thread):
 	def __init__ (self, callback, url):
@@ -54,6 +54,7 @@ class Fetcher(threading.Thread):
 				self.data = self.response.read ()
 			except:
 				print _("!! Errore mentre scaricavo da %s") % self.url
+				utils.info (_("!! Errore mentre scaricavo la lista"))# % self.url
 		finally:
 			gobject.idle_add (self._on_data)
 
@@ -157,9 +158,10 @@ class WebUpdate (gtk.Window):
 		
 		if precheck > 0:
 			print _(">> Nuovi file aggiunti dall'ultimo update.")
+			utils.info (_("Nuovi file aggiunti dall'ultimo update"))
 		elif precheck < 0:
 			print _(">> Qualche file e' stato zappato dall'ultimo update.")
-		
+			utils.info (_("Qualche file è stato zappato dall'ultimo update"))
 		for i in self.actual_data:
 			n_bytes, n_sum = "0", "0"
 			o_bytes, o_sum = self.actual_data[i].split("|")
@@ -171,17 +173,22 @@ class WebUpdate (gtk.Window):
 				
 				if n_sum != o_sum:
 					print _(">> Il checksum e' differente. Aggiungo il file %s") % i
+					utils.info (_("Il checksum è differente. Aggiungo il file %s")) % i
 					to_add = True
 				else:
 					if n_bytes == o_bytes:
 						print _(">> Bene! Tutto questo lavoro per niente!")
+						utils.info (_("Bene! Tutto questo lavoro per niente!"))
 					else:
 						print _(">> U0z! Collisione di MD5 per il file %s") % i
+						utils.info (_("U0z!! Collisione di MD5 per il file %s comunque il file deve essere aggiunto")) % i
 						print _(">> Comunque il file deve essere aggiunto -_-")
+						
 						to_add = True
 				data.pop (i)
 			else:
 				print _(">> Questo file deve essere cancellato %s") % i
+				utils.info (_("Questo file deve essere cancellato %s")) % i
 				self.store.append ([i, _("Elimina"), int (o_bytes), o_sum, 0, False])
 				
 			if to_add:
@@ -190,6 +197,7 @@ class WebUpdate (gtk.Window):
 		for i in data:
 			n_bytes, n_sum = data[i].split("|")
 			print _(">> Questo file deve essere aggiunto %s") % i
+			utils.info (_("Questo file deve essere aggiunto %s")) % i
 			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
 		
 		self.update_btn.set_sensitive (True)
@@ -209,8 +217,10 @@ class WebUpdate (gtk.Window):
 		
 		if not data:
 			print _(">> Nessun file da ricevere")
+			utils.info (_("Nessun file da ricevere"))
 		if response.status != 200:
 			print _("!! Errori. Il sospetto e' %s (response: %d)") % (self.file, response.status)
+			utils.info (_("!! Errori. Il sospetto è %s (response: %d)")) % (self.file, response.status)
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
@@ -224,6 +234,7 @@ class WebUpdate (gtk.Window):
 				os.mkdir (path)
 	
 		print _(">> File ricevuto %s") % self.file
+		utils.info (_("File ricevuto %s")) % self.file
 	
 		f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
 		f.write (data)
@@ -256,6 +267,7 @@ class WebUpdate (gtk.Window):
 				self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				print _(">> Questo file deve essere aggiunto (setto 0 come checksum)")
+				utils.info (_("Questo file deve essere aggiunto (setto 0 come checksum)"))
 				self.checklist.append ("%s|0|0" % self.file)
 				self._update_percentage ()
 				self._go_with_next_iter ()
@@ -270,6 +282,7 @@ class WebUpdate (gtk.Window):
 					f.close ()
 
 					utils.info (_("Riavvia per procedere all'aggiornamento di PyAcqua"))
+					
 				#except:
 				#	print "Error while writing the checklist"
 		

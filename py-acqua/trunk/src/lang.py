@@ -85,11 +85,12 @@ class LangWindow (gtk.Window):
 			en.set_active (True)
 
 		self.show_all ()
-	
+		
 	def _on_delete_event (self, *w):
 		app.App.p_window["lang"] = None
 	
 	def _on_ok (self, widget):
+		print "ok"
 		if self.en.get_active ():
 			set ("lang", "en")
 		elif self.it.get_active ():
