@@ -26,7 +26,7 @@ import gtk
 import pyacqua.utils as utils
 
 class fox(gtk.Window):
-	__name__ = "Fox"
+	__name__ = "Fox-Acqua"
 	__desc__ = "Plugin per Fox-Acqua"
 	__ver__ = "0.0.1"
 	__author__ = "PyAcqua team"
