@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-15 -*- 
-#Copyright (C) 2005, 2006 Luca Sanna - Italy
-#http://pyacqua.altervista.org
-#email: pyacqua@gmail.com  
+#Copyright (C) 2005, 2007 Py-Acqua
+#http://www.pyacqua.net
+#email: info@pyacqua.net  
 #
 #   
 #Py-Acqua is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import pyacqua.utils as utils
 
 class fox(gtk.Window):
 	__name__ = "Fox"
-	__desc__ = "Plugin per fox"
+	__desc__ = "Plugin per Fox-Acqua"
 	__ver__ = "0.0.1"
 	__author__ = "PyAcqua team"
 	__preferences__ = {}
@@ -35,7 +35,7 @@ class fox(gtk.Window):
 	def __init__(self):
 		gtk.Window.__init__ (self)
 		self.create_gui ()
-		self.set_title(_("Fox Plugin"))
+		self.set_title(_("Fox-Acqua Plugin"))
 		self.set_size_request (600, 400)
 		utils.set_icon (self)
 
@@ -44,7 +44,7 @@ class fox(gtk.Window):
 		
 		menu = app.App.get_plugin_menu ()
 
-		self.item = gtk.MenuItem ("Fox Plugin")
+		self.item = gtk.MenuItem (_("Fox-Acqua Plugin"))
 		self.item.connect ('activate', self.on_activated)
 		self.item.show ()
 
