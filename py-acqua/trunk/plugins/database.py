@@ -26,7 +26,18 @@ import gtk
 import os
 import ConfigParser
 import pyacqua.utils as utils
+from pysqlite2 import dbapi2 as sqlite
 
+DHOME_DIR = os.getcwd () + "/build/share/pyacqua"
+DSCHEDE_DIR = os.path.join (DHOME_DIR, "schede")
+print DHOME_DIR
+print DSCHEDE_DIR
+
+if not os.path.exists (DSCHEDE_DIR):
+	os.mkdir ('schede')
+	print "creo la dir"
+else: 
+	print "gia presente"
 # creiamo le dir se non ci sono gia dove contenere le schede dei pesci
 
 #if not os.path.exists ("Schede"):
