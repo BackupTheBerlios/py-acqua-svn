@@ -28,41 +28,31 @@ import ConfigParser
 import pyacqua.utils as utils
 from pysqlite2 import dbapi2 as sqlite
 
-DHOME_DIR = os.getcwd () + "/build/share/pyacqua"
-DSCHEDE_DIR = os.path.join (DHOME_DIR, "schede")
-print DHOME_DIR
-print DSCHEDE_DIR
 
+DSCHEDE_DIR = os.path.join (utils.HOME_DIR, "schede")
+print "DSCHEDE at: %s" % DSCHEDE_DIR
+
+# creiamo la dir ~/.pyacqua/schede dove conterrà il database delle schede
 if not os.path.exists (DSCHEDE_DIR):
-	os.mkdir ('schede')
+	os.mkdir (DSCHEDE_DIR)
 	print "creo la dir"
 else: 
 	print "gia presente"
-# creiamo le dir se non ci sono gia dove contenere le schede dei pesci
 
-#if not os.path.exists ("Schede"):
-#	os.mkdir('Schede')
-#	
-#else:
-#	
-#	if not os.path.exists ("Schede/Pesci"):
-#		os.mkdir('Schede/Pesci')
-#	else:
-#		pass
-#		
-#par = os.path.join('Schede', 'Pesci', 'chanda_ranga', 'chanda_ranga.cfg')
-#
-#cfg = ConfigParser.ConfigParser()
-#
-#	
-#cfg.read(par)
-#global nomeporco
-#			
-#nomeporco = cfg.get("nomescientifico", "nm")
-	
-		
-#qua dopo aver creato le dir in futuro bisognera decomprimere il file con tutte le schede
-#oppure far in modo di scaricarle da internet
+# ora creiamo il database se non esiste
+db_schede = os.path.join (DSCHEDE_DIR, "database_schede")
+if not os.path.exists (db_schede):
+	connessione=sqlite.connect(db_schede)
+	cursore=connessione.cursor()
+	cursore.execute("create table pesci_dolce(id integer, vasca TEXT)")
+	cursore.execute("create table piante_dolce(id integer, date DATE)")
+	cursore.execute("create table invertebrati_dolce(id integer, date DATE)")
+	cursore.execute("create table pesci_marino(id integer, date DATE)")
+	cursore.execute("create table piante_marino(id integer, date DATE)")
+	cursore.execute("create table invertebrati_marino(id integer,date DATE)")
+	connessione.commit()
+else:
+	print "il database_schede esiste gia"
 		
 class database(gtk.Window):
 	__name__ = "Database"
