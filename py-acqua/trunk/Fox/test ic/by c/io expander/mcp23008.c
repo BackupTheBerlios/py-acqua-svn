@@ -490,14 +490,14 @@ int scelta,pin,value,level;
 		scanf ("%d",&scelta);
 	
 		if (scelta==1){
-			printf("Inserisci il valore a cui si dovranno portare tutti i pin\n");
+			printf("Inserisci il valore(0..255) a cui si dovranno portare tutti i pin\n");
 			printf("Valore = ");
 			scanf ("%X",&value);
 			// controllare che sia impostato tt in uscita.
 			mcp23008_scrivi(GPIO,value);
 		}
 		else if(scelta==2){
-			printf("Inserisci il numero del pin (1..8)e il valore a cui si dovrà portare\n");
+			printf("Inserisci il numero del pin (0..7) e il valore (0..255) a cui si dovrà portare\n");
 			printf("Pin = ");
 			scanf ("%d",&pin);
 			printf("Valore = ");
