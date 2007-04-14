@@ -21,10 +21,9 @@ Collegamenti elettrici:
 IOG25 J7.13 as SCL
 IOG24 J7.21 as SDA. 
 
-#define I2C_DATA_LINE        1<<24
-#define I2C_CLOCK_LINE        1<<25
+RESISTENZE DI PULLUP SU I2C DI 1K !
 
-
+di fabbrica tt i pin sono configurati in ingresso
 
 PIN A0,A1,A2 A MASSA
 RESET A VCC
@@ -41,7 +40,7 @@ RESET A VCC
 #include "asm/etraxgpio.h"
 
 
-
+#define myMcp23008_id	0x40
 
 //REGISTRI
 //x impostare direzione
@@ -413,6 +412,7 @@ while(!ext_eeprom_ready(id));
 
 }
 
+
 int read_ext_eeprom(int id, long int address){
 int data;
 while(!ext_eeprom_ready(id));
@@ -424,6 +424,29 @@ while(!ext_eeprom_ready(id));
 	data=i2c_inbyte(0);
 	i2c_stop();
 	return data;//tra parentesi data (data)
+}
+
+//MCP23008 ROUTINES
+int mcp23008_leggi(int mcp23008_id,reg){
+	int data;
+	i2c_start();
+	i2c_outbyte((mcp_23008id|(int)(address>>7))&0xfe);
+	i2c_outbyte(address);
+	i2c_start();
+	i2c_outbyte((mpc23008_id|(int)(address>>7))|1);
+	data=i2c_inbyte(0);
+	i2c_stop();
+
+	return data;
+
+}
+
+int mcp23008_leggiPin(){
+	int pin_level;
+
+	pin_level=mcp23008_leggi(myMcp23008_id,reg);
+
+	return pin_level;
 }
 
 
@@ -457,7 +480,7 @@ int cella,dato,dato_chek;
 		
 	}
 	else if (scelta==3){
-		
+	printf()mcp23008_leggiPin()	
 
 	}
 	else if (scelta==4){
