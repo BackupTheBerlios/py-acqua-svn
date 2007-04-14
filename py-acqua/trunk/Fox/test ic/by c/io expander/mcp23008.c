@@ -1,6 +1,6 @@
-//#Copyright (C) 2005, 2007 Py-acqua
-//#http://www.pyacqua.net
-//#email: info@pyacqua.net  
+//#Copyright (C) 2005, 2006 Luca Sanna - Italy
+//#http://pyacqua.altervista.org
+//#email: pyacqua@gmail.com  
 //#
 //#   
 //#Py-Acqua is free software; you can redistribute it and/or modify
@@ -417,7 +417,7 @@ void mcp23008_scrivi(int registro,int value){
 	i2c_start();
 	i2c_outbyte(myMcp23008_id*2);
 	i2c_outbyte(registro);
-	i2c_outbyte(data);
+	i2c_outbyte(value);
 	i2c_stop();
 
 }
@@ -426,6 +426,8 @@ void mcp23008_ttOut(){
 }
 void mcp23008_ttIn(){
 	mcp23008_scrivi(IODIR,255);
+	mcp23008_scrivi(GPPU,255);//pull-up su tutti
+	
 }
 
 void mcp23008_scriviGpio(int value){	
@@ -442,7 +444,7 @@ int mcp23008_leggiGpio(){
 
 
 int  main (void) {
-int scelta,pin,value;
+int scelta,pin,value,level;
 
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
     for(;;){
@@ -468,53 +470,55 @@ int scelta,pin,value;
 		printf("1:Leggi tutti lo stato di tutti pin\n");
 		printf("2:Leggi lo stato di un singolo pin\n");
 		printf("Scelta = ");
-		scanf ("%X",&scelta);
+		scanf ("%d",&scelta);
 	
-		if (scelta==1)printf("\n\n GPIO = %d",mcp23008_leggiGpio());
+		if (scelta==1)	printf("\n\n GPIO = %d",mcp23008_leggiGpio());
 		else if(scelta==2){
-			printf("2:Inserisci il numero del pin\n");
-			printf("Scelta = ");
-			scanf ("%X",&pin);
-	
+			printf("2:Inserisci il numero del pin(0..7)\n");
+			printf("Pin = ");
+			scanf ("%d",&pin);
 			value=mcp23008_leggiGpio();
-			value=value|pin;
-			printf("\n\n pin %d di GPIO = %d",pin,value);
+			printf("Livello logico del pin= ");
+			if (value==(2^pin ))printf("1\n");
+			else printf("0\n");
 		}
 	}
-	else if (scelta==4){
+	else if (scelta==4){//scrittura
 		printf("1:Modifica tutta la porta GPIO\n");
 		printf("2:Un singolo pin x volta\n");
 		printf("Scelta = ");
-		scanf ("%X",&scelta);
+		scanf ("%d",&scelta);
 	
 		if (scelta==1){
 			printf("Inserisci il valore a cui si dovranno portare tutti i pin\n");
 			printf("Valore = ");
 			scanf ("%X",&value);
-			printf(" GPIO = %d",mcp23008_scrivi(GPIO,value));
+			// controllare che sia impostato tt in uscita.
+			mcp23008_scrivi(GPIO,value);
 		}
 		else if(scelta==2){
-		
-		
-		
+			printf("Inserisci il numero del pin (1..8)e il valore a cui si dovrà portare\n");
+			printf("Pin = ");
+			scanf ("%d",&pin);
+			printf("Valore = ");
+			scanf ("%d",&level);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-		iomask = 1<<5 | 1<<4 | 1<<3;
+			// controllare che il pin sia impostato in uscita.
 			value=mcp23008_leggiGpio();
-			value= 
-			printf(" GPIO = %d",value);
+			value = level<<pin;
+			mcp23008_scrivi(GPIO,value);
 		}
-
 	}
 	else if (scelta==5) return 1;
 	printf("\n\n");
     }
 
 }
+
+
+
+
+
+
+
+
