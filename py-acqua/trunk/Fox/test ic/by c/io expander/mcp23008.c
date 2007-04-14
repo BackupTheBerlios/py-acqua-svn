@@ -421,6 +421,12 @@ void mcp23008_scrivi(int registro,int value){
 	i2c_stop();
 
 }
+void mcp23008_ttOut(){
+	mcp23008_scrivi(IODIR,0);
+}
+void mcp23008_ttIn(){
+	mcp23008_scrivi(IODIR,255);
+}
 
 void mcp23008_scriviGpio(int value){	
 	mcp23008_scrivi(IODIR,value);
@@ -432,29 +438,21 @@ int mcp23008_leggiGpio(){
 	return gpio_level;
 }
 
-void mcp23008_ttOut(){
-	mcp23008_scrivi(IODIR,0);
-}
 
-void mcp23008_ttIn(){
-	mcp23008_scrivi(IODIR,255);
-}
 
 
 int  main (void) {
-int scelta;
+int scelta,pin,value;
 
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
-
-
     for(;;){
 
 	printf("GESTIONE MCP23008\n");
 	printf("Operazioni possibili:\n");
 	printf("1:Imposta tutti i pin in ingresso con pull-up interno\n");
 	printf("2:Imposta tutti i pin in uscita senza interrupt\n");
-	printf("3:Lettura dello stato della porta GPIO\n");
-	printf("4:Scrittura valore su sulla porta GPIO\n");
+	printf("3:Lettura dello stato dei pin\n");
+	printf("4:Scrittura del valore logico dei pin\n");
 	printf("5:Esci\n\n");
 	printf("Scelta = ");
 	scanf ("%X",&scelta);
@@ -466,12 +464,54 @@ int scelta;
 		mcp23008_ttOut();
 		printf("Comando eseguito");
 	}
-	else if (scelta==3){
-	printf(" GPIO = %d",mcp23008_leggiGpio());	
-
+	else if (scelta==3){//lettura
+		printf("1:Leggi tutti lo stato di tutti pin\n");
+		printf("2:Leggi lo stato di un singolo pin\n");
+		printf("Scelta = ");
+		scanf ("%X",&scelta);
+	
+		if (scelta==1)printf("\n\n GPIO = %d",mcp23008_leggiGpio());
+		else if(scelta==2){
+			printf("2:Inserisci il numero del pin\n");
+			printf("Scelta = ");
+			scanf ("%X",&pin);
+	
+			value=mcp23008_leggiGpio();
+			value=value|pin;
+			printf("\n\n pin %d di GPIO = %d",pin,value);
+		}
 	}
 	else if (scelta==4){
+		printf("1:Modifica tutta la porta GPIO\n");
+		printf("2:Un singolo pin x volta\n");
+		printf("Scelta = ");
+		scanf ("%X",&scelta);
+	
+		if (scelta==1){
+			printf("Inserisci il valore a cui si dovranno portare tutti i pin\n");
+			printf("Valore = ");
+			scanf ("%X",&value);
+			printf(" GPIO = %d",mcp23008_scrivi(GPIO,value));
+		}
+		else if(scelta==2){
 		
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		iomask = 1<<5 | 1<<4 | 1<<3;
+			value=mcp23008_leggiGpio();
+			value= 
+			printf(" GPIO = %d",value);
+		}
+
 	}
 	else if (scelta==5) return 1;
 	printf("\n\n");
