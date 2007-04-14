@@ -1,6 +1,6 @@
-//#Copyright (C) 2005, 2006 Luca Sanna - Italy
-//#http://pyacqua.altervista.org
-//#email: pyacqua@gmail.com  
+//#Copyright (C) 2005, 2007 Py-acqua
+//#http://www.pyacqua.net
+//#email: info@pyacqua.net  
 //#
 //#   
 //#Py-Acqua is free software; you can redistribute it and/or modify

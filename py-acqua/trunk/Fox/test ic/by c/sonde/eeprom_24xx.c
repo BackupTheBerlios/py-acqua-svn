@@ -1,7 +1,7 @@
-//#Copyright (C) 2005, 2006 Pyacqua
-//#http://pyacqua.altervista.org
+//#Copyright (C) 2005, 2007 Py-acqua
 //#http://www.pyacqua.net
-//#email: pyacqua@gmail.com  
+//#
+//#email: info@pyacqua.net 
 //#
 //#   
 //#Py-Acqua is free software; you can redistribute it and/or modify
