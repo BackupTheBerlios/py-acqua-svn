@@ -17,6 +17,17 @@
 //#    along with Py-Acqua; if not, write to the Free Software
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /*************************************************
+
+
+//*********************************************************************
+// 
+//   TEST DELL'INTEGRATO MCP23008 
+//
+//*********************************************************************
+
+
+
+
 Collegamenti elettrici:
 IOG25 J7.13 as SCL
 IOG24 J7.21 as SDA. 

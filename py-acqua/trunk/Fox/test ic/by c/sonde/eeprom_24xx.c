@@ -34,6 +34,15 @@ i2c_fd = open("/dev/gpiog", O_RDWR);
 instead of /dev/gpiob
 ****************************************************/
 
+
+
+//*********************************************************************
+// 
+//      TEST DELLE EEPROM CHE ANDRANNO INSERITE NELLE SONDE
+//
+//*********************************************************************
+
+
 #include "stdio.h"
 #include "stdlib.h"
 
