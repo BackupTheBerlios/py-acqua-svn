@@ -40,7 +40,7 @@ RESET A VCC
 #include "asm/etraxgpio.h"
 
 
-#define myMcp23008_id	0x40
+#define myMcp23008_id	0x20
 
 //REGISTRI
 //x impostare direzione
@@ -123,7 +123,7 @@ RESET A VCC
 // 1 = attivo a livello alto
 // 0 = attivo a livello basso
 	#define INTPOL	1
-// Controlla le resistenze di pull-up sugli ingressi
+// Imposta le resistenze di pull-up sugli ingressi
 // 1 = se il pin è configurato come input, viene applicata la resistenza di pullup
 // 0 = nessun pullup
 #define	GPPU	0X06
@@ -389,73 +389,56 @@ int i2c_outbyte(unsigned char x) {
         return 0;
 }
 
-int ext_eeprom_ready(int id){
-	int ack;
-	i2c_start();
-	ack=i2c_outbyte(id);
-	i2c_stop();
-	return ack;
-
-}
-
-
-void write_ext_eeprom(int id,long int address, int data){
-
-while(!ext_eeprom_ready(id));
-	i2c_start();
-	i2c_outbyte((id|(int)(address>>7))&0xfe);
-	i2c_outbyte(address);
-	i2c_outbyte(data);
-	i2c_stop();
-
-
-
-}
-
-
-int read_ext_eeprom(int id, long int address){
-int data;
-while(!ext_eeprom_ready(id));
-	i2c_start();
-	i2c_outbyte((id|(int)(address>>7))&0xfe);
-	i2c_outbyte(address);
-	i2c_start();
-	i2c_outbyte((id|(int)(address>>7))|1);
-	data=i2c_inbyte(0);
-	i2c_stop();
-	return data;//tra parentesi data (data)
-}
-
-//MCP23008 ROUTINES
-int mcp23008_leggi(int mcp23008_id,reg){
+//*********************
+//  MCP23008 ROUTINES
+//*********************
+int mcp23008_leggi(int reg){
 	int data;
 	i2c_start();
-	i2c_outbyte((mcp_23008id|(int)(address>>7))&0xfe);
-	i2c_outbyte(address);
+	i2c_outbyte(myMcp23008_id*2);
+	i2c_outbyte(reg);
 	i2c_start();
-	i2c_outbyte((mpc23008_id|(int)(address>>7))|1);
+	i2c_outbyte(myMcp23008_id*2+1);
 	data=i2c_inbyte(0);
 	i2c_stop();
-
 	return data;
-
 }
 
-int mcp23008_leggiPin(){
-	int pin_level;
+void mcp23008_scrivi(int registro,int value){
 
-	pin_level=mcp23008_leggi(myMcp23008_id,reg);
+	i2c_start();
+	i2c_outbyte(myMcp23008_id*2);
+	i2c_outbyte(registro);
+	i2c_outbyte(value);
+	
+	i2c_start();
+	i2c_outbyte(myMcp23008_id*2+1);
 
-	return pin_level;
+	i2c_stop();
+
+
+}
+void mcp23008_scriviGpio(){	
+	mcp23008_scrivi(GPIO,10);
 }
 
+int mcp23008_leggiGpio(){
+	int gpio_level;
+	gpio_level=mcp23008_leggi(GPIO);
+	return gpio_level;
+}
 
+void mcp23008_ttOut(){
+	mcp23008_scrivi(GPIO,11);
+}
 
+void mcp23008_ttIn(){
+	mcp23008_scrivi(GPIO,11);
+}
 
 
 int  main (void) {
 int scelta;
-int cella,dato,dato_chek;
 
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
 
@@ -463,32 +446,31 @@ int cella,dato,dato_chek;
     for(;;){
 
 	printf("GESTIONE MCP23008\n");
-	printf("perazioni possibili:\n");
-	printf("1:Imposta tutti i pin in ingresso\n");
-	printf("2:Imposta tutti i pin in uscita\n");
-	printf("3:Lettura stato pin\n");
-	printf("4:Scrittura valore dei pin\n");
-	printf("5:Esci\n");
-	
+	printf("Operazioni possibili:\n");
+	printf("1:Imposta tutti i pin in ingresso con pull-up interno\n");
+	printf("2:Imposta tutti i pin in uscita senza interrupt\n");
+	printf("3:Lettura dello stato della porta GPIO\n");
+	printf("4:Scrittura valore su sulla porta GPIO\n");
+	printf("5:Esci\n\n");
+	printf("Scelta = ");
 	scanf ("%X",&scelta);
 	if (scelta==1){
-		
+			mcp23008_ttIn();
+		printf("Comando eseguito");	
 	}
 	else if (scelta==2){
-
-
-		
+		mcp23008_ttOut();
+		printf("Comando eseguito");
 	}
 	else if (scelta==3){
-	printf()mcp23008_leggiPin()	
+	printf(" GPIO = %d",mcp23008_leggiGpio());	
 
 	}
 	else if (scelta==4){
 		
 	}
 	else if (scelta==5) return 1;
-    
-
+	printf("\n\n");
     }
 
 }
