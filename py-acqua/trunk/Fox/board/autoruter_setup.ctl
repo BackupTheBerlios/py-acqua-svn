@@ -2,7 +2,7 @@
 
 [Default]
 
-  RoutingGrid     = 16mil
+  RoutingGrid     = 8mil
 
   ; Trace Parameters:
 
@@ -10,7 +10,7 @@
 
   ; Preferred Directions:
 
-  PrefDir.1       = 0
+  PrefDir.1       = *
   PrefDir.2       = 0
   PrefDir.3       = 0
   PrefDir.4       = 0
