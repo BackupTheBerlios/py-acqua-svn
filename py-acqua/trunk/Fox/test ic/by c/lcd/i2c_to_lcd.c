@@ -18,29 +18,13 @@
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /*************************************************
 
-//**************************************
-//
-//
-//
-//				INCOMPLETO
-//
-//
-//
-//***********************************
 
 
-
-
-
-
-
-
-
-//*********************************************************************
+//***********************************************************************************
 // 
 //   TEST DEL LCD PILOTATO IN I2C DAL CHIP MCP230016. si mcp230016 con 16 i/o
 //
-//*********************************************************************
+//***********************************************************************************
 
 
 
@@ -60,157 +44,147 @@ RESET A VCC
 
 #include "stdio.h"
 #include "stdlib.h"
-
 #include "unistd.h" 
 #include "time.h"
 #include "sys/ioctl.h"
 #include "fcntl.h"     
 #include "asm/etraxgpio.h"
+#include "stdarg.h"
+#include "string.h"
 
 
-#define myMcp23008_id	0x20	// DA VEDEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
+
+#define lcdMcp23016_id	0x27
+
+
+
+// RIFLETTE IL LIVELLO LOGICO DEL PIN
+// 1 = livello logico alto
+// 0 = livelLo logico basso
+#define	GPIO0	0X00
+	#define GP07	7
+	#define GP06	6
+	#define GP05	5
+	#define GP04	4
+	#define GP03	3
+	#define GP02	2
+	#define GP01	1
+	#define GP00	0
+#define	GPI01	0X01
+	#define GP17	7
+	#define GP16	6
+	#define GP15	5
+	#define GP14	4
+	#define GP13	3
+	#define GP12	2
+	#define GP11	1
+	#define GP10	0
+// ACCEDE AL VALORE DEI LATCH DI USCITA
+// 1 = livello logico alto
+// 0 = livelLo logico basso
+#define	OLAT0	0X02  //LATCH
+	#define OL07	7
+	#define OL06	6
+	#define OL05	5
+	#define OL04	4
+	#define OL03	3
+	#define OL02	2
+	#define OL01	1
+	#define OL00	0
+#define	OLAT1	0X03  //LATCH
+	#define OL17	7
+	#define OL16	6
+	#define OL15	5
+	#define OL14	4
+	#define OL13	3
+	#define OL12	2
+	#define OL11	1
+	#define OL10	0
+// INVERTE LETTURA
+// 1 = riflette il livello logico opposto a quello presente sul pin quando si legge GPIO
+// 0 = lettura = stato del pin
+#define	IPOL0	0X04	
+	#define IP07	7
+	#define IP06	6
+	#define IP05	5
+	#define IP04	4
+	#define IP03	3
+	#define IP02	2
+	#define IP01	1
+	#define IP00	0
+#define	IPOL1	0X05
+	#define IP17	7
+	#define IP16	6
+	#define IP15	5
+	#define IP14	4
+	#define IP13	3
+	#define IP12	2
+	#define IP11	1
+	#define IP10	0
 //REGISTRI
 //x impostare direzione
 // 1 = input
 // 0 = output
-#define	IODIR	0X00	
-	#define IO7	7
-	#define IO6	6
-	#define IO5	5
-	#define IO4	4
-	#define IO3	3
-	#define IO2	2
-	#define IO1	1
-	#define IO0	0
-// INVERTE LETTURA
-// 1 = riflette il livello logico opposto a quello presente sul pin quando si legge GPIO
-// 0 = lettura = stato del pin
-#define	IPOL	0X01 	
-	#define IP7	7
-	#define IP6	6
-	#define IP5	5
-	#define IP4	4
-	#define IP3	3
-	#define IP2	2
-	#define IP1	1
-	#define IP0	0
-// INTERRUPT AD OGNI CAMBIAMENTO
-// 1 = abilitato
-//	N.B.: bisogna configurare anche DEFVAL ed INTCON
-// 0 = disabilitato
-#define	GPINTEN	0X02
-	#define GPINT7	7
-	#define GPINT6	6
-	#define GPINT5	5
-	#define GPINT4	4
-	#define GPINT3	3
-	#define GPINT2	2
-	#define GPINT1	1
-	#define GPINT0	0
-// LIVELLO LOGICO A CUI SI GENERE L'INTERRUPT
-//   l'interrupt si genera quando sul pin c'è un livello 
-//  opposto a quello impostato nel bit associato di questo registro.
-#define	DEFVAL	0X03
-	#define DEF7	7
-	#define DEF6	6
-	#define DEF5	5
-	#define DEF4	4
-	#define DEF3	3
-	#define DEF2	2
-	#define DEF1	1
-	#define DEF0	0
-//REGISTRO DI CONTROLLO DELL'INTERRUPT
-// 1 = IL PIN È COMPARATO CON IL CORRISPONDENTE BIT IN DEFVAL
-// 0 = IL PIN È COMPARATO CON LO STATO PRECEDENTE DELLO STESSO. (DEFVAL VIENE IGNORATO) 
-#define	INTCON	0X04
-	#define IOC7	7
-	#define IOC6	6
-	#define IOC5	5
-	#define IOC4	4
-	#define IOC3	3
-	#define IOC2	2
-	#define IOC1	1
-	#define IOC0	0
-//CONFIGURAZIONE DEI REGISTRI DELL' I/O EXPANDER
-#define	IOCON	0X05
-	//7,6,3,0 NON PRESENTI
-// LETTURA SEQUENZIALE
-// 1 = lettura sequenziale disabilitata, puntatore indirizzi non incrementato
-// 0 = lettura sequenziale abilitata, puntatore indirizzi incrementato
-	#define SREAD	5
-//GESTISCE SLEW RATE DI SDA
-// 1 = disabilitato
-// 0 = abilitato
-	#define DISSLW	4
-//CONFIGURA IL TIPO DI OUTPUT DEGLI 'INT' PIN
-// 1 = open drain
-// 0 = uscita del driver attiva
-	#define ODR	2
-// SETTA LA POLARITÀ DELL'OUTPUT PIN 'INT'
-// 1 = attivo a livello alto
-// 0 = attivo a livello basso
-	#define INTPOL	1
-// Imposta le resistenze di pull-up sugli ingressi
-// 1 = se il pin è configurato come input, viene applicata la resistenza di pullup
-// 0 = nessun pullup
-#define	GPPU	0X06
-	#define PU7	7
-	#define PU6	6
-	#define PU5	5
-	#define PU4	4
-	#define PU3	3
-	#define PU2	2
-	#define PU1	1
-	#define PU0	0
-// Registro x abilitare gli interrupt
-// 1 = interrupot abilitato
-// 0 = interrupt disabilitato
-#define	INTF	0X07
-	#define INT7	7
-	#define INT6	6
-	#define INT5	5
-	#define INT4	4
-	#define INT3	3
-	#define INT2	2
-	#define INT1	1
-	#define INT0	0
+#define	IODIR0	0X06	
+	#define IO07	7
+	#define IO06	6
+	#define IO05	5
+	#define IO04	4
+	#define IO03	3
+	#define IO02	2
+	#define IO01	1
+	#define IO00	0
+#define	IODIR1	0X07	
+	#define IO17	7
+	#define IO16	6
+	#define IO15	5
+	#define IO14	4
+	#define IO13	3
+	#define IO12	2
+	#define IO11	1
+	#define IO10	0
 // RIFLETTE I LIVELLI LOGICI DEI PIN IMPOSTATI COME INTERRUPT AL MOMENTO DEL CAMBIAMENTO DI STATO
 // 1 = attivo alto
 // 0 = attivo basso
-#define	INTCAP	0X08
-	#define ICP7	7
-	#define ICP6	6
-	#define ICP5	5
-	#define ICP4	4
-	#define ICP3	3
-	#define ICP2	2
-	#define ICP1	1
-	#define ICP0	0
-// RIFLETTE IL LIVELLO LOGICO DEL PIN
-// 1 = livello logico alto
-// 0 = livelLo logico basso
-#define	GPIO	0X09
-	#define GP7	7
-	#define GP6	6
-	#define GP5	5
-	#define GP4	4
-	#define GP3	3
-	#define GP2	2
-	#define GP1	1
-	#define GP0	0
-// ACCEDE AL VALORE DEI LATCH DI USCITA
-// 1 = livello logico alto
-// 0 = livelLo logico basso
-#define	OLAT	0X0A  //LATCH
-	#define OL7	7
-	#define OL6	6
-	#define OL5	5
-	#define OL4	4
-	#define OL3	3
-	#define OL2	2
-	#define OL1	1
-	#define OL0	0
+#define	INTCAP0	0X08	//SOLA LETTURA
+	#define ICP07	7
+	#define ICP06	6
+	#define ICP05	5
+	#define ICP04	4
+	#define ICP03	3
+	#define ICP02	2
+	#define ICP01	1
+	#define ICP00	0
+#define	INTCAP1	0X09	//SOLA LETTURA
+	#define ICP17	7
+	#define ICP16	6
+	#define ICP15	5
+	#define ICP14	4
+	#define ICP13	3
+	#define ICP12	2
+	#define ICP11	1
+	#define ICP10	0
+// SETTA LA VELOCITÀ CON CUI CAMPIONA GLI INGRESSI IMPOSTATI COME INTERRUPT X GENERARE L'INTERRUPT
+// 1 = lento (32ms)
+// 0 = veloce (200us)
+#define	IOCON0	0X0A
+	#define IARES0	0
+#define	IOCON1	0X0B
+	#define IARES1	0
+
+//***************
+//LCD PIN
+//**************
+
+#define  lcd_E		GP00
+#define  lcd_RS		GP01
+#define  lcd_D4		GP02
+#define  lcd_D5		GP03
+#define  lcd_D6		GP04
+#define  lcd_D7		GP05
+  
+
 
 #define CLOCK_LOW_TIME            8
 #define CLOCK_HIGH_TIME           8
@@ -417,70 +391,192 @@ int i2c_outbyte(unsigned char x) {
 //*********************
 //  MCP23008 ROUTINES
 //*********************
-int mcp23008_leggi(int reg){
+int mcp23016_regLeggi(int reg){
 	int data;
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2); // accoda uno zero x dire scrivi
+	i2c_outbyte(lcdMcp23016_id<<1); // accoda uno zero x dire scrivi
 	i2c_outbyte(reg);
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2+1); // accoda un uno  x dire leggi 
+	i2c_outbyte((lcdMcp23016_id<<1)+1); // accoda un uno  x dire leggi 
 	data=i2c_inbyte(0);
 	i2c_stop();
 	return data;
 }
 
-void mcp23008_scrivi(int registro,int value){
-
+void mcp23016_regScrivi(int registro,int value){
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2);
+	i2c_outbyte(lcdMcp23016_id<<1);
 	i2c_outbyte(registro);
 	i2c_outbyte(value);
 	i2c_stop();
+}
+void mcp23016_ttOut(){
+	mcp23016_reScrivi(IODIR0,0);
+	mcp23016_regcrivi(IODIR1,0);
+}
+void mcp23016_ttIn(){
+	mcp23016_regScrivi(IODIR0,255);
+	mcp23016_regScrivi(IODIR1,255);
+}
 
-}
-void mcp23008_ttOut(){
-	mcp23008_scrivi(IODIR,0);
-}
-void mcp23008_ttIn(){
-	mcp23008_scrivi(IODIR,255);
-	mcp23008_scrivi(GPPU,255);//pull-up su tutti
+void mcp23016_pinWriteLevel(int GP,pin,level){
+	int value;
 	
+	value=mcp23016_leggiGpio(GP);
+	value = level<<pin;
+	mcp23008_scrivi(GP,value);
 }
 
-void mcp23008_scriviGpio(int value){	
-	mcp23008_scrivi(IODIR,value);
+
+
+void mcp23016_scriviGpio(int GP,int value){	
+	mcp23016_scrivi(IODIR0+GP,value);
 }
 
-int mcp23008_leggiGpio(){
+int mcp23016_leggiGpio(int GP){
 	int gpio_level;
-	gpio_level=mcp23008_leggi(GPIO);
+	gpio_level=mcp23016_leggi(GPIO0+GP);
 	return gpio_level;
 }
 
-void mcpInit(){
+void lcdMcpInit(){
 //init input x 5 pulsanti
 //init output x fili al display
 
 
+//*********************************************************************
+// LCD functions
+//*********************************************************************
 
+// RS line
+void lcd_rs(int level) { mcp23016_pinWriteLevel(0,RS,level); }
+//  E line
+void lcd_e(int level) { mcp23016_pinWriteLevel(0,E,level);}
+// D4..7
+void lcdD4(int level) { mcp23016_pinWriteLevel(0,lcd_D4,level);}
+void lcdD5(int level) { mcp23016_pinWriteLevel(0,lcd_D5,level);}
+void lcdD6(int level) { mcp23016_pinWriteLevel(0,lcd_D6,level);}
+void lcdD7(int level) { mcp23016_pinWriteLevel(0,lcd_D7,level);}
+
+void lcd_e_strobe() {
+	lcd_e(1);
+	lcd_e(0);
+}
+
+// Send a nibble (4 bit) to LCD
+void lcd_put_nibble( int value) {
+	if (value&0x01) lcdD4(1);
+	else 			lcdD4(0);
+	if (value&0x02) lcdD5(1);
+	else 			lcdD5(0);
+	if (value&0x04) lcdD6(1);
+	else 			lcdD6(0);
+	if (value&0x08) lcdD7(1);
+	else 			lcdD7(0);
+}
+
+// Send a char to LCD
+// data: Ascii char or instruction to send
+// mode: 0 = Instruction, 1 = Data
+void lcd_putc(unsigned char data, int mode) {
+	int a;
+	
+	if (!mode) lcd_rs(0);
+	else lcd_rs(1);
+	
+	a=(data>>4)&0x000F;
+	lcd_put_nibble(a);
+	lcd_e_strobe();
+	a=data&0x000F;
+	lcd_put_nibble(a);
+	lcd_e_strobe();
+} 
+
+// Lcd initialization
+void lcd_init() {
+ 	unsigned long data, mask;
+				
+	//SETTA IO DELL'MCP
+ 
+	lcd_rs(0);
+	lcd_e(0);
+	msDelay(15);
+	
+	lcd_put_nibble(0x03);
+	lcd_e_strobe();
+	msDelay(4);
+	lcd_e_strobe();
+	msDelay(2);
+	lcd_e_strobe();
+	msDelay(2);
+	lcd_put_nibble(0x02);
+	lcd_e_strobe();
+	msDelay(1);
+
+  	lcd_putc(0x28,0);
+	msDelay(1);
+  	lcd_putc(0x06,0);
+	msDelay(1);
+  	lcd_putc(0x0C,0);
+	msDelay(1);
+ 	lcd_putc(0x01,0);
+	msDelay(2);
+} 
+
+// Locate cursor on LCD
+// row (0-2)
+// col (1-39)
+void lcd_locate(int row, int col) {
+  lcd_putc(0x80+row*0x40+col,0);
+  usDelay(35);
+} 
+
+// Clear LCD
+void lcd_clear(int fd) {
+  lcd_putc(0x01,0);
+  msDelay(2);
+} 
+
+// Lcd version of printf
+void lcd_printf(char *format, ...) {
+  int i;
+  
+  va_list argptr;
+  char buffer[1024];
+  
+  va_start(argptr,format);
+  vsprintf(buffer,format,argptr);
+  va_end(argptr);
+  
+  for (i=0;i<strlen(buffer);i++) {
+    lcd_putc(buffer[i],1);
+  }
+}
+
+
+//*****************
+//		MAIN
+//*****************
 }
 int  main (void) {
-int scelta,pin,value,level;
+int scelta;
 
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
-    for(;;){
-
-	printf("GESTIONE MCP23008\n");
+    
+    for(;;){
+	printf("GESTIONE MCP23016\n");
 	printf("Operazioni possibili:\n");
 	printf("1:TEST\n");
 	printf("2:Esci\n\n");
 	printf("Scelta = ");
 	scanf ("%X",&scelta);
 	if (scelta==1){
-		printf("Codice in fase di stesura\n");	
+	 	lcd_locate(0,0);
+	    lcd_printf("Ciao");
+		printf("Frase  di prova scritta\n");	
 	}
 	else if (scelta==2) return 1;
-    }
+    }
 }
 
 

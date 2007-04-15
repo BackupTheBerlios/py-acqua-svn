@@ -403,10 +403,10 @@ int i2c_outbyte(unsigned char x) {
 int mcp23008_leggi(int reg){
 	int data;
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2); // accoda uno zero x dire scrivi
+	i2c_outbyte(myMcp23008_id<<1); // accoda uno zero x dire scrivi
 	i2c_outbyte(reg);
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2+1); // accoda un uno  x dire leggi 
+	i2c_outbyte((myMcp23008_id<<1)+1); // accoda un uno  x dire leggi 
 	data=i2c_inbyte(0);
 	i2c_stop();
 	return data;
@@ -415,7 +415,7 @@ int mcp23008_leggi(int reg){
 void mcp23008_scrivi(int registro,int value){
 
 	i2c_start();
-	i2c_outbyte(myMcp23008_id*2);
+	i2c_outbyte(myMcp23008_id<<1);
 	i2c_outbyte(registro);
 	i2c_outbyte(value);
 	i2c_stop();
