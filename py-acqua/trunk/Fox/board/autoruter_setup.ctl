@@ -6,7 +6,7 @@
 
   ; Trace Parameters:
 
-  tpViaShape      = Octagon
+  tpViaShape      = Round
 
   ; Preferred Directions:
 
