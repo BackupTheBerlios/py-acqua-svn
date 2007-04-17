@@ -19,9 +19,9 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import app
+import pyacqua.app as app
 import gtk
-import utils
+import pyacqua.utils as utils
 import os.path
 from impostazioni import set, get, save
 
