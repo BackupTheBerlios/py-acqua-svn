@@ -74,9 +74,9 @@ class Gui(gtk.Window):
 			
 			('Skin', gtk.STOCK_SELECT_COLOR, _('_Skin'), None, _('Skin...'), '_on_open_skin'),
 
-			('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), '_on_open_update'),
+			#('Update', None, _('_Web Update'), None, _('Aggiorna PyAcqua'), '_on_open_update'),
 
-			('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), '_on_open_lang'),
+			#('Lingua', None, _('_Lingua'), None, _('Selezione Lingua...'), '_on_open_lang'),
 
 		('Plugins', None, _('Plugins')),
 
@@ -107,9 +107,7 @@ class Gui(gtk.Window):
 		</menu>
 		<menu action='Impostazioni'>
 			<menuitem action='Tips Tricks'/>
-			<menuitem action='Update'/>
 			<separator/>
-			<menuitem action='Lingua'/>
 			<menuitem action='Skin'/>
 		</menu>
 		<menu action='Plugins'>
@@ -252,10 +250,10 @@ class Gui(gtk.Window):
 			import plugin
 			App.p_window["plugin"] = plugin.Plugin()
 	
-	def _on_open_lang(self, widget, data=None):
-		if not App.p_window["lang"]:
-			import lang
-			App.p_window["lang"] = lang.LangWindow()
+	#def _on_open_lang(self, widget, data=None):
+	#	if not App.p_window["lang"]:
+	#		import lang
+	#		App.p_window["lang"] = lang.LangWindow()
 		
 	#def _on_open_importa(self, widget, data=None):
 	#	import importa
@@ -296,10 +294,10 @@ class Gui(gtk.Window):
 	def _on_open_help(self, widget, data=None):
 		utils.info (_("Prova a vedere su http://www.pyacqua.net"))
 
-	def _on_open_update(self, widget, data=None):
-		if not App.p_window["update"]:
-			import webupdate
-			App.p_window["update"] = webupdate.WebUpdate()
+	#def _on_open_update(self, widget, data=None):
+	#	if not App.p_window["update"]:
+	#		import webupdate
+	#		App.p_window["update"] = webupdate.WebUpdate()
 		
 	def main(self):
 		self.active_toggle = False
