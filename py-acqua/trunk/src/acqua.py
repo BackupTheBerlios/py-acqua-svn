@@ -54,19 +54,34 @@ def main ():
 	
 	APP = 'acqua'
 	#DIR = os.path.join (utils.DHOME_DIR, "locale")
+	
+	# il locale ora si trovera nell home in modo da caricarlo come plugin
 	DIR = os.path.join (utils.PLUG_DIR, "locale")
 	try:
-		if impostazioni.get ("lang").lower () == "en":
-			en = gettext.translation (APP, DIR, ["en"])
-			en.install ()
-			try:
-				os.environ['LANG'] = "en_US"
-				locale.setlocale (locale.LC_MESSAGES, "en_US")
-			except: pass
-		else:
-			os.environ['LANG'] = "it_IT"
-			it = gettext.translation (APP, DIR, [])
-			it.install ()
+		
+		ll = impostazioni.get ("lang").lower()
+		oo = gettext.translation (APP, DIR, [ll])
+		ll.install ()
+		print "ciao" 
+		try:
+			os.environ['LANG'] = ll
+			locale.setlocale (locale.LC_MESSAGES, ll)
+		except:
+			pass
+		
+		
+		
+		#if impostazioni.get ("lang").lower () == "en":
+		#	en = gettext.translation (APP, DIR, ["en"])
+		#	en.install ()
+		#	try:
+		#		os.environ['LANG'] = "en_US"
+		#		locale.setlocale (locale.LC_MESSAGES, "en_US")
+		#	except: pass
+		#else:
+		#	os.environ['LANG'] = "it_IT"
+		#	it = gettext.translation (APP, DIR, [])
+		#	it.install ()
 	except (IOError, locale.Error), e:
 		print "(%s): WARNING **: %s" % (APP, e)
 		__builtins__.__dict__["_"] = gettext.gettext

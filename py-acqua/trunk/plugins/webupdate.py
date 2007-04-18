@@ -23,9 +23,9 @@ import gtk
 import gobject
 import httplib
 import threading
-import generate
-import app
-import utils
+import pyacqua.generate as generate
+import pyacqua.app as app
+import pyacqua.utils as utils
 import os.path
 import sys
 
@@ -38,6 +38,13 @@ LIST_FILE = "/update/list.txt"
 #LIST_FILE = r"/~stack/update/list.txt"
 
 class Fetcher(threading.Thread):
+
+	__name__ = "WebUpdate"
+	__desc__ = "Plugin for WebUpdate"
+	__ver__ = "0.0.1"
+	__author__ = "PyAcqua team"
+	__preferences__ = {}
+	
 	def __init__ (self, callback, url):
 		self.data = None
 		self.callback = callback

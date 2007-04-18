@@ -23,9 +23,16 @@ import pyacqua.app as app
 import gtk
 import pyacqua.utils as utils
 import os.path
-from impostazioni import set, get, save
+import pyacqua.impostazioni as impostazioni
+#from impostazioni import set, get, save
 
 class LangWindow (gtk.Window):
+	__name__ = "Lang"
+	__desc__ = "Plugin for Lang"
+	__ver__ = "0.0.1"
+	__author__ = "PyAcqua team"
+	__preferences__ = {}
+
 	def __init__ (self):
 		gtk.Window.__init__ (self)
 
@@ -85,6 +92,17 @@ class LangWindow (gtk.Window):
 			en.set_active (True)
 
 		self.show_all ()
+		
+	def start (self):
+		print ">> Starting", self.__name__
+		
+		menu = app.App.get_plugin_menu ()
+
+		self.item = gtk.MenuItem (_("Lang"))
+		self.item.connect ('activate', self.on_activated)
+		self.item.show ()
+
+		menu.append (self.item)
 		
 	def _on_delete_event (self, *w):
 		app.App.p_window["lang"] = None
