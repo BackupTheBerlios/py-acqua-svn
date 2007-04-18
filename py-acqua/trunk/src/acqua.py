@@ -22,7 +22,7 @@ try:
 	import pygtk
 	pygtk.require ('2.0')
 except:
-	utils.info (_("PyGtk Not present"))
+	
 	print "!! PyGtk Not present"
 
 import os
@@ -42,7 +42,7 @@ try:
 	import gobject
 except:
 	print _("You need to install GTKv2")
-	utils.info (_("You need to install GTKv2"))
+	
 
 try:
 	#import pysqlite2 as sqlite
