@@ -53,8 +53,8 @@ except:
 def main ():
 	
 	APP = 'acqua'
-	DIR = os.path.join (utils.DHOME_DIR, "locale")
-	
+	#DIR = os.path.join (utils.DHOME_DIR, "locale")
+	DIR = os.path.join (utils.PLUG_DIR, "locale")
 	try:
 		if impostazioni.get ("lang").lower () == "en":
 			en = gettext.translation (APP, DIR, ["en"])
