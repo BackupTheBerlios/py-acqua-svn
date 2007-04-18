@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005, 2006 Luca Sanna - Italy
+ * Copyright (C) 2005, 2007 Py-Acqua
  * http://www.pyacqua.net
  * email: info@pyacqua.net
  * 
@@ -198,7 +198,9 @@ int i2c_outbyte(unsigned char x) {
   else return 0;
 }
  
-/* Inizio codice wrapper */
+/* INIZIO CODICE WRAPPER */
+
+
 
 static PyObject * wrap_i2c_getbit (PyObject *self, PyObject *args)
 {
