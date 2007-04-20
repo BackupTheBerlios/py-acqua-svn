@@ -26,7 +26,7 @@ import os.path
 import pyacqua.impostazioni as impostazioni
 #from impostazioni import set, get, save
 
-class LangWindow (gtk.Window):
+class Lang (gtk.Window):
 	__name__ = "Lang"
 	__desc__ = "Plugin for Lang"
 	__ver__ = "0.0.1"
