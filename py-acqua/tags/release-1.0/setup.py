@@ -52,6 +52,6 @@ else:
 		#("src", glob.glob ("src/*")),
 		("share/pyacqua/plugins", glob.glob ("plugins/*.py")),
 		("share/pyacqua/pixmaps", glob.glob ("pixmaps/*")),
-		("share/pyacqua/tips", ["src/tip_of_the_day_en.txt", "src/tip_of_the_day.txt"])
+		("share/pyacqua/tips", ["src/tip_of_the_day.txt"])
 	]
 	)
