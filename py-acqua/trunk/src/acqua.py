@@ -53,6 +53,7 @@ except:
 def main ():
 	
 	APP = 'acqua'
+	#FIXME: porcoddio
 	#DIR = os.path.join (utils.DHOME_DIR, "locale")
 	
 	# il locale ora si trovera nell home in modo da caricarlo come plugin
@@ -207,7 +208,6 @@ def main ():
 	app.App.main()
 	gtk.gdk.threads_leave ()
 	
-	utils.info (_("Salvo le impostazioni prima di uscire"))
 	print _(">> Salvo le impostazioni prima di uscire")
 	impostazioni.save ()
 

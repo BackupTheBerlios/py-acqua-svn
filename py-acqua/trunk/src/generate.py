@@ -20,8 +20,10 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-from os.path import join, getsize
 import md5
+import sys
+from os.path import join, getsize
+from xml.dom.minidom import parse, getDOMImplementation
 
 class Generator (object):
 	"""
@@ -77,8 +79,202 @@ class Generator (object):
 	checksum = staticmethod (checksum)
 	ParseDir = staticmethod (ParseDir)
 
+
+"""
+NOTE:
+						
+Il file per l'aggiornamento dovrebbe avere un aspetto simile:
+
+<pyacqua>
+	<directory name="." revision="2">
+		<file name="NOTE" md5="..." bytes="..." revision="2"/>
+		<directory name="src" revision="2">
+			<file name="generate" .../>
+		</directory>
+	</directory>
+</pyacqua>
+
+Per quanto concerne il tree (dict_object).. dovrebbe essere tipo:
+
+dict_object = [
+		2, # Il numero di revisione (type = int)
+		["NOTE", 2, "bytes", "md5"], # Il file nella directory corrente (type list)
+		{
+			"src" :[
+				2, # e si ripete
+				["generate" ...],
+				
+				...
+				
+				{
+					"altra_dir" :
+						...
+				}
+			]
+		}
+]
+"""
+		
+class UpdateXML (object):
+	def __init__ (self, directory, old_list=None):
+		self.load_old_list (old_list)
+		self.createxmlfile (directory)
+	def __init__ (self):
+		pass
+	
+	# Update staff
+	
+	def make_diff (self, current_list, old_list):
+		"""
+		Carica le info contenute nelle liste e fa un diff eliminando le informazioni uguali
+		"""
+		self.currect_doc = None
+		self.load_list (current_list, self.current_doc)
+		
+		self.old_doc = None
+		self.load_list (old_list, self.old_doc)
+		
+		# Dopo aver caricato le varie info nel documento
+		# facciamo il vero e proprio diff
+	
+	# end Update staff
+	
+	def loadlist (self, file):
+		if file == None: return
+		
+		try:
+			doc = parse (file)
+		except:
+			dict_object = {}
+			return
+		
+		dict_object = {"." : {"." : [1]}}#int (doc.documentElement.attributes ["revision"].nodeValue)]}}
+		
+		if doc.documentElement.tagName == "pyacqua":
+			self.parse_schema (doc.documentElement, ".", dict_object)
+		
+		return dict_object
+	
+	def parse_schema (self, root, directory, dict_object):
+		for node in root.childNodes:
+			if node.nodeName == "directory":
+				dict_object [node.attributes ["name"].nodeValue] = {"." : [int (node.attributes ["revision"].nodeValue)]}
+				self.parse_schema (node, node.attributes ["name"].nodeValue, dict_object)
+			elif node.nodeName == "file":
+				dict_object [directory][node.attributes ["name"].nodeValue] = [
+					int (node.attributes ["revision"].nodeValue),
+					node.attributes ["bytes"].nodeValue,
+					node.attributes ["md5"].nodeValue
+				]
+	
+	def create_dict_from_directory (self, old_tree = None):
+		"""
+		Crea una nuova struttura dizionario per la directory
+		"""
+		
+		dict_object = {"." : {"." : [1]}} # Settiamo la revisione ad 1 preventivamente
+		
+		ret = self.appendFilesInfo (".", dict_object, old_tree)
+		
+		if ret == 1 and old_tree:
+			dict_object["."]["."] = [old_tree["."]["."][0] + 1]
+		
+		print dict_object
+		return dict_object
+	
+	def appendFilesInfo (self, directory, dict_object, old_tree):
+		
+		directory_modified = 0 # non modificata
+		
+		for file in os.listdir (directory):
+			fullname = os.path.join (directory, file)
+			
+			if os.path.isdir (fullname) and file[-5:] != ".svn":
+				
+				# Abbiamo una directory.
+				# Aggiungiamo. I controlli verrano eseguiti sui file.
+				# Al massimo se la revision e' la stessa possiamo eventualmente zappare questa entry
+				
+				dict_object [fullname] = {"." : [1]}
+				
+				ret = self.appendFilesInfo (fullname, dict_object, old_tree)
+				
+				if ret == 1 and old_tree:
+					dict_object[fullname]["."][0] = old_tree[fullname]["."][0] + 1
+				elif ret == 0:
+					del dict_object[fullname]
+				
+			elif not os.path.isdir (fullname):
+				
+				try:
+					# Prendiamo le informazioni del file corrente se presenti per il confronto successivo
+					tmp = old_tree [directory][file]
+				except:
+					tmp = [0, None, None]
+					update_revision_of_directory = -1
+				
+				# Generiamo md5sum e prendiamo la size per il confronto
+				bytes = str (getsize (fullname))
+				md5   = str (Generator.checksum (fullname))
+				
+				if tmp[1] != bytes or (tmp[1] == bytes and tmp[2] != md5):
+					# Aggiungiamo il file al dizionario
+					
+					dict_object[directory][file] = [tmp[0] + 1, bytes, md5]
+					
+					# Markiamo come nuovo file.. quindi la revision della root dir e' da aggiornare
+					directory_modified = 1
+				elif not old_tree:
+					# Se non abbiamo il file da confrontare significa che bisogna creare una lista ex novo.
+					# Aggiungiamo con revision 1 quindi
+					
+					dict_object[directory][file] = [1, bytes, md5]
+					directory_modified = 2 # modificata ma dobbiamo lasciare intatta la revisione
+				
+		return directory_modified
+	
+	def dump_tree_to_file (self, tree, file = None):
+		doc = getDOMImplementation ().createDocument (None, "pyacqua", None)
+		
+		current = doc.documentElement
+		
+		for i in tree:
+			# dict conterra' tutti i file
+			
+			dict = tree[i]
+			
+			element = doc.createElement ("directory")
+			element.setAttribute ("name", i)
+			element.setAttribute ("revision", str (tree[i]["."][0]))
+			
+			for x in dict:
+				if x == ".": continue
+				
+				node = doc.createElement ("file")
+				node.setAttribute ("name", x)
+				node.setAttribute ("revision", str (dict[x][0]))
+				node.setAttribute ("bytes", str (dict[x][1]))
+				node.setAttribute ("md5", str (dict[x][2]))
+				
+				element.appendChild (node)
+			
+			current.appendChild (element)
+		
+		if not file:
+			doc.writexml (sys.stdout, " ", " ", " \n")
+		else:
+			writer = open (file, "w")
+			doc.writexml (writer, "\t", "\t", "\n")
+			writer.close ()
+
 # Testing
 if __name__ == "__main__":
-	data = Generator.ParseDir (".")
-	for i in data:
-		print "%s|%s" % (i, data[i])
+	a = UpdateXML ()
+	#a.dump_tree_to_file (a.create_dict_from_directory (), "list.xml")
+	old_tree = a.loadlist ("list.xml")
+	#a.dump_tree_to_file (old_tree, None)
+	a.dump_tree_to_file (a.create_dict_from_directory (old_tree), None)
+	
+	#data = Generator.ParseDir (".")
+	#for i in data:
+	#	print "%s|%s" % (i, data[i])
