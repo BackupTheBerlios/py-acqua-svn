@@ -23,7 +23,7 @@ import os
 import md5
 import sys
 from os.path import join, getsize
-from xml.dom.minidom import parse, getDOMImplementation
+from xml.dom.minidom import parse, parseString, getDOMImplementation
 
 class Generator (object):
 	"""
@@ -122,32 +122,85 @@ class UpdateXML (object):
 	def __init__ (self):
 		pass
 	
-	# Update staff
-	
-	def make_diff (self, current_list, old_list):
-		"""
-		Carica le info contenute nelle liste e fa un diff eliminando le informazioni uguali
-		"""
-		self.currect_doc = None
-		self.load_list (current_list, self.current_doc)
+	def make_diff (self, new_dict_object, old_dict_object):
+		# Facciamo un for nelle chiavi del nuovo dizionario e compariamo
+		# gli oggetti ad ogni iterazione
 		
-		self.old_doc = None
-		self.load_list (old_list, self.old_doc)
+		# Se gli objects sono uguali cancelliamo la entry del vecchio
+		# Se diversi aggiungiamo nel diff_dict la nuova entry la entry dal vecchio
+		# Se la chiave non e' presente nel vecchio dizionario aggiungiamo una entry al diff
+		# 
+		# Alla fine facciamo un ciclo sulle chiavi rimanenti nel dizionario old
+		# quelli saranno gli oggetti da eliminare
 		
-		# Dopo aver caricato le varie info nel documento
-		# facciamo il vero e proprio diff
+		diff_object = {}
+		
+		for key in new_dict_object:
+			
+			# Facciamo un confronto tra i file
+			if old_dict_object.has_key (key):
+				for file in new_dict_object[key]:
+					
+					v_new = new_dict_object[key][file]
+					
+					if old_dict_object[key].has_key (file):
+						v_old = old_dict_object[key][file]
+						
+						if v_new != v_old:
+							# Non facciamo altri controlli sulla superiorita' di revision ecc..
+							diff_object[key] = {}
+							diff_object[key][file] = v_new + v_old
+						
+						del old_dict_object [key][file]
+					else: # Se il file non e' presente nel vecchio dict aggiungiamo
+						diff_object[key] = {}
+						diff_object[key][file] = v_new + [0, "0", "0"]
+			else:
+				# Non presente la directory quindi aggiungiamola con tutti i file in essa presenti
+				diff_object[key] = new_dict_object[key]
+				
+				# e la "." ?
+				for x in diff_object[key]:
+					diff_object[key][x] += [0, "0", "0"]
+		
+		for key in old_dict_object:
+			diff_object["$$" + key + "$$"] = old_dict_object[key]
+		
+		return diff_object
 	
-	# end Update staff
-	
-	def loadlist (self, file):
-		if file == None: return
+	def create_dict_from_string (self, xmlstr):
+		"""
+		Crea un dizionario da una stringa che contiene il file xml
+		
+		Ritorna un dizionario vuoto {} se ci sono errori
+		"""
+		
+		if xmlstr == None: return {}
+		
+		try:
+			doc = parseString (xmlstr)
+		except:
+			return {}
+		
+		return self._real_load (doc)
+		
+	def create_dict_from_file (self, file):
+		"""
+		Crea un dizionario da un file xml contenente la lista dei file da aggiornare..
+		
+		Ritorna un dizionario vuoto {} se ci sono errori
+		"""
+		
+		if file == None: return {}
 		
 		try:
 			doc = parse (file)
 		except:
-			dict_object = {}
-			return
+			return {}
 		
+		return self._real_load (doc)
+	
+	def _real_load (self, doc):
 		dict_object = {"." : {"." : [1]}}#int (doc.documentElement.attributes ["revision"].nodeValue)]}}
 		
 		if doc.documentElement.tagName == "pyacqua":
@@ -170,6 +223,8 @@ class UpdateXML (object):
 	def create_dict_from_directory (self, old_tree = None):
 		"""
 		Crea una nuova struttura dizionario per la directory
+		
+		I file anche se uguali devono essere stampati perche' bisogna creare un file.xml per l'update
 		"""
 		
 		dict_object = {"." : {"." : [1]}} # Settiamo la revisione ad 1 preventivamente
@@ -201,8 +256,8 @@ class UpdateXML (object):
 				
 				if ret == 1 and old_tree:
 					dict_object[fullname]["."][0] = old_tree[fullname]["."][0] + 1
-				elif ret == 0:
-					del dict_object[fullname]
+				#elif ret == 0:
+				#	del dict_object[fullname]
 				
 			elif not os.path.isdir (fullname):
 				
@@ -224,6 +279,10 @@ class UpdateXML (object):
 					
 					# Markiamo come nuovo file.. quindi la revision della root dir e' da aggiornare
 					directory_modified = 1
+				elif tmp[1] == bytes and tmp[2] == md5:
+					
+					dict_object[directory][file] = tmp
+					
 				elif not old_tree:
 					# Se non abbiamo il file da confrontare significa che bisogna creare una lista ex novo.
 					# Aggiungiamo con revision 1 quindi
@@ -271,10 +330,9 @@ class UpdateXML (object):
 if __name__ == "__main__":
 	a = UpdateXML ()
 	#a.dump_tree_to_file (a.create_dict_from_directory (), "list.xml")
-	old_tree = a.loadlist ("list.xml")
+	#old_tree = a.loadlist ("list.xml")
 	#a.dump_tree_to_file (old_tree, None)
-	a.dump_tree_to_file (a.create_dict_from_directory (old_tree), None)
+	#a.dump_tree_to_file (a.create_dict_from_directory (old_tree), None)
 	
-	#data = Generator.ParseDir (".")
-	#for i in data:
-	#	print "%s|%s" % (i, data[i])
+	old_tree = a.create_dict_from_file ("list.xml")
+	a.dump_tree_to_file (a.create_dict_from_directory (old_tree), "update.xml")

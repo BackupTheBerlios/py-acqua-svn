@@ -19,20 +19,14 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pyacqua.app as app
+import app
 import gtk
-import pyacqua.utils as utils
+import utils
 import os.path
-import pyacqua.impostazioni as impostazioni
-#from impostazioni import set, get, save
+import impostazioni
+from impostazioni import set, get, save
 
 class Lang (gtk.Window):
-	__name__ = "Lang"
-	__desc__ = "Plugin for Lang"
-	__ver__ = "0.0.1"
-	__author__ = "PyAcqua team"
-	__preferences__ = {}
-
 	def __init__ (self):
 		gtk.Window.__init__ (self)
 

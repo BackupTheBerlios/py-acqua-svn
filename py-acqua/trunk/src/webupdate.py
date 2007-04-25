@@ -23,27 +23,21 @@ import gtk
 import gobject
 import httplib
 import threading
-import pyacqua.generate as generate
-import pyacqua.app as app
-import pyacqua.utils as utils
+import generate
+import app
+import utils
 import os.path
 import sys
 
-REPOSITORY_ADDRESS = "http://www.pyacqua.net"
-BASE_DIR = "/update/source/"
-LIST_FILE = "/update/list.txt"
+#REPOSITORY_ADDRESS = "http://www.pyacqua.net"
+#BASE_DIR = "/update/source/"
+#LIST_FILE = "/update/list.xml"
 
-#REPOSITORY_ADDRESS = r"localhost"
-#BASE_DIR = r"/~stack/update/source/"
-#LIST_FILE = r"/~stack/update/list.txt"
+REPOSITORY_ADDRESS = r"localhost"
+BASE_DIR = r"/~stack/update/source/"
+LIST_FILE = r"/~stack/update/list.xml"
 
 class Fetcher(threading.Thread):
-
-	__name__ = "WebUpdate"
-	__desc__ = "Plugin for WebUpdate"
-	__ver__ = "0.0.1"
-	__author__ = "PyAcqua team"
-	__preferences__ = {}
 	
 	def __init__ (self, callback, url):
 		self.data = None
@@ -61,7 +55,6 @@ class Fetcher(threading.Thread):
 				self.data = self.response.read ()
 			except:
 				print _("!! Errore mentre scaricavo da %s") % self.url
-				utils.info (_("!! Errore mentre scaricavo la lista"))# % self.url
 		finally:
 			gobject.idle_add (self._on_data)
 
@@ -81,17 +74,30 @@ class WebUpdate (gtk.Window):
 
 		vbox = gtk.VBox (False, 2)
 
-		self.store = gtk.ListStore (str, str, int, str, int, bool) #il bool finale: to_add?
+		self.store = gtk.ListStore (
+			gtk.gdk.Pixbuf, # icona
+			str, # nome file
+			int, # new_revision
+			int, # bytes
+			str, # md5
+			int, # old_revision
+			int, # old bytes
+			str, # old_md5
+			int, # percentuale scaricamento
+			bool) #il bool finale: to_add?
+		
 		self.tree = gtk.TreeView (self.store)
+		
+		self.tree.append_column (gtk.TreeViewColumn ("", gtk.CellRendererPixbuf(), pixbuf=0))
 
-		rend = gtk.CellRendererText (); id = 0
-		for i in (_("File"), _("Azione"), _("Bytes"), _("MD5")):
+		rend = gtk.CellRendererText (); id = 1
+		for i in (_("File"), _("Rev"), _("Bytes"), _("MD5"), _("oldRev"), _("oldBytes"), _("oldMD5")):
 			col = gtk.TreeViewColumn (i, rend, text=id)
 			self.tree.append_column (col)
 			id += 1
 
 		rend = gtk.CellRendererProgress ()
-		col = gtk.TreeViewColumn (_("%"), rend, value=4)
+		col = gtk.TreeViewColumn (_("%"), rend, value=8)
 		self.tree.append_column (col)
 
 		sw = gtk.ScrolledWindow ()
@@ -126,6 +132,10 @@ class WebUpdate (gtk.Window):
 		self.checklist = []
 		
 		self.actual_data = generate.Generator.ParseDir (utils.HOME_DIR)
+		self.xml_util = generate.UpdateXML ()
+		
+		self.icon_add = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "add.png"))
+		self.icon_del = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "del.png"))
 
 	def _on_get_list (self, widget):
 		widget.set_sensitive (False)
@@ -137,16 +147,6 @@ class WebUpdate (gtk.Window):
 		f = Fetcher (callback, url)
 		f.setDaemon (True)
 		f.start ()
-	
-	def _convert_to_dict(self, data):
-		data = data.splitlines()
-		dict = {}
-		
-		for i in data:
-			name, bytes, sum = i.split("|")
-			dict[name] = bytes + "|" + sum
-		
-		return dict
 
 	def _populate_tree (self, data, response):
 		self.get_btn.set_sensitive (True)
@@ -159,53 +159,26 @@ class WebUpdate (gtk.Window):
 			self.status.push (0, _("Errore durante lo scaricamento della lista dei file (HTTP %d)") % response.status)
 			return
 
-		data = self._convert_to_dict (data)
+		#data = self._convert_to_dict (data)
+		new_dict_object = self.xml_util.create_dict_from_string (data)
+		current_dict_object = self.xml_util.create_dict_from_file ("/home/stack/py-acqua/py-acqua/trunk/list.xml") # FIXME: Fixami
 		
-		precheck = len (data) - len (self.actual_data)
+		diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
 		
-		if precheck > 0:
-			print _(">> Nuovi file aggiunti dall'ultimo update.")
-			utils.info (_("Nuovi file aggiunti dall'ultimo update"))
-		elif precheck < 0:
-			print _(">> Qualche file e' stato zappato dall'ultimo update.")
-			utils.info (_("Qualche file è stato zappato dall'ultimo update"))
-		for i in self.actual_data:
-			n_bytes, n_sum = "0", "0"
-			o_bytes, o_sum = self.actual_data[i].split("|")
-			
-			to_add = False
-			
-			if data.has_key (i):
-				n_bytes, n_sum = data[i].split("|")
+		for root in diff_object:
+			for node in diff_object[root]:
+				tmp = diff_object[root][node]
 				
-				if n_sum != o_sum:
-					print _(">> Il checksum e' differente. Aggiungo il file %s") % i
-					utils.info (_("Il checksum è differente. Aggiungo il file %s")) % i
-					to_add = True
+				if node == ".": continue
+				if root[0:2] == "$$" and root[-2:] == "$$":
+					
+					self.store.append ([self.icon_add, os.path.join (root[2:-2], node),
+						0, 0, "0",
+						tmp[0], int (tmp[1]), tmp[2], 0, True])
 				else:
-					if n_bytes == o_bytes:
-						print _(">> Bene! Tutto questo lavoro per niente!")
-						utils.info (_("Bene! Tutto questo lavoro per niente!"))
-					else:
-						print _(">> U0z! Collisione di MD5 per il file %s") % i
-						utils.info (_("U0z!! Collisione di MD5 per il file %s comunque il file deve essere aggiunto")) % i
-						print _(">> Comunque il file deve essere aggiunto -_-")
-						
-						to_add = True
-				data.pop (i)
-			else:
-				print _(">> Questo file deve essere cancellato %s") % i
-				utils.info (_("Questo file deve essere cancellato %s")) % i
-				self.store.append ([i, _("Elimina"), int (o_bytes), o_sum, 0, False])
-				
-			if to_add:
-				self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
-		
-		for i in data:
-			n_bytes, n_sum = data[i].split("|")
-			print _(">> Questo file deve essere aggiunto %s") % i
-			utils.info (_("Questo file deve essere aggiunto %s")) % i
-			self.store.append ([i, _("Scarica"), int (n_bytes), n_sum, 0, True])
+					self.store.append ([self.icon_del, os.path.join (root, node),
+						tmp[0], int (tmp[1]), tmp[2],
+						tmp[3], int (tmp[4]), tmp[5], 0, False])
 		
 		self.update_btn.set_sensitive (True)
 	
@@ -224,10 +197,8 @@ class WebUpdate (gtk.Window):
 		
 		if not data:
 			print _(">> Nessun file da ricevere")
-			utils.info (_("Nessun file da ricevere"))
 		if response.status != 200:
 			print _("!! Errori. Il sospetto e' %s (response: %d)") % (self.file, response.status)
-			utils.info (_("!! Errori. Il sospetto è %s (response: %d)")) % (self.file, response.status)
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
@@ -241,7 +212,6 @@ class WebUpdate (gtk.Window):
 				os.mkdir (path)
 	
 		print _(">> File ricevuto %s") % self.file
-		utils.info (_("File ricevuto %s")) % self.file
 	
 		f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
 		f.write (data)
@@ -274,7 +244,6 @@ class WebUpdate (gtk.Window):
 				self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				print _(">> Questo file deve essere aggiunto (setto 0 come checksum)")
-				utils.info (_("Questo file deve essere aggiunto (setto 0 come checksum)"))
 				self.checklist.append ("%s|0|0" % self.file)
 				self._update_percentage ()
 				self._go_with_next_iter ()
