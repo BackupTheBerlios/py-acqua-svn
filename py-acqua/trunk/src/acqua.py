@@ -53,7 +53,7 @@ except:
 def main ():
 	
 	APP = 'acqua'
-	#FIXME: porcoddio
+	#FIXME: non bestemmiare
 	#DIR = os.path.join (utils.DHOME_DIR, "locale")
 	
 	# il locale ora si trovera nell home in modo da caricarlo come plugin
