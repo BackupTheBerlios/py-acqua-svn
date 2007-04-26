@@ -19,11 +19,12 @@
 /*************************************************
 
 
-//*********************************************************************
+
+//***********************************************************************************
 // 
-//   TEST DELL'INTEGRATO MCP23008 
+//   TEST DEL LCD PILOTATO IN I2C DAL CHIP MCP230016. si mcp230016 con 16 i/o
 //
-//*********************************************************************
+//***********************************************************************************
 
 
 
@@ -36,7 +37,7 @@ RESISTENZE DI PULLUP SU I2C DI 1K !
 
 di fabbrica tt i pin sono configurati in ingresso
 
-PIN A0,A1,A2 A MASSA
+PIN A0,A1,A2 A VCC
 RESET A VCC
 
 ****************************************************/
@@ -48,16 +49,24 @@ RESET A VCC
 #include "time.h"
 #include "sys/ioctl.h"
 #include "fcntl.h"     
-#include "asm/etraxgpio.h"
+
+#include "stdarg.h"
+#include "string.h"
 
 
-#define myMcp23008_id	0x20
 
-//REGISTRI
+
+
+
+#define lcdMcp23017_id	0x27
+
+
+//REGISTRI  X BANCO ZERO !
 //x impostare direzione
 // 1 = input
 // 0 = output
-#define	IODIR	0X00	
+#define	IODIRA	0X00
+#define	IODIRB	0X01
 	#define IO7	7
 	#define IO6	6
 	#define IO5	5
@@ -69,7 +78,8 @@ RESET A VCC
 // INVERTE LETTURA
 // 1 = riflette il livello logico opposto a quello presente sul pin quando si legge GPIO
 // 0 = lettura = stato del pin
-#define	IPOL	0X01 	
+#define	IPOLA	0X02 	
+#define	IPOLB	0X03 	
 	#define IP7	7
 	#define IP6	6
 	#define IP5	5
@@ -82,7 +92,8 @@ RESET A VCC
 // 1 = abilitato
 //	N.B.: bisogna configurare anche DEFVAL ed INTCON
 // 0 = disabilitato
-#define	GPINTEN	0X02
+#define	GPINTENA	0X04
+#define	GPINTENB	0X05
 	#define GPINT7	7
 	#define GPINT6	6
 	#define GPINT5	5
@@ -94,7 +105,8 @@ RESET A VCC
 // LIVELLO LOGICO A CUI SI GENERE L'INTERRUPT
 //   l'interrupt si genera quando sul pin c'è un livello 
 //  opposto a quello impostato nel bit associato di questo registro.
-#define	DEFVAL	0X03
+#define	DEFVALA	0X06
+#define	DEFVALB 0X07
 	#define DEF7	7
 	#define DEF6	6
 	#define DEF5	5
@@ -106,7 +118,8 @@ RESET A VCC
 //REGISTRO DI CONTROLLO DELL'INTERRUPT
 // 1 = IL PIN È COMPARATO CON IL CORRISPONDENTE BIT IN DEFVAL
 // 0 = IL PIN È COMPARATO CON LO STATO PRECEDENTE DELLO STESSO. (DEFVAL VIENE IGNORATO) 
-#define	INTCON	0X04
+#define	INTCONA	0X08
+#define	INTCONB 0X09
 	#define IOC7	7
 	#define IOC6	6
 	#define IOC5	5
@@ -116,28 +129,40 @@ RESET A VCC
 	#define IOC1	1
 	#define IOC0	0
 //CONFIGURAZIONE DEI REGISTRI DELL' I/O EXPANDER
-#define	IOCON	0X05
-	//7,6,3,0 NON PRESENTI
-// LETTURA SEQUENZIALE
-// 1 = lettura sequenziale disabilitata, puntatore indirizzi non incrementato
-// 0 = lettura sequenziale abilitata, puntatore indirizzi incrementato
-	#define SREAD	5
-//GESTISCE SLEW RATE DI SDA
-// 1 = disabilitato
-// 0 = abilitato
-	#define DISSLW	4
-//CONFIGURA IL TIPO DI OUTPUT DEGLI 'INT' PIN
-// 1 = open drain
-// 0 = uscita del driver attiva
-	#define ODR	2
-// SETTA LA POLARITÀ DELL'OUTPUT PIN 'INT'
-// 1 = attivo a livello alto
-// 0 = attivo a livello basso
-	#define INTPOL	1
+#define	IOCONA	0X0A
+#define	IOCONB	0X0B
+	#define BANK	7 	//SCELTA DEL BANCO DEI REGISTRI
+						// 1 i regiastri assocciati ad ogni porta sono separati uin 2 banchi separati
+						// 0 registri nello stesso banco (default)
+						
+	#define MIRROR	6	//SETTING DEI PIEDINI DI INTERRUPT
+						// 1 INTA E INTB internamente connessi
+						// 0 INTA è associato a porta e INTB a portb
+		
+
+	#define SREAD	5 	// LETTURA SEQUENZIALE
+						// 1 = lettura sequenziale disabilitata, puntatore indirizzi non incrementato
+						// 0 = lettura sequenziale abilitata, puntatore indirizzi incrementato
+
+	#define DISSLW	4	//GESTISCE SLEW RATE DI SDA
+						// 1 = disabilitato
+						// 0 = abilitato
+						
+//	#define HAEN	3	//non presente in questo chip
+
+	#define ODR		2	//CONFIGURA IL TIPO DI OUTPUT DEGLI 'INT' PIN
+						// 1 = open drain
+						// 0 = uscita del driver attiva
+
+	#define INTPOL	1	// SETTA LA POLARITÀ DELL'OUTPUT PIN 'INT'
+						// 1 = attivo a livello alto
+						// 0 = attivo a livello basso
+						
 // Imposta le resistenze di pull-up sugli ingressi
 // 1 = se il pin è configurato come input, viene applicata la resistenza di pullup
 // 0 = nessun pullup
-#define	GPPU	0X06
+#define	GPPUA	0X0C
+#define	GPPUB	0X0D
 	#define PU7	7
 	#define PU6	6
 	#define PU5	5
@@ -149,7 +174,8 @@ RESET A VCC
 // Registro x abilitare gli interrupt
 // 1 = interrupot abilitato
 // 0 = interrupt disabilitato
-#define	INTF	0X07
+#define	INTFA	0X0E
+#define	INTFB	0X0F
 	#define INT7	7
 	#define INT6	6
 	#define INT5	5
@@ -161,7 +187,8 @@ RESET A VCC
 // RIFLETTE I LIVELLI LOGICI DEI PIN IMPOSTATI COME INTERRUPT AL MOMENTO DEL CAMBIAMENTO DI STATO
 // 1 = attivo alto
 // 0 = attivo basso
-#define	INTCAP	0X08
+#define	INTCAPA	0X10
+#define	INTCAPB	0X11
 	#define ICP7	7
 	#define ICP6	6
 	#define ICP5	5
@@ -173,7 +200,8 @@ RESET A VCC
 // RIFLETTE IL LIVELLO LOGICO DEL PIN
 // 1 = livello logico alto
 // 0 = livelLo logico basso
-#define	GPIO	0X09
+#define	GPIOA	0X12
+#define	GPIOB	0X13
 	#define GP7	7
 	#define GP6	6
 	#define GP5	5
@@ -185,7 +213,8 @@ RESET A VCC
 // ACCEDE AL VALORE DEI LATCH DI USCITA
 // 1 = livello logico alto
 // 0 = livelLo logico basso
-#define	OLAT	0X0A  //LATCH
+#define	OLATA	0X14  //LATCH
+#define	OLATB	0X15  //LATCH
 	#define OL7	7
 	#define OL6	6
 	#define OL5	5
@@ -194,6 +223,21 @@ RESET A VCC
 	#define OL2	2
 	#define OL1	1
 	#define OL0	0
+
+
+//***************
+//LCD PIN
+//**************
+
+#define  lcd_port	0X12 //GPIOA
+#define  lcd_E		3
+#define  lcd_RS		2
+#define  lcd_D4		4
+#define  lcd_D5		5
+#define  lcd_D6		6
+#define  lcd_D7		7
+  
+
 
 #define CLOCK_LOW_TIME            8
 #define CLOCK_HIGH_TIME           8
@@ -207,8 +251,11 @@ RESET A VCC
 #define I2C_DATA_LOW 0
 
 
-#define I2C_DATA_LINE       1<<24
-#define I2C_CLOCK_LINE      1<<25
+#define I2C_DATA_LINE       PORTG
+#define I2C_CLOCK_LINE      PORTG
+#define I2C_DATA_PIN       24
+#define I2C_CLOCK_PIN      25
+
 
 #ifndef IO_SETGET_INPUT
 #define IO_SETGET_INPUT   0x12
@@ -219,7 +266,7 @@ RESET A VCC
 
 #define i2c_delay(usecs) usleep(usecs)
 
-int i2c_fd;
+
 char stringa[2];
 //-----------------------------
 //FUNZIONI
@@ -267,59 +314,36 @@ void msDelay(int ms) {
 
 // Get the SDA line state
 int i2c_getbit(void) {
-  unsigned int value;
-  value=ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
-  if ((value&(I2C_DATA_LINE))==0) 
-    return 0;
-  else 
-    return 1;
-}
+    return (gpiogetbits(I2C_DATA_LINE,I2C_DATA_PIN))?(1):(0);    
+}//        (gpiogetbits(PORTG, PG2))?(1):(0))
 
 // Set the SDA line state
 void i2c_data(int state) {
   if (state==1) 
-    ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_DATA_LINE);
+    gpiosetbits(I2C_DATA_LINE,I2C_DATA_PIN);
   else 
-    ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_DATA_LINE);
+    gpioclearbits(I2C_DATA_LINE,I2C_DATA_PIN);
 }
 
 // Set the SCL line state
 void i2c_clk(int state) {
   if (state==1) 
-    ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
+    gpiosetbits(I2C_CLOCK_LINE,I2C_CLOCK_PIN);
   else 
-    ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE);
+     gpioclearbits(I2C_CLOCK_LINE,I2C_CLOCK_PIN);
 }
 
 // Set the SDA line as output
 void i2c_dir_out(void) {
-  int iomask;
-  iomask = I2C_DATA_LINE;
-  ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), &iomask);
+ gpiosetdir(PORTG, DIROUT, PG24);
 }
 
 // Set the SDA line as input
 void i2c_dir_in(void) {
-  int iomask;
-  iomask = I2C_DATA_LINE;
-  ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), &iomask);
+  gpiosetdir(PORTG, DIRIN, PG24);
 }
 
-// Open the GPIOG dev 
-int i2c_open(void) {
-  i2c_fd = open("/dev/gpiog", O_RDWR);
-	i2c_data(I2C_DATA_HIGH);
- 	i2c_dir_out();
-	i2c_clk(I2C_CLOCK_HIGH);
-	i2c_data(I2C_DATA_HIGH);
-	i2c_delay(100);
-  return i2c_fd;
-}
 
-// Close the GPIOG dev 
-void i2c_close(void) {
-  close(i2c_fd);
-}
 
 // Read a byte from I2C bus and send the ack sequence
 unsigned char i2c_inbyte(int ack) {
@@ -398,122 +422,221 @@ int i2c_outbyte(unsigned char x) {
 }
 
 //*********************
-//  MCP23008 ROUTINES
+//  MCP23017 ROUTINES
 //*********************
-int mcp23008_leggi(int reg){
+int mcp23017_regLeggi(int reg){
 	int data;
 	i2c_start();
-	i2c_outbyte(myMcp23008_id<<1); // accoda uno zero x dire scrivi
+	i2c_outbyte(lcdMcp23017_id<<1); // accoda uno zero x dire scrivi
 	i2c_outbyte(reg);
 	i2c_start();
-	i2c_outbyte((myMcp23008_id<<1)+1); // accoda un uno  x dire leggi 
+	i2c_outbyte((lcdMcp23017_id<<1)+1); // accoda un uno  x dire leggi 
 	data=i2c_inbyte(0);
 	i2c_stop();
 	return data;
 }
 
-void mcp23008_scrivi(int registro,int value){
-
+void mcp23017_regScrivi(int registro,int value){
 	i2c_start();
-	i2c_outbyte(myMcp23008_id<<1);
+	i2c_outbyte(lcdMcp23017_id<<1);
 	i2c_outbyte(registro);
 	i2c_outbyte(value);
 	i2c_stop();
+}
 
-}
-void mcp23008_ttOut(){
-	mcp23008_scrivi(IODIR,0);
-}
-void mcp23008_ttIn(){
-	mcp23008_scrivi(IODIR,0XFF);
-	mcp23008_scrivi(GPPU,0xFF);//pull-up su tutti
+
+void mcp23017_pinWriteLevel(int gp,int pin,int level){
+	int value;
 	
+///	printf("porta= %d\n",GPIOA);	
+//	printf("pin= %d livello= %d\n",pin,level);
+		
+		
+	value=mcp23017_regLeggi(GPIOA);
+//	printf("letto= %d\n",value);
+	
+	if (level==1) value=value | (1 << pin ); // = 2^pin
+	else if (level==0) value=value & ( 0xff -(1 << pin ));
+	else printf("ERRORE LIVELLO ERATO: %d", level);
+	
+
+//	printf("scritto= %d\n",value);
+	mcp23017_regScrivi(GPIOA,value);
+	
+///	value=mcp23017_regLeggi(GPIOA);
+	//printf("verifica= %d\n",value);
 }
 
-void mcp23008_scriviGpio(int value){	
-	mcp23008_scrivi(IODIR,value);
+
+
+void lcdMcpInit(){
+//init input x 5 pulsanti
+//init output x fili al display
+
+	//imposta mcp
+	
+	
+	
+	mcp23017_regScrivi(IODIRA,0);//DISPLAY, TT OUT
+	mcp23017_regScrivi(IODIRB,0);//pulsanti, tt in
+	mcp23017_regScrivi(GPIOA,0);//uscite sul display a zero
+	mcp23017_regScrivi(GPPUB,0);// pullup sui pulsanti
 }
 
-int mcp23008_leggiGpio(){
-	int gpio_level;
-	gpio_level=mcp23008_leggi(GPIO);
-	return gpio_level;
+
+//*********************************************************************
+// LCD functions
+//*********************************************************************
+
+// RS line
+void lcd_rs(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_RS,level); }
+//  E line
+void lcd_e(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_E,level);}
+// D4..7
+void lcdD4(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D4,level);}
+void lcdD5(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D5,level);}
+void lcdD6(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D6,level);}
+void lcdD7(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D7,level);}
+
+void lcd_e_strobe() {
+	lcd_e(1);
+	lcd_e(0);
+}
+
+// Send a nibble (4 bit) to LCD
+void lcd_put_nibble( int value) {
+	if (value&0x01) lcdD4(1);
+	else 			lcdD4(0);
+	if (value&0x02) lcdD5(1);
+	else 			lcdD5(0);
+	if (value&0x04) lcdD6(1);
+	else 			lcdD6(0);
+	if (value&0x08) lcdD7(1);
+	else 			lcdD7(0);
+}
+
+// Send a char to LCD
+// data: Ascii char or instruction to send
+// mode: 0 = Instruction, 1 = Data
+void lcd_putc(unsigned char data, int mode) {
+	int a;
+	
+	if (!mode) lcd_rs(0);
+	else lcd_rs(1);
+	
+	a=(data>>4)&0x000F;
+	lcd_put_nibble(a);
+	lcd_e_strobe();
+	a=data&0x000F;
+	lcd_put_nibble(a);
+	lcd_e_strobe();
+} 
+
+// Lcd initialization
+void lcd_init() {
+	gpiosetdir(PORTG, DIROUT, I2C_CLOCK_PIN); //clock
+
+	
+
+	
+
+ 
+	lcd_rs(0);
+	lcd_e(0);
+	msDelay(15);
+	
+	lcd_put_nibble(0x03);
+	lcd_e_strobe();
+	msDelay(4);
+	lcd_e_strobe();
+	msDelay(2);
+	lcd_e_strobe();
+	msDelay(2);
+	lcd_put_nibble(0x02);
+	lcd_e_strobe();
+	msDelay(1);
+
+  	lcd_putc(0x28,0);
+	msDelay(1);
+  	lcd_putc(0x06,0);
+	msDelay(1);
+  	lcd_putc(0x0C,0);
+	msDelay(1);
+ 	lcd_putc(0x01,0);
+	msDelay(2);
+} 
+
+// Locate cursor on LCD
+// row (0-2)
+// col (1-39)
+void lcd_locate(int row, int col) {
+  lcd_putc(0x80+row*0x40+col,0);
+  udelay(35);
+} 
+
+// Clear LCD
+void lcd_clear(int fd) {
+  lcd_putc(0x01,0);
+  msDelay(2);
+} 
+
+// Lcd version of printf
+void lcd_printf(char *format, ...) {
+  int i;
+  
+  va_list argptr;
+  char buffer[1024];
+  
+  va_start(argptr,format);
+  vsprintf(buffer,format,argptr);
+  va_end(argptr);
+  
+  for (i=0;i<strlen(buffer);i++) {
+    lcd_putc(buffer[i],1);
+  }
 }
 
 
-
+//*****************
+//		MAIN
+//*****************
 
 int  main (void) {
-int scelta,pin,value,level;
+int scelta;
 
-    if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
-    for(;;){
+	system ("clear");
 
-	printf("GESTIONE MCP23008\n");
+	if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
+   
+    for(;;){
+	printf("GESTIONE LCD COMANDATO DA MCP23017\n");
 	printf("Operazioni possibili:\n");
-	printf("1:Imposta tutti i pin in ingresso con pull-up interno\n");
-	printf("2:Imposta tutti i pin in uscita senza interrupt\n");
-	printf("3:Lettura dello stato dei pin\n");
-	printf("4:Scrittura del valore logico dei pin\n");
-	printf("5:Esci\n\n");
+	
+	printf("0:mcp\n");
+	printf("1:lcd\n\n");
+	printf("2:TEST\n");
+	printf("3:Esci\n\n");
 	printf("Scelta = ");
 	scanf ("%X",&scelta);
-	if (scelta==1){
-			mcp23008_ttIn();
-		printf("Comando eseguito");	
-	}
+ if (scelta==0)lcdMcpInit();
+		
+		else if (scelta==1)	lcd_init();
+	
 	else if (scelta==2){
-		mcp23008_ttOut();
-		printf("Comando eseguito");
-	}
-	else if (scelta==3){//lettura
-		printf("1:Leggi tutti lo stato di tutti pin\n");
-		printf("2:Leggi lo stato di un singolo pin\n");
-		printf("Scelta = ");
-		scanf ("%d",&scelta);
-	
-		if (scelta==1)	printf("\n\n GPIO = %d",mcp23008_leggiGpio());
-		else if(scelta==2){
-			printf("2:Inserisci il numero del pin(0..7)\n");
-			printf("Pin = ");
-			scanf ("%d",&pin);
-			value=mcp23008_leggiGpio();
-			value=value & (2^pin ); // maschra
-			printf("Livello logico del pin= ");
-			if (value==(2^pin ))printf("1\n");
-			else printf("0\n");
-		}
-	}
-	else if (scelta==4){//scrittura
-		printf("1:Modifica tutta la porta GPIO\n");
-		printf("2:Un singolo pin x volta\n");
-		printf("Scelta = ");
-		scanf ("%d",&scelta);
-	
-		if (scelta==1){
-			printf("Inserisci il valore(0..FF) a cui si dovranno portare tutti i pin\n");
-			printf("Valore = ");
-			scanf ("%X",&value);
-			// controllare che sia impostato tt in uscita.
-			mcp23008_scrivi(GPIO,value);
-		}
-		else if(scelta==2){
-			printf("Inserisci il numero del pin (0..7) e il valore (0..FF) a cui si dovrà portare\n");
-			printf("Pin = ");
-			scanf ("%d",&pin);
-			printf("Valore = ");
-			scanf ("%d",&level);
-	
-			// controllare che il pin sia impostato in uscita.
-			value=mcp23008_leggiGpio();
-			value = level<<pin;
-			mcp23008_scrivi(GPIO,value);
-		}
-	}
-	else if (scelta==5) return 1;
-	printf("\n\n");
-    }
+	    lcd_locate(1,0);
+	    lcd_printf("http://www.pyacqua.net");	
+	    lcd_locate(1,1);
+	    lcd_printf("Visitaci");		
+	    lcd_locate(21,0);
+	    lcd_printf("Ciao3");	
+	    lcd_locate(21,1);
+	    lcd_printf("Ciao4");		
+	    
 
+		printf("Frasi di prova scritte\n");	
+	}
+	else if (scelta==3) return 1;
+    }
 }
 
 
