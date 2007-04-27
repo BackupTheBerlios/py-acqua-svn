@@ -63,7 +63,7 @@ def main ():
 		ll = impostazioni.get ("lang").lower()
 		oo = gettext.translation (APP, DIR, [ll])
 		ll.install ()
-		print "ciao" 
+		
 		try:
 			os.environ['LANG'] = ll
 			locale.setlocale (locale.LC_MESSAGES, ll)

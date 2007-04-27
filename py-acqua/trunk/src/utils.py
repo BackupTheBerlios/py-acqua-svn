@@ -38,6 +38,7 @@ IMGS_DIR = None
 DATA_DIR = None
 UPDT_DIR = None
 SKIN_DIR = None
+PROG_DIR = None
 
 # FIXME: prima della release
 
@@ -61,7 +62,7 @@ def tray_apri():#self, widget, data=None):
 	return tray.TrayIcon()
 
 def init_dir_structure ():
-	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR, IMGS_DIR
+	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR, IMGS_DIR, PROG_DIR
 	
 	if os.name != "nt":
 		path = os.environ["HOME"]
@@ -80,6 +81,7 @@ def init_dir_structure ():
 	DATA_DIR = create_dir (path, "data")
 	UPDT_DIR = create_dir (path, "update")
 	SKIN_DIR = create_dir (path, "skins")
+	PROG_DIR = create_dir (path, "program")
 
 # FIXME: da controllare per eccezioni ecc.. dara' scazzi senza controllo
 def create_dir (path, name):

@@ -22,6 +22,7 @@
 import os.path
 import utils
 import generate
+from xml.dom.minidom import parse, getDOMImplementation
 
 def fill_fs_structure (path):
 	lst = path.split (os.path.sep); lst.pop () # Eliminiamo la parte del file
@@ -43,7 +44,7 @@ def rmgeneric(path, __func__):
 		print _(">> Path Rimosso (%s)") % path
 	except OSError, (errno, strerror):
 		print _("!! Errore mentre rimuovevo %s (%s)") % (path, strerror)
-            
+
 def removeall (path):
 	if not os.path.isdir (path):
 		return
@@ -59,61 +60,60 @@ def removeall (path):
 			f=os.rmdir
 			rmgeneric (fullpath, f)
 
+def commit_file (path):
+	"""
+	Muove il file (path e' il percorso assoluto del file) nella directory appropriata
+	"""
+	print "Moving", path
+
 def update ():
-	path = os.path.join (utils.UPDT_DIR, ".checklist")
+	path = os.path.join (utils.UPDT_DIR, ".diff.xml")
 	
 	if not os.path.exists (path):
 		return
 	
-	file = open (path, 'r')
-	list = file.readlines ()
-	file.close ()
-
-	for i in list:
-		line = i[:-1]
-		name, bytes, sum = line.split ("|")
-		
-		path = os.path.join (utils.UPDT_DIR, name)
-
-		new_path = os.path.join (".", name)
-
-		bytes = int (bytes)
-
-		print _(">> File %s") % path
-
-		if sum == '0':
-			# Questo file deve essere zappato via.. via!
-			print _(">> Elimino %s") % name, 
-
-			if os.path.isfile (new_path):
-				os.remove (new_path)
-				print _("OK (file)")
-			elif os.path.isdir (new_path):
-				os.rmdir (new_path)
-				print _("OK (dir)")
-		else:
-			# File da aggiornare.. controlla il checksum se corretto sposta
-			new_sum = generate.Generator.checksum (path)
-
-			if new_sum == sum:
-				print _(">> Checksum corretto. Adesso sposto ;)"),
-				if os.path.isfile (new_path):
-					os.remove (new_path)
-					print _("OK (file)")
-				elif os.path.isdir (new_path):
-					os.rmdir (new_path)
-					print _("OK (dir)")
-
-				fill_fs_structure (name)
-				os.rename (path, new_path)			
-			else:
-				print _("!! Errore nel checksum")
+	try:
+		doc = parse (path)
+	except:
+		#eliminatutto 
+		return
+	
+	if doc.documentElement.tagName == "pyacqua":
+		for root in doc.documentElement.childNodes:
+			if root.nodeName == "directory":
+				directory = root.attributes["name"].nodeValue
+				
+				if directory[0:2] == "$$" and directory[-2:] == "$$":
+					# Fai un for e cancella tutti i file elencati
+					# se la directory alla fine rimane vuota va cancellata
+					print "Implement me"
+				else:
+					# Controlla se esiste la directory altrimenti creala
+					print "implement me"
+					
+					
+				for node in root.childNodes:
+					if node.nodeName == "file":
+						tmp_path = os.path.join (utils.UPDT_DIR, directory)
+						tmp_path = os.path.join (tmp_path, node.attributes["name"].nodeValue)
+						
+						md5_v = generate.Generator.checksum (tmp_path)
+						bytes_v = os.path.getsize (tmp_path)
+						
+						md5_n = node.attributes["md5"].nodeValue
+						bytes_n = node.attributes["bytes"].nodeValue
+						
+						if md5_v == md5_n and bytes_v == bytes_n:
+							# Sposta il file
+							commit_file (tmp_path)
 	
 	print _(">> Pulisco la directory dell'Update")
 	removeall (utils.UPDT_DIR)
+	
+	# Crea la nuova list.xml
 
 def check_for_updates ():
-	if os.path.exists (os.path.join (utils.UPDT_DIR, ".checklist")):
+	if os.path.exists (os.path.join (utils.UPDT_DIR, ".diff.xml")):
 		print _(">> Aggiornamento disponibile. Procedo con il merging dei file")
 		update ()
 	else:

@@ -84,7 +84,8 @@ class WebUpdate (gtk.Window):
 			int, # old bytes
 			str, # old_md5
 			int, # percentuale scaricamento
-			bool) #il bool finale: to_add?
+			bool, #il bool finale: to_add?
+			gtk.gdk.Color) # colre di background
 		
 		self.tree = gtk.TreeView (self.store)
 		
@@ -99,7 +100,10 @@ class WebUpdate (gtk.Window):
 		rend = gtk.CellRendererProgress ()
 		col = gtk.TreeViewColumn (_("%"), rend, value=8)
 		self.tree.append_column (col)
-
+		
+		for i in self.tree.get_columns ():
+			i.add_attribute (i.get_cell_renderers ()[0], 'cell_background-gdk', 10)
+			
 		sw = gtk.ScrolledWindow ()
 		sw.add (self.tree)
 		vbox.pack_start (sw)
@@ -136,6 +140,10 @@ class WebUpdate (gtk.Window):
 		
 		self.icon_add = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "add.png"))
 		self.icon_del = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "del.png"))
+		
+		self.color_add = gtk.gdk.color_parse ('#70ef70')
+		self.color_del = gtk.gdk.color_parse ('#ff8080')
+		self.color_done = gtk.gdk.color_parse ('#bcfffc')
 
 	def _on_get_list (self, widget):
 		widget.set_sensitive (False)
@@ -163,22 +171,26 @@ class WebUpdate (gtk.Window):
 		new_dict_object = self.xml_util.create_dict_from_string (data)
 		current_dict_object = self.xml_util.create_dict_from_file ("/home/stack/py-acqua/py-acqua/trunk/list.xml") # FIXME: Fixami
 		
-		diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
+		self.diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
 		
-		for root in diff_object:
-			for node in diff_object[root]:
-				tmp = diff_object[root][node]
+		for root in self.diff_object:
+			for node in self.diff_object[root]:
+				tmp = self.diff_object[root][node]
 				
 				if node == ".": continue
 				if root[0:2] == "$$" and root[-2:] == "$$":
 					
-					self.store.append ([self.icon_add, os.path.join (root[2:-2], node),
+					self.store.append ([self.icon_del, os.path.join (root[2:-2], node),
 						0, 0, "0",
-						tmp[0], int (tmp[1]), tmp[2], 0, True])
+						tmp[0], int (tmp[1]), tmp[2], 0, False,
+						self.color_del
+					])
 				else:
-					self.store.append ([self.icon_del, os.path.join (root, node),
+					self.store.append ([self.icon_add, os.path.join (root, node),
 						tmp[0], int (tmp[1]), tmp[2],
-						tmp[3], int (tmp[4]), tmp[5], 0, False])
+						tmp[3], int (tmp[4]), tmp[5], 0, True,
+						self.color_add
+					])
 		
 		self.update_btn.set_sensitive (True)
 	
@@ -217,7 +229,6 @@ class WebUpdate (gtk.Window):
 		f.write (data)
 		f.close ()
 		
-		self._update_check_list ()
 		self._update_percentage ()
 		self._go_with_next_iter ()
 		#except:
@@ -225,12 +236,6 @@ class WebUpdate (gtk.Window):
 	
 	def _update_percentage (self):
 		self.tree.get_model ().set_value (self.it, 4, 100)
-
-	def _update_check_list (self):
-		bytes = self.tree.get_model ().get_value (self.it, 2)
-		sum = self.tree.get_model ().get_value (self.it, 3)
-		
-		self.checklist.append ("%s|%d|%s" % (self.file, bytes, sum))
 		
 	def _go_with_next_iter (self):
 		self.it = self.tree.get_model ().iter_next (self.it)
@@ -238,29 +243,16 @@ class WebUpdate (gtk.Window):
 		
 	def _update_from_iter (self):
 		if self.it != None:
-			self.file = self.tree.get_model ().get_value (self.it, 0)
+			self.file = self.tree.get_model ().get_value (self.it, 1)
 			
-			if self.tree.get_model ().get_value (self.it, 5):
+			if self.tree.get_model ().get_value (self.it, 9):
 				self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
-				print _(">> Questo file deve essere aggiunto (setto 0 come checksum)")
-				self.checklist.append ("%s|0|0" % self.file)
 				self._update_percentage ()
 				self._go_with_next_iter ()
 		else:
-			# Probabilmente abbiamo finito.. controlliamo la checklist e via
-			if len (self.checklist) > 0:
-					print "!! Aggiungi check prima della versione finale webupdate.py:199"
-				#try:
-					f = open (os.path.join (utils.UPDT_DIR, ".checklist"), "w")
-					for i in self.checklist:
-						f.write (i + "\n")
-					f.close ()
-
-					utils.info (_("Riavvia per procedere all'aggiornamento di PyAcqua"))
-					
-				#except:
-				#	print "Error while writing the checklist"
+			self.xml_util.dump_tree_to_file (self.diff_object, os.path.join (utils.UPDT_DIR, ".diff.xml"))
+			utils.info (_("Riavvia per procedere all'aggiornamento di PyAcqua"))
 		
 	def _on_delete_event (self, *w):
 		app.App.p_window["update"] = None

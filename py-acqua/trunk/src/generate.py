@@ -304,7 +304,8 @@ class UpdateXML (object):
 			
 			element = doc.createElement ("directory")
 			element.setAttribute ("name", i)
-			element.setAttribute ("revision", str (tree[i]["."][0]))
+			if tree[i].has_key ("."):
+				element.setAttribute ("revision", str (tree[i]["."][0]))
 			
 			for x in dict:
 				if x == ".": continue
@@ -326,13 +327,15 @@ class UpdateXML (object):
 			doc.writexml (writer, "\t", "\t", "\n")
 			writer.close ()
 
-# Testing
 if __name__ == "__main__":
 	a = UpdateXML ()
-	#a.dump_tree_to_file (a.create_dict_from_directory (), "list.xml")
-	#old_tree = a.loadlist ("list.xml")
-	#a.dump_tree_to_file (old_tree, None)
-	#a.dump_tree_to_file (a.create_dict_from_directory (old_tree), None)
 	
-	old_tree = a.create_dict_from_file ("list.xml")
-	a.dump_tree_to_file (a.create_dict_from_directory (old_tree), "update.xml")
+	try:
+		if sys.argv[1] == "makeupdate":
+			old_tree = a.create_dict_from_file ("list.xml")
+			a.dump_tree_to_file (a.create_dict_from_directory (old_tree), "update.xml")
+		elif sys.argv[1] == "makelist":
+			a.dump_tree_to_file (a.create_dict_from_directory (), "list.xml")
+	except:
+		print "Try with:\n\tpython src/generate.py makeupdate to make a new update.xml"
+		print "or with:\n\tpython src/generate.py makelist to make a new list.xml"
