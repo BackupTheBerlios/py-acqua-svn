@@ -21,9 +21,9 @@
 
 
 
-import pyacqua.app as app
 import gtk
-import pyacqua.utils as utils
+import app
+import utils
 
 class calcolatrice(gtk.Window):
 	__name__ = "Calcolatrice"

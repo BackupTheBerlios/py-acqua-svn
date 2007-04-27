@@ -21,9 +21,9 @@
 
 
 
-import pyacqua.app as app
 import gtk
-import pyacqua.utils as utils
+import app
+import utils
 
 class fox(gtk.Window):
 	__name__ = "Fox-Acqua"

@@ -214,20 +214,20 @@ def main ():
 if __name__ == "__main__":
 	# Dobbiamo caricare i moduli come import pyacqua.ecc
 	
-	import pyacqua.utils as utils
-	
-	utils.prepare_enviroment ()
-	
-	import pyacqua.app as app
-	import pyacqua.engine as engine
-	import pyacqua.merger as merger
-	import pyacqua.impostazioni as impostazioni
-	import pyacqua.backend as backend
-	
-	main ()
-	
-	
-else:
+#	import pyacqua.utils as utils
+#	
+#	utils.prepare_enviroment ()
+#	
+#	import pyacqua.app as app
+#	import pyacqua.engine as engine
+#	import pyacqua.merger as merger
+#	import pyacqua.impostazioni as impostazioni
+#	import pyacqua.backend as backend
+#	
+#	main ()
+#	
+#	
+#else:
 	
 	import utils
 	

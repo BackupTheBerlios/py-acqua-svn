@@ -1,6 +1,6 @@
-import pyacqua.app as app
 import gtk
-import pyacqua.impostazioni as impostazioni
+import app
+import impostazioni
 
 class dummy:
 	__name__ = "dummy plugin"

@@ -234,7 +234,6 @@ class UpdateXML (object):
 		if ret == 1 and old_tree:
 			dict_object["."]["."] = [old_tree["."]["."][0] + 1]
 		
-		print dict_object
 		return dict_object
 	
 	def appendFilesInfo (self, directory, dict_object, old_tree):

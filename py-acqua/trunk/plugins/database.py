@@ -21,11 +21,11 @@
 
 
 
-import pyacqua.app as app
 import gtk
 import os
 import ConfigParser
-import pyacqua.utils as utils
+import app
+import utils
 from pysqlite2 import dbapi2 as sqlite
 
 

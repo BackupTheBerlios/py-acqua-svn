@@ -19,10 +19,11 @@
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import pyacqua.app as app
 import gtk
-import pyacqua.impostazioni as impostazioni
-import pyacqua.utils as utils
+
+import app
+import impostazioni
+import utils
 
 class DbEntry (utils.FileEntry):
 	def __init__ (self):
