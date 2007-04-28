@@ -42,15 +42,13 @@ PROG_DIR = None
 
 # FIXME: prima della release
 
-DHOME_DIR = os.getcwd () + "/build/share/pyacqua"
+DHOME_DIR = os.getcwd ()# + "/build/share/pyacqua"
 DPLUG_DIR = os.path.join (DHOME_DIR, "plugins")
-DDATA_DIR = os.path.join (DHOME_DIR, "data")
 DSKIN_DIR = os.path.join (DHOME_DIR, "skins")
 DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
 
 print "HOME at: %s" % DHOME_DIR
 print "PLUGINS at: %s" % DPLUG_DIR
-print "DATA at: %s" % DDATA_DIR
 print "SKINS at: %s" % DSKIN_DIR
 print "PIXMAPS at: %s" % DPIXM_DIR
 

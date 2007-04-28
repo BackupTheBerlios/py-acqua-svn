@@ -140,10 +140,13 @@ class WebUpdate (gtk.Window):
 		
 		self.icon_add = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "add.png"))
 		self.icon_del = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "del.png"))
+		self.icon_done = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "done.png"))
+		self.icon_error = gtk.gdk.pixbuf_new_from_file (os.path.join (utils.DPIXM_DIR, "error.png"))
 		
 		self.color_add = gtk.gdk.color_parse ('#70ef70')
 		self.color_del = gtk.gdk.color_parse ('#ff8080')
 		self.color_done = gtk.gdk.color_parse ('#bcfffc')
+		self.color_error = gtk.gdk.color_parse ('#ff9060')
 
 	def _on_get_list (self, widget):
 		widget.set_sensitive (False)
@@ -167,9 +170,16 @@ class WebUpdate (gtk.Window):
 			self.status.push (0, _("Errore durante lo scaricamento della lista dei file (HTTP %d)") % response.status)
 			return
 
-		#data = self._convert_to_dict (data)
+		self.updated_list = data
+		
 		new_dict_object = self.xml_util.create_dict_from_string (data)
-		current_dict_object = self.xml_util.create_dict_from_file (os.path.join (utils.DHOME_DIR, "list.xml"))
+		
+		def unz (x):
+			if not os.path.exists (os.path.join (utils.HOME_DIR, x)):
+				return os.path.join (utils.HOME_DIR, x)
+			return os.path.join (utils.DHOME_DIR, x)
+		
+		current_dict_object = self.xml_util.create_dict_from_file (unz ("list.xml"))
 		
 		self.diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
 		
@@ -209,33 +219,50 @@ class WebUpdate (gtk.Window):
 		
 		if not data:
 			print _(">> Nessun file da ricevere")
+		
 		if response.status != 200:
-			print _("!! Errori. Il sospetto e' %s (response: %d)") % (self.file, response.status)
+			self._sign_error ()
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
 		path = utils.UPDT_DIR
 		
-		#print "!! Aggiungi check prima della versione finale webupdate.py:164"
-		#try:
-		for i in dirs:
-			path = os.path.join (path, i)
-			if not os.path.exists (path):
-				os.mkdir (path)
-	
-		print _(">> File ricevuto %s") % self.file
-	
-		f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
-		f.write (data)
-		f.close ()
+		try:
+			for i in dirs:
+				path = os.path.join (path, i)
+				if not os.path.exists (path):
+					os.mkdir (path)
 		
-		self._update_percentage ()
-		self._go_with_next_iter ()
-		#except:
-		#	print "Error while updating (%s %s)" % (sys.exc_value, sys.exc_type)
+			print _(">> File ricevuto %s") % self.file
+		
+			f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
+			f.write (data)
+			f.close ()
+			
+			self._update_percentage ()
+			self._go_with_next_iter ()
+		except:
+			self._sign_error ()
 	
+	def _sign_error (self):
+		# Qualcosa di strano e' successo.. mhuahuahuau *_*
+		# -.- come stiamo sotto
+		
+		self.tree.get_model ().set_value (self.it, 0, self.icon_error)
+		self.tree.get_model ().set_value (self.it, 10, self.color_error)
+		self.tree.get_model ().set_value (self.it, 8, 0)
+		
+		self.status.push (0, _("Errore durante lo scaricamento di %s (response: %d)") % (self.file, response.status))
+		
+		# Qui dovresti bloccare tutto e cancellare i file gia scaricati
+		# altrimenti nella callback di scaricamento dovresti inserire un check
+		# se esistono gia dei file che dovrebbero essere scaricati controlli md5 e bytes e se giusti
+		# non li scarichi
+		
 	def _update_percentage (self):
-		self.tree.get_model ().set_value (self.it, 4, 100)
+		self.tree.get_model ().set_value (self.it, 0, self.icon_done)
+		self.tree.get_model ().set_value (self.it, 10, self.color_done)
+		self.tree.get_model ().set_value (self.it, 8, 100)
 		
 	def _go_with_next_iter (self):
 		self.it = self.tree.get_model ().iter_next (self.it)
@@ -246,13 +273,38 @@ class WebUpdate (gtk.Window):
 			self.file = self.tree.get_model ().get_value (self.it, 1)
 			
 			if self.tree.get_model ().get_value (self.it, 9):
-				self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+				
+				# FIXME: Controlla se esiste gia il file (se l'abbiamo scaricato precedentemente)
+				tmp = os.path.join (utils.UPDT_DIR, self.file)
+				
+				if os.path.exists (tmp):
+					# Controlliamo se il file e' corretto
+					bytes = os.getsize (tmp)
+					md5   = generate.Generator.checksum (tmp)
+					
+					if md5 != self.tree.get_model ().get_value (self.it, 4) or int (bytes) != self.tree.get_model ().get_value (self.it, 3):
+						os.remove (tmp)
+						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+					else:
+						self._update_percentage ()
+						self._go_with_next_iter ()
+				else:
+					self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				self._update_percentage ()
 				self._go_with_next_iter ()
 		else:
 			self.xml_util.dump_tree_to_file (self.diff_object, os.path.join (utils.UPDT_DIR, ".diff.xml"))
+			
 			utils.info (_("Riavvia per procedere all'aggiornamento di PyAcqua"))
+			
+			self.destroy ()
+			
+			# Qui mi sa dovremmo ricreare la list.xml per la versione corrente o finiamo prima a copiarla
+			# dal sito?
+			
+			print "uhm uhm uhm"
+			#self.xml_util.dump_tree_to_file (self.updated_list, os.path.join (utils.PROG_DIR, "pyacqua/list.xml"))
 		
 	def _on_delete_event (self, *w):
 		app.App.p_window["update"] = None
