@@ -48,19 +48,8 @@ class LangWindow (gtk.Window):
 
 		it_icon = gtk.Image (); en_icon = gtk.Image ()
 		
-		unz = os.path.join (utils.PIXM_DIR, "it.xpm")
-		
-		if not os.path.exists (unz):
-			unz = os.path.join (utils.DPIXM_DIR, "it.xpm")
-		
-		it_icon.set_from_file (unz)
-		
-		unz = os.path.join (utils.PIXM_DIR, "en.xpm")
-		
-		if not os.path.exists (unz):
-			unz = os.path.join (utils.DPIXM_DIR, "en.xpm")
-		
-		en_icon.set_from_file (unz)
+		it_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "it.xpm"))
+		en_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "en.xpm"))
 
 		box = gtk.HBox ()
 		box.pack_start (it_icon, False, False, 0)
