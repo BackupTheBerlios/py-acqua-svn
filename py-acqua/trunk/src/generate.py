@@ -136,7 +136,6 @@ class UpdateXML (object):
 		diff_object = {}
 		
 		for key in new_dict_object:
-			
 			# Facciamo un confronto tra i file
 			if old_dict_object.has_key (key):
 				for file in new_dict_object[key]:
@@ -147,13 +146,19 @@ class UpdateXML (object):
 						v_old = old_dict_object[key][file]
 						
 						if v_new != v_old:
+							# FIXME: devi ignorare la revision mi sa
 							# Non facciamo altri controlli sulla superiorita' di revision ecc..
-							diff_object[key] = {}
+							if not diff_object.has_key (key):
+								diff_object[key] = {}
+							
 							diff_object[key][file] = v_new + v_old
+							print "adding" ,file
 						
 						del old_dict_object [key][file]
 					else: # Se il file non e' presente nel vecchio dict aggiungiamo
-						diff_object[key] = {}
+						if not diff_object.has_key (key):
+							diff_object[key] = {}
+						
 						diff_object[key][file] = v_new + [0, "0", "0"]
 			else:
 				# Non presente la directory quindi aggiungiamola con tutti i file in essa presenti
@@ -166,6 +171,7 @@ class UpdateXML (object):
 		for key in old_dict_object:
 			diff_object["$$" + key + "$$"] = old_dict_object[key]
 		
+		print diff_object
 		return diff_object
 	
 	def create_dict_from_string (self, xmlstr):

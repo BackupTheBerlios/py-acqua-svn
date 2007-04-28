@@ -169,7 +169,7 @@ class WebUpdate (gtk.Window):
 
 		#data = self._convert_to_dict (data)
 		new_dict_object = self.xml_util.create_dict_from_string (data)
-		current_dict_object = self.xml_util.create_dict_from_file ("/home/stack/py-acqua/py-acqua/trunk/list.xml") # FIXME: Fixami
+		current_dict_object = self.xml_util.create_dict_from_file (os.path.join (utils.DHOME_DIR, "list.xml"))
 		
 		self.diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
 		
