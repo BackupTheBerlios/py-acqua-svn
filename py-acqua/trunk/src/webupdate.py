@@ -175,10 +175,11 @@ class WebUpdate (gtk.Window):
 		new_dict_object = self.xml_util.create_dict_from_string (data)
 		
 		def unz (x):
-			if not os.path.exists (os.path.join (utils.HOME_DIR, x)):
+			if os.path.exists (os.path.join (utils.HOME_DIR, x)):
 				return os.path.join (utils.HOME_DIR, x)
 			return os.path.join (utils.DHOME_DIR, x)
 		
+		print unz ("list.xml")
 		current_dict_object = self.xml_util.create_dict_from_file (unz ("list.xml"))
 		
 		self.diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)

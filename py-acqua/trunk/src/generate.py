@@ -116,9 +116,6 @@ dict_object = [
 """
 		
 class UpdateXML (object):
-	def __init__ (self, directory, old_list=None):
-		self.load_old_list (old_list)
-		self.createxmlfile (directory)
 	def __init__ (self):
 		pass
 	

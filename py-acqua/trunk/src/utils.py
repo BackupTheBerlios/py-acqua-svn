@@ -25,6 +25,7 @@ import os.path
 import sys
 from pysqlite2 import dbapi2 as sqlite
 import re
+
 if os.name == 'nt':
 	try:
 		import _winreg

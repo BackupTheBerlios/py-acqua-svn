@@ -73,7 +73,8 @@ else
 	unz "Ok. Now we are going to launch pyacqua from home directory..."
 	unz "Good work pyacqua-user ;)"
 
-	python ~/.pyacqua/program/pyacqua/src/acqua.py
+	cd ~/.pyacqua/program/pyacqua/
+	python src/acqua.py
 
 	unz "Are you ok? .. Really? .. No crash? No explosion? .. mhh very strange.."
 	unz "Hei \$USER! Remember to visit our site at http://www.pyacqua.net"
