@@ -35,7 +35,7 @@ import sys
 
 REPOSITORY_ADDRESS = r"localhost"
 BASE_DIR = r"/~stack/update/source/"
-LIST_FILE = r"/~stack/update/list.xml"
+LIST_FILE = r"/~stack/update/source-list.xml"
 
 class Fetcher(threading.Thread):
 	

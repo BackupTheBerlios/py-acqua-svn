@@ -26,7 +26,7 @@ import os.path
 import impostazioni
 from impostazioni import set, get, save
 
-class Lang (gtk.Window):
+class LangWindow (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
 
