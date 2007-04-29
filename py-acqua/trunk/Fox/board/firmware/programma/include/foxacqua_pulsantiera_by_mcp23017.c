@@ -3,11 +3,11 @@
 	#define lcdMcp23017_id	0x27
 #endif
 int p_status(){
-	int value;
-	value=mcp23017_regLeggi(lcdMcp23017_id,GPIOB);
-	if (value==8) return (P_OK);
-	else if (value==1)return (P_UP);
-	else if (value==16)return (P_DOWN);
-	else if (value==2)return (P_RIGHT);
-	else if (value==4)return (P_LEFT);
+	unsigned char valore;
+	valore=mcp23017_regLeggi(lcdMcp23017_id,GPIOB);
+	if (valore==8) return (P_OK);
+	else if (valore==1)return (P_UP);
+	else if (valore==16)return (P_DOWN);
+	else if (valore==2)return (P_RIGHT);
+	else if (valore==4)return (P_LEFT);
 }

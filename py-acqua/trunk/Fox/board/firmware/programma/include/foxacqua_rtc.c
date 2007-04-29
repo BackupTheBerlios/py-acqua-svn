@@ -2,11 +2,11 @@
 //i2c
 char orario[9];
 char data_attuale[9];
-int giorno_in,mese_in,anno_in,ora_in,minuto_in;
+unsigned char giorno_in,mese_in,anno_in,ora_in,minuto_in;
 
-short int read_sec (void)
+unsigned char read_sec (void)
 {
- short int secs;
+unsigned char secs;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -18,9 +18,9 @@ short int read_sec (void)
  return secs;
 }
 
-short int read_min (void)
+unsigned char read_min (void)
 {
- short int mins;
+unsigned char mins;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -32,9 +32,9 @@ short int read_min (void)
  return mins;
 }
 
-short int read_hour (void)
+unsigned char read_hour (void)
 {
- short int hours;
+unsigned char hours;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -46,9 +46,9 @@ short int read_hour (void)
  return hours;
 }
 
-short int read_daysett (void)
+unsigned char read_daysett (void)
 {
- short int daysett;
+unsigned char daysett;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -60,9 +60,9 @@ short int read_daysett (void)
  return daysett;
 }
 
-short int read_day (void)
+unsigned char read_day (void)
 {
- short int days;
+unsigned char days;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -74,9 +74,9 @@ short int read_day (void)
  return days;
 }
 
-short int read_month (void)
+unsigned char read_month (void)
 {
- short int months;
+unsigned char months;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -88,9 +88,9 @@ short int read_month (void)
  return months;
 }
 
-short int read_year (void)
+unsigned char read_year (void)
 {
- short int years;
+unsigned char years;
  i2c_stop();
  i2c_start();
  if (i2c_outbyte(0xd0)==0) {i2c_stop();}
@@ -105,7 +105,7 @@ short int read_year (void)
 //INIZIALIZZAZIONE RTC_DS1307
 void ds1307_init (void)
 {
-short int secondi;
+unsigned char secondi;
 secondi=read_sec();
 i2c_stop();
 i2c_start();
@@ -116,9 +116,9 @@ i2c_stop();
 i2c_start();
 }
 
-void timenow (int modo)
+void timenow (unsigned char modo)
 {
- int sec,min,hour;
+unsigned char sec,min,hour;
  
  sec=read_sec();
  min=read_min();
@@ -156,7 +156,7 @@ void timenow (int modo)
 
 void datanow (void)
 {
- int gio,mes,ann;
+unsigned char gio,mes,ann;
 
  gio=read_day();
  mes=read_month();
@@ -177,63 +177,53 @@ void datanow (void)
 
 }
 
-void input_data (void)
+
+
+void set_data (unsigned char g_in, unsigned char m_in, unsigned char a_in)
 {
-system ("clear");
+unsigned char temp;
+itoa(g_in,16);//ritorna valore dentro stringa.. m ke skifo di funzione ki l'ha fatta???????
+temp=atoi(stringa);
 
-giorno_in=read_day();
-mese_in=read_month();
-anno_in=read_year();
-
-
-printf ("Giorno (gg): (%02X)  ",giorno_in);scanf ("%X",&giorno_in);
-printf ("Mese (mm): (%02X)  ",mese_in);scanf ("%X",&mese_in);
-printf ("Anno (aa): (%02X)  ",anno_in);scanf ("%X",&anno_in);
-}
-
-void input_ora (void)
-{
-ora_in=read_hour();
-minuto_in=read_min();
-//888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-printf ("%s \r\n"," ");
-printf ("Ora (oo): (%02X)  ",ora_in);
-scanf ("%X",&ora_in);
-
-printf ("Minuti (mm): (%02X)  ",minuto_in);
-scanf ("%X",&minuto_in);
-}
-
-
-void set_data (short int g_in, short int m_in, short int a_in)
-{
 i2c_stop();
 i2c_start();
 if (i2c_outbyte(0xd0)==0){i2c_stop();}
 i2c_outbyte(4);
-i2c_outbyte(g_in);
+i2c_outbyte(temp);
 i2c_stop();
 i2c_start();
 
+itoa(m_in,16);//ritorna valore dentro stringa.. m ke skifo di funzione ki l'ha fatta???????
+temp=atoi(stringa);
 i2c_stop();
 i2c_start();
 if (i2c_outbyte(0xd0)==0){i2c_stop();}
 i2c_outbyte(5);
-i2c_outbyte(m_in);
+i2c_outbyte(temp);
 i2c_stop();
 i2c_start();
 
+itoa(g_in,16);//ritorna valore dentro stringa.. m ke skifo di funzione ki l'ha fatta???????
+temp=atoi(stringa);
 i2c_stop();
 i2c_start();
 if (i2c_outbyte(0xd0)==0){i2c_stop();}
 i2c_outbyte(6);
-i2c_outbyte(a_in);
+i2c_outbyte(temp);
 i2c_stop();
 i2c_start();
 }
 
-void set_ora (short int o_in, short int min_in)
+void set_ora ( unsigned char o_in,unsigned char min_in)
 {
+unsigned char temp;
+//passa da base 10 a 16
+//num in char
+
+//itoa(o_in,10);//ritorna valore dentro stringa.. m ke skifo di funzione ki l'ha fatta???????
+//temp=atoi(stringa);
+
+
 i2c_stop();
 i2c_start();
 if (i2c_outbyte(0xd0)==0){i2c_stop();}
@@ -241,6 +231,9 @@ i2c_outbyte(2);
 i2c_outbyte(o_in);
 i2c_stop();
 i2c_start();
+
+//itoa(min_in,10);//ritorna valore dentro stringa.. m ke skifo di funzione ki l'ha fatta???????
+//temp=atoi(stringa);
 
 i2c_stop();
 i2c_start();
@@ -261,7 +254,7 @@ i2c_start();
 
 void setsystemdate (void)
 {
-int giorno,mese,anno,ore,minuti;
+unsigned char giorno,mese,anno,ore,minuti;
 
 char comando[20]="date ";
 

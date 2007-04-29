@@ -4,9 +4,9 @@
 //*********************
 //  MCP23017 ROUTINES
 //*********************
-int mcp23017_regLeggi(int id, int reg){
+unsigned char mcp23017_regLeggi(unsigned char id, int reg){
 
-	int data;
+	unsigned char data;
 	i2c_start();
 	i2c_outbyte(id<<1); // accoda uno zero x dire scrivi
 	i2c_outbyte(reg);
@@ -16,15 +16,15 @@ int mcp23017_regLeggi(int id, int reg){
 	i2c_stop();
 	return data;
 }
-void mcp23017_regScrivi(int id, int registro,int value){
+void mcp23017_regScrivi(unsigned char id, unsigned char registro,unsigned char value){
 	i2c_start();
 	i2c_outbyte(id<<1);
 	i2c_outbyte(registro);
 	i2c_outbyte(value);
 	i2c_stop();
 }
-void mcp23017_pinWriteLevel(int id, int gp,int pin,int level){
-	int value;
+void mcp23017_pinWriteLevel(unsigned char id, unsigned char gp,unsigned char pin,unsigned char level){
+	unsigned char value;
 	
 		
 	value=mcp23017_regLeggi(id,GPIOA);

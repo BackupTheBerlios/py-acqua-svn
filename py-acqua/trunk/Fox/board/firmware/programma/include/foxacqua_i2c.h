@@ -22,8 +22,8 @@
 
 #define i2c_delay(usecs) usleep(usecs)
 
-int i2c_fd;
 char stringa[2];
+int i2c_fd;
 //-----------------------------
 //FUNZIONI
 //-----------------------------
@@ -65,7 +65,7 @@ void msDelay(int ms) {
   }
 }
 // Get the SDA line state
-int i2c_getbit(void) {
+unsigned char i2c_getbit(void) {
   unsigned int value;
   value=ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
   if ((value&(I2C_DATA_LINE))==0) 
@@ -74,14 +74,14 @@ int i2c_getbit(void) {
     return 1;
 }
 // Set the SDA line state
-void i2c_data(int state) {
+void i2c_data(unsigned char state) {
   if (state==1) 
     ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_DATA_LINE);
   else 
     ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_DATA_LINE);
 }
 // Set the SCL line state
-void i2c_clk(int state) {
+void i2c_clk(unsigned char state) {
   if (state==1) 
     ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
   else 
@@ -114,10 +114,10 @@ void i2c_close(void) {
   close(i2c_fd);
 }
 // Read a byte from I2C bus and send the ack sequence
-unsigned char i2c_inbyte(int ack) {
+unsigned char i2c_inbyte(unsigned char ack) {
   unsigned char value = 0;
-  int bitvalue;
-  int i;
+  unsigned char bitvalue;
+  unsigned char i;
 
   // Read data byte
   i2c_dir_in();
@@ -158,9 +158,9 @@ void i2c_stop(void) {
   i2c_data(1);
 }
 // Send a byte to the I2C bus and return the ack sequence from slave
-int i2c_outbyte(unsigned char x) {
-    int i;
-    int ack;
+unsigned char i2c_outbyte(unsigned char x) {
+    unsigned char i;
+    unsigned char ack;
     
     i2c_clk(0);
     for (i=0;i<8;i++) {
