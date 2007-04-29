@@ -54,11 +54,12 @@ RESET A VCC
 #include "stdarg.h"
 #include "string.h"
 //lib
-#include "foxacqua_i2c.h"
-#include "mcp23017_reg.h"
-#include "mcp23017_sub.c"
+#include "include/foxacqua_i2c.h"
+#include "include/mcp23017_sub.c"
+#include "include/foxacqua_lcd.c"
+#include "include/foxacqua_rtc.c"
+#include "include/foxacqua_ciabatta.c"
 
-#include "lcd_i2c.c"
 
 
 
@@ -82,29 +83,26 @@ void sk_clear(){
 
 
 void sk_init(){
-
-int i;
- 	lcd_locate(0,7);
+ 	y_pos(7,0);
 	lcd_printf("VISITA");	
 		
- 	lcd_locate(1,2);
+ 	y_pos(2,1);
 	lcd_printf("www.pyacqua.net"); 
-	lcd_locate(1,20);
-	lcd_printf("-------------------");	
-	for(i=8;i>0;i--) msDelay(250);
+	y_pos(0,3);
+	lcd_printf("--------------------");	
+	msDelay(3000);
 	sk_clear();
 	
 }
 
 void sk_main(){
-	lcd_locate(0,1);
+	y_pos(1,0);
 	lcd_printf("GESTIONE  ACQUARIO");			
-	lcd_locate(0,35);
+	y_pos(5,2);
 	lcd_printf("16:21");			
- 		
-	lcd_locate(1,21);
+	y_pos(1,3);
 	lcd_printf("Menu");			
-	cursore_sceqgli_opz(4);
+	cursore_sceqgli_opz(3);
 }
 
 
@@ -117,33 +115,108 @@ void sk_main(){
 
 
 
-void sk_menu_1_1(){
-//	int scelta;
-//	int intervalli[6];
-	lcd_locate(0,0);
-	lcd_printf("<<     DATA");			
-	lcd_locate(0,22);
-	lcd_printf("15:00   25/04/07");			
-	select_cifra(3,2,16);
+
+
+void sk_menu_1_2_1(){
+int scelta;
+	y_pos(1,0);
+	lcd_printf("<<  TEMPERATURA");		
+	y_pos(1,2);
+	//controllo se sonda presente
+		//se si leggila temperatura
+		//altrimenti mex di errore
+	lcd_printf("Temp=10");
+//scrivi temp
+	lcd_printf("C");
+	scelta=aggiorna_cursore_opz(0,0);
 }
-
-
+void sk_menu_1_2_2(){
+int scelta;
+	y_pos(1,0);
+	lcd_printf("<<  PH");	
+	y_pos(1,2);
+	lcd_printf("Ph = 6");
+	scelta=aggiorna_cursore_opz(0,0);
+	
+}
+void sk_menu_1_2_3(){
+int scelta;
+	y_pos(1,0);
+	lcd_printf("<< CO2");	
+	y_pos(3,2);
+	lcd_printf("CO2 = 1 mg/m^3");
+	scelta=aggiorna_cursore_opz(0,0);
+}
 void sk_menu_1_2(){
 int scelta;
-	lcd_locate(0,1);
-	lcd_printf("<<  VALORI SONDE");	
-
-	scelta=aggiorna_cursore_opz(1,4);
+	y_pos(1,0);
+	lcd_printf("<< VALORI SONDE");	
+	y_pos(1,1);
+	lcd_printf("Temperatura");	
+	y_pos(1,2);
+	lcd_printf("PH");
+	y_pos(1,3);
+	lcd_printf("CO2");
+	scelta=aggiorna_cursore_opz(0,3);
+	sk_clear();
+	if (scelta==0) udelay(1);//ritorna
+	else if (scelta==1) sk_menu_1_2_1(); 
+	else if (scelta==2) sk_menu_1_2_2();
+	else if (scelta==3) sk_menu_1_2_3();
 	
 }
 
+void sk_menu_1_1(){
+	int cifra;
+	int valore;
+//	int intervalli[6];
+	// leggi rtc
+	y_pos(0,0);
+	lcd_printf("<<     DATA");			
+	y_pos(2,2);
+	//lcd_printf("15:00   25/04/07");
+//ora 
+  ora_in=read_hour();
+  lcd_printf("%02d:",ora_in);
+  minuto_in=read_min();
+  lcd_printf("%02d  ",minuto_in);
+//data 
+  giorno_in=read_day();
+  lcd_printf("%02d",giorno_in);
+  mese_in=read_month();
+  lcd_printf("/%02d",mese_in);
+  anno_in=read_year();
+  lcd_printf("/%02d",anno_in);
 
+	// x,y,partenza,min,max
+	valore=inc_cifra(2,2,0,0,24);// hh 
+	valore=inc_cifra(5,2,0,0,59);// mm
+	valore=inc_cifra(9,2,0,0,31);// gg
+	valore=inc_cifra(12,2,0,0,12);// m
+	valore=inc_cifra(15,2,0,7,20);// aa
+	clean_row(1);	
+	clean_row(3);
+// verifica data
+
+	//se ok salva il valore
+	y_pos(4,3);
+		
+	if (true) lcd_printf("DATA SALVATA");
+	else lcd_printf("DATA ERRATA");
+	msDelay(2000);		
+
+}
 void sk_menu_1_3(){
 int scelta;
-	lcd_locate(0,0);
+	y_pos(1,0);
 	lcd_printf("<<     INFO");			
-
-	scelta=aggiorna_cursore_opz(1,2);
+	y_pos(1,1);
+	lcd_printf("Progetto opensource");			
+	y_pos(1,2);
+	lcd_printf("  per la gestione   ");			
+	y_pos(1,3);
+	lcd_printf("     di acquari     ");		
+	scelta=aggiorna_cursore_opz(0,0);//min,max quindi solo ritornare indietro
 	
 }
 
@@ -151,43 +224,49 @@ int scelta;
 
 
 void sk_menu_1(){
+
+	// problema... cm fare x scorrere le voci in verticale????
 	int scelta;
-	lcd_locate(0,1);
+	y_pos(1,0);
 	lcd_printf("<<     Menu 1");			
-	lcd_locate(1,1);
+	y_pos(1,1);
 	lcd_printf("DATA");			
-	lcd_locate(0,21);
+	y_pos(1,2);
 	lcd_printf("VALORI SONDE");			
-	lcd_locate(1,21);
+	y_pos(1,3);
 	lcd_printf("INFO");
-	scelta=aggiorna_cursore_opz(1,4);
+	scelta=aggiorna_cursore_opz(0,3);
 	sk_clear();
-	if (scelta==1) udelay(1);//ritorna
-	else if (scelta==2) sk_menu_1_1(); 
-	else if (scelta==3) sk_menu_1_2();
-	else if (scelta==4) sk_menu_1_2();
+	if (scelta==0) udelay(1);//ritorna
+	else if (scelta==1) sk_menu_1_1(); 
+	else if (scelta==2) sk_menu_1_2();
+	else if (scelta==3) sk_menu_1_3();
 }
 
 //*****************
 //		MAIN
 //*****************
 int  main (void) {
+int valore;
 	system ("clear");
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }    
-    lcd_init();		
+    lcd_init();
+    ds1307_init();
 //skermate
 	sk_init();
-	
-	
+	printf("ok, programma partito. premi pulsante giu x uscire");
+	for(;;){
 		sk_main();
-	
-		while(p_status()!= P_OK) msDelay(50); //aspetta finkè premuto   
+		
+		while(p_status()!= P_OK){
+			msDelay(50); 
+			if (p_status()==P_DOWN) return 1; // x debug
+		} //aspetta finkè premuto   
 		sk_clear();
 		sk_menu_1(); 
 		sk_clear();
-    
-	        
-return 1;
+	}
+	printf("Programma terminato");
 }
 
 
