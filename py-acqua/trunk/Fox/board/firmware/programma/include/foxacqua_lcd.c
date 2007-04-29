@@ -2,7 +2,7 @@
 #include "lcdbymcp23017.h"
 #include "foxacqua_pulsantiera_by_mcp23017.c"
 #ifndef  lcdMcp23017_id
-	#define lcdMcp23017_id	0x27
+	#define lcdMcp23017_id	0x20
 #endif
 
 //*********************************************************************
@@ -148,7 +148,7 @@ void y_pos(unsigned char x, unsigned char y){
 // punto (0,0) in alto allo schermo a sx
 // punto (-3,-19) in basso a dx
 
-	if (y==0)		lcd_locate(0,x);//y,x
+	if (y==0)	lcd_locate(0,x);//y,x
 	else if (y==1)	lcd_locate(1,x);
 	else if (y==2)	lcd_locate(0,20+x);
 	else if (y==3)	lcd_locate(1,20+x);
@@ -220,6 +220,7 @@ void sposta_2cursori_x(unsigned char x, unsigned char y){
 	y_pos(x,y+1);
 	lcd_printf("^^");
 }
+
 void pulisci_2cursori_x(unsigned char x, unsigned char y){
 //1..2 0..19
 	y_pos(x,y-1);	
@@ -242,7 +243,6 @@ int select_cifra(unsigned char y, unsigned char sx, unsigned char dx){
 		//if (press==P_LEFT) {if (scelta>sx){scelta--;sposta_2cursori_x(scelta,y);while (p_status()==P_LEFT)   msDelay(10);}}
 		msDelay(50);
 	}
-	pulisci_2cursori_x(scelta,y);
 	return scelta;
 }
 
@@ -252,25 +252,17 @@ int inc_cifra(unsigned char x, unsigned char y, unsigned char attuale, unsigned 
 	sposta_2cursori_x(x,y);
 	while(p_status() != P_OK){
 		press=p_status();
-		if (press==P_UP)	{
-			if (scelta<max){scelta++;
-				y_pos(x,y);//bisogna sempre riportarlo li se no aggiunge caratteri uno dopo l'altro
-				lcd_printf("%02d",scelta);
-				while (p_status()==P_UP) msDelay(10);
-			}
+		if (press!=0){
+			if (press==P_UP) if (scelta<max)  scelta++;
+			if (press==P_DOWN) if (scelta>min) scelta--;
+			y_pos(x,y);//bisogna sempre riportarlo li se no aggiunge caratteri uno dopo l'altro	
+			lcd_printf("%02d",scelta);
+			while (p_status()!=0) msDelay(10);		
 		}
-		if (press==P_DOWN)	{
-			if (scelta>min){scelta--;
-				y_pos(x,y);//bisogna sempre riportarlo li se no aggiunge caratteri uno dopo l'altro
-				lcd_printf("%02d",scelta);
-				while (p_status()==P_DOWN) msDelay(10);
-			}
-		}
-	
-
-
 		msDelay(50);
 	}
+	y_pos(x,y);
+	pulisci_2cursori_x(x,y);
 	return scelta;
 }
 
