@@ -1,0 +1,103 @@
+Partlist exported from /home/gio/py-acqua/py-acqua/trunk/Fox/board/board/board_rev3.sch at  4/15/2007 23:23:21 
+
+Part Value        Device         Package      Description                                     
+C1   47nF         CAP_POLI       CAP_POLI     Condensatore non elett                          
+C2   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C3   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C4   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C5   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C6   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C7   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C8   100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C9   470uF        CPOL-EUE5-10.5 E5-10,5      POLARIZED CAPACITOR, European symbol            
+C10  470uF        CPOL-EUE5-10.5 E5-10,5      POLARIZED CAPACITOR, European symbol            
+C11  100nF        C-EUC0805      C0805        CAPACITOR, European symbol                      
+C12  47nF         CAP_POLI       CAP_POLI     Condensatore non elett                          
+D1   1N4148       1N4148         DO35-10      DIODE                                           
+G1   CR2032V      CR2032V        CR2032V      LI BATTERY Varta                                
+IC1  LM358D       LM358D         SO08         OP AMP also LM158; LM258; LM2904                
+IC2  MAX3232CSE   MAX3232CSE     SO16         True RS-232 Transceivers 3.0V to 5.5V, Low-Power
+IC3  LF347N       LF347N         DIL14        OP AMP                                          
+IC5  MAX412CPA    MAX412CPA      DIL08        OP AMP                                          
+IC6  ADT7316SMD   ADT7316SMD     ADT7318SMD   ADT7318 smd                                     
+IC7  LM358D       LM358D         SO08         OP AMP also LM158; LM258; LM2904                
+IC9  FOX          FOX            FOX          FOXBOARD                                        
+IC14 DS1307       DS1307         DS1307       DS1307                                          
+Q1   32,768Khz    XTAL           Q            CRYSTAL                                         
+Q2   BC548        BC548          TO92-EBC     NPN Transistor                                  
+Q3   BD438        BD438          TO126AV      PNP TRANSISTOR                                  
+R1   1K           R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R2   1K           R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R3                R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R4                R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R5                TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R6                TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R7   47k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R8   47k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R9   5k 1%        R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R10  5k 1%        R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R11               R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R12               R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R13  100k 1%      R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R14  100k 1%      R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R15  5k 1%        R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R16  5k 1%        R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R17  100k 1%      R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R18  100k 1%      R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R19  47k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R20  47k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R21  1K           R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R22  1K           R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R23  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R24  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R25  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R26  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R27  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R28  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R29  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R30  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R31  10k          R-EU_0207/10   0207/10      RESISTOR, European symbol                       
+R32  10k          R-EU_0411/3V   0411V        RESISTOR, European symbol                       
+R33  10k          R-EU_0411/3V   0411V        RESISTOR, European symbol                       
+R34  10k          R-EU_0411/3V   0411V        RESISTOR, European symbol                       
+R35  10k          R-EU_0411/3V   0411V        RESISTOR, European symbol                       
+R36  5k 1%        R-EU_0411/15   0411/15      RESISTOR, European symbol                       
+R37  100k 1%      R-EU_0411/15   0411/15      RESISTOR, European symbol                       
+R38  5k 1%        R-EU_0411/15   0411/15      RESISTOR, European symbol                       
+R39  100k 1%      R-EU_0411/15   0411/15      RESISTOR, European symbol                       
+R40  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R41  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R42  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R43  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+R44  10k          TRIM_EU-LI10   LI10         POTENTIOMETER                                   
+SG1  F/CM12P      F/CM12P        F/CM12P      BUZZER Source: Buerklin                         
+SV1               MA03-2         MA03-2       PIN HEADER                                      
+SV2               MA03-2         MA03-2       PIN HEADER                                      
+SV3               MA03-2         MA03-2       PIN HEADER                                      
+SV4               MA03-2         MA03-2       PIN HEADER                                      
+SV5               MA03-2         MA03-2       PIN HEADER                                      
+SV6               MA03-2         MA03-2       PIN HEADER                                      
+SV7               MA03-2         MA03-2       PIN HEADER                                      
+SV8               MA03-2         MA03-2       PIN HEADER                                      
+SV9               MA03-2         MA03-2       PIN HEADER                                      
+SV10              MA03-2         MA03-2       PIN HEADER                                      
+SV11              MA03-1         MA03-1       PIN HEADER                                      
+SV12              MA03-2         MA03-2       PIN HEADER                                      
+SV13              MA03-2         MA03-2       PIN HEADER                                      
+SV14              MA03-2         MA03-2       PIN HEADER                                      
+SV15              MA03-2         MA03-2       PIN HEADER                                      
+SV16              MA03-2         MA03-2       PIN HEADER                                      
+SV17              MA03-2         MA03-2       PIN HEADER                                      
+SV21              MA03-2         MA03-2       PIN HEADER                                      
+U$1  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$2  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$3  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$4  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$5  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$6  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$7  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$8  MCP3421      MCP3421        MCP3421      MCP3421                                         
+U$9  MCP23008_DHT MCP23008_DHT   MCP23008_DHT MCP23008                                        
+X1                F09H           F09H         SUB-D                                           
+X15  22-23-2041   22-23-2041     22-23-2041   .100" (2.54mm) Center Header - 4 Pin            
+X16  22-23-2041   22-23-2041     22-23-2041   .100" (2.54mm) Center Header - 4 Pin            
