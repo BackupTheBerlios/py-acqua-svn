@@ -29,13 +29,13 @@ import utils
 import os.path
 import sys
 
-#REPOSITORY_ADDRESS = "http://www.pyacqua.net"
-#BASE_DIR = "/update/source/"
-#LIST_FILE = "/update/list.xml"
+REPOSITORY_ADDRESS = "http://www.pyacqua.net"
+BASE_DIR = "/update/source/"
+LIST_FILE = "/update/source-list.xml"
 
-REPOSITORY_ADDRESS = r"localhost"
-BASE_DIR = r"/~stack/update/source/"
-LIST_FILE = r"/~stack/update/source-list.xml"
+#REPOSITORY_ADDRESS = r"localhost"
+#BASE_DIR = r"/~stack/update/source/"
+#LIST_FILE = r"/~stack/update/source-list.xml"
 
 class Fetcher(threading.Thread):
 	
@@ -216,7 +216,10 @@ class WebUpdate (gtk.Window):
 			print _(">> Nessun file da ricevere")
 		
 		if response.status != 200:
-			self._sign_error ()
+			self._sign_error (response)
+			return
+
+		print response.status
 		
 		# Creiamo le subdirectory necessarie
 		dirs = self.file.split (os.path.sep); dirs.pop ()
@@ -237,9 +240,9 @@ class WebUpdate (gtk.Window):
 			self._update_percentage ()
 			self._go_with_next_iter ()
 		except:
-			self._sign_error ()
+			self._sign_error (response)
 	
-	def _sign_error (self):
+	def _sign_error (self, response):
 		# Qualcosa di strano e' successo.. mhuahuahuau *_*
 		# -.- come stiamo sotto
 		
@@ -298,7 +301,7 @@ class WebUpdate (gtk.Window):
 			# Qui mi sa dovremmo ricreare la list.xml per la versione corrente o finiamo prima a copiarla
 			# dal sito?
 			
-			print "uhm uhm uhm"
+			#print "uhm uhm uhm"
 			#self.xml_util.dump_tree_to_file (self.updated_list, os.path.join (utils.PROG_DIR, "pyacqua/list.xml"))
 		
 	def _on_delete_event (self, *w):

@@ -20,31 +20,33 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os.path
-import utils
 import generate
 import shutil
 from xml.dom.minidom import parse, getDOMImplementation
 
-def fill_fs_structure (path):
-	lst = path.split (os.path.sep); lst.pop () # Eliminiamo la parte del file
+HOME_DIR = ""
 
-	current = utils.UPDT_DIR
+if os.name == 'nt':
+	try:
+		import _winreg
+		hkey = _winreg.OpenKey (_winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders")
+		path, type = _winreg.QueryValueEx (hkey, "AppData")
+	except:
+		print "!! Cannot import _winreg module"
+else:
+	HOME_DIR = os.environ["HOME"]
 
-	for i in lst:
-		current = os.path.join (current, i)
-
-		print _(">> Controllo"), current,
-		
-		if not os.path.exists (current):
-			os.mkdir (current)
-			print _("creato.")
+if HOME_DIR != "":
+	HOME_DIR = os.path.join (HOME_DIR, ".pyacqua")
+	UPDT_DIR = os.path.join (HOME_DIR, "update")
+	PROG_DIR = os.path.join (HOME_DIR, "program")
 
 def rmgeneric(path, __func__):
 	try:
 		__func__ (path)
-		print _(">> Path Rimosso (%s)") % path
+		print ">> Path Rimosso (%s)" % path
 	except OSError, (errno, strerror):
-		print _("!! Errore mentre rimuovevo %s (%s)") % (path, strerror)
+		print "!! Errore mentre rimuovevo %s (%s)" % (path, strerror)
 
 def removeall (path):
 	if not os.path.isdir (path):
@@ -62,7 +64,7 @@ def removeall (path):
 			rmgeneric (fullpath, f)
 
 def update ():
-	path = os.path.join (utils.UPDT_DIR, ".diff.xml")
+	path = os.path.join (UPDT_DIR, ".diff.xml")
 	
 	if not os.path.exists (path):
 		return
@@ -77,7 +79,7 @@ def update ():
 		for root in doc.documentElement.childNodes:
 			if root.nodeName == "directory":
 				directory = root.attributes["name"].nodeValue
-				root_path = os.path.join (utils.UPDT_DIR, directory)
+				root_path = os.path.join (UPDT_DIR, directory)
 				
 				if directory[0:2] == "$$" and directory[-2:] == "$$":
 					# Fai un for e cancella tutti i file elencati
@@ -123,29 +125,32 @@ def update ():
 								base = os.path.dirname (unz)
 								
 								# Facciamo un for
-								i = utils.PROG_DIR
+								i = PROG_DIR
 								for x in base.split (os.path.sep):
 									if x != "" and not os.path.exists (os.path.join (i, x)):
 										i = os.path.join (i, x)
 										os.mkdir (i)
 								
-								unz = os.path.join (utils.PROG_DIR, unz)
+								unz = os.path.join (PROG_DIR, unz)
 								
 								if os.path.exists (unz):
 									os.remove (unz)
 								
-								shutil.move (tmp_path, os.path.join (utils.PROG_DIR, unz))
+								shutil.move (tmp_path, os.path.join (PROG_DIR, unz))
 							else:
 								print "!! MD5 or bytes wrong"
 	
-	print _(">> Pulisco la directory dell'Update")
-	removeall (utils.UPDT_DIR)
+	print ">> Pulisco la directory dell'Update"
+	removeall (UPDT_DIR)
 	
 	# Crea la nuova list.xml
 
 def check_for_updates ():
-	if os.path.exists (os.path.join (utils.UPDT_DIR, ".diff.xml")):
-		print _(">> Aggiornamento disponibile. Procedo con il merging dei file")
+	if os.path.exists (os.path.join (UPDT_DIR, ".diff.xml")):
+		print ">> Aggiornamento disponibile. Procedo con il merging dei file"
 		update ()
 	else:
-		print _(">> Nessun aggiornamento da concludere.")
+		print ">> Nessun aggiornamento da concludere."
+
+if __name__ == "__main__":
+	check_for_updates ()

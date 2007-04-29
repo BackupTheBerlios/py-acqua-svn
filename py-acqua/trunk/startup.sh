@@ -59,7 +59,15 @@ function unz {
 
 if [ -f ~/.pyacqua/program/pyacqua/src/acqua.py ]; then
 	unz "PyAcqua is already installed in home directory. Launching from ~/.pyacqua/program/share/pyacqua"
-	python ~/.pyacqua/program/pyacqua/src/acqua.py
+	
+	cd ~/.pyacqua/program/pyacqua/
+
+	if [ -f ~/.pyacqua/update/.diff.xml ]; then
+		unz "Try to merge update..."
+		python src/merger.py
+	fi
+	
+	python src/acqua.py
 else
 	unz "Making dir structure..."
 	mkdir -p ~/.pyacqua/program/locale/en/LC_MESSAGES/

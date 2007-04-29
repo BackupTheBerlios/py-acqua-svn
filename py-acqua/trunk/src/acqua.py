@@ -53,36 +53,22 @@ except:
 def main ():
 	
 	APP = 'acqua'
-	#FIXME: non bestemmiare
-	#DIR = os.path.join (utils.DHOME_DIR, "locale")
+	DIR = os.path.join (utils.PROG_DIR, "locale")
 	
-	# il locale ora si trovera nell home in modo da caricarlo come plugin
-	DIR = os.path.join (utils.PLUG_DIR, "locale")
 	try:
 		
-		ll = impostazioni.get ("lang").lower()
-		oo = gettext.translation (APP, DIR, [ll])
-		ll.install ()
-		
-		try:
-			os.environ['LANG'] = ll
-			locale.setlocale (locale.LC_MESSAGES, ll)
-		except:
-			pass
-		
-		
-		
-		#if impostazioni.get ("lang").lower () == "en":
-		#	en = gettext.translation (APP, DIR, ["en"])
-		#	en.install ()
-		#	try:
-		#		os.environ['LANG'] = "en_US"
-		#		locale.setlocale (locale.LC_MESSAGES, "en_US")
-		#	except: pass
-		#else:
-		#	os.environ['LANG'] = "it_IT"
-		#	it = gettext.translation (APP, DIR, [])
-		#	it.install ()
+		if impostazioni.get ("lang").lower () == "en":
+			en = gettext.translation (APP, DIR, ["en"])
+			en.install ()
+			try:
+				os.environ['LANG'] = "en_US"
+				locale.setlocale (locale.LC_MESSAGES, "en_US")
+			except: pass
+		else:
+			os.environ['LANG'] = "it_IT"
+			it = gettext.translation (APP, DIR, [])
+			it.install ()
+
 	except (IOError, locale.Error), e:
 		print "(%s): WARNING **: %s" % (APP, e)
 		__builtins__.__dict__["_"] = gettext.gettext
@@ -92,7 +78,7 @@ def main ():
 	
 	if not db.get_schema_presents ():
 		t = backend.ColumnType
-		print "inizio a creare le tabelle"
+
 		db.create_table (
 			"vasca",
 			[
@@ -105,7 +91,7 @@ def main ():
 				t.TEXT, t.TEXT, t.TEXT, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		print "vasca"
+
 		db.create_table (
 			"test",
 			[
@@ -118,7 +104,7 @@ def main ():
 				t.FLOAT, t.FLOAT, t.TEXT
 			]
 		)
-		print "test"
+
 		db.create_table (
 			"pesci",
 			[
@@ -128,7 +114,7 @@ def main ():
 				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		print "pesci"
+
 		db.create_table (
 			"invertebrati",
 			[
@@ -138,7 +124,7 @@ def main ():
 				t.INTEGER, t.DATE, t.FLOAT, t.NUMERIC, t.TEXT, t.VARCHAR + 500, t.TEXT
 			]
 		)
-		print "invertebrati"
+
 		db.create_table (
 			"piante",
 			[
@@ -180,7 +166,7 @@ def main ():
 				t.INTEGER, t.DATE, t.NUMERIC, t.VARCHAR + 500
 			]
 		)
-		print "filtro"
+
 		db.create_table (
 			"manutenzione",
 			[
