@@ -4,19 +4,20 @@
 #ifndef  lcdMcp23017_id
 	#define lcdMcp23017_id	0x27
 #endif
+
 //*********************************************************************
 // LCD functions
 //*********************************************************************
 
 // RS line
-void lcd_rs(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_RS,level); }
+void lcd_rs(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_RS,level); }
 //  E line
-void lcd_e(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_E,level);}
+void lcd_e(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_E,level);}
 // D4..7
-void lcdD4(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D4,level);}
-void lcdD5(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D5,level);}
-void lcdD6(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D6,level);}
-void lcdD7(unsigned char level) { mcp23017_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D7,level);}
+void lcdD4(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D4,level);}
+void lcdD5(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D5,level);}
+void lcdD6(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D6,level);}
+void lcdD7(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D7,level);}
 void lcd_e_strobe() {
 	lcd_e(1);
 	lcd_e(0);
@@ -54,10 +55,10 @@ void lcdMcpInit(){
 //init output x fili al display
 
 	//imposta mcp
-	mcp23017_regScrivi(lcdMcp23017_id,IODIRA,0);//DISPLAY, TT OUT
-	mcp23017_regScrivi(lcdMcp23017_id,IODIRB,0xff);//pulsanti, tt in
-	mcp23017_regScrivi(lcdMcp23017_id,GPIOA,0);//uscite sul display a zero
-	mcp23017_regScrivi(lcdMcp23017_id,GPPUB,0);// pullup DISATTIVATI sui pulsanti
+	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017IODIRA,0);//DISPLAY, TT OUT
+	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017IODIRB,0xff);//pulsanti, tt in
+	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017GPIOA,0);//uscite sul display a zero
+	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017GPPUB,0);// pullup DISATTIVATI sui pulsanti
 }
 void lcd_init() {
 	lcdMcpInit();
@@ -143,7 +144,58 @@ void clean_row(unsigned char row){
 	else if (row==3)	lcd_locate(1,20);
 	lcd_printf("                    ");
 }
+void y_pos(unsigned char x, unsigned char y){
+// punto (0,0) in alto allo schermo a sx
+// punto (-3,-19) in basso a dx
 
+	if (y==0)		lcd_locate(0,x);//y,x
+	else if (y==1)	lcd_locate(1,x);
+	else if (y==2)	lcd_locate(0,20+x);
+	else if (y==3)	lcd_locate(1,20+x);
+}
+
+void barra_menu_vert(unsigned char type){
+	if (type==0){
+		y_pos(19,0);
+		lcd_printf("|");
+		y_pos(19,1);
+		lcd_printf("|");
+		y_pos(19,2);
+		lcd_printf("|");
+		y_pos(19,3);
+		lcd_printf("V");
+	}
+	else if (type==1){
+		y_pos(19,0);
+		lcd_printf("^");
+		y_pos(19,1);
+		lcd_printf("|");
+		y_pos(19,2);
+		lcd_printf("|");
+		y_pos(19,3);
+		lcd_printf("V");
+	}
+	else if (type==2){
+		y_pos(19,0);
+		lcd_printf("^");
+		y_pos(19,1);
+		lcd_printf("|");
+		y_pos(19,2);
+		lcd_printf("|");
+		y_pos(19,3);
+		lcd_printf("|");
+	}
+	else if (type==3){
+		y_pos(19,0);
+		lcd_printf("|");
+		y_pos(19,1);
+		lcd_printf("|");
+		y_pos(19,2);
+		lcd_printf("|");
+		y_pos(19,3);
+		lcd_printf("|");
+	}
+}
 
 int aggiorna_cursore_opz(unsigned char min,unsigned char max){
 // 0..3
@@ -159,15 +211,6 @@ int aggiorna_cursore_opz(unsigned char min,unsigned char max){
 		msDelay(50);
 	}
 	return scelta;
-}
-void y_pos(unsigned char x, unsigned char y){
-// punto (0,0) in alto allo schermo a sx
-// punto (-3,-19) in basso a dx
-
-	if (y==0)		lcd_locate(0,x);//y,x
-	else if (y==1)	lcd_locate(1,x);
-	else if (y==2)	lcd_locate(0,20+x);
-	else if (y==3)	lcd_locate(1,20+x);
 }
 
 void sposta_2cursori_x(unsigned char x, unsigned char y){

@@ -43,6 +43,11 @@ unsigned char hours;
  if (i2c_outbyte(0xd1)==0) {i2c_stop();}
  hours=i2c_inbyte(2);
  i2c_stop();
+
+
+//passare da hex a decimale
+
+
  return hours;
 }
 

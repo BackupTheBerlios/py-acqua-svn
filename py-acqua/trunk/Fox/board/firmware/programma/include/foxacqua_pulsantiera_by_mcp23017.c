@@ -4,7 +4,7 @@
 #endif
 int p_status(){
 	unsigned char valore;
-	valore=mcp23017_regLeggi(lcdMcp23017_id,GPIOB);
+	valore=mcp230xx_regLeggi(lcdMcp23017_id,mcp23017GPIOB);
 	if (valore==8) return (P_OK);
 	else if (valore==1)return (P_UP);
 	else if (valore==16)return (P_DOWN);
