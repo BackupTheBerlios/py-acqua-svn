@@ -66,30 +66,32 @@ unsigned char imposta_stato(unsigned char presa){
 	lcd_printf(" 0     1");
 	level=presa_read_level(presa);
 	//porta il cursore sullivello del pin	
-	if (level) 	y_pos(6,2);					
+	if (!level) 	y_pos(6,2);					
 	else		y_pos(12,2);			
-	lcd_printf(">");	
+	lcd_printf(">");
+	press=0;	
 	while(p_status() != P_OK){
 		press=p_status();
-		if (press==P_LEFT)	{
-			y_pos(12,2);			
-			lcd_printf(" ");
-			y_pos(6,2);			
-			lcd_printf(">");
-			level=1;	
-			while (p_status()==P_LEFT) msDelay(10);		
+		if (press!=0)	{
+			if (press==P_LEFT)	{
+				y_pos(12,2);			
+				lcd_printf(" ");
+				y_pos(6,2);			
+				lcd_printf(">");
+				level=0;	
+				while (p_status()==P_LEFT) msDelay(1);		
+			}
+			if (press==P_RIGHT)	{
+				y_pos(6,2);			
+				lcd_printf(" ");
+				y_pos(12,2);			
+				lcd_printf(">");
+				level=1;		
+				while (p_status()==P_RIGHT) msDelay(1);		
+			}
 		}
-		if (press==P_RIGHT)	{
-			y_pos(6,2);			
-			lcd_printf(" ");
-			y_pos(12,2);			
-			lcd_printf(">");
-			level=0;		
-			while (p_status()==P_RIGHT) msDelay(10);		
-		}
-		//mcp230xx_regScrivi(preseMcp23008_id,reg_prese,++valore);
-		msDelay(50);
 	}
+	printf("restituisco %d",level);
 	return level;
 }
 
@@ -104,7 +106,6 @@ unsigned char scegli_presa(){
 	lcd_printf(">1 2 3 4 5 6 7");
 	y_pos(3,3);	
 	for (i=0;i<15;i++) lcd_printf(prese_nomi[0][i]);
-			
 	scelta=4;
 	y_pos(scelta,2);
 	presa=1;
@@ -118,23 +119,22 @@ unsigned char scegli_presa(){
 				presa++; 			
 				if (scelta>17){
 					scelta=4;
-					presa=0;
+					presa=1;
 				}
 			}
-			if (press==P_LEFT)	{
+			else if (press==P_LEFT)	{
 				scelta-=2;
 				presa--; 			
 				if (scelta<4){
 					scelta=16;
-					presa=6;
+					presa=7;
 				}
 			}
 			y_pos(scelta,2);
 			lcd_printf(">");
 			y_pos(3,3);
 			for (i=0;i<15;i++) lcd_printf(prese_nomi[presa-1][i]);
-			while (p_status()!=0) msDelay(10);		
-		msDelay(50);
+			while (p_status()!=0) msDelay(1);		
 		}
 	}
 	clean_row(2);
@@ -153,6 +153,7 @@ char alfabeto[37][2]={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o
 	lettera=0;
 	carattere=0;
 	while(p_status() != P_OK){
+		msDelay(10);
 		press=p_status();
 		if (press!=0){
 			if (press==P_DOWN)	{
@@ -163,7 +164,7 @@ char alfabeto[37][2]={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o
 				if(lettera<26) lettera++;
 				else lettera=0;		
 			}	
-			if (press==P_RIGHT)	{
+			else if (press==P_RIGHT)	{
 				if(carattere<15){
 					nome[carattere][0]=alfabeto[lettera][0];
 					carattere++;
@@ -173,11 +174,8 @@ char alfabeto[37][2]={"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o
 			}
 			y_pos(x,y);	
 			lcd_printf(alfabeto[lettera]);
-			while (p_status()!=0) msDelay(10);	
-			
-				
+			while (p_status()!=0) msDelay(10);		
 		}	
-		msDelay(50);
 	}
 presa--;
 for(i=0;i<carattere;i++) prese_nomi[presa][i][0]=nome[i][0];

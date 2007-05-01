@@ -50,8 +50,12 @@ void sk_init(){
 }
 
 void sk_main(){
+unsigned char level,i;
 	y_pos(1,0);
-	lcd_printf(" P:X X X X X X");					
+	lcd_printf(" P:");
+	for(i=1;i<8;i++) lcd_printf("%X",presa_read_level(i));
+heh
+			
 	y_pos(1,3);
 	lcd_printf("Menu");			
 	cursore_sceqgli_opz(3);

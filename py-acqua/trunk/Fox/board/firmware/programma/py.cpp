@@ -44,9 +44,11 @@
 //		MAIN
 //*****************
 int  main (void) {
-unsigned char valore[2],i;
+unsigned char valore[2];
 	system ("clear");
-    	if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }    
+
+    	if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
+	
 	lcd_init();
 	ciabatta_init();
 	ds1307_init();
@@ -59,13 +61,15 @@ unsigned char valore[2],i;
 		while(p_status()!= P_OK){
 			msDelay(1000); 
 			if (p_status()==P_DOWN) return 1; // x debug, alla sua pressione il prog termina.
-
-			y_pos(13,2);
+			// scrive ora
+			y_pos(15,0);
 	 		valore[0]=read_hour();
   			lcd_printf("%02d:",valore[0]);
   			valore[1]=read_min();
   			lcd_printf("%02d",valore[1]);
-
+			//valore temperatura
+			//valore ph
+			// valore gh
 		} //aspetta finkè premuto   
 		sk_clear();
 		sk_menu_1(); 
