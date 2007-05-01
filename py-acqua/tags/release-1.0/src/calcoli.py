@@ -50,9 +50,9 @@ class Calcoli(gtk.Window):
 		
 		# Le varie label
 		tbl_valori.attach(utils.new_label(_("Vasca:")), 0, 1, 0, 1)
-		tbl_valori.attach(utils.new_label(_("Altezza in cm:")), 0, 1, 1, 2)
-		tbl_valori.attach(utils.new_label(_("Lunghezza in cm:")), 0, 1, 2, 3)
-		tbl_valori.attach(utils.new_label(_("Larghezza in cm:")), 0, 1, 3, 4)
+		tbl_valori.attach(utils.new_label(_("Lunghezza in cm:")), 0, 1, 1, 2)
+		tbl_valori.attach(utils.new_label(_("Larghezza in cm:")), 0, 1, 2, 3)
+		tbl_valori.attach(utils.new_label(_("Altezza in cm:")), 0, 1, 3, 4)
 		
 		# ComboBox
 		self.e_vasca = utils.Combo()
@@ -67,9 +67,9 @@ class Calcoli(gtk.Window):
 		self.e_altezza, self.e_lunghezza, self.e_larghezza = gtk.Entry(), gtk.Entry(), gtk.Entry()
 		
 		tbl_valori.attach(self.e_vasca, 1, 2, 0, 1, yoptions=0)
-		tbl_valori.attach(self.e_altezza, 1, 2, 1, 2, yoptions=0)
-		tbl_valori.attach(self.e_lunghezza, 1, 2, 2, 3, yoptions=0)
-		tbl_valori.attach(self.e_larghezza, 1, 2, 3, 4, yoptions=0)
+		tbl_valori.attach(self.e_lunghezza, 1, 2, 1, 2, yoptions=0)
+		tbl_valori.attach(self.e_larghezza, 1, 2, 2, 3, yoptions=0)
+		tbl_valori.attach(self.e_altezza, 1, 2, 3, 4, yoptions=0)
 		
 		# Creiamo un notebook di due schede contenenti le diverse
 		# tabelle (per dolce e marino)
@@ -196,7 +196,7 @@ class Calcoli(gtk.Window):
 		l = e*0.35
 		m = e*1.5
 		n = e*10
-		o = b*a*24
+		o = (a*b*12/1000)*1.33
 
 		self.dlc_volume.set_text(str(e))
 		self.dlc_piante_inseribili.set_text(str(f))
