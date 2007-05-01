@@ -47,7 +47,8 @@ RESET A VCC
 #include "unistd.h" 
 #include "time.h"
 #include "sys/ioctl.h"
-#include "fcntl.h"     
+#include "fcntl.h"
+#include "asm/etraxgpio.h"
 
 #define CLOCK_LOW_TIME            8
 #define CLOCK_HIGH_TIME           8
@@ -142,7 +143,8 @@ int i2c_fd;
 //CONFIGURAZIONE DEI REGISTRI DELL' I/O EXPANDER
 #define	IOCONA	0X0A
 #define	IOCONB	0X0B
-	#define BANK	7 	//SCELTA DEL BANCO DEI REGISTRI
+
+	#define BANK	7 	//SCELTA DEL BANCO DEI REGISTRI
 						// 1 i regiastri assocciati ad ogni porta sono separati uin 2 banchi separati
 						// 0 registri nello stesso banco (default)
 						

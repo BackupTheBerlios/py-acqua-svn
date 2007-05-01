@@ -370,7 +370,7 @@ void i2c_stop(void) {
 }
 
 // Send a byte to the I2C bus and return the ack sequence from slave
-int i2c_outbyte(unsigned char x) {
+unsigned char i2c_outbyte(unsigned char x) {
   int i;
   int ack;
 
@@ -400,7 +400,7 @@ int i2c_outbyte(unsigned char x) {
 //*********************************************************************
 // dispositivi I2C functions
 //*********************************************************************
-
+/*
 
 //LETTURA PRESSIONE
 float PressureRead (void){
@@ -429,9 +429,9 @@ float PressureRead (void){
   
   return pressure;
 }
+*/
 
-
-short int read_sec (void)
+unsigned char read_sec (void)
 {
  short int secs;
  i2c_stop();
@@ -445,7 +445,7 @@ short int read_sec (void)
  return secs;
 }
 
-short int read_min (void)
+unsigned char read_min (void)
 {
  short int mins;
  i2c_stop();
@@ -459,7 +459,7 @@ short int read_min (void)
  return mins;
 }
 
-short int read_hour (void)
+unsigned char read_hour (void)
 {
  short int hours;
  i2c_stop();
@@ -473,7 +473,7 @@ short int read_hour (void)
  return hours;
 }
 
-short int read_daysett (void)
+unsigned char read_daysett (void)
 {
  short int daysett;
  i2c_stop();
@@ -487,7 +487,7 @@ short int read_daysett (void)
  return daysett;
 }
 
-short int read_day (void)
+unsigned char read_day (void)
 {
  short int days;
  i2c_stop();
@@ -501,7 +501,7 @@ short int read_day (void)
  return days;
 }
 
-short int read_month (void)
+unsigned char read_month (void)
 {
  short int months;
  i2c_stop();
@@ -515,7 +515,7 @@ short int read_month (void)
  return months;
 }
 
-short int read_year (void)
+unsigned char read_year (void)
 {
  short int years;
  i2c_stop();
@@ -532,7 +532,7 @@ short int read_year (void)
 //INIZIALIZZAZIONE RTC_DS1307
 void ds1307_init (void)
 {
-short int secondi;
+unsigned char secondi;
 secondi=read_sec();
 i2c_stop();
 i2c_start();
@@ -545,7 +545,7 @@ i2c_start();
 
 void timenow (int modo)
 {
- int sec,min,hour;
+ unsigned char sec,min,hour;
  
  sec=read_sec();
  min=read_min();
@@ -583,7 +583,7 @@ void timenow (int modo)
 
 void datanow (void)
 {
- int gio,mes,ann;
+ unsigned char gio,mes,ann;
 
  gio=read_day();
  mes=read_month();
@@ -632,7 +632,7 @@ scanf ("%X",&minuto_in);
 }
 
 
-void set_data (short int g_in, short int m_in, short int a_in)
+void set_data (unsigned char g_in, unsigned char m_in, unsigned char a_in)
 {
 i2c_stop();
 i2c_start();
@@ -659,7 +659,7 @@ i2c_stop();
 i2c_start();
 }
 
-void set_ora (short int o_in, short int min_in)
+void set_ora (unsigned char o_in, unsigned char min_in)
 {
 i2c_stop();
 i2c_start();
@@ -688,7 +688,7 @@ i2c_start();
 
 void setsystemdate (void)
 {
-int giorno,mese,anno,ore,minuti;
+unsigned char giorno,mese,anno,ore,minuti;
 
 char comando[20]="date ";
 

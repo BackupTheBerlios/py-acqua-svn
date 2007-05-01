@@ -17,6 +17,8 @@
 //#    along with Py-Acqua; if not, write to the Free Software
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /*************************************************
+si ok
+metti il link x ora
 
 
 
@@ -128,7 +130,8 @@ RESET A VCC
 //CONFIGURAZIONE DEI REGISTRI DELL' I/O EXPANDER
 #define	IOCONA	0X0A
 #define	IOCONB	0X0B
-	#define BANK	7 	//SCELTA DEL BANCO DEI REGISTRI
+
+	#define BANK	7 	//SCELTA DEL BANCO DEI REGISTRI
 						// 1 i regiastri assocciati ad ogni porta sono separati uin 2 banchi separati
 						// 0 registri nello stesso banco (default)
 						
@@ -275,7 +278,6 @@ char stringa[2];
 //FUNZIONI
 //-----------------------------
 
-
 void itoa(int valore, int base){
   int i, tmp;
  
@@ -287,7 +289,6 @@ void itoa(int valore, int base){
      valore=valore/base;
     }
 }
-
 // Software delay in us
 void udelay(int us) {
   int a;
@@ -301,7 +302,6 @@ void udelay(int us) {
     }
   }  
 }   
-
 // Software delay in ms
 void msDelay(int ms) {
   int i,a;
@@ -314,7 +314,6 @@ void msDelay(int ms) {
     } 
   }
 }
-
 // Get the SDA line state
 int i2c_getbit(void) {
   unsigned int value;
@@ -324,7 +323,6 @@ int i2c_getbit(void) {
   else 
     return 1;
 }
-
 // Set the SDA line state
 void i2c_data(int state) {
   if (state==1) 
@@ -332,7 +330,6 @@ void i2c_data(int state) {
   else 
     ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_DATA_LINE);
 }
-
 // Set the SCL line state
 void i2c_clk(int state) {
   if (state==1) 
@@ -340,21 +337,18 @@ void i2c_clk(int state) {
   else 
     ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE);
 }
-
 // Set the SDA line as output
 void i2c_dir_out(void) {
   int iomask;
   iomask = I2C_DATA_LINE;
   ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), &iomask);
 }
-
 // Set the SDA line as input
 void i2c_dir_in(void) {
   int iomask;
   iomask = I2C_DATA_LINE;
   ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), &iomask);
 }
-
 // Open the GPIOG dev 
 int i2c_open(void) {
   i2c_fd = open("/dev/gpiog", O_RDWR);
@@ -365,12 +359,10 @@ int i2c_open(void) {
 	i2c_delay(100);
   return i2c_fd;
 }
-
 // Close the GPIOG dev 
 void i2c_close(void) {
   close(i2c_fd);
 }
-
 // Read a byte from I2C bus and send the ack sequence
 unsigned char i2c_inbyte(int ack) {
   unsigned char value = 0;
@@ -399,7 +391,6 @@ unsigned char i2c_inbyte(int ack) {
   udelay(200);	
   return value;
 }
-
 // Send a start sequence to I2C bus
 void i2c_start(void){
   i2c_dir_out();
@@ -408,7 +399,6 @@ void i2c_start(void){
   udelay(5);
   i2c_data(0);
 }
-
 // Send a stop sequence to I2C bus
 void i2c_stop(void) {
   i2c_dir_out();
@@ -417,7 +407,6 @@ void i2c_stop(void) {
   udelay(5);
   i2c_data(1);
 }
-
 // Send a byte to the I2C bus and return the ack sequence from slave
 int i2c_outbyte(unsigned char x) {
     int i;
@@ -446,11 +435,11 @@ int i2c_outbyte(unsigned char x) {
     else 
         return 0;
 }
-
 //*********************
 //  MCP23017 ROUTINES
 //*********************
 int mcp23017_regLeggi(int reg){
+
 	int data;
 	i2c_start();
 	i2c_outbyte(lcdMcp23017_id<<1); // accoda uno zero x dire scrivi
@@ -461,7 +450,6 @@ int mcp23017_regLeggi(int reg){
 	i2c_stop();
 	return data;
 }
-
 void mcp23017_regScrivi(int registro,int value){
 	i2c_start();
 	i2c_outbyte(lcdMcp23017_id<<1);
@@ -469,8 +457,6 @@ void mcp23017_regScrivi(int registro,int value){
 	i2c_outbyte(value);
 	i2c_stop();
 }
-
-
 void mcp23017_pinWriteLevel(int gp,int pin,int level){
 	int value;
 	
@@ -492,9 +478,6 @@ void mcp23017_pinWriteLevel(int gp,int pin,int level){
 ///	value=mcp23017_regLeggi(GPIOA);
 	//printf("verifica= %d\n",value);
 }
-
-
-
 void lcdMcpInit(){
 //init input x 5 pulsanti
 //init output x fili al display
@@ -504,12 +487,21 @@ void lcdMcpInit(){
 	mcp23017_regScrivi(IODIRA,0);//DISPLAY, TT OUT
 	mcp23017_regScrivi(IODIRB,0xff);//pulsanti, tt in
 	mcp23017_regScrivi(GPIOA,0);//uscite sul display a zero
-	mcp23017_regScrivi(GPPUB,0xff);// pullup sui pulsanti
+	mcp23017_regScrivi(GPPUB,0);// pullup DISATTIVATI sui pulsanti
 	
 
 
 }
 
+int p_status(){
+	int value;
+	value=mcp23017_regLeggi(GPIOB);
+	if (value==8) return (P_OK);
+	else if (value==1)return (P_UP);
+	else if (value==16)return (P_DOWN);
+	else if (value==2)return (P_RIGHT);
+	else if (value==4)return (P_LEFT);
+}
 
 //*********************************************************************
 // LCD functions
@@ -524,12 +516,10 @@ void lcdD4(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D4,level);}
 void lcdD5(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D5,level);}
 void lcdD6(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D6,level);}
 void lcdD7(int level) { mcp23017_pinWriteLevel(lcd_port,lcd_D7,level);}
-
 void lcd_e_strobe() {
 	lcd_e(1);
 	lcd_e(0);
 }
-
 // Send a nibble (4 bit) to LCD
 void lcd_put_nibble( int value) {
 	if (value&0x01) lcdD4(1);
@@ -541,11 +531,10 @@ void lcd_put_nibble( int value) {
 	if (value&0x08) lcdD7(1);
 	else 			lcdD7(0);
 }
-
 // Send a char to LCD
+void lcd_putc(unsigned char data, int mode) {
 // data: Ascii char or instruction to send
 // mode: 0 = Instruction, 1 = Data
-void lcd_putc(unsigned char data, int mode) {
 	int a;
 	
 	if (!mode) lcd_rs(0);
@@ -558,7 +547,6 @@ void lcd_putc(unsigned char data, int mode) {
 	lcd_put_nibble(a);
 	lcd_e_strobe();
 } 
-
 // Lcd initialization
 void lcd_init() {
 	lcdMcpInit();
@@ -587,21 +575,6 @@ void lcd_init() {
  	lcd_putc(0x01,0);
 	msDelay(2);
 } 
-
-// Locate cursor on LCD
-// row (0-2)
-// col (1-39)
-void lcd_locate(int row, int col) {
-  lcd_putc(0x80+row*0x40+col,0);
-  udelay(35);
-} 
-
-// Clear LCD
-void lcd_clear() {
-  lcd_putc(0x01,0);
-  msDelay(2);
-} 
-
 // Lcd version of printf
 void lcd_printf(char *format, ...) {
   int i;
@@ -617,49 +590,17 @@ void lcd_printf(char *format, ...) {
     lcd_putc(buffer[i],1);
   }
 }
-//**************
-// navigazione
-//**************
-
-int p_status(int pulse){
-int value;
-	value=mcp23017_regLeggi(GPIOB);
-	value=value & (1 << pulse );
-	return value;
-	
-}
-//***************
-//	SCHERMATE
-//
-//	MENU
-//
-//***************
-
-//0,0	riga1 
-//0,20  riga2
-//1,0   riga3
-//1,20  riga4
-
-void sk_clear(){
-	lcd_clear(); 
-}
+// Locate cursor on LCD
+void lcd_locate(int row, int col) {
 
 
-void sk_init(){
-int i;
- 	lcd_locate(0,7);
-	lcd_printf("VISITA");			
- 	lcd_locate(1,2);
-	lcd_printf("www.pyacqua.net"); 
-	lcd_locate(1,20);
-	lcd_printf("-------------------");	
-	for(i=8;i>0;i--) msDelay(250);
-	sk_clear();
-	
-}
+ // row (0-2)
+// col (1-39)
+  lcd_putc(0x80+row*0x40+col,0);
+  udelay(35);
+} 
 
-
-void cursore(int pos){
+void cursore_sceqgli_opz(int pos){
 //1..4
 	lcd_locate(0,0);
 	lcd_printf(" ");			
@@ -669,13 +610,106 @@ void cursore(int pos){
 	lcd_printf(" ");			
 	lcd_locate(1,20);
 	lcd_printf(" ");
-if (pos==1)	lcd_locate(0,0);
-else if (pos==2)	lcd_locate(0,20);
-else if (pos==3)	lcd_locate(1,0);
-else if (pos==4)	lcd_locate(1,20);
+	if (pos==1)		lcd_locate(0,0);
+	else if (pos==2)	lcd_locate(1,0);
+	else if (pos==3)	lcd_locate(0,20);
+	else if (pos==4)	lcd_locate(1,20);
 	lcd_printf(">");
 }
+// Clear LCD
+void lcd_clear() {
+  lcd_putc(0x01,0);
+  msDelay(2);
+} 
+void clean_row(int row){
+//1..4
+	if (row==1)		lcd_locate(0,0);
+	else if (row==2)	lcd_locate(1,0);
+	else if (row==3)	lcd_locate(0,20);
+	else if (row==4)	lcd_locate(1,20);
+	lcd_printf("                    ");
+}
 
+
+int aggiorna_cursore_opz(int min,int max){
+	int scelta,press;
+	scelta=min+1; // 1 è il titolo del menu
+	cursore_sceqgli_opz(scelta);
+	while(p_status() != P_OK){
+		press=p_status();
+		if (press==P_DOWN)	{if (scelta<max){cursore_sceqgli_opz(++scelta);
+						while (p_status()==P_DOWN) msDelay(10);}}
+		else if (press==P_UP)  	{if (scelta>min){cursore_sceqgli_opz(--scelta);
+						while (p_status()==P_UP)   msDelay(10);}}
+		msDelay(50);
+	}
+	return scelta;
+}
+void y_pos(int x, int y){
+	if (y==1)		lcd_locate(0,x);
+	else if (y==2)	lcd_locate(1,x);
+	else if (y==3)	lcd_locate(0,20+x);
+	else if (y==4)	lcd_locate(1,20+x);
+}
+
+void sposta_2cursori_x(int x, int y){
+	//clean_row(y-1);	
+	//clean_row(y+1);
+	y_pos(x,y-1);	
+	lcd_printf(" v "); // gli spazi gli permettono di pulire il carattere precedente
+	y_pos(x,y+1);
+	lcd_printf(" ^ ");
+
+}
+
+
+
+
+void select_cifra(int y, int sx, int dx){
+	int press,scelta;
+	scelta=sx;
+	sposta_2cursori_x(scelta,y);
+	while(p_status() != P_OK){
+		press=p_status();
+		if (press==P_RIGHT)	{if (scelta<dx){scelta++;sposta_2cursori_x(scelta,y);while (p_status()==P_RIGHT) msDelay(10);}}
+		if (press==P_LEFT) {if (scelta>sx){scelta--;sposta_2cursori_x(scelta,y);while (p_status()==P_LEFT)   msDelay(10);}}
+		msDelay(50);
+	}
+}
+
+
+/***************
+//	SCHERMATE
+//
+//	MENU
+//
+//***************
+//0,0	riga1 
+//0,20  riga2
+//1,0   riga3
+//1,20  riga4*/
+
+
+void sk_clear(){
+	lcd_clear(); 
+}
+
+
+
+void sk_init(){
+
+int i;
+ 	lcd_locate(0,7);
+	lcd_printf("VISITA");	
+		
+ 	lcd_locate(1,2);
+	lcd_printf("www.pyacqua.net"); 
+	lcd_locate(1,20);
+	lcd_printf("-------------------");	
+	for(i=8;i>0;i--) msDelay(250);
+	sk_clear();
+	
+}
 
 void sk_main(){
 	lcd_locate(0,1);
@@ -685,96 +719,89 @@ void sk_main(){
  		
 	lcd_locate(1,21);
 	lcd_printf("Menu");			
-	cursore(1);
+	cursore_sceqgli_opz(4);
 }
+
+
+
+
+
+//*********************************
+//***********************************
+//******************** 
 
 
 
 void sk_menu_1_1(){
-int scelta;
+//	int scelta;
+//	int intervalli[6];
 	lcd_locate(0,0);
 	lcd_printf("<<     DATA");			
-		
 	lcd_locate(0,22);
 	lcd_printf("15:00   25/04/07");			
-	lcd_locate(1,2);
-	lcd_printf("^");
-	scelta=1;
-	cursore(scelta);
-
+	select_cifra(3,2,16);
 }
+
+
 void sk_menu_1_2(){
 int scelta;
 	lcd_locate(0,1);
-	lcd_printf("<<  VALORI SONDE");			
-	scelta=1;
-	cursore(scelta);
+	lcd_printf("<<  VALORI SONDE");	
+
+	scelta=aggiorna_cursore_opz(1,4);
 	
 }
+
+
 void sk_menu_1_3(){
 int scelta;
 	lcd_locate(0,0);
-	lcd_printf("<<     Menu 1");			
-	scelta=1;
-	cursore(scelta);
+	lcd_printf("<<     INFO");			
+
+	scelta=aggiorna_cursore_opz(1,2);
 	
 }
+
+
 
 
 void sk_menu_1(){
-int scelta;
-	lcd_locate(0,0);
+	int scelta;
+	lcd_locate(0,1);
 	lcd_printf("<<     Menu 1");			
-	lcd_locate(0,21);
-	lcd_printf("DATA");			
 	lcd_locate(1,1);
+	lcd_printf("DATA");			
+	lcd_locate(0,21);
 	lcd_printf("VALORI SONDE");			
 	lcd_locate(1,21);
-	lcd_printf("INO");
-	scelta=1;
-	cursore(scelta);
-	
-	for(;;){
-	
-		if (p_status(P_DOWN)){if (scelta<4) {cursore(--scelta);	while (!(p_status(P_DOWN))) msDelay(50);}}
-		if (p_status(P_UP))  {if (scelta>1) {cursore(++scelta);	while (!(p_status(P_UP))) msDelay(50);}}
-		if (p_status(P_OK))  {
-			while(p_status(P_OK)) msDelay(50);
-			sk_clear();
-			if (scelta==1) usDelay(1);//ritorna
-			else if (scelta==2) sk_menu_1_1(); 
-			else if (scelta==3) sk_menu_1_2();
-			else if (scelta==4) sk_menu_1_2();
-		}			
-	}
-	
-	
+	lcd_printf("INFO");
+	scelta=aggiorna_cursore_opz(1,4);
+	sk_clear();
+	if (scelta==1) udelay(1);//ritorna
+	else if (scelta==2) sk_menu_1_1(); 
+	else if (scelta==3) sk_menu_1_2();
+	else if (scelta==4) sk_menu_1_2();
 }
-
-
-
-
 
 //*****************
 //		MAIN
 //*****************
-
-int  main (void) {	system ("clear");
+int  main (void) {
+	system ("clear");
     if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }    
     lcd_init();		
 //skermate
 	sk_init();
 	
 	
-for(;;){
-	sk_main();
+		sk_main();
 	
-	while(!(p_status(P_OK))) msDelay(50); //aspetta finkè premuto   
-	sk_clear();
-	sk_menu_1(); 
-	sk_clear();
+		while(p_status()!= P_OK) msDelay(50); //aspetta finkè premuto   
+		sk_clear();
+		sk_menu_1(); 
+		sk_clear();
     
-}        
+	        
 return 1;
 }
 
