@@ -43,7 +43,7 @@ while(!ext_eeprom_ready(id));
 
 }
 
-unsigned chat read_ext_eeprom(unsigned char id, long int address){
+unsigned char read_ext_eeprom(unsigned char id, long int address){
 unsigned char data;
 while(!ext_eeprom_ready(id));
 	i2c_start();
@@ -56,7 +56,7 @@ while(!ext_eeprom_ready(id));
 	return data;//tra parentesi data (data)
 }
 
-
+/*
 int  main (void) {
 int scelta;
 int cella,dato,dato_chek;
@@ -96,12 +96,12 @@ int cella,dato,dato_chek;
 }
 
 unsigned char sonde_plugin(){
-unsigned char i;
-for(i=0xa0;i<0xb0;i=i+2) dato=read_ext_eeprom(0xa0,cella);
-
+	unsigned char i,dato;
+	for(i=0xa0;i<0xb0;i=i+2) dato=read_ext_eeprom(0xa0,i);
+	return dato;
 
 }
 
-
+*/
 
 

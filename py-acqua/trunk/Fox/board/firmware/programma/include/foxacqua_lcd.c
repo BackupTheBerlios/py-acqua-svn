@@ -200,7 +200,7 @@ void barra_menu_vert(unsigned char type){
 int aggiorna_cursore_opz(unsigned char min,unsigned char max){
 // 0..3
 	unsigned char scelta,press;
-	scelta=min+1; // 1 è il titolo del menu
+	scelta=min; // 1 è il titolo del menu
 	cursore_sceqgli_opz(scelta);
 	while(p_status() != P_OK){
 		press=p_status();
