@@ -265,7 +265,7 @@ class Gui(gtk.Window):
 		dialog = gtk.AboutDialog()
 	
 		dialog.set_name("PyAcqua 1.0")
-		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 Luca Sanna - Italy")
+		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 Py-acqua")
 		dialog.set_website("http://www.pyacqua.net")
 		
 		text = "Py-Acqua is free software; you can redistribute it and/or modify it under\n"
@@ -285,6 +285,7 @@ class Gui(gtk.Window):
 			"Pietro Grassi - Release Tester",
 			"Francesco Piccinno - Developer",
 			"Giovanni Manzoni - Developer and Electronic"
+			"Davide Dicerto - Developer"
 		]
 		
 		dialog.set_authors (text)
