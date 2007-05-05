@@ -18,12 +18,15 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Py-Acqua; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys
+	
 try:
 	import pygtk
 	pygtk.require ('2.0')
 except:
-	
 	print "!! PyGtk Not present"
+	sys.exit (-1)
 
 import os
 os.environ['PATH'] += r";lib;etc;bin"
@@ -41,15 +44,23 @@ try:
 	import gtk
 	import gobject
 except:
-	print _("You need to install GTKv2")
-	
+	print "You need to install GTKv2"
+	sys.exit (-1)
 
 try:
 	#import pysqlite2 as sqlite
 	from pysqlite2 import dbapi2 as sqlite
 except:
-	print _("You need to install pysqlite")
-	utils.info (_("You need to install pysqlite2"))
+	print "You need to install pysqlite"
+	sys.exit (-1)
+
+import utils
+import app
+import engine
+import merger
+import impostazioni
+import backend
+
 def main ():
 	
 	APP = 'acqua'
@@ -179,7 +190,9 @@ def main ():
 		
 		db.set_schema_presents (True)
 	
-	merger.check_for_updates () #Controlliamo se ci sono update da fare
+	# L'update su ambiente windows dovrebbe essere fatto direttamente da qui
+	# ma mi sa che e' meglio disabilitare l'update per windows
+	#merger.check_for_updates () #Controlliamo se ci sono update da fare
 
 	gobject.threads_init ()
 	
@@ -198,31 +211,5 @@ def main ():
 	impostazioni.save ()
 
 if __name__ == "__main__":
-	# Dobbiamo caricare i moduli come import pyacqua.ecc
-	
-#	import pyacqua.utils as utils
-#	
-#	utils.prepare_enviroment ()
-#	
-#	import pyacqua.app as app
-#	import pyacqua.engine as engine
-#	import pyacqua.merger as merger
-#	import pyacqua.impostazioni as impostazioni
-#	import pyacqua.backend as backend
-#	
-#	main ()
-#	
-#	
-#else:
-	
-	import utils
-	
 	utils.prepare_enviroment ()
-	
-	import app
-	import engine
-	import merger
-	import impostazioni
-	import backend
-	
 	main ()
