@@ -96,6 +96,7 @@ EOF
 	python pyacqua/src/generate.py makelist
 	mv list.xml pyacqua/
 
-	unz "Install complete. Now starting..."
-	unz "PyAcqua exited."
+	unz "Deleting .svn directories"
+	cd ../
+	for f in `find -name .svn -type d`; do rm -rf $f; done
 fi
