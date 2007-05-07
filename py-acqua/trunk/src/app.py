@@ -50,6 +50,13 @@ class Gui(gtk.Window):
 	
 	def _create_menu(self):
 		
+		def unz (x):
+			if not x:
+				return ('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit')
+			else:
+				return ('Quit', gtk.STOCK_CANCEL, _('_Riduci a icona'), None, _('Nascondi Py-Acqua'), 'exit')
+		
+		
 		w = [
 		('Acquario', None, _('_Acquario')),
 			('Calcoli', None, _('_Calcoli'), '<control>C', _('Calcoli...'), '_on_open_calcoli'),
@@ -65,8 +72,7 @@ class Gui(gtk.Window):
 			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), '_on_open_invertebrati'),
 			
 			#('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), '_on_open_importa'),
-			
-			('Quit', gtk.STOCK_QUIT, _('_Quit'), None, _('Esci da Py-Acqua'), 'exit'),
+			(os.name == 'nt' and unz (True)) or (unz (False)),
 			
 		('Impostazioni', None, _('_Impostazioni')),
 		
@@ -195,18 +201,26 @@ class Gui(gtk.Window):
 		vbox.pack_start(self.ui.get_widget('/Menubar'), False, False, 0)
 		vbox.pack_start(image)
 		
-		self.add(vbox)
-		self.show_all()
-		self.connect('destroy', self.exit)
-
-		self.tray = True
+		self.add (vbox)
+		self.realize ()
+		self.show_all ()
+		
+		if os.name == 'nt':
+			self.connect ('delete_event', self.exit)
+		else:
+			self.connect ('destroy', self.exit)
 		
 		if get ("show_tips"):
 			import tips
 			tips.TipsDialog()
 		
 	def exit(self, *w):
-		gtk.main_quit()
+		if os.name == 'nt':
+			App.tray = False
+			App.hide ()
+			return True
+		else:
+			gtk.main_quit ()
 
 	def _on_open_calcoli(self, widget, data=None):
 		if not App.p_window["calcoli"]:
@@ -303,7 +317,13 @@ class Gui(gtk.Window):
 		
 	def main(self):
 		self.active_toggle = False
-		gtk.main()
+				
+		if os.name == 'nt':
+			import tray
+			App.tray_obj = tray.TrayIcon()
+			App.tray = True
+		
+		gtk.main ()
 	
 	def get_plugin_menu(self):
 		"""

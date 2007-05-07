@@ -22,6 +22,7 @@
 import app
 import gtk
 import os
+import gobject
 
 if os.name != 'nt':
 	try:
@@ -101,12 +102,29 @@ else:
 				win32utils.WM_TRAYMESSAGE: self._on_notifyicon_activity
 				})
 			self.win32ext.show_balloon_tooltip (_("PyAcqua"), _("PyAcqua avviato.\nPremi su questa icona per ridurlo a icona.\nRipremi su questa icona per ripristinare."), 5, win32gui.NIIF_INFO)
-
+		
+		def remove_tray (self):
+			self.win32ext.remove_notify_icon ()
+			#self.win32ext.remove ()
+			self = None
+		
+		def show_message (self, txt, type):
+			if type == gtk.MESSAGE_ERROR:
+				t = win32gui.NIIF_ERROR
+			elif type == gtk.MESSAGE_WARNING:
+				t = win32gui.NIIF_WARNING
+			else:
+				t = win32gui.NIIF_INFO
+			
+			self.win32ext.show_balloon_tooltip (_("PyAcqua"), txt, 5, t)
+		
 		def _on_notifyicon_activity(self, hwnd, message, wparam, lparam):
 			if lparam == win32con.WM_RBUTTONDOWN:
-				self.win32ext.notify_icon.menu.popup(None, None, None, 3, 0)
+				gobject.idle_add (lambda x: x.popup (None, None, None, 3, 0), self.win32ext.notify_icon.menu)
+				#self.win32ext.notify_icon.menu.popup (None, None, None, 3, 0)
 			elif lparam == win32con.WM_LBUTTONUP:
-				self.win32ext.notify_icon.menu.popdown()
+				gobject.idle_add (lambda x: x.popdown (), self.win32ext.notify_icon.menu)
+				#self.win32ext.notify_icon.menu.popdown ()
 			elif lparam == win32con.WM_LBUTTONDOWN:
 				if app.App.tray:
 					app.App.hide ()
@@ -116,4 +134,5 @@ else:
 				app.App.tray = not app.App.tray
 
 		def _on_quit (self, item):
+			self.remove_tray ()
 			gtk.main_quit ()

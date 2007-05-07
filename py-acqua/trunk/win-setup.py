@@ -38,7 +38,7 @@ def moon_walk (root_dir, repl):
 
 opts = {
 "py2exe": {
-	"includes": "pangocairo,gtk,pango,atk,gobject,cairo",
+	"includes": "pangocairo,gtk,pango,atk,gobject,cairo,win32api",
 	"dll_excludes": [
 	"iconv.dll","intl.dll","libatk-1.0-0.dll",
 	"libgdk_pixbuf-2.0-0.dll","libgdk-win32-2.0-0.dll",
@@ -60,6 +60,11 @@ name="py-acqua",
         "icon_resources": [(1, "pixmaps/pyacqua.ico")]
         }
     ],
+	#console=[
+	#    {"script": "src/acqua.py",
+    #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+	#	}
+    #],
 	packages=[''],
 	package_dir={'': 'src'},
 	options=opts,

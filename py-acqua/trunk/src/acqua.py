@@ -201,7 +201,8 @@ def main ():
 	app.App.p_backend = db
 	
 	#per il momento finche non si sistema non si usa la tray
-	#utils.tray_apri()
+	app.App.tray_obj = None
+	app.App.tray = False
 	
 	gtk.gdk.threads_enter ()
 	app.App.main()

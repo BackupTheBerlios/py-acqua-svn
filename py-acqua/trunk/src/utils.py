@@ -56,10 +56,6 @@ print "PIXMAPS at: %s" % DPIXM_DIR
 def prepare_enviroment ():
 	init_dir_structure ()
 
-def tray_apri():#self, widget, data=None):
-	import tray
-	return tray.TrayIcon()
-
 def init_dir_structure ():
 	global HOME_DIR, PLUG_DIR, DATA_DIR, UPDT_DIR, SKIN_DIR, IMGS_DIR, PROG_DIR
 	
@@ -430,6 +426,15 @@ class FileChooser(gtk.FileChooserDialog):
 		chooser.set_preview_widget_active(True)
 
 def msg (text, type=gtk.MESSAGE_WARNING, flags=gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT, parent=None, buttons=gtk.BUTTONS_OK):
+	if os.name == 'nt':
+		try:
+			import app
+			if app.App.tray_obj:
+				app.App.tray_obj.show_message (text, type)
+				return
+		except:
+			pass
+	
 	d = gtk.MessageDialog (parent, flags, type, buttons, text)
 	
 	d.run ()
