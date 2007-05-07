@@ -24,6 +24,8 @@ import sys
 import glob
 import py2exe
 from distutils.core import setup
+from distutils.filelist import findall
+import matplotlib
 
 def moon_walk (root_dir, repl):
 	packages, data_files = [], []
@@ -45,7 +47,10 @@ opts = {
 	"libglib-2.0-0.dll","libgmodule-2.0-0.dll",
 	"libgobject-2.0-0.dll","libgthread-2.0-0.dll",
 	"libgtk-win32-2.0-0.dll","libpango-1.0-0.dll",
-	"libpangowin32-1.0-0.dll"],
+	"libpangowin32-1.0-0.dll",
+	'tcl84.dll', 'tk84.dll', 'wxmsw26uh_vc.dll'],
+	"packages" : ["matplotlib", "pytz"],
+	"excludes": ["Tkconstants", "Tkinter", "tcl", ],
 	}
 }
 setup (
@@ -74,5 +79,5 @@ name="py-acqua",
 		#("plugins", glob.glob ("plugins/*.py")),
 		("pixmaps", glob.glob ("pixmaps/*")),
 		("tips", glob.glob ("tips/*.txt"))
-	]
+	] + [matplotlib.get_py2exe_datafiles()]
 )

@@ -29,12 +29,15 @@ except:
 	sys.exit (-1)
 
 import os
-os.environ['PATH'] += r";lib;etc;bin"
+os.environ['PATH'] += r";lib;etc;bin;"
 
-if os.environ.has_key ('PYTHONPATH'):
-	os.environ['PYTHONPATH'] += r";eggmini"
+if os.name == "nt":
+	os.environ['MATPLOTLIBDATA'] = os.getcwd () + "\\matplotlibdata"
 else:
-	os.environ['PYTHONPATH'] = r";eggmini"
+	if os.environ.has_key ('PYTHONPATH'):
+		os.environ['PYTHONPATH'] += r";eggmini"
+	else:
+		os.environ['PYTHONPATH'] = r";eggmini"
 
 import locale
 import gettext
