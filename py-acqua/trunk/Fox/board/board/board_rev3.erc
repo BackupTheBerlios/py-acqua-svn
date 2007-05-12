@@ -1,12 +1,10 @@
 EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
 
-Electrical Rule Check for /root/py-acqua/trunk/Fox/board/board/board_rev3.sch at  5/12/2007 12:00:05 
+Electrical Rule Check for /root/py-acqua/trunk/Fox/board/board/board_rev3.sch at  5/12/2007 18:56:16 
 
 WARNING: Sheet 1/1: SUPPLY Pin +5V overwritten with 5V
 WARNING: Sheet 1/1: SUPPLY Pin V+ overwritten with +5V
-WARNING: Sheet 1/1: SUPPLY Pin -5V overwritten with V-
 ERROR: Sheet 1/1: SUPPLY Pin +5V overwritten with more than one signal (+5V, 5V)
-ERROR: Sheet 1/1: SUPPLY Pin -5V overwritten with more than one signal (-5V, V-)
 WARNING: Sheet 1/1: POWER Pin IC5 VCC connected to +5V
 ERROR: Sheet 1/1: unconnected INPUT Pin: IC4 D+
 ERROR: Sheet 1/1: unconnected INPUT Pin: IC4 D-
@@ -34,21 +32,16 @@ ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$2 -
 ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$3 +
 ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$3 -
 WARNING: Sheet 1/1: POWER Pin IC7A V+ connected to +5V
-WARNING: Sheet 1/1: POWER Pin IC7A V- connected to -5V
 WARNING: Sheet 1/1: POWER Pin IC8A V+ connected to +5V
-WARNING: Sheet 1/1: POWER Pin IC8A V- connected to -5V
 WARNING: Only 1 Pin on net N$7
-WARNING: No Pins on net N$24
 WARNING: No Pins on net N$32
 WARNING: Only 1 Pin on net N$51
 WARNING: Only 1 Pin on net N$52
-WARNING: Only 1 Pin on net N$125
 WARNING: Sheet 1/1, Net GND: missing Junction at (0.3 -10.4)
 WARNING: Sheet 1/1: pins overlap at (-5.8 -3.2)
 WARNING: Sheet 1/1, Net N$32: wire overlaps pin at (0.3 -10.5)
 WARNING: Sheet 1/1: pins overlap at (0.3 -10.45)
-WARNING: Sheet 1/1, Net -5V: wire overlaps pin at (-5.8 -3.8)
-WARNING: Sheet 1/1, Net N$125: wire overlaps pin at (-8.6 -11.6)
+WARNING: Sheet 1/1, Net V-: wire overlaps pin at (-5.8 -3.8)
 WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-2.75 -11.4)
 WARNING: Sheet 1/1, Net N$6: wire overlaps pin at (-5.85 -6.9)
 WARNING: Sheet 1/1, Net 5V: wire overlaps pin at (-5.85 -7.1)
@@ -62,7 +55,7 @@ WARNING: Sheet 1/1, Net N$28: wire overlaps pin at (-6.85 -7.8)
 WARNING: Sheet 1/1, Net N$66: wire overlaps pin at (-6.85 -8)
 WARNING: Sheet 1/1, Net N$32: wire overlaps pin at (0.3 -10.5)
 
-No board loaded - consistency has not been checked
+Board and schematic are consistent
 
-   23 errors
-   36 warnings
+   22 errors
+   30 warnings
