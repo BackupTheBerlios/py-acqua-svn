@@ -1,52 +1,68 @@
 EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
 
-Electrical Rule Check for /root/ele/fox/pyacqua/board_rev3.sch at  4/04/2007 22:25:46 
+Electrical Rule Check for /root/py-acqua/trunk/Fox/board/board/board_rev3.sch at  5/12/2007 12:00:05 
 
-WARNING: Sheet 1/1: unconnected Pin: C2 ..
-WARNING: Sheet 1/1: unconnected Pin: C2 .
 WARNING: Sheet 1/1: SUPPLY Pin +5V overwritten with 5V
 WARNING: Sheet 1/1: SUPPLY Pin V+ overwritten with +5V
 WARNING: Sheet 1/1: SUPPLY Pin -5V overwritten with V-
 ERROR: Sheet 1/1: SUPPLY Pin +5V overwritten with more than one signal (+5V, 5V)
 ERROR: Sheet 1/1: SUPPLY Pin -5V overwritten with more than one signal (-5V, V-)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC4 OSC
-WARNING: Sheet 1/1: POWER Pin IC4 AGND connected to GND
-WARNING: Sheet 1/1: POWER Pin IC4 VSS connected to GND
-WARNING: Sheet 1/1: POWER Pin IC4 VDD connected to +5V
-WARNING: Sheet 1/1: POWER Pin IC14 VCC connected to +5V
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC17 OSC
-WARNING: Sheet 1/1: POWER Pin IC17 AGND connected to GND
-WARNING: Sheet 1/1: POWER Pin IC17 VSS connected to GND
-WARNING: Sheet 1/1: POWER Pin IC17 VDD connected to +5V
-WARNING: Sheet 1/1: POWER Pin IC2 VSS connected to GND
-WARNING: Sheet 1/1: POWER Pin IC2 VDD connected to +5V
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC6 D+
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC6 D-
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IRQ(IN)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 DCD2_/DEV/TTYS2(IN)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 DSR2_/DEV/TTYS2(IN)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 RI2_/DEV/TTYS2(IN)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 SW1(IN)
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IG3
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IG2
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IG5
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 NMI
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IG4
-ERROR: Sheet 1/1: unconnected INPUT Pin: IC9 IG1
-WARNING: Only 1 Pin on net CONTRASTO
-WARNING: Only 1 Pin on net N$23
+WARNING: Sheet 1/1: POWER Pin IC5 VCC connected to +5V
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC4 D+
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC4 D-
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IRQ(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 DCD2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 DSR2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 RI2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 SW1(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IG3
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IG2
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IG5
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 NMI
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IG4
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC1 IG1
+WARNING: Sheet 1/1: POWER Pin U$8 VCC connected to 5V
+WARNING: Sheet 1/1: POWER Pin U$1 3V3 connected to +3V3
+WARNING: Sheet 1/1: POWER Pin U$4G$1 VCC connected to +5V
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$4G$2 +
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$4G$2 -
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$4G$3 +
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$4G$3 -
+WARNING: Sheet 1/1: POWER Pin U$6G$1 VCC connected to +5V
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$2 +
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$2 -
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$3 +
+ERROR: Sheet 1/1: unconnected INPUT Pin: U$6G$3 -
+WARNING: Sheet 1/1: POWER Pin IC7A V+ connected to +5V
+WARNING: Sheet 1/1: POWER Pin IC7A V- connected to -5V
+WARNING: Sheet 1/1: POWER Pin IC8A V+ connected to +5V
+WARNING: Sheet 1/1: POWER Pin IC8A V- connected to -5V
+WARNING: Only 1 Pin on net N$7
 WARNING: No Pins on net N$24
+WARNING: No Pins on net N$32
+WARNING: Only 1 Pin on net N$51
+WARNING: Only 1 Pin on net N$52
 WARNING: Only 1 Pin on net N$125
+WARNING: Sheet 1/1, Net GND: missing Junction at (0.3 -10.4)
 WARNING: Sheet 1/1: pins overlap at (-5.8 -3.2)
+WARNING: Sheet 1/1, Net N$32: wire overlaps pin at (0.3 -10.5)
+WARNING: Sheet 1/1: pins overlap at (0.3 -10.45)
 WARNING: Sheet 1/1, Net -5V: wire overlaps pin at (-5.8 -3.8)
 WARNING: Sheet 1/1, Net N$125: wire overlaps pin at (-8.6 -11.6)
-WARNING: Sheet 1/1, Net N$23: wire overlaps pin at (2 -11)
+WARNING: Sheet 1/1, Net GND: wire overlaps pin at (-2.75 -11.4)
+WARNING: Sheet 1/1, Net N$6: wire overlaps pin at (-5.85 -6.9)
+WARNING: Sheet 1/1, Net 5V: wire overlaps pin at (-5.85 -7.1)
+WARNING: Sheet 1/1, Net N$29: wire overlaps pin at (-9.05 -7.8)
+WARNING: Sheet 1/1, Net N$29: wire overlaps pin at (-9.1 -7.8)
+WARNING: Sheet 1/1, Net N$8: wire overlaps pin at (-9.05 -8)
+WARNING: Sheet 1/1, Net N$8: wire overlaps pin at (-9.1 -8)
+WARNING: Sheet 1/1, Net N$5: wire overlaps pin at (-5.85 -9)
+WARNING: Sheet 1/1, Net N$7: wire overlaps pin at (-5.85 -9.2)
+WARNING: Sheet 1/1, Net N$28: wire overlaps pin at (-6.85 -7.8)
+WARNING: Sheet 1/1, Net N$66: wire overlaps pin at (-6.85 -8)
+WARNING: Sheet 1/1, Net N$32: wire overlaps pin at (0.3 -10.5)
 
-Parts not found in board:
+No board loaded - consistency has not been checked
 
-  C2
-
-ERROR: Board and schematic are not consistent!
-
-   18 errors
-   22 warnings
+   23 errors
+   36 warnings
