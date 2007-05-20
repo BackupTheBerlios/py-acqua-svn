@@ -84,6 +84,7 @@ class WebUpdate (gtk.Window):
 		
 		utils.set_icon (self)
 		self.set_title (_("Web Update"))
+		self.set_size_request (600, 400)
 		
 		vbox = gtk.VBox (False, 2)
 		

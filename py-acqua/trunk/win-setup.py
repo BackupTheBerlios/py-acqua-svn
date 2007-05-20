@@ -26,6 +26,25 @@ import py2exe
 from distutils.core import setup
 from distutils.filelist import findall
 import matplotlib
+import src.generate as generate
+
+from py2exe.build_exe import py2exe as build_exe
+
+class my_py2exe(build_exe):
+	def run (self):
+		if not os.path.exists ("launcher-win32/pyacqua.exe"):
+			print "You must compile the launcher-win32"
+			return
+		
+		build_exe.run (self)
+		
+		print "Creating list.xml ..."
+		
+		os.chdir ("dist\\")
+		xml = generate.UpdateXML ()
+		xml.dump_tree_to_file (xml.create_dict_from_directory (), "list.xml")
+		
+		print "List created."
 
 def moon_walk (root_dir, repl):
 	packages, data_files = [], []
@@ -36,7 +55,6 @@ def moon_walk (root_dir, repl):
 			data_files.append((repl + dirpath[len(root_dir):], [os.path.join(dirpath, f) for f in filenames]))
 	
 	return data_files
-
 
 opts = {
 "py2exe": {
@@ -81,22 +99,23 @@ opts = {
 }
 
 setup (
-name="py-acqua",
+	cmdclass = {"py2exe": my_py2exe},
+	name="py-acqua",
 	version="1.0",
 	description="PyAcqua program",
 	author="Francesco Piccinno",
 	author_email="stack.box@gmail.com",
 	url="http://www.pyacqua.net",
-    #windows = [
-    #    {"script": "src/acqua.py",
-    #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
-    #    }
-    #],
-	console=[
-	    {"script": "src/acqua.py",
+    windows = [
+        {"script": "src/acqua.py",
         "icon_resources": [(1, "pixmaps/pyacqua.ico")]
-		}
+        }
     ],
+	#console=[
+	#    {"script": "src/acqua.py",
+    #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+	#	}
+    #],
 	packages=[''],
 	package_dir={'': 'src'},
 	options=opts,

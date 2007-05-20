@@ -8,7 +8,7 @@
 
   ;Name and file
   Name "PyAcqua"
-  OutFile "PyAcqua.exe"
+  OutFile "PyAcquaInstaller.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\PyAcqua"
@@ -46,7 +46,7 @@ Section "-PyAcqua Core" SecDummy
 
 	SetOutPath "$INSTDIR"
 	File /r "dist\*.*"
-	File "pyacqua.bat"
+	File "launcher-win32\pyacqua.exe" ;launcher
 
 	;Store installation folder
 	WriteRegStr HKCU "Software\PyAcqua" "" $INSTDIR
@@ -55,7 +55,7 @@ Section "-PyAcqua Core" SecDummy
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 
-	CreateShortCut "$INSTDIR\PyAcqua.lnk" "$INSTDIR\pyacqua.bat"
+	CreateShortCut "$INSTDIR\PyAcqua.lnk" "$INSTDIR\pyacqua.exe"
 
 	SetOutPath "$SMPROGRAMS\PyAcqua\"
 	CopyFiles "$INSTDIR\PyAcqua.lnk" "$SMPROGRAMS\PyAcqua\"

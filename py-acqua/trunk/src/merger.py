@@ -41,7 +41,11 @@ else:
 if HOME_DIR != "":
 	HOME_DIR = os.path.join (HOME_DIR, ".pyacqua")
 	UPDT_DIR = os.path.join (HOME_DIR, "update")
-	PROG_DIR = os.path.join (HOME_DIR, "program")
+	
+	if os.name == 'nt':
+		PROG_DIR = os.path.join (os.getcwd (), "PyAcqua")
+	else:
+		PROG_DIR = os.path.join (HOME_DIR, "program")
 
 def rmgeneric(path, __func__):
 	try:
@@ -87,9 +91,12 @@ def update ():
 					# Fai un for e cancella tutti i file elencati
 					# se la directory alla fine rimane vuota va cancellata
 					
+					root_path = os.path.join (UPDT_DIR, directory[2:-2])
+					
 					for file_to_remove in root.childNodes:
-						print ">> Removing file", os.path.join (root_path, file_to_remove.attributes["name"].nodeValue)
-						os.remove (os.path.join (root_path, file_to_remove.attributes["name"].nodeValue))
+						if node.nodeName == "file":
+							print ">> Removing file", os.path.join (root_path, file_to_remove.attributes["name"].nodeValue)
+							os.remove (os.path.join (root_path, file_to_remove.attributes["name"].nodeValue))
 					
 					if os.path.isdir (root_path) and len (os.listdir (root_path)) == 0:
 						print ">> Removing directory", root_path
@@ -111,8 +118,8 @@ def update ():
 							md5_n = node.attributes["md5"].nodeValue
 							bytes_n = node.attributes["bytes"].nodeValue
 							
-							print "'%s' == '%s'" % (md5_n, md5_v)
-							print "'%s' == '%s'" % (bytes_n, bytes_v)
+							print "\t:: MD5:  '%s' == '%s'" % (md5_n, md5_v)
+							print "\t:: size: '%s' == '%s'" % (bytes_n, bytes_v)
 							
 							if str (md5_v) == str (md5_n) and int (bytes_v) == int (bytes_n):
 								#/home/stack/.pyacqua/update/./pyacqua/src/generate.py
@@ -146,6 +153,11 @@ def update ():
 	removeall (UPDT_DIR)
 	
 	# Crea la nuova list.xml
+	xml = generate.UpdateXML ()
+	xml.dump_tree_to_file (xml.create_dict_from_directory (), "list.xml")
+	
+	print ">> Lista creata"
+	print ">> Update completato"
 
 def check_for_updates ():
 	if os.path.exists (os.path.join (UPDT_DIR, ".diff.xml")):
