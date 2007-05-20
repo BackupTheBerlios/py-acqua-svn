@@ -26,12 +26,22 @@ import threading
 import generate
 import app
 import utils
+import os
 import os.path
 import sys
 
-REPOSITORY_ADDRESS = "http://www.pyacqua.net"
-BASE_DIR = "/update/source/"
-LIST_FILE = "/update/source-list.xml"
+REPOSITORY_ADDRESS = None
+BASE_DIR = None
+LIST_FILE = None
+
+if os.name == 'nt':
+	REPOSITORY_ADDRESS = "localhost"
+	BASE_DIR = "/update/windows/"
+	LIST_FILE = "/update/win32-list.xml"
+else:
+	REPOSITORY_ADDRESS = "www.pyacqua.net"
+	BASE_DIR = "/update/source/"
+	LIST_FILE = "/update/source-list.xml"
 
 #REPOSITORY_ADDRESS = r"localhost"
 #BASE_DIR = r"/~stack/update/source/"
@@ -71,9 +81,12 @@ class Fetcher(threading.Thread):
 class WebUpdate (gtk.Window):
 	def __init__ (self):
 		gtk.Window.__init__ (self)
-
+		
+		utils.set_icon (self)
+		self.set_title (_("Web Update"))
+		
 		vbox = gtk.VBox (False, 2)
-
+		
 		self.store = gtk.ListStore (
 			gtk.gdk.Pixbuf, # icona
 			str, # nome file
@@ -233,7 +246,7 @@ class WebUpdate (gtk.Window):
 		
 			print _(">> File ricevuto %s") % self.file
 		
-			f = open (os.path.join (utils.UPDT_DIR, self.file), 'w')
+			f = open (os.path.join (utils.UPDT_DIR, self.file), 'wb')
 			f.write (data)
 			f.close ()
 			
@@ -282,12 +295,18 @@ class WebUpdate (gtk.Window):
 					
 					if md5 != self.tree.get_model ().get_value (self.it, 4) or int (bytes) != self.tree.get_model ().get_value (self.it, 3):
 						os.remove (tmp)
-						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+						if os.name == 'nt':
+							self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file.replace (os.path.sep, "/")))
+						else:
+							self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 					else:
 						self._update_percentage ()
 						self._go_with_next_iter ()
 				else:
-					self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+					if os.name == 'nt':
+						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file.replace (os.path.sep, "/")))
+					else:
+						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				self._update_percentage ()
 				self._go_with_next_iter ()

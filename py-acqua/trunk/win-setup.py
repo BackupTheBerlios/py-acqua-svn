@@ -40,6 +40,32 @@ def moon_walk (root_dir, repl):
 
 opts = {
 "py2exe": {
+	"includes": "_winreg",
+	}
+}
+setup (
+	name="merger",
+	version="1.0",
+	description="PyAcqua program",
+	author="Francesco Piccinno",
+	author_email="stack.box@gmail.com",
+	url="http://www.pyacqua.net",
+    #windows = [
+    #    {"script": "src/merger.py",
+    #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+    #    }
+    #],
+	console=[
+	    {"script": "src/merger.py",
+        "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+		}
+    ],
+	packages=[''],
+	package_dir={'': 'src'},
+)
+
+opts = {
+"py2exe": {
 	"includes": "pangocairo,gtk,pango,atk,gobject,cairo,win32api",
 	"dll_excludes": [
 	"iconv.dll","intl.dll","libatk-1.0-0.dll",
@@ -53,6 +79,7 @@ opts = {
 	"excludes": ["Tkconstants", "Tkinter", "tcl", ],
 	}
 }
+
 setup (
 name="py-acqua",
 	version="1.0",
@@ -60,16 +87,16 @@ name="py-acqua",
 	author="Francesco Piccinno",
 	author_email="stack.box@gmail.com",
 	url="http://www.pyacqua.net",
-    windows = [
-        {"script": "src/acqua.py",
-        "icon_resources": [(1, "pixmaps/pyacqua.ico")]
-        }
-    ],
-	#console=[
-	#    {"script": "src/acqua.py",
+    #windows = [
+    #    {"script": "src/acqua.py",
     #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
-	#	}
+    #    }
     #],
+	console=[
+	    {"script": "src/acqua.py",
+        "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+		}
+    ],
 	packages=[''],
 	package_dir={'': 'src'},
 	options=opts,

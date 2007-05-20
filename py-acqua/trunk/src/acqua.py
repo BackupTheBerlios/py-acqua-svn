@@ -67,7 +67,10 @@ import backend
 def main ():
 	
 	APP = 'acqua'
-	DIR = os.path.join (utils.PROG_DIR, "locale")
+	if os.name == 'nt':
+		DIR = os.path.join (utils.DHOME_DIR, "locale")
+	else:
+		DIR = os.path.join (utils.PROG_DIR, "locale")
 	
 	try:
 		
@@ -79,6 +82,7 @@ def main ():
 				locale.setlocale (locale.LC_MESSAGES, "en_US")
 			except: pass
 		else:
+			# In teoria qui risulta inutile settare. Il linguaggio italiano e' di default senza gettext.
 			os.environ['LANG'] = "it_IT"
 			it = gettext.translation (APP, DIR, [])
 			it.install ()

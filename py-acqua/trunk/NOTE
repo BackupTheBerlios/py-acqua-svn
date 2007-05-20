@@ -59,4 +59,15 @@ $ PYTHONPATH="/home/stack/py-acqua/py-acqua/trunk/build/lib" ./build/bin/acqua.p
 Se trovate qualche problema relativo al programma si prega di segnalarlo in mailing list
 o aggiungerlo sotto questo file se sviluppatori del progetto.
 
+NOTE PER LA BUILD WIN32:
+# Crea il pacchetto in dist
+C:\Documents and Settings\Administrator\Desktop\build\trunk>c:\python25\python win-setup.py py2exe
+
+# Crea list.xml
+C:\Documents and Settings\Administrator\Desktop\build\trunk\dist>c:\python25\python ..\src\generate.py makelist
+
+# Tutto il contenuto di dist e' utile per l'update meno list.xml
+# che va spostato sulla parent dir (../) come win32-list.xml
+# per l'update.
+
 Francesco

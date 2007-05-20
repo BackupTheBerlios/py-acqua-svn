@@ -46,6 +46,7 @@ Section "-PyAcqua Core" SecDummy
 
 	SetOutPath "$INSTDIR"
 	File /r "dist\*.*"
+	File "pyacqua.bat"
 
 	;Store installation folder
 	WriteRegStr HKCU "Software\PyAcqua" "" $INSTDIR
@@ -54,12 +55,11 @@ Section "-PyAcqua Core" SecDummy
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 
-	CreateShortCut "$INSTDIR\PyAcqua.lnk" "$INSTDIR\acqua.exe"
+	CreateShortCut "$INSTDIR\PyAcqua.lnk" "$INSTDIR\pyacqua.bat"
 
 	SetOutPath "$SMPROGRAMS\PyAcqua\"
 	CopyFiles "$INSTDIR\PyAcqua.lnk" "$SMPROGRAMS\PyAcqua\"
 	CopyFiles "$INSTDIR\PyAcqua.lnk" "$DESKTOP\"
-	Delete "$INSTDIR\PyAcqua.lnk" 
 	CreateShortCut "$SMPROGRAMS\PyAcqua\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 
 SectionEnd
@@ -119,16 +119,12 @@ Section "Uninstall"
   Delete "$INSTDIR\*.*"
 
   Delete "$DESKTOP\PyAcqua.lnk"
-  Delete "$SMPROGRAMS\PyAcqua\PyToDoList.lnk"
+  Delete "$SMPROGRAMS\PyAcqua\PyAcqua.lnk"
   Delete "$SMPROGRAMS\PyAcqua\Uninstall.lnk"
 
-  RMDir  "$SMPROGRAMS\PyAcqua\"
+  RMDir /r "$SMPROGRAMS\PyAcqua\"
 
-  RMDir /r "$INSTDIR\etc\"   
-  RMDir /r "$INSTDIR\lib\"
-  RMDir /r "$INSTDIR\share\"
-
-  RMDir "$INSTDIR"
+  RMDir /r "$INSTDIR"
 
   DeleteRegKey /ifempty HKCU "Software\PyAcqua"
 

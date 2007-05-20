@@ -25,12 +25,14 @@ import shutil
 from xml.dom.minidom import parse, getDOMImplementation
 
 HOME_DIR = ""
+UPDT_DIR = None
+PROG_DIR = None
 
 if os.name == 'nt':
 	try:
 		import _winreg
 		hkey = _winreg.OpenKey (_winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders")
-		path, type = _winreg.QueryValueEx (hkey, "AppData")
+		HOME_DIR, type = _winreg.QueryValueEx (hkey, "AppData")
 	except:
 		print "!! Cannot import _winreg module"
 else:
@@ -154,3 +156,6 @@ def check_for_updates ():
 
 if __name__ == "__main__":
 	check_for_updates ()
+	
+	if os.name == 'nt':
+		os.system ("pause")

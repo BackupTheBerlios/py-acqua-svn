@@ -338,6 +338,8 @@ if __name__ == "__main__":
 			a.dump_tree_to_file (a.create_dict_from_directory (old_tree), "update.xml")
 		elif sys.argv[1] == "makelist":
 			a.dump_tree_to_file (a.create_dict_from_directory (), "list.xml")
+			print "Remember to copy list.xml into parent directory ... (win32-list.xml / source-list.xml)"
 	except:
-		print "Try with:\n\tpython src/generate.py makeupdate to make a new update.xml"
-		print "or with:\n\tpython src/generate.py makelist to make a new list.xml"
+		print "Usage:"
+		print "python src/generate.py makeupdate            -  to make a new update.xml  [depreacated]"
+		print "python src/generate.py makelist              -  to make a new list.xml        [release]"
