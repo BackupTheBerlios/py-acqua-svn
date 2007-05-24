@@ -170,4 +170,4 @@ if __name__ == "__main__":
 	check_for_updates ()
 	
 	if os.name == 'nt':
-		os.system ("pause")
+		raw_input ("Premere INVIO per continuare ...");
