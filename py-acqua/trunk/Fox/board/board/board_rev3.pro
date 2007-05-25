@@ -2,24 +2,26 @@ EAGLE AutoRouter Statistics:
 
 Job           : /root/py-acqua/trunk/Fox/board/board/board_rev3.brd
 
-Start at      :   19:14:24  ( 5/12/2007)
-End at        :   21:49:32  ( 5/12/2007)
-Elapsed time  :   02:35:08
+Start at      :   23:49:44  ( 5/23/2007)
+End at        :   22:23:23  ( 5/24/2007)
+Elapsed time  :   04:04:39
 
-Signals       :    91   RoutingGrid: 1 mil  Layers: 2
-Connections   :   318   predefined:  0 ( 0 Vias )
+Signals       :    93   RoutingGrid: 1 mil  Layers: 2
+Connections   :   337   predefined:  6 ( 3 Vias )
 
-Router memory :   116040600
+Router memory :   121700124
 
-Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
+Job has been interrupted!
 
-Time per pass     :  00:40:35  00:29:02  00:30:34  00:29:06  00:25:51
-Number of Ripups  :         5         0         0         0         0
-max. Level        :         1         0         0         0         0
-max. Total        :        12         0         0         0         0
+Passname          :     Route Optimize1 Optimize2 Optimize3
 
-Routed            :       318       318       318       318       318
-Vias              :       137       152       124       127       117
-Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
+Time per pass     :  02:47:47  00:31:33  00:32:21  00:12:58
+Number of Ripups  :        74         0         0         0
+max. Level        :         3         0         0         0
+max. Total        :        74         0         0         0
 
-Final             : 100.0% finished
+Routed            :       313       314       314       314
+Vias              :       167       165       153       147
+Resolution        :    94.7 %    95.0 %    95.0 %    95.0 %
+
+Final             : interrupted
