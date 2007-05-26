@@ -27,14 +27,23 @@ from distutils.core import setup
 from distutils.filelist import findall
 import matplotlib
 import src.generate as generate
+import time
 
 from py2exe.build_exe import py2exe as build_exe
 
 class my_py2exe(build_exe):
 	def run (self):
-		if not os.path.exists ("launcher-win32/pyacqua.exe"):
-			print "You must compile the launcher-win32"
+		if not os.path.exists ("win32-merger/pyacqua.exe"):
+			print "You must compile the win32-merger"
 			return
+		print "**"
+		print "** Remember to clean dist/ dir before running this"
+		print "** Or at least to remove dist/list.xml"
+		print "**"
+		print "** Sleeping 5 seconds now..."
+		time.sleep (5)
+		print "**"
+		print
 		
 		build_exe.run (self)
 		
@@ -56,31 +65,31 @@ def moon_walk (root_dir, repl):
 	
 	return data_files
 
-opts = {
-"py2exe": {
-	"includes": "_winreg",
-	}
-}
-setup (
-	name="merger",
-	version="1.0",
-	description="PyAcqua program",
-	author="Francesco Piccinno",
-	author_email="stack.box@gmail.com",
-	url="http://www.pyacqua.net",
+#opts = {
+#"py2exe": {
+#	"includes": "_winreg",
+#	}
+#}
+#setup (
+#	name="merger",
+#	version="1.0",
+#	description="PyAcqua program",
+#	author="Francesco Piccinno",
+#	author_email="stack.box@gmail.com",
+#	url="http://www.pyacqua.net",
     #windows = [
     #    {"script": "src/merger.py",
     #    "icon_resources": [(1, "pixmaps/pyacqua.ico")]
     #    }
     #],
-	console=[
-	    {"script": "src/merger.py",
-        "icon_resources": [(1, "pixmaps/pyacqua.ico")]
-		}
-    ],
-	packages=[''],
-	package_dir={'': 'src'},
-)
+#	console=[
+#	    {"script": "src/merger.py",
+#        "icon_resources": [(1, "pixmaps/pyacqua.ico")]
+#		}
+#    ],
+#	packages=[''],
+#	package_dir={'': 'src'},
+#)
 
 opts = {
 "py2exe": {

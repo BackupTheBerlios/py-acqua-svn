@@ -557,7 +557,7 @@ const char* TiXmlElement::Attribute( const char* name ) const
 	const TiXmlAttribute* node = attributeSet.Find( name );
 	if ( node )
 		return node->Value();
-	return 0;
+	return "";
 }
 
 
@@ -567,7 +567,7 @@ const std::string* TiXmlElement::Attribute( const std::string& name ) const
 	const TiXmlAttribute* node = attributeSet.Find( name );
 	if ( node )
 		return &node->ValueStr();
-	return 0;
+	return NULL;
 }
 #endif
 

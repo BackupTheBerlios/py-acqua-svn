@@ -291,7 +291,7 @@ class WebUpdate (gtk.Window):
 				
 				if os.path.exists (tmp):
 					# Controlliamo se il file e' corretto
-					bytes = os.getsize (tmp)
+					bytes = os.path.getsize (tmp)
 					md5   = generate.Generator.checksum (tmp)
 					
 					if md5 != self.tree.get_model ().get_value (self.it, 4) or int (bytes) != self.tree.get_model ().get_value (self.it, 3):

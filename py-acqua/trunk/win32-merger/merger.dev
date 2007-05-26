@@ -1,33 +1,33 @@
 [Project]
 FileName=merger.dev
-Name=merger
+Name=pyacqua
 UnitCount=11
 Type=1
 Ver=1
 ObjFiles=
 Includes=
 Libs=
-PrivateResource=
+PrivateResource=merger_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=
+Compiler=-DTIXML_USE_STL_@@_
 CppCompiler=-DTIXML_USE_STL_@@_
 Linker=
 IsCpp=1
-Icon=
+Icon=merger.ico
 ExeOutput=
 ObjectOutput=
-OverrideOutput=0
-OverrideOutputName=merger.exe
+OverrideOutput=1
+OverrideOutputName=pyacqua.exe
 HostApplication=
 Folders=tinyxml
 CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
-IncludeVersionInfo=0
+IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000001000000001000000
+CompilerSettings=0000000000001000000100
 
 [Unit1]
 FileName=main.cpp
@@ -50,20 +50,20 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [VersionInfo]
-Major=0
-Minor=1
+Major=1
+Minor=0
 Release=1
-Build=1
+Build=0
 LanguageID=1033
 CharsetID=1252
-CompanyName=
+CompanyName=PyAcqua team
 FileVersion=
-FileDescription=Developed using the Dev-C++ IDE
+FileDescription=PyAcqua launcher and merger
 InternalName=
-LegalCopyright=
+LegalCopyright=Francesco Piccinno (c) 2007
 LegalTrademarks=
 OriginalFilename=
-ProductName=
+ProductName=PyAcqua launcher and merger
 ProductVersion=
 AutoIncBuildNr=0
 

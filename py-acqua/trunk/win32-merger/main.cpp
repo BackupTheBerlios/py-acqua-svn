@@ -1,28 +1,51 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <windows.h>
 
 #include "merger.h"
 
 using namespace std;
 
-int main (int argc, char *argv[])
+void start (const char *path)
 {
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
 	
-	char *tmp = getenv ("APPDATA");
+	ZeroMemory (&si, sizeof (si));
+	si.cb = sizeof (si);
+	ZeroMemory (&pi, sizeof (pi));
 	
-	cout << tmp << endl;
-	string path (tmp);
+	CreateProcess (
+	    path,
+	    NULL,
+	    NULL,
+		NULL,
+		FALSE,
+		0,
+		NULL,
+		NULL,
+		&si,
+		&pi
+	);
 	
-	path += "\\.pyacqua\\update\\.diff.xml";
+	//WaitForSingleObject (pi.hProcess, INFINITE);
 	
-	cout << "Path: " << path << endl;
-	
-	Merger merger (path);
-	
-	if (!merger.doMerge ())
-		return -1;
+	CloseHandle (pi.hProcess);
+	CloseHandle (pi.hThread);
+}
+#if 0
+int main (int argc, char *argv[])
+#else
+int STDCALL
+WinMain (HINSTANCE hInstance, HINSTANCE hPrev, LPSTR lpCmd, int nShow)
+#endif
+{
+	Merger merger;
+	merger.doMerge ();
 
-	system ("pause");
+	/* Create Process */
+	start ("acqua.exe");
+	
 	return 0;
 }

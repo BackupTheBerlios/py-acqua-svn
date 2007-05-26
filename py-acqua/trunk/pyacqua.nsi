@@ -46,8 +46,9 @@ Section "-PyAcqua Core" SecDummy
 
 	SetOutPath "$INSTDIR"
 	File /r "dist\*.*"
-	File "launcher-win32\pyacqua.exe" ;launcher
-
+	;File "launcher-win32\pyacqua.exe" ;launcher
+	File "win32-merger\pyacqua.exe"
+	
 	;Store installation folder
 	WriteRegStr HKCU "Software\PyAcqua" "" $INSTDIR
 

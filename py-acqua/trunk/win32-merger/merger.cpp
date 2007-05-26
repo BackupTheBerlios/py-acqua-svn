@@ -11,10 +11,10 @@
 #include "tinyxml/tinyxml.h"
 #include "md5.h"
 
-#define MAXPATH 2048
-
-Merger::Merger (const string& filename) : m_diff_path (filename)
+Merger::Merger () : m_update_dir (getenv ("APPDATA")), m_diff_path ("")
 {
+	m_update_dir += "\\.pyacqua\\update";
+	m_diff_path = m_update_dir + "\\.diff.xml";
 }
 
 bool Merger::doMerge ()
@@ -24,6 +24,7 @@ bool Merger::doMerge ()
 	if (!doc.LoadFile ())
 	    return false;
 	
+	bool all_ok = true;
     TiXmlHandle hDoc (&doc);
     TiXmlElement *pElem, *pChildElem;
     TiXmlHandle hRoot(0);
@@ -62,27 +63,41 @@ bool Merger::doMerge ()
 			if (pChildElem->ValueStr () != "file")
 				continue;
 
-			long double size = -1;
-			string md5 = pChildElem->Attribute ("md5");
+			string md5      = pChildElem->Attribute ("md5");
 			string filename = pChildElem->Attribute ("name");
-			pChildElem->Attribute ("bytes", (double*)&size);
+			string bytes    = pChildElem->Attribute ("bytes");
+			
+			long long size = ::atoll (bytes.c_str ());
+			
+			//cout << "String: " << bytes << " Value: " << size << endl;
 
 			if (to_delete)
 			    eraseAtPath (dirname + "\\" + filename, false);
 			else
-				updateFile (dirname, filename, md5, size);
+				if (!updateFile (dirname, filename, md5, size))
+				{
+				    all_ok = false;
+				    break;
+				}
 		}
 
 		if (to_delete)
 		    eraseAtPath (dirname, true);
 	}
 	
-	return true;
+	if (all_ok)
+		deleteDirectory (m_update_dir.c_str ());
+	else
+		::remove (m_diff_path.c_str ());
+
+	system ("pause");
+	
+	return all_ok;
 }
 
 void Merger::mkDirIfNotPresent (const string& dirname)
 {
-	cout << "Checking if dir is present " << dirname << endl;
+	cout << ">> Controllo directory: " << dirname << " ... ";
 
 	struct _stat dir_stat;
 	
@@ -90,31 +105,37 @@ void Merger::mkDirIfNotPresent (const string& dirname)
 	{
 		// controlla se e' una dir
 		if (S_ISDIR (dir_stat.st_mode))
+		{
+			cout << "ok." << endl;
 			return;
+		}
 
-		cout << "Is not a dir !" << endl;
+		cout << "Uhm.. e' un file?" << endl;
 	}
 	else
+	{
 		::mkdir (dirname.c_str ());
+		cout << "creata." << endl;
+	}
 }
 
 bool Merger::eraseAtPath (const string& path, bool is_dir)
 {
     if (!is_dir)
 	{
-		cout << "Removing " << path << endl;
+		cout << ">> Rimozione file " << path << endl;
 		::remove (path.c_str ());
 		return false;
 	}
 	else
 	{
-    	char newsub[MAXPATH];
-		char newdir[MAXPATH];
-		char fname[MAXPATH];
+    	char newsub[MAX_PATH];
+		char newdir[MAX_PATH];
+		char fname[MAX_PATH];
 	
 		HANDLE hList;
 		
-		TCHAR szDir[MAXPATH];
+		TCHAR szDir[MAX_PATH];
 		WIN32_FIND_DATA FileData;
 		
 		string dirpath (path);
@@ -125,7 +146,7 @@ bool Merger::eraseAtPath (const string& path, bool is_dir)
 		    return false;
 
 		do {
-			strncpy (fname, FileData.cFileName, MAXPATH);
+			strncpy (fname, FileData.cFileName, MAX_PATH);
 
 			if (!strcmp (fname,".") || !strcmp (fname,".."))
 				continue;
@@ -135,29 +156,47 @@ bool Merger::eraseAtPath (const string& path, bool is_dir)
 		
 		FindClose (hList);
 		
-		cout << "No files" << endl;
+		cout << ">> Directory vuota: " << path << " elimino." << endl;
 		::remove (path.c_str ());
 		
 		return true;
 	}
 }
 
-bool Merger::updateFile (const string& dirname, const string& filename, const string& md5, long double size)
+bool Merger::updateFile (const string& dirname, const string& filename, const string& md5, long long size)
 {
-	string path (dirname);
+	if (filename.empty ())
+		return false;
+
+	string path (dirname == "." ? m_update_dir : m_update_dir + "\\" + dirname);
 	path += "\\" + filename;
 	
-	string new_md5 = hexDigest (filename);
-	long double new_size = -1;
+	cout << path << endl;
+	
+	string new_md5 = hexDigest (m_update_dir + "\\" + filename);
+	long new_size = -1;
 
 	struct _stat filestat;
-	if (!::_stat (filename.c_str (), &filestat))
+	if (::_stat (filename.c_str (), &filestat) == 0)
+		new_size = filestat.st_size;
+	else
+	    new_size = -1;
+
+	cout << ">> Controllo file:" << filename << endl;
+	cout << "     MD5: " << md5 << " == " << new_md5 << endl;
+	//cout << "   siz: " << size << " == " << new_size << endl;
+
+	if (/*new_size == size &&*/ new_md5 == md5)
 	{
-		size = filestat.st_size;
+	    cout << ">> Checksum ok ;-)" << endl;
+	    copyFile (path, filename, true);
+	    return true;
 	}
-	
-	if (new_size == size && new_md5 == md5)
-	    cout << "OK. Files are the same" << endl;
+	else
+	{
+	    cout << "!! Errore nel checksum :-\\" << endl;
+	    return false;
+	}
 }
 
 string Merger::hexDigest (const string& filename)
@@ -168,7 +207,7 @@ string Merger::hexDigest (const string& filename)
 	unsigned char buff[1024], digest[16];
 
 	ifstream file;
-	file.open (filename.c_str (), ios::in);
+	file.open (filename.c_str (), ios::in | ios::binary);
 
 	if (!file.good ())
 		return "";
@@ -195,4 +234,59 @@ string Merger::hexDigest (const string& filename)
 	}
 
 	return string (temp);
+}
+
+bool Merger::copyFile (const string& orig, const string& dest, bool remove_orig)
+{
+	cout << ">> File copiato: " << dest << endl;
+
+	ifstream ifs (orig.c_str (), ios::in | ios::binary);
+	ofstream ofs (dest.c_str (), ios::out | ios::binary);
+	
+	char buff[4096];
+	int readbytes = 1;
+
+	while (readbytes != 0)
+	{
+		ifs.read (buff, sizeof (buff));
+		readbytes = ifs.gcount ();
+		ofs.write (buff, readbytes);
+	}
+	
+	ifs.close ();
+	ofs.close ();
+	
+	if (remove_orig)
+	    ::remove (orig.c_str ());
+}
+
+void Merger::deleteDirectory (const char *dir)
+{
+	char fpath[MAX_PATH];
+	char fname[MAX_PATH];
+
+	HANDLE hList;
+	TCHAR szDir[MAX_PATH];
+	WIN32_FIND_DATA FileData;
+	::snprintf (szDir, MAX_PATH, "%s\\*", dir);
+	hList = FindFirstFile (szDir, &FileData);
+
+	if (hList == INVALID_HANDLE_VALUE)
+		return;
+
+	do {
+		::strncpy (fname, FileData.cFileName, MAX_PATH);
+
+		if (!::strcmp (fname, ".")) continue;
+		if (!::strcmp (fname, "..")) continue;
+
+		::snprintf (fpath, MAX_PATH, "%s\\%s", dir, fname);
+		if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) deleteDirectory (fpath);
+		else DeleteFile (fpath);
+
+	} while (FindNextFile (hList, &FileData));
+
+	FindClose (hList);
+	RemoveDirectory (dir);
+	return;
 }
