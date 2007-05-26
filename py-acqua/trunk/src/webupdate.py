@@ -35,7 +35,7 @@ BASE_DIR = None
 LIST_FILE = None
 
 if os.name == 'nt':
-	REPOSITORY_ADDRESS = "localhost"
+	REPOSITORY_ADDRESS = "www.pyacqua.net"
 	BASE_DIR = "/update/windows/"
 	LIST_FILE = "/update/win32-list.xml"
 else:

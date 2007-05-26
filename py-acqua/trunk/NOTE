@@ -1,73 +1,14 @@
-Note per tester e sviluppatori:
-
-il layout di base del programma e' stato leggermente cambiamo.
-Varie directory sono state cambiate:
-
-Plugin => plugins
-Skin => skins
-...
-
-Tutto questo per una migliore organizzazione.
-
-Comunque sia per chi volesse testare il programma utilizzi il
-file di setup in questo modo:
-
-$ pwd
-/home/stack/py-acqua/py-acqua/trunk
-$ python setup.py install --prefix=`pwd`/build
-running install
-running build
-running build_py
-creating build
-creating build/lib
-creating build/lib/pyacqua
-copying src/invertebrati.py -> build/lib/pyacqua
-
-...
-
-creating /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/tips
-copying src/tip_of_the_day_en.txt -> /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/tips
-copying src/tip_of_the_day.txt -> /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/tips
-$ 
-
-Adesso il programma e' installato sotto la cartella build.
-Per farlo partire:
-
-$ PYTHONPATH="/home/stack/py-acqua/py-acqua/trunk/build/lib" ./build/bin/acqua.py 
-HOME at: /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua
-PLUGINS at: /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/plugins
-DATA at: /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/data
-SKINS at: /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/skins
-PIXMAPS at: /home/stack/py-acqua/py-acqua/trunk/build/share/pyacqua/pixmaps
-(acqua): WARNING **: [Errno 2] No translation file found for domain: 'acqua'
->> Nessun aggiornamento da concludere.
->> Carico <aggiorna_db>
-
-...
-
-
-Qualora ci fosse un aggiornamento consiglio di eliminare la dir buid e fare un update da svn
-e ricominciare.
-
-$ rm -rf build/
-$ svn up
-...
-$ python setup.py install --prefix=`pwd`/build
-...
-$ PYTHONPATH="/home/stack/py-acqua/py-acqua/trunk/build/lib" ./build/bin/acqua.py
-
-Se trovate qualche problema relativo al programma si prega di segnalarlo in mailing list
-o aggiungerlo sotto questo file se sviluppatori del progetto.
-
 NOTE PER LA BUILD WIN32:
-# Crea il pacchetto in dist
-C:\Documents and Settings\Administrator\Desktop\build\trunk>c:\python25\python win-setup.py py2exe
+1) Rimuovere la directory dist/ o almeno il file dist/list.xml (si preferisce la prima)
+2) C:\Documents and Settings\Administrator\Desktop\build\trunk>c:\python25\python win-setup.py py2exe
+3) Creare l'installer con nsi.
 
-# Crea list.xml
-C:\Documents and Settings\Administrator\Desktop\build\trunk\dist>c:\python25\python ..\src\generate.py makelist
+Per l'update dopo il secondo passo:
+3) copiare tutto il contenuto di dist in update/windows
+4) copiare il file list.xml contenuto in update/windows in update (../) con il nome win32-list.xml
 
-# Tutto il contenuto di dist e' utile per l'update meno list.xml
-# che va spostato sulla parent dir (../) come win32-list.xml
-# per l'update.
+BUGS NOTI:
+- nel processo di update per windows non e' possibile l'aggiornamento del launcher (pyacqua.exe)
+  per errori di accesso condiviso. Windows merda :D
 
 Francesco
