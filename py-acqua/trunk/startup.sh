@@ -3,10 +3,39 @@ function unz {
         echo -e "\033[01;34m[\033[01;32m*\033[01;34m]\033[1;37m $1\033[00m"
 }
 
+function sbrah {
+	echo -e "\033[01;32mo.O\033[1;37m $1\033[00m"
+}
+
+directory="$1"
+
 if [ "$1" == "" ]; then
-	directory="`pwd`/build"
-else
-	directory="$0"
+	echo
+	sbrah  " ___        _"
+	sbrah  "| _ \_  _  /_\  __ __ _ _  _ __ _"
+	sbrah  "|  _/ || |/ _ \/ _/ _\` | || / _\` |"
+	sbrah  "|_|  \_, /_/ \_\__\__, |\_,_\__,_|"
+	sbrah  "     |__/            |_|"
+	echo
+	sbrah "ei you! probably you are trying to install pyacqua on your box."
+       	sbrah "I'm sorry, but the task is not so simple. So you must read carefully"
+	sbrah "this warning before proceeding :D"
+	sbrah 
+       	sbrah "In order to install py-acqua you must type as root"
+	sbrah "# ./startup.sh /usr - in order to install pyacqua in /usr"
+        sbrah "or"
+	sbrah "# ./startup.sh /usr/local - in order to install pyacqua in /usr/local"
+	sbrah 
+       	sbrah "mhh..remember! For bugs, insults, porn-photos we have a mail: "
+        sbrah "info@pyacqua.net and also a site http://www.pyacqua.net"
+	sbrah
+	sbrah "ok it's all. Good luck \$USER ;-)"
+
+	echo
+	sbrah "No animals were harmed during the making of this release."
+	echo
+
+	exit 
 fi
 
 unz "Cleaning up for backup file (~)"
@@ -34,23 +63,20 @@ if [ "$1" == "makeupdate" ]; then
 
 	unz "Now you can put the build-update directory under your site with the name update"
 else
-	unz "Cleaning the build/ directory..."
-	rm -rf build/
+	unz "Installing pyacqua to $directory ..."
 
-	unz "Installing pyacqua to `pwd`/build/ ..."
+	mkdir -p $directory/share/pyacqua
+	mkdir -p $directory/bin
 
-	mkdir -p build/share/pyacqua
-	mkdir -p build/bin
-
-	cp -rf src build/share/pyacqua
-	cp -rf pixmaps build/share/pyacqua
-	cp -rf tips build/share/pyacqua
-	cp -rf skins build/share/pyacqua
-	cp -rf plugins build/share/pyacqua
-	cp -rf locale build/share
+	cp -rf src $directory/share/pyacqua
+	cp -rf pixmaps $directory/share/pyacqua
+	cp -rf tips $directory/share/pyacqua
+	cp -rf skins $directory/share/pyacqua
+	cp -rf plugins $directory/share/pyacqua
+	cp -rf locale $directory/share
 
 	unz "Creating the bash wrapper with the name of bin/pyacqua"
-	cat > build/bin/pyacqua << EOF
+	cat > $directory/bin/pyacqua << EOF
 #!/bin/sh
 
 function unz {

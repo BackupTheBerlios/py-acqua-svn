@@ -10,5 +10,8 @@ Per l'update dopo il secondo passo:
 BUGS NOTI:
 - nel processo di update per windows non e' possibile l'aggiornamento del launcher (pyacqua.exe)
   per errori di accesso condiviso. Windows merda :D
+- il merger non fa un controllo sulla size dei file ma solo sul checksum MD5, fatto da attribuire
+  a windows che non supporta funzioni posix standard come stat, che ritorna in certi momenti
+  valori inattendibili. Il tutto e' da riverificare nelle prossime versioni.
 
 Francesco
