@@ -115,10 +115,10 @@ else
 fi
 EOF
 
-	chmod +x build/bin/pyacqua
+	chmod +x $directory/bin/pyacqua
 
 	unz "Creating the list.xml for this revision.."
-	cd build/share/
+	cd $directory/share/
 	python pyacqua/src/generate.py makelist
 	mv list.xml pyacqua/
 
