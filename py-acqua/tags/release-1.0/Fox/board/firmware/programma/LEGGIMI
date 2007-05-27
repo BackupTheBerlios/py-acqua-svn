@@ -1,9 +1,0 @@
-USARE L'SDK X COMPILARE IL PROGETTO.
-creare la cartella py in apps.
-copiare il file ./zcompila.sh nella directory 
-principale dell'sdk e lanciarlo dopo averlo reso eseguibile.
-
-questo file .sh compila il progetto con le librerie glibc, 
-si connette a fox all'indirizzo 192.168.0.90 e vi copia il file in mnt/flash
-tramite una sessione ftp.
-in seguto si riconnette tramite telnet e rende il file eseguibile.
