@@ -1,3 +1,14 @@
+// Copyright (C) 2007 Francesco Piccinno. All rights reserved.
+//
+// This file is part of PyAcqua application
+//
+// This file may be distributed and/or modified under the terms of the
+// GPL license appearing in the file LICENSE included in the
+// packaging of this file.
+// This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+// WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+//
+
 #ifndef _MD5_H_
 #define _MD5_H_
 
