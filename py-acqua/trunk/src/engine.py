@@ -72,11 +72,11 @@ class PluginEngine:
 						#utils.info (_("Errori....Ignoro"))
 	def load (self, path, name, klass):
 		# Aggiungiamo la path
-			old = sys.path
-			sys.path.append (path)
+		old = sys.path
+		sys.path.append (path)
 		
-			print "Carico il modulo senza try/except.. fixami prima della revisione finale"
-		#try:
+			#print "Carico il modulo senza try/except.. fixami prima della revisione finale"
+		try:
 			module = __import__ (name)#, globals (), locals (), [klass])
 			instance = vars(module)[klass]
 
@@ -101,13 +101,13 @@ class PluginEngine:
 			
 			self.array.append (plugin)
 			
-			print _(">> Ripristino il path originale")
+			#print _(">> Ripristino il path originale")
 			sys.path = old
 
 			return True
-		#except:
-		#	print ">> Restoring path"
-		#	sys.path = old
+		except:
+			print ">> Restoring path"
+			sys.path = old
 
-		#	print "!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type)
-		#	return False
+			print "!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type)
+			return False
