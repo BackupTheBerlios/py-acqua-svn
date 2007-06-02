@@ -67,8 +67,8 @@ SectionEnd
 
 Section "GTK+ Files" SecDummy2
 
-  #SetOutPath "$INSTDIR\"
-  #File "C:\GTK\*.dll"
+  SetOutPath "$INSTDIR\"
+  File "C:\GTK\bin\*.dll"
 
   SetOutPath "$INSTDIR\etc\fonts\"
   File "C:\GTK\etc\fonts\*.*"
