@@ -22,25 +22,49 @@
 import gtk
 import utils
 import dbwindow
+import piante
+import invertebrati
 import spesa
 import app
 
 class Pesci (dbwindow.DBWindow):
 	def __init__(self):
-	
-		self.spesa = spesa.Spesa (self)
+		self.piante = piante.Piante (self)
+		self.invert = invertebrati.Invertebrati (self)
+		self.spesa  = spesa.Spesa (self)
 		
 		lst = gtk.ListStore (int, str, str, int, str, str, gtk.gdk.Pixbuf, str)
-		self.col_lst = [_('Id'), _('Data'), _('Vasca'), _('Quantita'), _('Nome'), _('Note'), _("Immagine")]
+		
+		self.col_lst = [
+			_('Id'),
+			_('Data'),
+			_('Vasca'),
+			_('Quantita'),
+			_('Nome'),
+			_('Note'),
+			_("Immagine")
+		]
 		
 		dbwindow.DBWindow.__init__ (self, 2, 2, self.col_lst,
-			[utils.DataButton (), utils.Combo (), utils.IntEntry (), gtk.Entry (), utils.NoteEntry (), utils.ImgEntry ()], lst, True)
+			[
+				utils.DataButton (),
+				utils.Combo (),
+				utils.IntEntry (),
+				gtk.Entry (),
+				utils.NoteEntry (),
+				utils.ImgEntry ()
+			],
+			lst,
+			True
+		)
 		
 		self.set_title (_("Pesci"))
 		self.set_size_request (600, 400)
 		
 		utils.set_icon (self)
 		
+		self.piante.bind_context ()
+		self.invert.bind_context ()
 		self.spesa.bind_context ()
 	
 	def refresh_data (self, islocked):
@@ -85,6 +109,10 @@ class Pesci (dbwindow.DBWindow):
 			self.update_status (dbwindow.NotifyType.SAVE, _("Row aggiornata (ID: %d)") % id)
 		
 		elif self.page == 1:
+			self.piante.after_refresh (it)
+		elif self.page == 2:
+			self.invert.after_refresh (it)
+		elif self.page == 3:
 			self.spesa.after_refresh (it)
 	
 	def add_entry (self, it):
@@ -111,6 +139,10 @@ class Pesci (dbwindow.DBWindow):
 			
 			self.update_status (dbwindow.NotifyType.ADD, _("Row aggiunta (ID: %d)") % id)
 		elif self.page == 1:
+			self.piante.add_entry (it)
+		elif self.page == 2:
+			self.invert.add_entry (it)
+		elif self.page == 3:
 			self.spesa.add_entry (it)
 		
 	def remove_id (self, id):
@@ -118,12 +150,20 @@ class Pesci (dbwindow.DBWindow):
 			app.App.p_backend.delete ("pesci", "id", id)
 			self.update_status (dbwindow.NotifyType.DEL, _("Row rimossa (ID: %d)") % id)
 		elif self.page == 1:
+			self.piante.remove_id (id)
+		elif self.page == 2:
+			self.invert.remove_id (id)
+		elif self.page == 3:
 			self.spesa.remove_id (id)
 	
 	def decrement_id (self, id):
 		if self.page == 0:
 			app.App.p_backend.update ("pesci", ["id", "id"], [id - 1, id])
 		elif self.page == 1:
+			self.piante.decrement_id (id)
+		elif self.page == 2:
+			self.invert.decrement_id (id)
+		elif self.page == 3:
 			self.spesa.decrement_id (id)		
 	
 	def on_row_activated(self, tree, path, col):
@@ -133,17 +173,29 @@ class Pesci (dbwindow.DBWindow):
 
 			utils.InfoDialog(self, _("Riepilogo"), self.col_lst, self.vars, mod.get_value (it, 7))
 		elif self.page == 1:
+			self.piante.on_row_activated (tree, path, col)
+		elif self.page == 2:
+			self.invert.on_row_activated (tree, path, col)
+		elif self.page == 3:
 			self.spesa.on_row_activated (tree, path, col)
 	
 	def pack_before_button_box (self, hb):
 		cmb = utils.Combo ()
-		cmb.append_text (_("Modifica"))
+		
+		cmb.append_text (_("Pesci"))
+		cmb.append_text (_("Piante"))
+		cmb.append_text (_("Invertebrati"))
 		cmb.append_text (_("Spesa"))
+		
 		cmb.set_active (0)
+		
 		cmb.connect ('changed', self._on_change_view)
+		
 		align = gtk.Alignment (0, 0.5)
 		align.add (cmb)
+		
 		hb.pack_start (align, False, True, 0)
+		
 		cmb.show ()
 		
 	def _on_change_view (self, widget):
@@ -159,9 +211,9 @@ class Pesci (dbwindow.DBWindow):
 		
 		if filters == []:
 			return True
-		#print ">> Active filters:", filters
+		utils.c_info ("Active filters: %s" % filters)
 		val = mod.get_value (iter, 2)
-		#print ">> Value to be filtered:", val
+		utils.c_info ("Value to be filtered: %s" % val)
 		
 		if not val:
 			return True

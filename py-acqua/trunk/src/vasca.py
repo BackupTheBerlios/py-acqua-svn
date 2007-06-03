@@ -34,7 +34,6 @@ class Vasca (dbwindow.DBWindow):
 	def __init__ (self):
 		
 		self.manutenzione = manutenzione.Manutenzione (self)
-		self.spesa = spesa.Spesa (self)
 		# id integer, vasca TEXT, date DATE, nome TEXT, litri TEXT, tipo TEXT, filtro TEXT, co TEXT, illuminazione TEXT, reattore TEXT, schiumatoio TEXT, riscaldamento TEXT, img TEXT
 		lst = gtk.ListStore (int, str, str, str, float, str, str, str, str, str, str, str, str, gtk.gdk.Pixbuf, str)
 
@@ -61,8 +60,6 @@ class Vasca (dbwindow.DBWindow):
 		utils.set_icon (self)
 		
 		self.manutenzione.bind_context ()
-		self.spesa.bind_context ()
-		#spesa.Spesa (self)
 	
 	def refresh_data (self, islocked):
 		if islocked: return
@@ -93,9 +90,9 @@ class Vasca (dbwindow.DBWindow):
 		if filters == []:
 			return True
 		
-		print ">> Active filter:", filters
+		utils.c_info ("Active filter: %s" % filters)
 		val = mod.get_value (iter, 1)
-		print ">> Value to be filtered:", val
+		utils.c_info ("Value to be filtered: %s" % val)
 		
 		if not val:
 			return True
@@ -176,8 +173,7 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.after_refresh (it)
-		elif self.page == 2:
-			self.spesa.after_refresh (it)
+	
 	def add_entry (self, it):
 		if self.page == 0:
 			mod, id = self.view.get_selection ().get_selected ()
@@ -185,10 +181,6 @@ class Vasca (dbwindow.DBWindow):
 	
 			id = mod.get_value (it, 0)
 	
-			#for i in self.vars:
-			#	print i.get_text ()
-			
-			#utils.cmd ('insert into vasca values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 			app.App.p_backend.insert (
 				"vasca",
 				[
@@ -213,9 +205,7 @@ class Vasca (dbwindow.DBWindow):
 		
 		elif self.page == 1:
 			self.manutenzione.add_entry (it)
-		elif self.page == 2:
-			self.spesa.add_entry (it)
-		
+	
 	def remove_id (self, id):
 		if self.page == 0:
 			app.App.p_backend.delete ("vasca", "id", id)
@@ -224,8 +214,6 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.remove_id (id)
-		elif self.page == 2:
-			self.spesa.remove_id (id)
 	
 	def decrement_id (self, id):
 		if self.page == 0:
@@ -234,9 +222,7 @@ class Vasca (dbwindow.DBWindow):
 			
 		elif self.page == 1:
 			self.manutenzione.decrement_id (id)
-		elif self.page == 2:
-			self.spesa.decrement_id (id)
-
+	
 	def on_row_activated(self, tree, path, col):
 		if self.page == 0:
 			mod = self.view.get_model()
@@ -246,9 +232,7 @@ class Vasca (dbwindow.DBWindow):
 		
 		elif self.page == 1:
 			self.manutenzione.on_row_activated (tree, path, col)
-		elif self.page == 2:
-			self.spesa.on_row_activated (tree, path, col)
-			
+	
 	def _on_change_view (self, widget):
 		id = widget.get_active ()
 		
@@ -258,10 +242,7 @@ class Vasca (dbwindow.DBWindow):
 		cmb = utils.Combo ()
 		
 		cmb.append_text (_("Modifica Vasche"))
-		
 		cmb.append_text (_("Manutenzione"))
-		
-		cmb.append_text (_("Spesa"))
 		
 		cmb.set_active (0)
 		

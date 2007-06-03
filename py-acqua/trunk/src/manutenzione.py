@@ -76,9 +76,9 @@ class Manutenzione(BaseDBWindow):
 		if filters == []:
 			return True
 			
-		print ">> Active filters:", filters
+		utils.c_info ("Active filters: %s" % filters)
 		val = mod.get_value (iter, 1)
-		print ">> Value to be filtered:", val
+		utils.c_info ("Value to be filtered: %s" % val)
 		
 		if not val:
 			return True

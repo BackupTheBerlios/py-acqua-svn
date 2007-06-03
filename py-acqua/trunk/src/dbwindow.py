@@ -73,19 +73,15 @@ class BaseDBWindow (object):
 class DBWindow (gtk.Window, BaseDBWindow):
 	
 	def _get_store (self):
-		#print ">> Getting store from", self.editing
 		return self.stores [self.editing]
 	
 	def _get_view (self):
-		#print ">> Getting view from", self.editing
 		return self.views [self.editing]
 	
 	def _get_last (self):
-		#print ">> Getting last from", self.editing
 		return self.lasts [self.editing]
 	
 	def _get_vars (self):
-		#print ">> Getting vars from", self.editing
 		return self._vars [self.editing]
 	
 	def _get_page (self):
@@ -101,29 +97,29 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		return self.p_obj [self.editing]
 	
 	def _set_store (self, x):
-		print ">> Setting store? ... why? -.-"
+		utils.c_warn ("_set_store () called ... why?")
 		
 	def _set_view (self, x):
-		print ">> Setting view? ... why? -.-"
+		utils.c_warn ("_set_view () called ... why?")
 		
 	def _set_last (self, x):
 		self.lasts[-1] = x
 		
 	def _set_vars (self, x):
-		print ">> Setting vars? ... why? -.-"
+		utils.c_warn ("_set_vars () called ... why?")
 		
 	def _set_page (self, x):
 		self.editing = x
 		self.nb_view.set_current_page (self.editing)
 
 	def _set_menu (self, x):
-		print ">> Setting menu? ... why? -.-"
+		utils.c_warn ("_set_menu () called ... why?")
 
 	def _set_filt (self, x):
-		print ">> Setting filter? ... why? -.-"
+		utils.c_warn ("_set_filt () called ... why?")
 	
 	def _set_page_obj (self, x):
-		print ">> Setting page_obj? ... why? -.-"
+		utils.c_warn ("_set_page_obj () called ... why?")
 	
 	store = property (_get_store, _set_store)
 	view = property (_get_view, _set_view)
@@ -264,7 +260,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 			idx = cols.index (name)
 			tmp = self.vars[idx]
 
-			#print "Creating e_%s%d at %d %d %d %d" % (name[:5], self.editing, x, x+1, y, y+1)
+			#utils.debug ("Creating e_%s%d at %d %d %d %d" % (name[:5], self.editing, x, x+1, y, y+1))
 			
 			#self.__dict__ ["e_" + name [:5] + str (self.editing)] = tmp
 			e_tbl.attach (tmp, x+1, x+2, y, y+1)
@@ -291,7 +287,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		id = 0
 		for name in cols:
 			
-			#print "Adding %d" % id
+			#utils.debug ("Adding %d" % id)
 			
 			if self.store.get_column_type (id) == gobject.TYPE_DOUBLE:
 				
@@ -360,7 +356,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 
 		for i in self.vars:
 			if self.store.get_column_type (self.vars.index (i) + 1).pytype == gtk.gdk.Pixbuf:
-				#print "image is %s" % mod.get_value (it, self.last + x)
+				#utils.debug ("image is %s" % mod.get_value (it, self.last + x))
 				i.set_text( mod.get_value (it, self.last + x))
 				x += 1
 			else:
@@ -407,7 +403,7 @@ class DBWindow (gtk.Window, BaseDBWindow):
 		for tmp in self.vars:
 			if self.store.get_column_type (self.vars.index (tmp) + 1).pytype == gtk.gdk.Pixbuf:
 
-				#print "col n %d => %s" % (self.last + x, tmp)
+				#utils.debug ("col n %d => %s" % (self.last + x, tmp))\
 				
 				self.store.set_value (it, self.last + x, tmp.get_text ())
 

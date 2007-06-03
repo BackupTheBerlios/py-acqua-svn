@@ -24,6 +24,7 @@ import os
 import os.path
 import impostazioni
 import app
+from utils import c_info
 from dbwindow import DBWindow
 
 class ColumnType:
@@ -42,7 +43,7 @@ class BackendFE(object):
 	def __init__ (self, filename):
 		self.filename = filename
 		self.schema_is_ok = False
-		print "Initing a backend DB"
+		c_info ("Initing a backend DB")
 	
 	def check_database (self):
 		return os.path.exists (self.filename)

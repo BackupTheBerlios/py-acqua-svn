@@ -89,7 +89,7 @@ class LangWindow (gtk.Window):
 		self.show_all ()
 		
 	def start (self):
-		print ">> Starting", self.__name__
+		utils.c_info ("Starting %s" % self.__name__)
 		
 		menu = app.App.get_plugin_menu ()
 

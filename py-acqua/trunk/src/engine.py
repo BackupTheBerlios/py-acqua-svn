@@ -75,7 +75,7 @@ class PluginEngine:
 		old = sys.path
 		sys.path.append (path)
 		
-			#print "Carico il modulo senza try/except.. fixami prima della revisione finale"
+			#utils.c_warn ("Carico il modulo senza try/except.. fixami prima della revisione finale")
 		try:
 			module = __import__ (name)#, globals (), locals (), [klass])
 			instance = vars(module)[klass]
@@ -101,13 +101,12 @@ class PluginEngine:
 			
 			self.array.append (plugin)
 			
-			#print _(">> Ripristino il path originale")
 			sys.path = old
 
 			return True
 		except:
-			print ">> Restoring path"
+			utils.c_warn ("Restoring path")
 			sys.path = old
 
-			print "!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type)
+			utils.c_error ("!! %s::%s (%s)" % (klass, sys.exc_value, sys.exc_type))
 			return False

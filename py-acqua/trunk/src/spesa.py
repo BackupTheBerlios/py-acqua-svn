@@ -20,12 +20,11 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #create table spese(id integer, vasca TEXT, date DATE, tipologia TEXT, quantita NUMERIC, nome TEXT,soldi TEXT, note VARCHAR(500), img TEXT)")
+
 import gtk
 import utils
 import impostazioni
 from dbwindow import BaseDBWindow, NotifyType
-#from pysqlite2 import dbapi2 as sqlite
-from copy import copy
 import app
 
 class Spesa(BaseDBWindow):
@@ -89,9 +88,9 @@ class Spesa(BaseDBWindow):
 		if filters == []:
 			return True
 
-		print ">> [spesa] Active filters:", filters
+		utils.c_info ("Active filters: %s" % filters)
 		val = mod.get_value (iter, 1)
-		print ">> [spesa] Value to be filtered:", val
+		utils.c_info ("Value to be filtered: %s" % val)
 		
 		if not val:
 			return True
@@ -130,7 +129,7 @@ class Spesa(BaseDBWindow):
 		app.App.p_backend.update (
 				"spesa",
 				[
-					"vasca", "data", "tipologia", "nome", "quantita", "prezzo", "note", "img", "id"
+					"vasca", "data", "tipologia", "nome", "quantita", "soldi", "note", "img", "id"
 				],
 				[
 					vasca, data, tipo, nome, quantita, prezzo, note, img, id

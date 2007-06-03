@@ -149,7 +149,7 @@ class UpdateXML (object):
 								diff_object[key] = {}
 							
 							diff_object[key][file] = v_new + v_old
-							print "adding" ,file
+							#print "adding %s" % file
 						
 						del old_dict_object [key][file]
 					else: # Se il file non e' presente nel vecchio dict aggiungiamo

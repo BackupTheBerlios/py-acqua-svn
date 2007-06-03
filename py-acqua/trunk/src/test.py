@@ -110,14 +110,22 @@ class GraphPage (gtk.ScrolledWindow):
 		to_plot = []
 		data = []
 		
+		# Facciamo una lista con tutte le vasche
+		# checckate nel menu.. quindi da disegnare
 		for i in self.menu.get_children():
 			if i.active:
 				vasche.append (i.get_children()[0].get_text())
 		
+		# Mettiamo in una lista i vari valori da plottare
+		# tipo gh kh se sono ovviamenti checckati nelle
+		# varie checkbox
+
+		# Tipo se seleziono il primo e il secondo controllo
+		# avro [0, 1]
 		for i in self.checks:
 			if i.get_active ():
 				to_plot.append (self.checks.index (i))
-		
+
 		# Ed ecco qui la cosa piu' assurda mai fatta
 		for i in to_plot:
 			for n in vasche:
@@ -129,7 +137,8 @@ class GraphPage (gtk.ScrolledWindow):
 					temp2.append (y[1]) # data
 					temp2.append (y[2]) # nome
 					temp2.append (y[i+3]) # valore (offset del cazzo +2 .. +1 perche' conta da 0)
-					
+
+					# temp2 = [u'03/06/2007', u'asdad', 0.69999999999999996]
 					temp.append (temp2)
 				
 				if len (temp) != 0:
@@ -194,7 +203,7 @@ class GraphPage (gtk.ScrolledWindow):
 		
 		limite_sup = 0
 		limite_inf = 0
-		
+
 		for i in values:
 			if type (i) == int:
 				label = labels [i]
@@ -517,8 +526,6 @@ class Test (dbwindow.DBWindow):
 				widget.set_sensitive (True)
 			
 			check = checks [keys [id]]
-			# FIXME: levami di torno :(
-			print keys[id], check
 			
 			val = widget.get_value ()
 			
@@ -546,7 +553,7 @@ class Test (dbwindow.DBWindow):
 			
 			for i in range (13):
 				if self.store.get_column_type (i + 3).pytype == gtk.gdk.Pixbuf:
-					#print "image is %s" % mod.get_value (it, self.last + x)
+					#utils.debug ("image is %s" % mod.get_value (it, self.last + x))
 					lst[i] = mod.get_value (it, self.last + x)
 					x += 1
 				else:
@@ -579,7 +586,7 @@ class Test (dbwindow.DBWindow):
 				elif val > checks[i][1]:
 					mod.set_value (it, x + 14 + 3, gcolor[1])
 				#elif val == checks[i][2]:
-				#	print "Ideal value"
+				#	utils.debug ("Ideal value")
 				else:
 					mod.set_value (it, x + 14 + 3, gcolor[2])
 			x += 1
@@ -614,6 +621,5 @@ try:
 	from matplotlib.numerix import arange
 	from matplotlib.dates import YEARLY, DateFormatter, rrulewrapper, RRuleLocator, drange, date2num
 	Test.Chart = True
-	
 except:
 	Test.Chart = False

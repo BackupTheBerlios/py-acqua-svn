@@ -30,7 +30,7 @@ if os.name == 'nt':
 	try:
 		import _winreg
 	except:
-		print "!! Cannot import _winreg module"
+		c_error ("Cannot import _winreg module")
 
 
 HOME_DIR = None
@@ -41,17 +41,27 @@ UPDT_DIR = None
 SKIN_DIR = None
 PROG_DIR = None
 
-# FIXME: prima della release
-
-DHOME_DIR = os.getcwd ()# + "/build/share/pyacqua"
+DHOME_DIR = os.getcwd ()
 DPLUG_DIR = os.path.join (DHOME_DIR, "plugins")
 DSKIN_DIR = os.path.join (DHOME_DIR, "skins")
 DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
 
-print "HOME at: %s" % DHOME_DIR
-print "PLUGINS at: %s" % DPLUG_DIR
-print "SKINS at: %s" % DSKIN_DIR
-print "PIXMAPS at: %s" % DPIXM_DIR
+def c_warn (x):
+	if os.name == 'posix': print " \033[1;33m***\033[1;0m", x
+	else: print " ***", x
+def c_error (x):
+	if os.name == 'posix': print " \033[1;31m!!!\033[1;0m", x
+	else: print " !!!", x
+def c_info (x):
+	if os.name == 'posix': print " \033[1;32m:::\033[1;0m", x
+	else: print " :::", x
+def debug (x):
+	c_info (x)
+
+c_info ("HOME at: %s" % DHOME_DIR)
+c_info ("PLUGINS at: %s" % DPLUG_DIR)
+c_info ("SKINS at: %s" % DSKIN_DIR)
+c_info ("PIXMAPS at: %s" % DPIXM_DIR)
 
 def prepare_enviroment ():
 	init_dir_structure ()
@@ -65,7 +75,7 @@ def init_dir_structure ():
 		hkey = _winreg.OpenKey (_winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders")
 		path, type = _winreg.QueryValueEx (hkey, "AppData")
 
-	#print "Creating %s/.pyacqua" % path
+	c_info ("Creating %s/.pyacqua" % path)
 	
 	HOME_DIR = create_dir (path, ".pyacqua")
 	
@@ -84,8 +94,6 @@ def create_dir (path, name):
 	
 	if not os.path.exists (temp):
 		os.mkdir (temp)
-	#else:
-	#	print "Already present", temp
 	
 	return temp
 ###
@@ -575,9 +583,6 @@ class InfoDialog (gtk.Dialog):
 		gtk.Dialog.__init__ (self, text, parent,
 				gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
 		
-		#print lbl_lst
-		#print lst
-		#print "IMG:", img
 		assert len (lbl_lst) == len (lst)
 
 		self.set_size_request (400, 300)

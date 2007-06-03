@@ -68,7 +68,6 @@ if os.name != 'nt':
 		def _on_button (self, widget, event):
 			# se == 1 e' il sinistro -> mostra/nascondi
 			# se == 3 e' il destro -> popup menu
-			print "button", event.button
 
 			if event.button == 1:
 				if app.App.tray:

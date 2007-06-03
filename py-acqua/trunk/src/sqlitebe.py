@@ -21,6 +21,7 @@
 
 from backend import *
 from pysqlite2 import dbapi2 as sqlite
+from utils import c_info
 
 class sqliteBE(BackendFE):
 	"""
@@ -102,17 +103,17 @@ class sqliteBE(BackendFE):
 		self.commit_request (req)
 	
 	def commit_select (self, req):
-		print ">>", req
+		c_info (">> %s" % req)
 		self.cursor.execute (req)
 		return self.cursor.fetchall ()
 		
 	def commit_request (self, req):
-		print ">>", req
+		c_info (">> %s" % req)
 		self.cursor.execute (req)
 		ret = self.cursor.fetchall ()
 		
 		if ret != []:
-			print "sbrah =>", ret
+			c_info ("sbrah =>" % ret)
 		
 		self.connection.commit ()
 		self.refresh_pending_windows ()

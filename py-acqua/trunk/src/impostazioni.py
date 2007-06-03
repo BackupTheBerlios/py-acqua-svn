@@ -119,7 +119,7 @@ class Prefs(object):
 					
 					dict [id] = (min, max, ide)
 				except:
-					print "Float error in", id
+					utils.c_error ("Float error in %s" % id)
 		
 		if len (dict) > 0:
 			self.collection [name] = dict
@@ -151,7 +151,6 @@ class Prefs(object):
 			
 			if old != None:
 				if type (old) == type (val):
-					#print "Same type.. nice"
 					self.values [id] = val
 				else:
 					print _("** Errore nel tipo in %s") % id

@@ -318,11 +318,6 @@ class WebUpdate (gtk.Window):
 			
 			self.destroy ()
 			
-			# Qui mi sa dovremmo ricreare la list.xml per la versione corrente o finiamo prima a copiarla
-			# dal sito?
-			
-			#print "uhm uhm uhm"
-			#self.xml_util.dump_tree_to_file (self.updated_list, os.path.join (utils.PROG_DIR, "pyacqua/list.xml"))
-		
+			# La list.xml la si becca dal sito.. ergo no problem
 	def _on_delete_event (self, *w):
 		app.App.p_window["update"] = None

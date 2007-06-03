@@ -65,11 +65,9 @@ class Gui(gtk.Window):
 			
 			('Test', None, _('_Test'), '<control>T', _('Test'), '_on_open_test'),
 			
-			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci...'), '_on_open_pesci'),
+			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci, piante, invertebrati'), '_on_open_pesci'),
 			
-			('Piante', None, _('_Piante'), '<control>I', _('Piante...'), '_on_open_piante'),
 			
-			('Invertebrati', None, _('_Invertebrati'), '<control>R', _('Invertebrati...'), '_on_open_invertebrati'),
 			
 			#('Importa', gtk.STOCK_CONVERT, _('_Importa/Esporta...'), None, _('Importa/Esporta...'), '_on_open_importa'),
 			(os.name == 'nt' and unz (True)) or (unz (False)),
@@ -105,9 +103,6 @@ class Gui(gtk.Window):
 			<menuitem action='Vasche'/>
 			<menuitem action='Test'/>
 			<menuitem action='Pesci'/>
-			<menuitem action='Piante'/>
-			<menuitem action='Invertebrati'/>
-			<separator/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>
@@ -156,8 +151,6 @@ class Gui(gtk.Window):
 			"calcoli" : None,
 			"test" : None,
 			"pesci" : None,
-			"piante" : None,
-			"invertebrati" : None,
 			"vasca" : None,
 			"skin" : None,
 			"plugin" : None,
@@ -237,16 +230,6 @@ class Gui(gtk.Window):
 			import pesci
 			App.p_window["pesci"] = pesci.Pesci()
 		
-	def _on_open_piante(self, widget, data=None):
-		if not App.p_window["piante"]:
-			import piante
-			App.p_window["piante"] = piante.Piante()
-		
-	def _on_open_invertebrati(self, widget, data=None):
-		if not App.p_window["invertebrati"]:
-			import invertebrati
-			App.p_window["invertebrati"] = invertebrati.Invertebrati()
-		
 	def _on_open_vasca(self, widget, data=None):
 		if not App.p_window["vasca"]:
 			import vasca
@@ -295,9 +278,9 @@ class Gui(gtk.Window):
 		dialog.set_license(text)
 		
 		text = [
-			"Luca Sanna - Founder and lead developer",
+			"Luca Sanna - Founder and Lead Developer",
+			"Francesco Piccinno - Lead Software Developer",
 			"Pietro Grassi - Release Tester",
-			"Francesco Piccinno - Developer",
 			"Giovanni Manzoni - Developer and Electronic"
 		]
 		

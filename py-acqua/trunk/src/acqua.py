@@ -215,7 +215,7 @@ def main ():
 	app.App.main()
 	gtk.gdk.threads_leave ()
 	
-	print _(">> Salvo le impostazioni prima di uscire")
+	utils.c_info (_("Salvo le impostazioni prima di uscire"))
 	impostazioni.save ()
 
 if __name__ == "__main__":

@@ -127,7 +127,7 @@ class Importa (gtk.Window):
 			
 		if self.ver_sette.get_active():
 			
-			print "sette"
+			utils.debug ("sette")
 			self.esporta_db.set_text("~/.pyacqua/Data/db")
 			if in_db == "":
 				msg (_("Seleziona un database da convertire"))
@@ -155,7 +155,7 @@ class Importa (gtk.Window):
 							agdb.dbupdate ()
 						# da mettere un dialog per dare errore in caso di non successo 
 						except:
-							print "error"
+							utils.debug ("error")
 							pass
 						# TODO: Conversione da versione 7
 				else:
@@ -172,10 +172,10 @@ class Importa (gtk.Window):
 						
 			try:
 				agdb.dbupdate
-				print "update attuale riuscito"
+				utils.debug ("update attuale riuscito")
 			except:
 				pass
-				print "errore update attuale"
+				utils.debug ("errore update attuale")
 						
 
 	def on_cancel (self, widget):
