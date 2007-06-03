@@ -17,7 +17,7 @@ Per far funzionare PY-ACQUA sotto windows bisogna installare
 
 Dopo aver installato il tutto basta lanciare il file acqua.py
 
-Installare PY-ACQUA su sistemi operativi GNU/Linux/FREEBSD
+->Installare PY-ACQUA su sistemi operativi GNU/Linux/FREEBSD
 
 Su questi sistemi operativi Python viene generalmente installato di default (per
 scoprirlo aprite una shell e digitate python):  nella maggior parte dei casi vi
