@@ -30,50 +30,50 @@ Merger::Merger () : m_update_dir (getenv ("APPDATA")), m_diff_path ("")
 
 bool Merger::doMerge ()
 {
-    TiXmlDocument doc (m_diff_path.c_str ());
-    
+	TiXmlDocument doc (m_diff_path.c_str ());
+	
 	if (!doc.LoadFile ())
-	    return false;
+		return false;
 	
 	bool all_ok = true;
-    TiXmlHandle hDoc (&doc);
-    TiXmlElement *pElem, *pChildElem;
-    TiXmlHandle hRoot(0);
-
-    pElem = hDoc.FirstChildElement ().Element ();
-
-    if (!pElem || pElem->ValueStr () != "pyacqua")
-        return false;
-
+	TiXmlHandle hDoc (&doc);
+	TiXmlElement *pElem, *pChildElem;
+	TiXmlHandle hRoot(0);
+	
+	pElem = hDoc.FirstChildElement ().Element ();
+	
+	if (!pElem || pElem->ValueStr () != "pyacqua")
+		return false;
+	
 	hRoot = TiXmlHandle (pElem);
 	pElem = hRoot.FirstChild ().Element ();
-
+	
 	for (pElem; pElem; pElem = pElem->NextSiblingElement ())
 	{
-        bool to_delete = false;
-
+		bool to_delete = false;
+		
 		if (pElem->ValueStr () != "directory")
-		    continue;
-
+			continue;
+		
 		string dirname = pElem->Attribute ("name");
-
+		
 		if (dirname.substr (0, 2) == "$$" &&
-			dirname.substr (dirname.length () - 2) == "$$")
+		    dirname.substr (dirname.length () - 2) == "$$")
 			to_delete = true;
-
+		
 		hRoot = TiXmlHandle (pElem);
 		pChildElem = hRoot.FirstChild ().Element ();
-
+		
 		if (to_delete)
 			dirname = dirname.substr (2, dirname.length () - 4);
 		else
 		    mkDirIfNotPresent (dirname);
-
+		
 		for (pChildElem; pChildElem; pChildElem = pChildElem->NextSiblingElement ())
 		{
 			if (pChildElem->ValueStr () != "file")
 				continue;
-
+			
 			string md5      = pChildElem->Attribute ("md5");
 			string filename = pChildElem->Attribute ("name");
 			string bytes    = pChildElem->Attribute ("bytes");
@@ -81,17 +81,17 @@ bool Merger::doMerge ()
 			long long size = ::atoll (bytes.c_str ());
 			
 			//cout << "String: " << bytes << " Value: " << size << endl;
-
+			
 			if (to_delete)
-			    eraseAtPath (dirname + "\\" + filename, false);
+				eraseAtPath (dirname + "\\" + filename, false);
 			else
 				if (!updateFile (dirname, filename, md5, size))
 				{
-				    all_ok = false;
-				    break;
+					all_ok = false;
+					break;
 				}
 		}
-
+		
 		if (to_delete)
 		    eraseAtPath (dirname, true);
 	}
@@ -100,7 +100,7 @@ bool Merger::doMerge ()
 		deleteDirectory (m_update_dir.c_str ());
 	else
 		::remove (m_diff_path.c_str ());
-
+	
 	system ("pause");
 	
 	return all_ok;
@@ -109,7 +109,7 @@ bool Merger::doMerge ()
 void Merger::mkDirIfNotPresent (const string& dirname)
 {
 	cout << ">> Controllo directory: " << dirname << " ... ";
-
+	
 	struct _stat dir_stat;
 	
 	if (!::_stat (dirname.c_str (), &dir_stat))
@@ -120,7 +120,7 @@ void Merger::mkDirIfNotPresent (const string& dirname)
 			cout << "ok." << endl;
 			return;
 		}
-
+		
 		cout << "Uhm.. e' un file?" << endl;
 	}
 	else
@@ -132,18 +132,19 @@ void Merger::mkDirIfNotPresent (const string& dirname)
 
 bool Merger::eraseAtPath (const string& path, bool is_dir)
 {
-    if (!is_dir)
+	if (!is_dir)
 	{
 		cout << ">> Rimozione file " << path << endl;
-		::remove (path.c_str ());
-		return false;
+		if (::remove (path.c_str ()) != 0)
+			return false;
+		return true;
 	}
 	else
 	{
-    	char newsub[MAX_PATH];
+		char newsub[MAX_PATH];
 		char newdir[MAX_PATH];
 		char fname[MAX_PATH];
-	
+		
 		HANDLE hList;
 		
 		TCHAR szDir[MAX_PATH];
@@ -154,21 +155,21 @@ bool Merger::eraseAtPath (const string& path, bool is_dir)
 		hList = FindFirstFile (szDir, &FileData);
 		
 		if (hList == INVALID_HANDLE_VALUE)
-		    return false;
-
+			return false;
+		
 		do {
 			strncpy (fname, FileData.cFileName, MAX_PATH);
-
+			
 			if (!strcmp (fname,".") || !strcmp (fname,".."))
 				continue;
 			else
-			    return false;
+				return false;
 		} while (FindNextFile (hList, &FileData));
 		
 		FindClose (hList);
 		
 		cout << ">> Directory vuota: " << path << " elimino." << endl;
-		::remove (path.c_str ());
+		::remove (path.c_str ()); // ce ne sbattiamo se genera un errore o meno
 		
 		return true;
 	}
@@ -178,7 +179,7 @@ bool Merger::updateFile (const string& dirname, const string& filename, const st
 {
 	if (filename.empty ())
 		return false;
-
+	
 	string path (dirname == "." ? m_update_dir : m_update_dir + "\\" + dirname);
 	path += "\\" + filename;
 	
@@ -191,72 +192,72 @@ bool Merger::updateFile (const string& dirname, const string& filename, const st
 	if (::_stat (filename.c_str (), &filestat) == 0)
 		new_size = filestat.st_size;
 	else
-	    new_size = -1;
-
+		new_size = -1;
+	
 	cout << ">> Controllo file:" << filename << endl;
 	cout << "     MD5: " << md5 << " == " << new_md5 << endl;
 	//cout << "   siz: " << size << " == " << new_size << endl;
-
+	
 	if (/*new_size == size &&*/ new_md5 == md5)
 	{
-	    cout << ">> Checksum ok ;-)" << endl;
-	    copyFile (path, filename, true);
-	    return true;
+		cout << ">> Checksum ok ;-)" << endl;
+		copyFile (path, filename, true);
+		return true;
 	}
 	else
 	{
-	    cout << "!! Errore nel checksum :-\\" << endl;
-	    return false;
+		cout << "!! Errore nel checksum :-\\" << endl;
+		return false;
 	}
 }
 
 string Merger::hexDigest (const string& filename)
 {
-    md5_state_t context;
+	md5_state_t context;
 	MD5 hasher;
-
+	
 	unsigned char buff[1024], digest[16];
-
+	
 	ifstream file;
 	file.open (filename.c_str (), ios::in | ios::binary);
-
+	
 	if (!file.good ())
 		return "";
-
+	
 	hasher.Init (&context);
-
+	
 	while (file.good ())
 	{
 		file.read ((char *)buff, 1024);
 		hasher.Append (&context, buff, file.gcount ());
 	}
-
+	
 	hasher.Finish (digest, &context);
-
+	
 	file.close ();
-
+	
 	char temp[32];
-
+	
 	int p = 0;
 	for (int i = 0; i < 16; i++)
 	{
 		::sprintf (&temp[p], "%02x", digest[i]);
 		p += 2;
 	}
-
+	
 	return string (temp);
 }
 
 bool Merger::copyFile (const string& orig, const string& dest, bool remove_orig)
 {
 	cout << ">> File copiato: " << dest << endl;
-
+	
 	ifstream ifs (orig.c_str (), ios::in | ios::binary);
 	ofstream ofs (dest.c_str (), ios::out | ios::binary);
 	
 	char buff[4096];
 	int readbytes = 1;
-
+	
 	while (readbytes != 0)
 	{
 		ifs.read (buff, sizeof (buff));
@@ -268,35 +269,37 @@ bool Merger::copyFile (const string& orig, const string& dest, bool remove_orig)
 	ofs.close ();
 	
 	if (remove_orig)
-	    ::remove (orig.c_str ());
+		::remove (orig.c_str ());
 }
 
 void Merger::deleteDirectory (const char *dir)
 {
 	char fpath[MAX_PATH];
 	char fname[MAX_PATH];
-
+	
 	HANDLE hList;
 	TCHAR szDir[MAX_PATH];
 	WIN32_FIND_DATA FileData;
 	::snprintf (szDir, MAX_PATH, "%s\\*", dir);
 	hList = FindFirstFile (szDir, &FileData);
-
+	
 	if (hList == INVALID_HANDLE_VALUE)
 		return;
-
+	
 	do {
 		::strncpy (fname, FileData.cFileName, MAX_PATH);
-
+		
 		if (!::strcmp (fname, ".")) continue;
 		if (!::strcmp (fname, "..")) continue;
-
+		
 		::snprintf (fpath, MAX_PATH, "%s\\%s", dir, fname);
-		if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) deleteDirectory (fpath);
-		else DeleteFile (fpath);
-
+		if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			deleteDirectory (fpath);
+		else
+			DeleteFile (fpath);
+	
 	} while (FindNextFile (hList, &FileData));
-
+	
 	FindClose (hList);
 	RemoveDirectory (dir);
 	return;
