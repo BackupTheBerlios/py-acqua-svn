@@ -41,7 +41,7 @@ class Vasca (dbwindow.DBWindow):
 		tmp.connect ('changed', self._aggiorna)
 
 		self.col_lst = [_('Id'), _('Vasca'), _('Data'), _('Nome'), _('Litri'),
-			_('Tipo Acquario'), _('Tipo Filtro'),
+			_('Modello Acquario'), _('Tipo Filtro'),
 			_('Impianto Co2'), _('Illuminazione'), 
 			_('Reattore di calcio'), _('Schiumatoio'), _('Riscaldamento Refrigerazione'), _("Note"), _("Immagine")]
 		
