@@ -65,7 +65,7 @@ class Gui(gtk.Window):
 			
 			('Test', None, _('_Test'), '<control>T', _('Test'), '_on_open_test'),
 			
-			('Pesci', None, _('_Pesci'), '<control>P', _('Pesci, piante, invertebrati'), '_on_open_pesci'),
+			('Popolazione', None, _('_Popolazione'), '<control>P', _('Pesci, piante, invertebrati'), '_on_open_pesci'),
 			
 			
 			
@@ -102,7 +102,7 @@ class Gui(gtk.Window):
 			<menuitem action='Calcoli'/>
 			<menuitem action='Vasche'/>
 			<menuitem action='Test'/>
-			<menuitem action='Pesci'/>
+			<menuitem action='Popolazione'/>
 			<separator/>
 			<menuitem action='Quit'/>
 		</menu>
@@ -150,7 +150,7 @@ class Gui(gtk.Window):
 		self.p_window = {
 			"calcoli" : None,
 			"test" : None,
-			"pesci" : None,
+			"popolazione" : None,
 			"vasca" : None,
 			"skin" : None,
 			"plugin" : None,
@@ -226,9 +226,9 @@ class Gui(gtk.Window):
 			App.p_window["test"] = test.Test()
 		
 	def _on_open_pesci(self, widget, data=None):
-		if not App.p_window["pesci"]:
+		if not App.p_window["popolazione"]:
 			import pesci
-			App.p_window["pesci"] = pesci.Pesci()
+			App.p_window["popolazione"] = pesci.Pesci()
 		
 	def _on_open_vasca(self, widget, data=None):
 		if not App.p_window["vasca"]:
@@ -262,7 +262,7 @@ class Gui(gtk.Window):
 		dialog = gtk.AboutDialog()
 	
 		dialog.set_name("PyAcqua 1.0")
-		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 Luca Sanna - Italy")
+		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 PyAcqua")
 		dialog.set_website("http://www.pyacqua.net")
 		
 		text = "Py-Acqua is free software; you can redistribute it and/or modify it under\n"
