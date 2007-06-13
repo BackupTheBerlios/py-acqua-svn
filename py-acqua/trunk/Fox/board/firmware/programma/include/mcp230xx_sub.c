@@ -18,7 +18,7 @@
 //#    along with Py-Acqua; if not, write to the Free Software
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#include "mcp23017_reg.h"
+#include "mcp23016_reg.h"
 #include "mcp23008_reg.h"
 
 #include "foxacqua_pulsantiera_by_mcp23017.h"
