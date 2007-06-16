@@ -21,7 +21,7 @@
 #include "mcp23016_reg.h"
 #include "mcp23008_reg.h"
 
-#include "foxacqua_pulsantiera_by_mcp23017.h"
+#include "foxacqua_pulsantiera_by_mcp23016.h"
 
 //*********************
 //  MCP23017 ROUTINES
@@ -50,11 +50,11 @@ void mcp230xx_pinWriteLevel(unsigned char id, unsigned char gp,unsigned char pin
 // x le prese gli arriva da 0 a 6	
 		
 	value=mcp230xx_regLeggi(id,gp);
-	if (id== 0x27) printf("letto %d\n",value);
+	//if (id== 0x27) printf("letto %d\n",value);
 	if (level==1) value=value | (1 << pin ); // = 2^pin
 	else  value=value & ( 0xff -(1 << pin ));
-	if (id== 0x27) printf("pin= %d. livello= %d, maschera= %d\n",pin,level,(1<<pin));
-	if (id== 0x27) printf("invece scrivo %d\n",value);
+	//if (id== 0x27) printf("pin= %d. livello= %d, maschera= %d\n",pin,level,(1<<pin));
+	//if (id== 0x27) printf("invece scrivo %d\n",value);
 	
 //mcp230xx_regScrivi(preseMcp23008_id,reg_prese,++valore);
 		

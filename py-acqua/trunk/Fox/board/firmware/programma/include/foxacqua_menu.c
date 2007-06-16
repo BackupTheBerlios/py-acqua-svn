@@ -54,7 +54,6 @@ unsigned char level,i;
 	y_pos(1,0);
 	lcd_printf(" P:");
 	for(i=1;i<8;i++) lcd_printf("%X",presa_read_level(i));
-heh
 			
 	y_pos(1,3);
 	lcd_printf("Menu");			

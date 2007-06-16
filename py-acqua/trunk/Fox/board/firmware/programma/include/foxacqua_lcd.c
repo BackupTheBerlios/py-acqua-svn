@@ -1,23 +1,22 @@
 
-#include "lcdbymcp23017.h"
-#include "foxacqua_pulsantiera_by_mcp23017.c"
-#ifndef  lcdMcp23017_id
-	#define lcdMcp23017_id	0x20
-#endif
+#include "lcdbymcp23016.h"
+#include "foxacqua_pulsantiera_by_mcp23016.c"
+
+	
 
 //*********************************************************************
 // LCD functions
 //*********************************************************************
 
 // RS line
-void lcd_rs(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_RS,level); }
+void lcd_rs(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_RS,level); }
 //  E line
-void lcd_e(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_E,level);}
+void lcd_e(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_E,level);}
 // D4..7
-void lcdD4(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D4,level);}
-void lcdD5(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D5,level);}
-void lcdD6(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D6,level);}
-void lcdD7(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp23017_id,lcd_port,lcd_D7,level);}
+void lcdD4(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_D4,level);}
+void lcdD5(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_D5,level);}
+void lcdD6(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_D6,level);}
+void lcdD7(unsigned char level) { mcp230xx_pinWriteLevel(lcdMcp_id,lcd_port,lcd_D7,level);}
 void lcd_e_strobe() {
 	lcd_e(1);
 	lcd_e(0);
@@ -55,10 +54,10 @@ void lcdMcpInit(){
 //init output x fili al display
 
 	//imposta mcp
-	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017IODIRA,0);//DISPLAY, TT OUT
-	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017IODIRB,0xff);//pulsanti, tt in
-	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017GPIOA,0);//uscite sul display a zero
-	mcp230xx_regScrivi(lcdMcp23017_id,mcp23017GPPUB,0);// pullup DISATTIVATI sui pulsanti
+	mcp230xx_regScrivi(lcdMcp_id,mcp23016IODIR0,0);//DISPLAY, TT OUT
+	mcp230xx_regScrivi(lcdMcp_id,mcp23016IODIR1,0xff);//pulsanti, tt in
+	mcp230xx_regScrivi(lcdMcp_id,mcp23016GP0,0);//uscite sul display a zero
+	//mcp230xx_regScrivi(lcdMcp_id,mcp23017GPIOB,0);// pullup DISATTIVATI sui pulsanti
 }
 void lcd_init() {
 	lcdMcpInit();

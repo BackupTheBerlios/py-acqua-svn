@@ -36,22 +36,37 @@
 #include "include/foxacqua_ciabatta.c"	//routine x gestire la ciabatta
 #include "include/eeprom_24xx.c"	// x sonde
 #include "include/mcp3421.c" 		// a/d converter @ i2c
+//#include "include/board.c" 		// a/d converter @ i2c
+
 // menu
 #include "include/foxacqua_menu.c"	//schermate dei menu
 
 
 //*****************
-//		MAIN
+//	MAIN
 //*****************
 int  main (void) {
 unsigned char valore[2];
-	system ("clear");
+
+
+	//system ("clear");
 
     	if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
-	
+	//board_init();
 	lcd_init();
 	ciabatta_init();
 	ds1307_init();
+	ad_init(0x68);
+
+	printf("valor %s\n","ciaooo"); 
+ad_regLeggi(mcp_ad1);
+	printf("valor %d\n",valo[0]); 
+
+	printf("valor %d\n",valo[1]); 
+
+	
+
+
 
 //skermate
 	sk_init();
@@ -59,6 +74,12 @@ unsigned char valore[2];
 		sk_main();
 		
 		while(p_status()!= P_OK){
+ ad_regLeggi(mcp_ad1);
+	printf("valor %d\n",valo[0]); 
+
+	printf("valor %d\n",valo[1]);
+
+
 			msDelay(1000); 
 			if (p_status()==P_DOWN) return 1; // x debug, alla sua pressione il prog termina.
 			// scrive ora
@@ -75,6 +96,7 @@ unsigned char valore[2];
 		sk_menu_1(); 
 		sk_clear();
 	}
+
 }
 
 
