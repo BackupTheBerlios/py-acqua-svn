@@ -50,7 +50,7 @@ void sk_init(){
 }
 
 void sk_main(){
-unsigned char level,i;
+unsigned char i;
 	y_pos(1,0);
 	lcd_printf(" P:");
 	for(i=1;i<8;i++) lcd_printf("%X",presa_read_level(i));
@@ -61,7 +61,7 @@ unsigned char level,i;
 }
 
 void sk_menu_1_2_1(){
-unsigned char scelta,presa;
+unsigned char presa;
 	y_pos(1,0);
 	lcd_printf("<<  Assegna nomi");
 	presa=scegli_presa();

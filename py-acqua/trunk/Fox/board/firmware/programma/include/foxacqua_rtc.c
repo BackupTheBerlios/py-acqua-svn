@@ -221,7 +221,7 @@ i2c_start();
 
 void set_ora ( unsigned char o_in,unsigned char min_in)
 {
-unsigned char temp;
+
 //passa da base 10 a 16
 //num in char
 

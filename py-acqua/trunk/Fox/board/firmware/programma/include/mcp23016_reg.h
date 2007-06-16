@@ -1,8 +1,8 @@
 // RIFLETTE IL LIVELLO LOGICO DEL PIN
 // 1 = livello logico alto
 // 0 = livelLo logico basso
-#define	mcp23016GP0	0X00
-#define	mcp23016GP1	0X01
+#define	mcp23016GPIO0	0X00
+#define	mcp23016GPIO1	0X01
 	#define mcp23016GP7	7
 	#define mcp23016GP6	6
 	#define mcp23016GP5	5
@@ -62,7 +62,7 @@
 // RIFLETTE I LIVELLI LOGICI DEI PIN IMPOSTATI COME INTERRUPT AL MOMENTO DEL CAMBIAMENTO DI STATO
 // 1 = attivo alto
 // 0 = attivo basso
-#define	mcp23016INTCAP0	0X08
+#define	mcp23016INTCAP0 0X08
 #define	mcp23016INTCAP1	0X09
 	#define mcp23016ICP7	7
 	#define mcp23016ICP6	6
