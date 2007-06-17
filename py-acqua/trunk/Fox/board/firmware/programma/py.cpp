@@ -64,7 +64,7 @@
 //*****************
 int  main (int argc, char *argv[]) {
 int port=3023;
-printf("xmlvoltmeter\n");
+//printf("xmlvoltmeter\n");
 unsigned char valore[2];
 
 
@@ -100,19 +100,20 @@ unsigned char valore[2];
 		while(p_status()!= P_OK){
 
 
+			xml_monitor(port);
+			value=0;
 			size_csa = sizeof(csa);
-    
-   			cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
+    		cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
     		if (cs > 0) {
     	
-      		sockfl = fcntl(cs, F_GETFL, 0);
-      		fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
-			xml_monitor(port);
-			
+      			sockfl = fcntl(cs, F_GETFL, 0);
+      			fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
+			}
 			socket_printf(cs,"<prova>");
 			socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
 			socket_printf(cs,"</prova>");
-   			//i2c_close();
+   			
+			i2c_close();
 
 			msDelay(200); 
 
