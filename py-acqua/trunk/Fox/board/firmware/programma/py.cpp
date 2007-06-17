@@ -63,7 +63,8 @@
 //	MAIN
 //*****************
 int  main (int argc, char *argv[]) {
-//int port=3023;
+int port=3023;
+printf("xmlvoltmeter\n");
 unsigned char valore[2];
 
 
@@ -85,7 +86,8 @@ unsigned char valore[2];
   			//valore[1]=read_min();
   			//lcd_printf("%02d",valore[1]);
 
-//skermate
+
+		//skermate
 	sk_init();
 	for(;;){
 		y_pos(15,0);
@@ -99,7 +101,11 @@ unsigned char valore[2];
 
 
 
-			//xml_monitor(port);
+			xml_monitor(port);
+			
+			socket_printf(cs,"<prova>");
+			socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
+			socket_printf(cs,"</prova>");
    			//i2c_close();
 
 			msDelay(200); 

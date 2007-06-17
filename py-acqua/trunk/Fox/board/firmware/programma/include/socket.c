@@ -1,37 +1,3 @@
-#include "stdlib.h"
-#include "unistd.h" 
-#include "time.h"
-#include "sys/ioctl.h"
-#include "fcntl.h"     
-#include "asm/etraxgpio.h"
-#include "stdarg.h"
-#include "string.h"
-#include "errno.h"
-#include "termios.h"
-#include "sys/types.h"
-#include "sys/stat.h"
-#include "netinet/in.h"
-#include "sys/socket.h"
-#include "netdb.h"
-#include "signal.h"
-#include "arpa/inet.h"
-#include "stdlib.h"
-#include "syslog.h"
-#include "stdarg.h"
-#include "net/if.h"
-//lib
-//#include "include/foxacqua_i2c.h"	//routine i2c
-//#include "include/mcp230xx_sub.c"	// routine comuni a questi mcp
-//#include "include/foxacqua_lcd.c"	//routine x comunicazione e controllo del lcd 
-//#include "include/foxacqua_rtc.c"	//routine x comunicare con l'rtc
-//#include "include/foxacqua_ciabatta.c"	//routine x gestire la ciabatta
-//#include "include/eeprom_24xx.c"	// x sonde
-//#include "include/mcp3421.c" 		// a/d converter @ i2c
-//#include "include/board.c" 		// a/d converter @ i2c
-
-// menu
-//#include "include/foxacqua_menu.c"	//schermate dei menu
-
 
 #define RX_BUFFER_LEN 1024
 #define TX_BUFFER_LEN 1024
