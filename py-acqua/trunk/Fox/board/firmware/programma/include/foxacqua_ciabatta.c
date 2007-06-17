@@ -40,34 +40,20 @@ char prese_nomi[8][15][2]={
 #define presa7			6
 #define	reg_prese		0X09 // = GPIO
 
-void ciabatta_init(){
-mcp230xx_regScrivi(preseMcp23008_id,mcp23008IOCON,0x24); //slew rate su sda, interrupt disablitati, no pull up // 00011000
-	mcp230xx_regScrivi(preseMcp23008_id,mcp23008IPOL,0x00);//lettura non complementata
-	mcp230xx_regScrivi(preseMcp23008_id,mcp23008GPINTEN,0x00);//nessun interrupt
-	mcp230xx_regScrivi(preseMcp23008_id,mcp23008IODIR,0x00);//tutti out
-	mcp230xx_regScrivi(preseMcp23008_id,reg_prese,0x00);//tutti spenti
-
-}
-void presa_set_level(unsigned char presa,unsigned char level){
-// presa 1..7
-// level 0..1
-	mcp230xx_pinWriteLevel(preseMcp23008_id,reg_prese,--presa,level);
-}
-
-unsigned char presa_read_level(unsigned char presa){
-// presa 1..7
-	return mcp230xx_pinReadLevel(preseMcp23008_id, reg_prese,--presa);
-}
 
 
 
-unsigned char imposta_stato(unsigned char presa){
-	unsigned char level,press;
+
+
+
+
+
+unsigned char  sk_chose_onoff(unsigned char level){
+	unsigned char press;
 	y_pos(1,1);
 	lcd_printf("Scegli lo stato");
 	y_pos(6,2);
 	lcd_printf(" 0     1");
-	level=presa_read_level(presa);
 	//porta il cursore sullivello del pin	
 	if (!level) 	y_pos(6,2);					
 	else		y_pos(12,2);			
@@ -96,6 +82,45 @@ unsigned char imposta_stato(unsigned char presa){
 	}
 	printf("restituisco %d",level);
 	return level;
+
+}
+
+
+
+
+
+
+
+
+
+
+void ciabatta_init(){
+mcp230xx_regScrivi(preseMcp23008_id,mcp23008IOCON,0x24); //slew rate su sda, interrupt disablitati, no pull up // 00011000
+	mcp230xx_regScrivi(preseMcp23008_id,mcp23008IPOL,0x00);//lettura non complementata
+	mcp230xx_regScrivi(preseMcp23008_id,mcp23008GPINTEN,0x00);//nessun interrupt
+	mcp230xx_regScrivi(preseMcp23008_id,mcp23008IODIR,0x00);//tutti out
+	mcp230xx_regScrivi(preseMcp23008_id,reg_prese,0x00);//tutti spenti
+
+}
+void presa_set_level(unsigned char presa,unsigned char level){
+// presa 1..7
+// level 0..1
+	mcp230xx_pinWriteLevel(preseMcp23008_id,reg_prese,--presa,level);
+}
+
+unsigned char presa_read_level(unsigned char presa){
+// presa 1..7
+	return mcp230xx_pinReadLevel(preseMcp23008_id, reg_prese,--presa);
+}
+
+
+
+unsigned char imposta_stato(unsigned char presa){
+
+	unsigned char level;
+	level=presa_read_level(presa);
+	return sk_chose_onoff(level);
+
 }
 
 

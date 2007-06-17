@@ -49,7 +49,6 @@
 
 
 
-
 #include "include/mcp230xx_sub.c"	// routine comuni a questi mcp
 #include "include/foxacqua_lcd.c"	//routine x comunicazione e controllo del lcd 
 #include "include/foxacqua_rtc.c"	//routine x comunicare con l'rtc
@@ -58,8 +57,10 @@
 #include "include/mcp3421.c" 		// a/d converter @ i2c
 #include "include/board.c" 		// board
 
+
 // menu
 #include "include/foxacqua_menu.c"	//schermate dei menu
+
 
 
 
@@ -74,15 +75,22 @@ unsigned char valore[2];
 
 
 	system ("clear");
+	printf("\nFox-acqua in esecuzione.\n"); 
 
-    	if (i2c_open()<0) { printf("Apertura del bus I2C fallita\n"); return 1; }
-	board_init();
-	lcd_init();
-	ciabatta_init();
-	ds1307_init();
-	ad_init(0x68);
+    	if (i2c_open()<0) { 	printf("Apertura del bus I2C fallita\n"); return 1; }
+	board_init();		printf("--Init board			[PASS]\n"); 
+	lcd_init();		printf("--Init lcd			[PASS]\n"); 
+	ciabatta_init();	printf("--Init ciabatta			[PASS]\n"); 
+	ds1307_init();		printf("--Init rtc 			[PASS]\n"); 
+	ad_init(0x68);		printf("--Init adc 			[PASS]\n"); 
 
 	printf("\nfox-acqua in esecuzione.\n"); 
+// scrive ora
+			//y_pos(15,0);
+	 		//valore[0]=read_hour();
+  			//lcd_printf("%02d:",valore[0]);
+  			//valore[1]=read_min();
+  			//lcd_printf("%02d",valore[1]);
 
 //skermate
 	sk_init();
@@ -92,18 +100,10 @@ unsigned char valore[2];
   		lcd_printf("%02d:",valore[0]);
   		valore[1]=read_min();
   		lcd_printf("%02d",valore[1]);
-			
+
 		sk_main();
-	
-
-
-
-
 		while(p_status()!= P_OK){
- //ad_regLeggi(mcp_ad1);
-	//printf("valor %d\n",valo[0]); 
 
-	//printf("valor %d\n",valo[1]);
 
 
 			//xml_monitor(port);
@@ -111,39 +111,19 @@ unsigned char valore[2];
 
 			msDelay(200); 
 
-			if (p_status()==P_DOWN) return 1; // x debug, alla sua pressione il prog termina.
-			// scrive ora
-			//y_pos(15,0);
-	 		//valore[0]=read_hour();
-  			//lcd_printf("%02d:",valore[0]);
-  			//valore[1]=read_min();
-  			//lcd_printf("%02d",valore[1]);
+			if (p_status()==P_DOWN) {
+				sk_clear();
+				printf("\nFox-acqua spenta.\n"); 
+				return 1; // x debug, alla sua pressione il prog termina.
 			
-
-
-
-
-
-
-
+			} 
 		} //luppa finkè non premuto   
-
-	msDelay(200); 
-buzzer_set_level(0);
-	msDelay(200); 
-peristaltica_set_level(0);
-	msDelay(200); 
-
 
 		sk_clear();
 		sk_menu_1(); 
 		sk_clear();
 	}
-	msDelay(200); 
-buzzer_set_level(0);
-	msDelay(200); 
-peristaltica_set_level(0);
-	msDelay(200); 
+
 }
 
 

@@ -112,7 +112,7 @@ void lcd_locate(unsigned char row, unsigned char col) {
   udelay(35);
 } 
 
-void cursore_sceqgli_opz(unsigned char pos){
+void cursore_scegli_opz(unsigned char pos){
 //0..3
 	lcd_locate(0,0);
 	lcd_printf(" ");			
@@ -196,18 +196,24 @@ void barra_menu_vert(unsigned char type){
 	}
 }
 
-int aggiorna_cursore_opz(unsigned char min,unsigned char max){
+unsigned char aggiorna_cursore_opz(unsigned char min,unsigned char max){
 // 0..3
+// se trova 4 in max sa ke deve ritornare xkè verraà caricata un altra skermata del displayy
 	unsigned char scelta,press;
 	scelta=min; // 1 è il titolo del menu
-	cursore_sceqgli_opz(scelta);
+	cursore_scegli_opz(scelta);
 	while(p_status() != P_OK){
 		press=p_status();
-		if (press==P_DOWN)	{if (scelta<max){cursore_sceqgli_opz(++scelta);
+		if (press==P_DOWN)	{if (scelta<max){cursore_scegli_opz(++scelta);
 						while (p_status()==P_DOWN) msDelay(10);}}
-		else if (press==P_UP)  	{if (scelta>min){cursore_sceqgli_opz(--scelta);
+		else if (press==P_UP)  	{if (scelta>min){cursore_scegli_opz(--scelta);
 						while (p_status()==P_UP)   msDelay(10);}}
 		msDelay(50);
+
+
+
+	if (scelta==4) break;
+
 	}
 	return scelta;
 }

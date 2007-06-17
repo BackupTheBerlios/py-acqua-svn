@@ -33,9 +33,6 @@
 void sk_clear(){
 	lcd_clear(); 
 }
-
-
-
 void sk_init(){
  	y_pos(7,0);
 	lcd_printf("VISITA");	
@@ -48,7 +45,6 @@ void sk_init(){
 	sk_clear();
 	
 }
-
 void sk_main(){
 unsigned char i;
 	y_pos(1,0);
@@ -57,17 +53,47 @@ unsigned char i;
 			
 	y_pos(1,3);
 	lcd_printf("Menu");			
-	cursore_sceqgli_opz(3);
+	cursore_scegli_opz(3);
 }
+
+
+
+
+
+
+void sk_menu_1_3_1(){
+unsigned char sonda;
+	y_pos(1,0);
+	lcd_printf("<<  ASSEGNA NOMI");
+	sonda=scegli_sonda();
+	assegna_nome(3,2,sonda); //x,y
+}
+void sk_menu_1_3_2(){
+
+unsigned char sonda;
+
+	y_pos(1,0);
+	lcd_printf("<<  LEGGI VALORI");
+	sonda=scegli_sonda();
+sk_clear();
+ //ad_regLeggi(mcp_ad1);
+	//printf("valor %d\n",valo[0]); 
+
+	//printf("valor %d\n",valo[1]);
+
+
+
+}
+
+
 
 void sk_menu_1_2_1(){
 unsigned char presa;
 	y_pos(1,0);
-	lcd_printf("<<  Assegna nomi");
+	lcd_printf("<<  ASSEGNA NOMI");
 	presa=scegli_presa();
 	assegna_nome(3,2,presa); //x,y
 }
-
 void sk_menu_1_2_2(){
 unsigned char scelta,stato;
 	y_pos(1,0);
@@ -84,6 +110,72 @@ unsigned char scelta;
 //cursore su linea x
 
 }
+
+
+
+
+
+
+void sk_menu_1_3b(){
+unsigned char scelta;
+	y_pos(1,0);
+	lcd_printf("<<     INFO");			
+	y_pos(1,1);
+	lcd_printf("Progetto opensource");			
+	y_pos(1,2);
+	lcd_printf("  per la gestione   ");			
+	y_pos(1,3);
+	lcd_printf("     di acquari     ");		
+	scelta=aggiorna_cursore_opz(0,0);//min,max quindi solo ritornare indietro
+	
+}
+void sk_menu_1_2b(){
+unsigned char scelta,level;
+	y_pos(1,0);
+	lcd_printf("<<  PERISTALTICA");			
+	y_pos(1,1);
+
+	level=peristaltica_read_level();
+	level=sk_chose_onoff(level);
+	peristaltica_set_level(level);
+
+	
+}
+void sk_menu_1_1b(){
+unsigned char scelta,level;
+
+	y_pos(1,0);
+	lcd_printf("><<  LIVELLO ACQUA");
+
+	while	(p_status() != P_OK){			
+		y_pos(1,2);
+		lcd_printf("G1= ");	
+		if(galleggiante_read_level(1)==1)lcd_printf("Ok ");
+		else if(galleggiante_read_level(1)==0)lcd_printf("Bad");
+	
+		y_pos(10,2);
+		lcd_printf("G2= ");	
+		if(galleggiante_read_level(2)==1)lcd_printf("Ok ");
+		else if(galleggiante_read_level(2)==0)lcd_printf("Bad");
+	}
+}
+
+void sk_menu_1_3(){
+unsigned char scelta;
+	y_pos(1,0);
+	lcd_printf("<< GESTIONE SONDE");
+	y_pos(1,1);
+	lcd_printf("Assegna nomi");		
+	y_pos(1,2);
+	lcd_printf("Leggi valori");		
+	
+	scelta=aggiorna_cursore_opz(0,3);//12=menu = 1_2
+	sk_clear();
+	if (scelta==0) udelay(1);//ritorna
+	else if (scelta==1) sk_menu_1_3_1(); 
+	else if (scelta==2) sk_menu_1_3_2();
+
+}
 void sk_menu_1_2(){
 unsigned char scelta;
 	y_pos(1,0);
@@ -94,7 +186,7 @@ unsigned char scelta;
 	lcd_printf("Cambia stato");		
 	y_pos(1,3);
 	lcd_printf("Imposta timer");
-	barra_menu_vert(0);
+	
 	scelta=aggiorna_cursore_opz(0,3);//12=menu = 1_2
 	sk_clear();
 	if (scelta==0) udelay(1);//ritorna
@@ -103,7 +195,6 @@ unsigned char scelta;
 	else if (scelta==3) sk_menu_1_2_3();
 	
 }
-
 void sk_menu_1_1(){
 	
 	char valore[5];
@@ -147,40 +238,66 @@ void sk_menu_1_1(){
 
 }
 
-void sk_menu_1_3(){
-unsigned char scelta;
-	y_pos(1,0);
-	lcd_printf("<<     INFO");			
-	y_pos(1,1);
-	lcd_printf("Progetto opensource");			
-	y_pos(1,2);
-	lcd_printf("  per la gestione   ");			
-	y_pos(1,3);
-	lcd_printf("     di acquari     ");		
-	scelta=aggiorna_cursore_opz(0,0);//min,max quindi solo ritornare indietro
-	
-}
-
-
-void sk_menu_1(){
-
-	// problema... cm fare x scorrere le voci in verticale????
+unsigned char sk_menu_1a(){
 	unsigned char scelta;
 	y_pos(1,0);
 	lcd_printf("<<     MENU ");			
 	y_pos(1,1);
-	lcd_printf("Cambia data");			
+	lcd_printf("Cambia la data");			
 	y_pos(1,2);
 	lcd_printf("Gestione prese");			
 	y_pos(1,3);
-	lcd_printf("Info");
+	lcd_printf("Gestione sonde");
 	barra_menu_vert(0);
-	scelta=aggiorna_cursore_opz(0,3);
+	scelta=aggiorna_cursore_opz(0,4);
 	sk_clear();
 	if (scelta==0) udelay(1);//ritorna
 	else if (scelta==1) sk_menu_1_1(); 
 	else if (scelta==2) sk_menu_1_2();
 	else if (scelta==3) sk_menu_1_3();
+	
+	if (scelta==4) return 1;
+	else return 0;	
+
+}
+
+unsigned char  sk_menu_1b(){
+	unsigned char scelta;
+	y_pos(1,0);
+	lcd_printf("<<     MENU ");			
+	y_pos(1,1);
+	lcd_printf("Livello acqua");			
+	y_pos(1,2);
+	lcd_printf("Peristaltica");			
+	y_pos(1,3);
+	lcd_printf("Info");
+	barra_menu_vert(2);
+	scelta=aggiorna_cursore_opz(0,3);
+	sk_clear();
+
+	if (scelta==1) sk_menu_1_1b();
+	else if (scelta==2) sk_menu_1_2b();
+	else if (scelta==3) sk_menu_1_3b();
+
+
+	if (scelta==0) return 1;
+	else return 0;	
+	}
+
+void sk_menu_1(){
+unsigned char sk_last,sk_next;
+	sk_last=1;
+	sk_next=0;
+
+	while (sk_last==1) {
+		sk_next=sk_menu_1a();
+		if (sk_next==1) {
+			sk_last=sk_menu_1b();
+			//if (sk_last==0) break ;// ritorna zero se è entrato in una voce del 2° menu
+		}
+		//else break;
+	
+	}
 }
 
 

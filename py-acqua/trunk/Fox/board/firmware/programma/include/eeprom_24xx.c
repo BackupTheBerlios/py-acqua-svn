@@ -22,6 +22,24 @@
 // EEPROM id: A0,A2,A4,A6,A8,AA,AC,AE
 
 
+char sonde_nomi[8][15][2]={
+				{"S","o","n","d","a","1"},
+				{"S","o","n","d","a","2"},
+				{"S","o","n","d","a","3"},
+				{"S","o","n","d","a","4"},
+				{"S","o","n","d","a","5"},
+				{"S","o","n","d","a","6"},
+				{"S","o","n","d","a","7"},
+				{"S","o","n","d","a","8"},
+
+			}; // 8 nomi da 15 caratterri 
+
+
+
+
+
+
+
 
 int ext_eeprom_ready(unsigned char id){
 	int ack;
@@ -55,6 +73,60 @@ while(!ext_eeprom_ready(id));
 	i2c_stop();
 	return data;//tra parentesi data (data)
 }
+
+
+
+unsigned char  scegli_sonda(){
+
+// ritorna 1..7
+	unsigned char scelta,press,i,sonda;
+	y_pos(1,1);
+	lcd_printf("Scegli la sonda");
+	y_pos(4,2);
+	lcd_printf(">1 2 3 4 5 6 7");
+	y_pos(3,3);	
+	for (i=0;i<15;i++) lcd_printf(sonde_nomi[0][i]);
+	scelta=4;
+	y_pos(scelta,2);
+	sonda=1;
+	while(p_status() != P_OK){
+		press=p_status();
+		if (press!=0)	{
+			y_pos(scelta,2);
+			lcd_printf(" ");	
+			if (press==P_RIGHT)	{
+				scelta+=2;
+				sonda++; 			
+				if (scelta>17){
+					scelta=4;
+					sonda=1;
+				}
+			}
+			else if (press==P_LEFT)	{
+				scelta-=2;
+				sonda--; 			
+				if (scelta<4){
+					scelta=16;
+					sonda=7;
+				}
+			}
+			y_pos(scelta,2);
+			lcd_printf(">");
+			y_pos(3,3);
+			for (i=0;i<15;i++) lcd_printf(sonde_nomi[sonda-1][i]);
+			while (p_status()!=0) msDelay(1);		
+		}
+	}
+	clean_row(2);
+	return sonda; // da1..7
+
+
+
+}
+
+
+
+
 
 /*
 int  main (void) {

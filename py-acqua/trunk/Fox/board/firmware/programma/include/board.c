@@ -27,6 +27,12 @@ void peristaltica_set_level(unsigned char level){
 // level 0..1
 	mcp230xx_pinWriteLevel(boardMcp23008_id,reg_io,io_peristaltica,level);
 }
+unsigned char peristaltica_read_level(){
+	return mcp230xx_pinReadLevel(boardMcp23008_id, reg_io,io_peristaltica);
+}
+
+
+
 //buzzer
 void buzzer_set_level(unsigned char level){
 // level 0..1
