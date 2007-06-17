@@ -100,7 +100,13 @@ unsigned char valore[2];
 		while(p_status()!= P_OK){
 
 
-
+			size_csa = sizeof(csa);
+    
+   			cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
+    		if (cs > 0) {
+    	
+      		sockfl = fcntl(cs, F_GETFL, 0);
+      		fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
 			xml_monitor(port);
 			
 			socket_printf(cs,"<prova>");
