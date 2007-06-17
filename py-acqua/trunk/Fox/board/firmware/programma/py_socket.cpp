@@ -222,61 +222,19 @@ int xml_monitor(int local_port) {
 //*****************
 int  main (int argc, char *argv[]) {
 	
-	unsigned char valore[2];
 	int port=3023;
 	printf("xmlvoltmeter\n");
 	
-	//system ("clear");
-	if (i2c_open()<0) { 
-		printf("Apertura del bus I2C fallita\n"); 
-		return 1; }
-	xml_monitor(port);
-		
-	//board_init();
-	lcd_init();
-	ciabatta_init();
-	ds1307_init();
-	ad_init(0x68);
-
-	printf("valor %s\n","ciaooo"); 
-ad_regLeggi(mcp_ad1);
-	printf("valor %d\n",valo[0]); 
-
-	printf("valor %d\n",valo[1]); 
-
 	
-
-
-
-//skermate
-	sk_init();
-	for(;;){
-		sk_main();
-		
-		while(p_status()!= P_OK){
- ad_regLeggi(mcp_ad1);
-	printf("valor %d\n",valo[0]); 
-
-	printf("valor %d\n",valo[1]);
-
-
-			msDelay(1000); 
-			if (p_status()==P_DOWN) return 1; // x debug, alla sua pressione il prog termina.
-			// scrive ora
-			y_pos(15,0);
-	 		valore[0]=read_hour();
-  			lcd_printf("%02d:",valore[0]);
-  			valore[1]=read_min();
-  			lcd_printf("%02d",valore[1]);
-			//valore temperatura
-			//valore ph
-			// valore gh
-		} //aspetta finkè premuto   
-		sk_clear();
-		sk_menu_1(); 
-		sk_clear();
-	}
 	socket_printf(cs,"<prova>");
 	socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
 	socket_printf(cs,"</prova>");
+
+	
+
+	for(;;) xml_monitor(port);
+		
+	
+	
+
 }
