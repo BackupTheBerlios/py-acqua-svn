@@ -43,12 +43,9 @@
 
 // connessioni
 #include "include/foxacqua_i2c.h"	//routine i2c
-//#include "include/socket.c" 		// soket
+#include "include/socket.c" 		// socket
 
-
-
-
-
+//include
 #include "include/mcp230xx_sub.c"	// routine comuni a questi mcp
 #include "include/foxacqua_lcd.c"	//routine x comunicazione e controllo del lcd 
 #include "include/foxacqua_rtc.c"	//routine x comunicare con l'rtc
@@ -56,12 +53,8 @@
 #include "include/eeprom_24xx.c"	// x sonde
 #include "include/mcp3421.c" 		// a/d converter @ i2c
 #include "include/board.c" 		// board
-
-
 // menu
 #include "include/foxacqua_menu.c"	//schermate dei menu
-
-
 
 
 
@@ -125,11 +118,3 @@ unsigned char valore[2];
 	}
 
 }
-
-
-
-
-
-
-
-

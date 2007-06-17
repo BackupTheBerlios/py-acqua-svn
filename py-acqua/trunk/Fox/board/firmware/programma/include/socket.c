@@ -1,11 +1,48 @@
+#include "stdlib.h"
+#include "unistd.h" 
+#include "time.h"
+#include "sys/ioctl.h"
+#include "fcntl.h"     
+#include "asm/etraxgpio.h"
+#include "stdarg.h"
+#include "string.h"
+#include "errno.h"
+#include "termios.h"
+#include "sys/types.h"
+#include "sys/stat.h"
+#include "netinet/in.h"
+#include "sys/socket.h"
+#include "netdb.h"
+#include "signal.h"
+#include "arpa/inet.h"
+#include "stdlib.h"
+#include "syslog.h"
+#include "stdarg.h"
+#include "net/if.h"
+//lib
+//#include "include/foxacqua_i2c.h"	//routine i2c
+//#include "include/mcp230xx_sub.c"	// routine comuni a questi mcp
+//#include "include/foxacqua_lcd.c"	//routine x comunicazione e controllo del lcd 
+//#include "include/foxacqua_rtc.c"	//routine x comunicare con l'rtc
+//#include "include/foxacqua_ciabatta.c"	//routine x gestire la ciabatta
+//#include "include/eeprom_24xx.c"	// x sonde
+//#include "include/mcp3421.c" 		// a/d converter @ i2c
+//#include "include/board.c" 		// a/d converter @ i2c
 
-
+// menu
+//#include "include/foxacqua_menu.c"	//schermate dei menu
 
 
 #define RX_BUFFER_LEN 1024
 #define TX_BUFFER_LEN 1024
 
+#ifndef IO_SETGET_INPUT
+#define IO_SETGET_INPUT 	0x12
+#endif
 
+#ifndef IO_SETGET_OUTPUT
+#define IO_SETGET_OUTPUT 	0x13
+#endif
 
 //****************************************************
 // Socket functions
@@ -25,9 +62,13 @@ int socket_printf(int fs, char *format, ...) {
   return 0;
 }	
 
+int ch;
+int value;
+int cs;
+
 
 int xml_monitor(int local_port) {
-  int cs;
+ // int cs;
   int s;
   int sockfl;
   int size_csa;
@@ -37,8 +78,8 @@ int xml_monitor(int local_port) {
   int yes = 1;
   int rxpointer=0;
 	char rxbuffer[RX_BUFFER_LEN];
-	int ch;
-	int value;
+	//int ch;
+	//int value;
 	char zero[1];
 	
 	zero[0]=0;
@@ -80,8 +121,8 @@ int xml_monitor(int local_port) {
   while(1) {  
     
     size_csa = sizeof(csa);
-    cs = accept(s, (struct s ockaddr *)&csa, &size_csa); // Qui non si ferma
-    
+    //cs = accept(s, (struct sockaddr *)&csa, &size_csa); // Qui non si ferma
+    cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
     if (cs > 0) {
     	
       sockfl = fcntl(cs, F_GETFL, 0);
@@ -132,3 +173,47 @@ int xml_monitor(int local_port) {
   return -1;
 } 
 
+/*int main(int argc, char *argv[]) {
+  int port=3023;
+
+	printf("xmlvoltmeter\n");
+	  
+  while(1) {  
+  	
+ 		if (i2c_open()<0) {
+	    printf("i2c open error\n");
+	    return 1;
+		}
+  	
+    xml_monitor(port);
+    
+   	i2c_close();
+  } 
+  return 0; 
+}
+
+*/
+
+
+//*****************
+//	MAIN
+//*****************
+/*int  main (int argc, char *argv[]) {
+	
+	int port=3023;
+	printf("xmlvoltmeter\n");
+	
+	
+	socket_printf(cs,"<prova>");
+	socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
+	socket_printf(cs,"</prova>");
+
+	
+
+	for(;;) xml_monitor(port);
+		
+	
+	
+
+}
+*/
