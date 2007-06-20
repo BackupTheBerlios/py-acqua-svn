@@ -40,7 +40,6 @@
 #include <net/if.h>
 
 
-
 // connessioni
 #include "include/foxacqua_i2c.h"	//routine i2c
 #include "include/socket.c" 		// socket
@@ -63,7 +62,7 @@
 //	MAIN
 //*****************
 int  main (int argc, char *argv[]) {
-int port=3023;
+
 //printf("xmlvoltmeter\n");
 unsigned char valore[2];
 
@@ -77,8 +76,10 @@ unsigned char valore[2];
 	ciabatta_init();	printf("--Init ciabatta			[PASS]\n"); 
 	ds1307_init();		printf("--Init rtc 			[PASS]\n"); 
 	ad_init(0x68);		printf("--Init adc 			[PASS]\n"); 
+	socket_init();		printf("--Init socket on 3023		[PASS]\n"); 
 
 	printf("\nfox-acqua in esecuzione.\n"); 
+
 // scrive ora
 			//y_pos(15,0);
 	 		//valore[0]=read_hour();
@@ -100,23 +101,7 @@ unsigned char valore[2];
 		while(p_status()!= P_OK){
 
 
-			xml_monitor(port);
-			value=0;
-			size_csa = sizeof(csa);
-    		cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
-    		if (cs > 0) {
-    	
-      			sockfl = fcntl(cs, F_GETFL, 0);
-      			fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
-			}
-			socket_printf(cs,"<prova>");
-			socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
-			socket_printf(cs,"</prova>");
-   			
-			i2c_close();
-
-			msDelay(200); 
-
+			//xml_monitor(local_port);
 			if (p_status()==P_DOWN) {
 				sk_clear();
 				printf("\nFox-acqua spenta.\n"); 
@@ -125,9 +110,16 @@ unsigned char valore[2];
 			} 
 		} //luppa finkè non premuto   
 
+		
 		sk_clear();
+
+		socket_printf(cs,testo);
+		write(cs,zero,1); //fa scrivee effettivsmente la frase sopra svuotando il buffer ke ha interno penso.
+
 		sk_menu_1(); 
 		sk_clear();
 	}
+
+//soket_close(); // non mi restituisce + ninte....
 
 }

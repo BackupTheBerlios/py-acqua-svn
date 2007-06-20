@@ -10,6 +10,7 @@
 #define IO_SETGET_OUTPUT 	0x13
 #endif
 
+
 //****************************************************
 // Socket functions
 //****************************************************
@@ -27,24 +28,25 @@ int socket_printf(int fs, char *format, ...) {
   write(fs,msg,strlen(msg));
   return 0;
 }	
-
-int ch;
-int value;
-int cs;
-int s;
-int sockfl;
-int size_csa;
-struct sockaddr_in csa;
-struct sockaddr_in sa; 
-int rc;
-int yes = 1;
-int rxpointer=0;
-
-
-int xml_monitor(int local_port) {
+int local_port;
+  int cs;
+  int s;
+  int sockfl;
+  int size_csa;
+  struct sockaddr_in csa;
+  struct sockaddr_in sa; 
+  int rc;
+  int yes = 1;
+  int rxpointer=0;
 	char rxbuffer[RX_BUFFER_LEN];
+	int ch;
+	int value;
 	char zero[1];
-	
+
+int socket_init(){
+local_port=3023;
+
+
 	zero[0]=0;
   rxbuffer[rxpointer]=0;
 
@@ -80,21 +82,40 @@ int xml_monitor(int local_port) {
     printf("Error listening control socket\n");
     return -1;
   } 
+sockfl = fcntl(cs, F_GETFL, 0);
+      fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
+    
+
+}
+
+void soket_close(){
+
+  close(s);
+} 
+
+
+void soket_write(){//userò questa
+	//	socket_printf(cs,testo);
+//write(cs,zero,1); 
+
+} 
+
+
+
+/*
+int xml_monitor(int local_port) {
+
+	
 
   
- 
- // while(1) {  
+  while(1) {  
     
    // size_csa = sizeof(csa);
-    //cs = accept(s, (struct sockaddr *)&csa, &size_csa); // Qui non si ferma
-    //cs = accept(s, (struct sockaddr *)&csa, (socklen_t *)&size_csa);
-    //if (cs > 0) {
+   // cs = accept(s, (struct sockaddr *)&csa, &size_csa); // Qui non si ferma
+    
+ //   if (cs > 0) {
     	
-      //sockfl = fcntl(cs, F_GETFL, 0);
-      //fcntl(cs, F_SETFL, sockfl | O_NONBLOCK);
-	//}
-}
-    /*
+      
       // Read data loop
 			value=0;	
       for (;;) {
@@ -102,26 +123,7 @@ int xml_monitor(int local_port) {
 
      		socket_printf(cs,"<analog>");
 				for (ch=0;ch<4;ch++) {
-					i2c_start();
-					if (i2c_outbyte(0x92)==0) {
-						printf("NACK received\n");
-					}
 					
-					if (i2c_outbyte(ch)==0) {
-						printf("NACK received\n");
-					}
-					i2c_stop();
-							
-					i2c_start();
-					if (i2c_outbyte(0x93)==0) {
-						printf("NACK received\n");
-					}
-			
-					i2c_inbyte(1); 					// Last conversion result
-					value=i2c_inbyte(1); 		// Current conversion result
-					i2c_stop();
-				
-					printf("%3d ",value);
 					socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
 					
 				}	
@@ -130,57 +132,10 @@ int xml_monitor(int local_port) {
 				
 			  write(cs,zero,1); 
       }
-      printf("Close\n");
-      close(s);
-      return -1;
-    } 
-  }
+     
+ // }
   printf("Rx socket accept timeout\n");
   sleep(2);
   return -1;
 } 
-*/
-/*int main(int argc, char *argv[]) {
-  int port=3023;
-
-	printf("xmlvoltmeter\n");
-	  
-  while(1) {  
-  	
- 		if (i2c_open()<0) {
-	    printf("i2c open error\n");
-	    return 1;
-		}
-  	
-    xml_monitor(port);
-    
-   	i2c_close();
-  } 
-  return 0; 
-}
-
-*/
-
-
-//*****************
-//	MAIN
-//*****************
-/*int  main (int argc, char *argv[]) {
-	
-	int port=3023;
-	printf("xmlvoltmeter\n");
-	
-	
-	socket_printf(cs,"<prova>");
-	socket_printf(cs,"<input line=\"%d\" value=\"%d\"/>",ch,value);
-	socket_printf(cs,"</prova>");
-
-	
-
-	for(;;) xml_monitor(port);
-		
-	
-	
-
-}
 */
