@@ -232,7 +232,7 @@ void sk_menu_1_1(){
 	//se ok salva il valore
 	y_pos(4,3);
 		
-	if (true) lcd_printf("DATA SALVATA");
+	if (1) lcd_printf("DATA SALVATA");
 	else lcd_printf("DATA ERRATA");
 	msDelay(2000);		
 
