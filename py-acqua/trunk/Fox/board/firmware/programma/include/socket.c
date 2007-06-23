@@ -9,19 +9,7 @@
 // Socket functions
 //****************************************************
 
-// Send a formatted string to a socket
 
-int socket_printf(int fs, char *format, ...) {
-	va_list argptr;
-	char msg[TX_BUFFER_LEN];
-	
-  va_start(argptr,format);
-  vsprintf(msg,format,argptr);
-  va_end(argptr);
-	
-  write(fs,msg,strlen(msg));
-  return 0;
-}	
 
  int sd, new_sd;
    socklen_t addrlen;
@@ -51,7 +39,7 @@ int socket_printf(int fs, char *format, ...) {
 
 
 
-int socket_init(int local_port){
+int socket_init(){
 
    /*
     * creiamo il socket come in sock_client.c
@@ -65,8 +53,8 @@ int socket_init(int local_port){
     */
 
 
-   if ((sd = socket(AF_INET,SOCK_STREAM,0)) > 0)
-     printf("Socket creato !\n");
+   if ((sd = socket(AF_INET,SOCK_STREAM,0)) > 0) printf("--Socket creato					[PASS]\n"); 
+
 
    /*
     * come per client ( vedere ip(7) )
@@ -88,10 +76,11 @@ int socket_init(int local_port){
     *
     */
 
-   if ( bind(sd, (struct sockaddr *)&address, sizeof(address)) == 0 )
-     printf("Processo per il socket creato ! \n");
+   if ( bind(sd, (struct sockaddr *)&address, sizeof(address)) == 0 ) printf("--Processo per il socket creato			[PASS]\n"); 
 
-
+presa_set_level(3,1);
+msDelay(2000);
+presa_set_level(3,0);
 }
 
 
@@ -101,8 +90,14 @@ int socket_init(int local_port){
 
 int sok() { 
  
-
+//char *array[50];
+ // int loop;
    char *buffertcp = (char*) malloc(bufsize);
+
+int value;
+
+
+
 
 
    /*
@@ -145,34 +140,89 @@ int sok() {
       }
    else
       return 1;
+   while(1){
 
-   while(1)
-   {
+ 	recv(new_sd, buffertcp, bufsize, 0);
+      	printf("Messaggio ricevuto: %s\n", buffertcp);
 
 
- //sono in ricezione
-      recv(new_sd, buffertcp, bufsize, 0);
-      printf("Messaggio ricevuto: %s\n", buffertcp);
+	 
+	     if  ( strstr (buffertcp,"PRESA(1,1)") != NULL )  presa_set_level(1,1);
+	else if  ( strstr (buffertcp,"PRESA(1,0)") != NULL )  presa_set_level(1,0);
+	else if  ( strstr (buffertcp,"PRESA(2,1)") != NULL )  presa_set_level(2,1);
+	else if  ( strstr (buffertcp,"PRESA(2,0)") != NULL )   presa_set_level(2,0);
+ 	else if  ( strstr (buffertcp,"PRESA(3,1)") != NULL )   presa_set_level(3,1);		
+	else if  ( strstr (buffertcp,"PRESA(3,0)") != NULL )   presa_set_level(3,0);	
+ 	else if  ( strstr (buffertcp,"PRESA(4,1)") != NULL ) presa_set_level(4,1);	
+	else if  ( strstr (buffertcp,"PRESA(4,0)") != NULL ) presa_set_level(4,0);
+ 	else if  ( strstr (buffertcp,"PRESA(5,1)") != NULL ) presa_set_level(5,1);	
+	else if  ( strstr (buffertcp,"PRESA(5,0)") != NULL ) presa_set_level(5,0);		
+	else if  ( strstr (buffertcp,"PRESA(6,1)") != NULL )  presa_set_level(6,1);	
+	else if  ( strstr (buffertcp,"PRESA(6,0)") != NULL ) presa_set_level(6,0);
+ 	else if  ( strstr (buffertcp,"PRESA(7,1)") != NULL )  presa_set_level(7,1);	
+	else if  ( strstr (buffertcp,"PRESA(7,0)") != NULL ) presa_set_level(7,0);	
+	else if  ( strstr (buffertcp,"PERISTALTICA(ON)") != NULL ) peristaltica_set_level(1);
+	else if  ( strstr (buffertcp,"PERISTALTICA(OFF)") != NULL ) peristaltica_set_level(0);
 
-//PRESA(NUMERO,STATO)
-	     if(strcmp(buffertcp,"PRESA(1,1)")==1) presa_set_level(1,1);
-	else if(strcmp(buffertcp,"PRESA(1,0)")==1) presa_set_level(1,0);
-	else if(strcmp(buffertcp,"PRESA(2,1)")==1) presa_set_level(2,1);
-	else if(strcmp(buffertcp,"PRESA(2,0)")==1) presa_set_level(2,0);
-	else if(strcmp(buffertcp,"PRESA(3,1)")==1) presa_set_level(3,1);
-	else if(strcmp(buffertcp,"PRESA(3,0)")==1) presa_set_level(3,0);
-	else if(strcmp(buffertcp,"PRESA(4,1)")==1) presa_set_level(4,1);
-	else if(strcmp(buffertcp,"PRESA(4,0)")==1) presa_set_level(4,0);
-	else if(strcmp(buffertcp,"PRESA(5,1)")==1) presa_set_level(5,1);
-	else if(strcmp(buffertcp,"PRESA(5,1)")==1) presa_set_level(5,0);
-	else if(strcmp(buffertcp,"PRESA(6,1)")==1) presa_set_level(6,1);
-	else if(strcmp(buffertcp,"PRESA(6,1)")==1) presa_set_level(6,0);
-	else printf("BAD COMMAND = (%s)\n",buffertcp);
-    }
- //  close(new_sd);		// chiusura di entrambi i socket
- //  close(sd);
-   //return 0;
-} 
+else if  ( strstr (buffertcp,"PRESAGETLEVEL(1)") != NULL ){
+		value=presa_read_level(1);
+		if (value==1) 		send(new_sd, "PRESA1=ON", strlen("PRESA1=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA1=OFF", strlen("PRESA1=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(2)") != NULL ){
+		value=presa_read_level(2);
+		if (value==1) 		send(new_sd, "PRESA2=ON", strlen("PRESA2=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA2=OFF", strlen("PRESA2=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(3)") != NULL ){
+		value=presa_read_level(3);
+		if (value==1) 		send(new_sd, "PRESA3=ON", strlen("PRESA3=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA3=OFF", strlen("PRESA3=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(4)") != NULL ){
+		value=presa_read_level(4);
+		if (value==1) 		send(new_sd, "PRESA4=ON", strlen("PRESA4=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA4=OFF", strlen("PRESA4=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(5)") != NULL ){
+		value=presa_read_level(5);
+		if (value==1) 		send(new_sd, "PRESA5=ON", strlen("PRESA5=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA5=OFF", strlen("PRESA5=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(6)") != NULL ){
+		value=presa_read_level(6);
+		if (value==1) 		send(new_sd, "PRESA6=ON", strlen("PRESA6=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA6=OFF", strlen("PRESA6=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PRESAGETLEVEL(7)") != NULL ){
+		value=presa_read_level(7);
+		if (value==1) 		send(new_sd, "PRESA7=ON", strlen("PRESA7=ON"), 0);
+		else if (value==0)	send(new_sd, "PRESA7=OFF", strlen("PRESA7=OFF"), 0);}
+	
+
+
+
+
+	else if  ( strstr (buffertcp,"PERISTALTICAGETLEVEL()") != NULL ){
+		value=peristaltica_read_level();
+		if (value==1) 		send(new_sd, "PERISTALTICA=ON", strlen("PERISTALTICA=ON"), 0);
+		else if (value==0)	send(new_sd, "PERISTALTICA=OFF", strlen("PERISTALTICA=OFF"), 0);}
+	else if  ( strstr (buffertcp,"PERISTALTICAGETLEVEL()") != NULL ){
+		value=peristaltica_read_level();
+		if (value==1) 		send(new_sd, "PERISTALTICA=ON", strlen("PERISTALTICA=ON"), 0);
+		else if (value==0)	send(new_sd, "PERISTALTICA=OFF", strlen("PERISTALTICA=OFF"), 0);}
+	else if  ( strstr (buffertcp,"GALL1GETLEVEL()") != NULL ){
+		value=galleggiante_read_level(1);
+		if (value==1) 		send(new_sd, "GALL1=OK", strlen("GALL1=OK"), 0);
+		else if (value==0)	send(new_sd, "GALL1=BAD", strlen("GALL1=BAD"), 0);}
+	else if  ( strstr (buffertcp,"GALL2GETLEVEL()") != NULL ){
+		value=galleggiante_read_level(2);
+		if (value==1) 		send(new_sd, "GALL2=OK", strlen("GALL2=OK"), 0);
+		else if (value==0)	send(new_sd, "GALL2=BAD", strlen("GALL2=BAD"), 0);}
+
+	else if  ( strstr (buffertcp,"REBOOT") != NULL ) 	system ("reboot");
+	
+
+
+
+}
+
+
+}
 
 
 

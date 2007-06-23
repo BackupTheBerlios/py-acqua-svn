@@ -38,7 +38,7 @@
 #include <syslog.h> 
 #include <stdarg.h>
 #include <net/if.h>
-
+#include "linux/gpio_syscalls.h"
 
 #include <netdb.h>
 
@@ -69,19 +69,25 @@ int  main (int argc, char *argv[]) {
 
 //printf("xmlvoltmeter\n");
 unsigned char valore[2];
-int port=3023;
+
 
 	system ("clear");
 
     	if (i2c_open()<0) { 	printf("Apertura del bus I2C fallita\n"); return 1; }
-	board_init();		printf("--Init board			[PASS]\n"); 
-	lcd_init();		printf("--Init lcd			[PASS]\n"); 
-	ciabatta_init();	printf("--Init ciabatta			[PASS]\n"); 
-	ds1307_init();		printf("--Init rtc 			[PASS]\n"); 
-	ad_init(0x68);		printf("--Init adc 			[PASS]\n"); 
-	socket_init(port);		printf("--Init socket on 3023		[PASS]\n"); 
+	board_init();		printf("--Init board				[PASS]\n"); 
+	lcd_init();		printf("--Init lcd					[PASS]\n"); 
+	ciabatta_init();	printf("--Init ciabatta					[PASS]\n"); 
+	ds1307_init();		printf("--Init rtc 					[PASS]\n"); 
+	ad_init(0x68);		printf("--Init adc 					[PASS]\n"); 
+	socket_init();	printf("--Init socket on 15000				[PASS]\n"); 
 
 	printf("\nfox-acqua in esecuzione.\n"); 
+
+
+
+
+
+
 
 // scrive ora
 			//y_pos(15,0);
@@ -93,7 +99,7 @@ int port=3023;
 
 		//skermate
 	sk_init();
-	for(;;){
+	if(fork() != 0){ //eseguito dal processo padre
 		y_pos(15,0);
 		valore[0]=read_hour();
   		lcd_printf("%02d:",valore[0]);
@@ -104,7 +110,7 @@ int port=3023;
 		while(p_status()!= P_OK){
 
 
-			sok();
+			
 			if (p_status()==P_DOWN) {
 				sk_clear();
 				printf("\nFox-acqua spenta.\n"); 
@@ -122,7 +128,7 @@ int port=3023;
 		sk_menu_1(); 
 		sk_clear();
 	}
+	else  sok();   //eseguito dal figlio
 
-//soket_close(); // non mi restituisce + ninte....
 
 }
