@@ -1,0 +1,23 @@
+EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
+
+Electrical Rule Check for /root/eagle/pic fox/pic to fox.sch at  6/26/2007 20:36:50 
+
+WARNING: Sheet 1/1: POWER Pin IC1 VSS connected to GND
+WARNING: Sheet 1/1: POWER Pin IC1 VSS connected to VCC
+WARNING: Sheet 1/1: POWER Pin IC1 VDD connected to N$38
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 DCD2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 DSR2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 RI2_/DEV/TTYS2(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 SW1(IN)
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 IG3
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 IG2
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 IG5
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 IG4
+ERROR: Sheet 1/1: unconnected INPUT Pin: IC3 IG1
+WARNING: Sheet 1/1: Nets N$7 and N$21 too close at (0.9 0.5)
+WARNING: Sheet 1/1, Net N$7: wire overlaps pin at (0.9 0.5)
+
+Board and schematic are consistent
+
+    9 errors
+    5 warnings
