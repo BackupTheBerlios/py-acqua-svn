@@ -107,9 +107,9 @@ class Calcoli(gtk.Window):
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
 			
-		self.dlc_volume = utils.new_label('0', False, labelCopy=True)
-		self.dlc_piante_inseribili = utils.new_label('0', False, labelCopy=True)
-		self.dlc_num_pesci_3_4 = utils.new_label('0', False, labelCopy=True)
+		self.dlc_volume = utils.new_label('0', False, labelCopy=_("Volume: %s"))
+		self.dlc_piante_inseribili = utils.new_label('0', False, labelCopy=_("Piante inseribili: %s"))
+		self.dlc_num_pesci_3_4 = utils.new_label('0', False, labelCopy=_("Numero di pesci 3-4 cm: %s"))
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
 		tbl.attach(utils.new_label(_("Piante Inseribili:")), 0, 1, 1, 2)
@@ -123,9 +123,9 @@ class Calcoli(gtk.Window):
 		tbl.attach(utils.new_label(_("Watt per piante esigenti:")), 0, 1, 4, 5)
 		tbl.attach(utils.new_label(_("Watt per piante poco esigenti:")), 0, 1, 5, 6)
 		
-		self.dlc_num_pesci_5_6 = utils.new_label('0', False, labelCopy=True)
-		self.dlc_watt_esigenti = utils.new_label('0', False, labelCopy=True)
-		self.dlc_watt_poco_esigenti = utils.new_label('0', False, labelCopy=True)
+		self.dlc_num_pesci_5_6 = utils.new_label('0', False, labelCopy=_("Numero di pesci 5-6 cm: %s"))
+		self.dlc_watt_esigenti = utils.new_label('0', False, labelCopy=_("Watt per piante esigenti: %s"))
+		self.dlc_watt_poco_esigenti = utils.new_label('0', False, labelCopy=_("Watt per piante poco esigenti: %s"))
 		
 		tbl.attach(self.dlc_num_pesci_5_6, 1, 2, 3, 4)
 		tbl.attach(self.dlc_watt_esigenti, 1, 2, 4, 5)
@@ -142,12 +142,12 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		#tbl.set_row_spacings(4)
 		
-		self.mar_volume = utils.new_label('0', False, labelCopy=True)
-		self.luce_vasche_pesci = utils.new_label('0', False, labelCopy=True)
-		self.luce_coralli_molli = utils.new_label('0', False, labelCopy=True)
-		self.luce_coralli_duri = utils.new_label('0', False, labelCopy=True)
-		self.totale_litri_movimento = utils.new_label('0', False, labelCopy=True)
-		self.quantita_sabbia_dsb = utils.new_label('0', False, labelCopy=True)
+		self.mar_volume = utils.new_label('0', False, labelCopy=_("Volume %s"))
+		self.luce_vasche_pesci = utils.new_label('0', False, labelCopy=_("Luce per vasche di pesci: %s"))
+		self.luce_coralli_molli = utils.new_label('0', False, labelCopy=_("Luce per coralli molli: %s"))
+		self.luce_coralli_duri = utils.new_label('0', False, labelCopy=_("Luce per coralli duri: %s"))
+		self.totale_litri_movimento = utils.new_label('0', False, labelCopy=_("Totale l/h in movimento"))
+		self.quantita_sabbia_dsb = utils.new_label('0', False, labelCopy=_("Quantita' di sabbia per dsb: %s"))
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
 		tbl.attach(utils.new_label(_("Luce per vasche di pesci:")), 0, 1, 1, 2)

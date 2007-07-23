@@ -457,10 +457,10 @@ def info (text):
 def error (text):
 	msg (text, gtk.MESSAGE_ERROR)
 
-def new_label (txt, bold=True, x=0, y=0, labelCopy=False):
+def new_label (txt, bold=True, x=0, y=0, labelCopy=None):
 	
 	if labelCopy:
-		t = LabelCopy ()
+		t = LabelCopy (labelCopy)
 		lbl = t.get_label_obj ()
 	else: lbl = gtk.Label ()
 	
@@ -471,7 +471,7 @@ def new_label (txt, bold=True, x=0, y=0, labelCopy=False):
 		lbl.set_alignment (0, 0.5)
 	else:
 		lbl.set_label (txt)
-		lbl.set_alignment (0.5, 0)
+		lbl.set_alignment (0.5, 0.5)
 	
 	if x != 0 and y != 0:
 		lbl.set_alignment (x, y)
@@ -637,7 +637,7 @@ class InfoDialog (gtk.Dialog):
 			self.destroy ()
 
 class LabelCopy (gtk.HBox):
-	def __init__ (self):
+	def __init__ (self, fmt_str="%s"):
 		gtk.HBox.__init__ (self, False, 2)
 
 		self.label = gtk.Label ()
@@ -649,9 +649,10 @@ class LabelCopy (gtk.HBox):
 		self.pack_start (btn, False, False, 0)
 
 		self.clip = gtk.Clipboard (selection="CLIPBOARD")
+		self.fmt_str = fmt_str
 	
 	def _on_copy (self, widget):
-		self.clip.set_text (self.label.get_text ())
+		self.clip.set_text (self.fmt_str % self.label.get_text ())
 	
 	def set_text (self, text):
 		if type (text) != str:
