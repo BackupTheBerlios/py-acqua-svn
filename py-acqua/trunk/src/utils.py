@@ -457,8 +457,12 @@ def info (text):
 def error (text):
 	msg (text, gtk.MESSAGE_ERROR)
 
-def new_label (txt, bold=True, x=0, y=0):
-	lbl = gtk.Label ()
+def new_label (txt, bold=True, x=0, y=0, labelCopy=False):
+	
+	if labelCopy:
+		t = LabelCopy ()
+		lbl = t.get_label_obj ()
+	else: lbl = gtk.Label ()
 	
 	if bold:
 		lbl.set_use_markup (True)
@@ -472,7 +476,7 @@ def new_label (txt, bold=True, x=0, y=0):
 	if x != 0 and y != 0:
 		lbl.set_alignment (x, y)
 	
-	return lbl
+	return ((labelCopy) and (t) or (lbl))
 
 def new_button (txt, stock=None, toggle=False):
 	
@@ -631,6 +635,35 @@ class InfoDialog (gtk.Dialog):
 		if id == gtk.RESPONSE_OK:
 			self.hide ()
 			self.destroy ()
+
+class LabelCopy (gtk.HBox):
+	def __init__ (self):
+		gtk.HBox.__init__ (self, False, 2)
+
+		self.label = gtk.Label ()
+		self.pack_start (self.label)
+
+		btn = new_button (None, gtk.STOCK_COPY)
+		btn.connect ('clicked', self._on_copy)
+		btn.set_relief (gtk.RELIEF_NONE)
+		self.pack_start (btn, False, False, 0)
+
+		self.clip = gtk.Clipboard (selection="CLIPBOARD")
+	
+	def _on_copy (self, widget):
+		self.clip.set_text (self.label.get_text ())
+	
+	def set_text (self, text):
+		if type (text) != str:
+			text = str (text)
+
+		self.label.set_text (text)
+	
+	def get_text (self):
+		return self.label.get_text ()
+	
+	def get_label_obj (self):
+		return self.label
 
 class Test:
 	def __init__(self, i):

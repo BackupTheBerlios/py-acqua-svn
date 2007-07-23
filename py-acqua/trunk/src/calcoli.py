@@ -23,6 +23,32 @@ import gtk
 import app
 import utils
 
+report_dolce = """
+Vasca:                     %s
+Lunghezza:                 %s
+Larghezza:                 %s
+Altezza:                   %s
+Volume:                    %s
+Piante inseribili:         %s
+Numero pesci 3/4 cm:       %s
+Numero pesci 5/6 cm:       %s
+Watt piante esigenti:      %s
+Watt piante poco esigenti: %s
+"""
+
+report_marino = """
+Vasca:                     %s
+Lunghezza:                 %s
+Larghezza:                 %s
+Altezza:                   %s
+Volume:                    %s
+Luce vasche pesci:         %s
+Luce coralli molli:        %s
+Luce coralli duri:         %s
+Totale l/h in movimento:   %s
+Quantita sabbia per dsb:   %s
+"""
+
 class Calcoli(gtk.Window):
 	def __init__(self): 
 		gtk.Window.__init__(self)
@@ -81,9 +107,9 @@ class Calcoli(gtk.Window):
 		tbl = gtk.Table(6, 2)
 		tbl.set_border_width(4)
 			
-		self.dlc_volume = utils.new_label('0', False)
-		self.dlc_piante_inseribili = utils.new_label('0', False)
-		self.dlc_num_pesci_3_4 = utils.new_label('0', False)
+		self.dlc_volume = utils.new_label('0', False, labelCopy=True)
+		self.dlc_piante_inseribili = utils.new_label('0', False, labelCopy=True)
+		self.dlc_num_pesci_3_4 = utils.new_label('0', False, labelCopy=True)
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
 		tbl.attach(utils.new_label(_("Piante Inseribili:")), 0, 1, 1, 2)
@@ -97,9 +123,9 @@ class Calcoli(gtk.Window):
 		tbl.attach(utils.new_label(_("Watt per piante esigenti:")), 0, 1, 4, 5)
 		tbl.attach(utils.new_label(_("Watt per piante poco esigenti:")), 0, 1, 5, 6)
 		
-		self.dlc_num_pesci_5_6 = utils.new_label('0', False)
-		self.dlc_watt_esigenti = utils.new_label('0', False)
-		self.dlc_watt_poco_esigenti = utils.new_label('0', False)
+		self.dlc_num_pesci_5_6 = utils.new_label('0', False, labelCopy=True)
+		self.dlc_watt_esigenti = utils.new_label('0', False, labelCopy=True)
+		self.dlc_watt_poco_esigenti = utils.new_label('0', False, labelCopy=True)
 		
 		tbl.attach(self.dlc_num_pesci_5_6, 1, 2, 3, 4)
 		tbl.attach(self.dlc_watt_esigenti, 1, 2, 4, 5)
@@ -116,12 +142,12 @@ class Calcoli(gtk.Window):
 		tbl.set_border_width(4)
 		#tbl.set_row_spacings(4)
 		
-		self.mar_volume = utils.new_label('0', False)
-		self.luce_vasche_pesci = utils.new_label('0', False)
-		self.luce_coralli_molli = utils.new_label('0', False)
-		self.luce_coralli_duri = utils.new_label('0', False)
-		self.totale_litri_movimento = utils.new_label('0', False)
-		self.quantita_sabbia_dsb = utils.new_label('0', False)
+		self.mar_volume = utils.new_label('0', False, labelCopy=True)
+		self.luce_vasche_pesci = utils.new_label('0', False, labelCopy=True)
+		self.luce_coralli_molli = utils.new_label('0', False, labelCopy=True)
+		self.luce_coralli_duri = utils.new_label('0', False, labelCopy=True)
+		self.totale_litri_movimento = utils.new_label('0', False, labelCopy=True)
+		self.quantita_sabbia_dsb = utils.new_label('0', False, labelCopy=True)
 		
 		tbl.attach(utils.new_label(_("Volume:")), 0, 1, 0, 1)
 		tbl.attach(utils.new_label(_("Luce per vasche di pesci:")), 0, 1, 1, 2)
@@ -158,6 +184,10 @@ class Calcoli(gtk.Window):
 		
 		btn = gtk.Button(stock=gtk.STOCK_REFRESH)
 		btn.connect('clicked', self._on_refresh)
+		bb.pack_start(btn)
+
+		btn = gtk.Button(stock=gtk.STOCK_COPY)
+		btn.connect('clicked', self._on_copy)
 		bb.pack_start(btn)
 		
 		vbox.pack_start(bb, False, False, 0)
@@ -211,6 +241,36 @@ class Calcoli(gtk.Window):
 		self.luce_coralli_duri.set_text(str(m))
 		self.totale_litri_movimento.set_text(str(n))
 		self.quantita_sabbia_dsb.set_text(str(o))
+
+	def _on_copy (self, widget):
+		clip = gtk.Clipboard(selection='CLIPBOARD')
+
+		if self.e_vasca.get_active () == 0:
+			s = report_marino % ("Marina",
+				self.e_lunghezza.get_text(),
+				self.e_larghezza.get_text(),
+				self.e_altezza.get_text(),
+				self.mar_volume.get_text(),
+				self.luce_vasche_pesci.get_text(),
+				self.luce_coralli_molli.get_text(),
+				self.luce_coralli_duri.get_text(),
+				self.totale_litri_movimento.get_text(),
+				self.quantita_sabbia_dsb.get_text()
+			)
+		elif self.e_vasca.get_active () == 1:
+			s = report_dolce % ("Dolce",
+				self.e_lunghezza.get_text(),
+				self.e_larghezza.get_text(),
+				self.e_altezza.get_text(),
+				self.dlc_volume.get_text(),
+				self.dlc_piante_inseribili.get_text(),
+				self.dlc_num_pesci_3_4.get_text(),
+				self.dlc_num_pesci_5_6.get_text(),
+				self.dlc_watt_esigenti.get_text(),
+				self.dlc_watt_poco_esigenti.get_text()
+			)
+
+		clip.set_text (s)
 	
 	def _pulisci_calcoli(self, obj):
 		#self.entry1.set_text("")
