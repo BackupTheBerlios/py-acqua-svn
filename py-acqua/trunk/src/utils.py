@@ -582,14 +582,21 @@ def create_skin (name, file):
 		pix.save (os.path.join (path, "main.png"), "png")
 
 class InfoDialog (gtk.Dialog):
+	# tnx to mirage.py for image staff
 	def __init__ (self, parent, text, lbl_lst, lst, img=None):
-
-		gtk.Dialog.__init__ (self, text, parent,
-				gtk.DIALOG_MODAL, (gtk.STOCK_OK, gtk.RESPONSE_OK))
-		
 		assert len (lbl_lst) == len (lst)
 
-		self.set_size_request (400, 300)
+		self.lbls = lbl_lst
+		self.lst  = lst
+
+		gtk.Dialog.__init__ (self, text, parent, gtk.DIALOG_MODAL,
+			(
+				gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT,
+				gtk.STOCK_OK, gtk.RESPONSE_OK
+			)
+		)
+
+		self.set_size_request (600, 600)
 		self.vbox.set_border_width (10)
 
 		self.set_has_separator (False)
@@ -598,36 +605,82 @@ class InfoDialog (gtk.Dialog):
 		tbl.set_border_width (4)
 
 		if img != None:
-			
-			gimg = gtk.Image ()
-			
-			try:
-				gimg.set_from_file (os.path.join (IMGS_DIR, img))
-			except:
-				gimg.set_from_stock (gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_DIALOG)
-			
-			sw = gtk.ScrolledWindow ()
-			sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-			
-			sw.add_with_viewport (gimg)
-			self.vbox.pack_start (sw)
+			# Creiamo una toolbar per zoom in zoom out ecc
+			bar = gtk.Toolbar ()
+			bar.set_style (gtk.TOOLBAR_ICONS)
 
-		attach = lambda t, x: tbl.attach (new_label (t), 0, 1, x, x+1)
-		
+			self.vbox.pack_start (bar, False, False, 0)
+			
+			btn = gtk.ToolButton(gtk.STOCK_ZOOM_IN)
+			btn.connect ("clicked", self._on_zoom_in)
+			bar.insert (btn, -1)
+
+			btn = gtk.ToolButton(gtk.STOCK_ZOOM_OUT)
+			btn.connect ("clicked", self._on_zoom_out)
+			bar.insert (btn, -1)
+			
+			btn = gtk.ToolButton(gtk.STOCK_ZOOM_FIT)
+			btn.connect ("clicked", self._on_zoom_fit)
+			bar.insert (btn, -1)
+
+			btn = gtk.ToolButton(gtk.STOCK_ZOOM_100)
+			btn.connect ("clicked", self._on_zoom_100)
+			bar.insert (btn, -1)
+
+			self.zoom_ratio = 1
+			
+			self.layout = gtk.Layout ()
+			self.vscroll = gtk.VScrollbar (None)
+			self.vscroll.set_adjustment (self.layout.get_vadjustment ())
+			self.hscroll = gtk.HScrollbar (None)
+			self.hscroll.set_adjustment(self.layout.get_hadjustment ())
+			self.layout.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color (0, 0, 0))
+			
+			self.hscroll.set_no_show_all(True)
+			self.vscroll.set_no_show_all(True)
+
+			self.updating_adjustments = False
+			self.loaded = False
+			
+			self.currimg_width = 0
+			self.currimg_height = 0
+			self.previmg_width = 0
+
+			self.prevwinheight = 0
+			self.prevwinwidth = 0
+			
+			self.img = gtk.Image ()
+			self.layout.add (self.img)
+
+			self.img.connect ("expose-event", self._on_expose)
+
+			try:
+				self.pixbuf = gtk.gdk.pixbuf_new_from_file (os.path.join (IMGS_DIR, img))
+			except:
+				self.pixbuf = None
+
+			table = gtk.Table (2, 2, False)
+			table.attach (self.layout, 0, 1, 0, 1, gtk.FILL|gtk.EXPAND, gtk.FILL|gtk.EXPAND, 0, 0)
+			table.attach (self.hscroll, 0, 1, 1, 2, gtk.FILL|gtk.SHRINK, gtk.FILL|gtk.SHRINK, 0, 0)
+			table.attach (self.vscroll, 1, 2, 0, 1, gtk.FILL|gtk.SHRINK, gtk.FILL|gtk.SHRINK, 0, 0)
+			
+			self.vbox.pack_start (table)
+			self.connect ('size-allocate', self._on_resized)
+
 		x = 0
 		for i in lbl_lst:
-			attach (i, x)
+			(lambda t, x: tbl.attach (new_label (t), 0, 1, x, x+1)) (i, x)
 			x += 1
-
-		attach = lambda t, x: tbl.attach (gtk.Label (t), 1, 2, x, x+1)
 
 		x = 0
 		for i in lst:
-			attach (i.get_text (), x)
+			(lambda t, x: tbl.attach (gtk.Label (t), 1, 2, x, x+1)) (i.get_text (), x)
 			x += 1
 
 		self.vbox.pack_start (tbl, False, False, 0)
 		self.show_all ()
+		
+		self._on_zoom_fit (None)
 
 		self.connect ('response', self.on_response)
 	
@@ -635,6 +688,133 @@ class InfoDialog (gtk.Dialog):
 		if id == gtk.RESPONSE_OK:
 			self.hide ()
 			self.destroy ()
+		elif id == gtk.RESPONSE_ACCEPT:
+			# export report
+			pass
+
+	
+	def _on_resized (self, widget, allocation):
+		if allocation.width != self.prevwinwidth or allocation.height != self.prevwinheight:
+			if self.loaded: self._update_img ()
+
+		self.prevwinwidth = allocation.width
+		self.prevwinheight = allocation.height
+		return
+	
+	def _on_zoom_in (self, widget):
+		if not self.pixbuf: return
+
+		self.zoom_ratio *= 1.25
+		if self.zoom_ratio > 6: self.zoom_ratio = 6
+	
+		self._update_img ()
+
+	def _on_zoom_out (self, widget):
+		if not self.pixbuf: return
+
+		self.zoom_ratio *= 1 / 1.25
+		if self.zoom_ratio < 0.02: self.zoom_ratio = 0.02
+
+		self._update_img ()
+	
+	def _on_zoom_fit (self, widget):
+		if not self.pixbuf: return
+
+		win_width = self._img_w ()
+		win_height = self._img_h ()
+		img_width = self.pixbuf.get_width ()
+		img_height = self.pixbuf.get_height ()
+
+		width_ratio = float (img_width) / win_width
+		height_ratio = float (img_height) / win_height
+
+		if width_ratio < height_ratio:
+			max_ratio = height_ratio
+		else:
+			max_ratio = width_ratio
+
+		self.zoom_ratio = 1 / float (max_ratio)
+
+		self._update_img ()
+	
+	def _on_zoom_100 (self, widget):
+		if not self.pixbuf: return
+
+		self.zoom_ratio = 1
+		self._update_img ()
+	
+	def _update_img (self):
+		w = int (self.pixbuf.get_width () * self.zoom_ratio)
+		h = int (self.pixbuf.get_height () * self.zoom_ratio)
+
+		pix = self.pixbuf.scale_simple (w, h, gtk.gdk.INTERP_BILINEAR)
+
+		self.img.set_from_pixbuf (pix)
+
+		self.currimg_width, self.currimg_height = w, h
+
+		if self.previmg_width == 0: self.previmg_width = w
+
+		self.layout.set_size (w, h)
+		self._center_image ()
+		self._show_scrollbars ()
+
+		self.loaded = True
+
+	def _center_image (self):
+		x_shift = int ((self._img_w () - self.currimg_width) / 2)
+		
+		if x_shift < 0: x_shift = 0
+		
+		y_shift = int ((self._img_h () - self.currimg_height) / 2)
+		
+		if y_shift < 0: y_shift = 0
+		
+		self.layout.move (self.img, x_shift, y_shift)
+	
+	def _show_scrollbars (self):
+		if self.currimg_width > self._img_w (): self.hscroll.show ()
+		else: self.hscroll.hide()
+
+		if self.currimg_height > self._img_h (): self.vscroll.show ()
+		else: self.vscroll.hide ()
+
+	def _on_expose (self, widget, event):
+		if self.updating_adjustments == True: return
+
+		self.updating_adjustments = True
+		
+		if self.hscroll.get_property ('visible') == True:
+			try:
+				zoomratio = float (self.currimg_width) / self.previmg_width
+				
+				newvalue = abs (
+					self.layout.get_hadjustment ().get_value () * zoomratio + 
+					(self._img_w ()) * (zoomratio - 1) / 2
+				)
+
+				if newvalue >= self.layout.get_hadjustment ().lower and newvalue <= (self.layout.get_hadjustment ().upper - self.layout.get_hadjustment ().page_size):
+					self.layout.get_hadjustment ().set_value (newvalue)
+			except:
+				pass
+		if self.vscroll.get_property('visible') == True:
+			try:
+				newvalue = abs (
+					self.layout.get_vadjustment ().get_value () * zoomratio + 
+					(self._img_h ()) * (zoomratio - 1) / 2
+				)
+				
+				if newvalue >= self.layout.get_vadjustment ().lower and newvalue <= (self.layout.get_vadjustment ().upper - self.layout.get_vadjustment ().page_size):
+					self.layout.get_vadjustment ().set_value (newvalue)
+
+				self.previmg_width = self.currimg_width
+			except:
+				pass
+
+		self.updating_adjustments = False
+	
+	def _img_w (self): return self.layout.get_allocation ().width
+	def _img_h (self): return self.layout.get_allocation ().height
 
 class LabelCopy (gtk.HBox):
 	def __init__ (self, fmt_str="%s"):
