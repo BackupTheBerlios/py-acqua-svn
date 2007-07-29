@@ -128,7 +128,7 @@ class Invertebrati (BaseDBWindow):
 		mod = self.main_db.view.get_model()
 		it = mod.get_iter_from_string(str(path[0]))
 		
-		utils.InfoDialog(self.main_db, _("Riepilogo"), self.col_lst, self.main_db.vars, mod.get_value (it, 6))
+		utils.InfoDialog(self.main_db, _("Riepilogo"), self.col_lst, self.main_db.vars, mod.get_value (it, 7))
 		
 	def filter_func (self, mod, iter):
 		filters = list ()

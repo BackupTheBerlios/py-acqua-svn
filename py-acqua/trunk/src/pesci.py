@@ -81,7 +81,7 @@ class Pesci (dbwindow.DBWindow):
 			self.store.append ([y[0], y[1], y[2], y[3], y[4], y[5], utils.make_image(y[6]), y[6]])
 	
 	def post_delete_event (self):
-		app.App.p_window["pesci"] = None
+		app.App.p_window["popolazione"] = None
 
 	def after_refresh (self, it):
 		if self.page == 0:
