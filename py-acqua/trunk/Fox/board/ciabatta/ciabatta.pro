@@ -1,27 +1,25 @@
 EAGLE AutoRouter Statistics:
 
-Job           : /root/py-acqua/trunk/Fox/board/ciabatta/ciabatta.brd
+Job           : /home/gio/py-acqua/py-acqua/py-acqua/trunk/Fox/board/ciabatta/ciabatta.brd
 
-Start at      :   17:12:18  ( 6/09/2007)
-End at        :   17:13:13  ( 6/09/2007)
-Elapsed time  :   00:00:55
+Start at      :   22:41:03  ( 7/25/2007)
+End at        :   22:41:09  ( 7/25/2007)
+Elapsed time  :   00:00:06
 
-Signals       :    43   RoutingGrid: 3.93701 mil  Layers: 2
-Connections   :   136   predefined:  87 ( 9 Vias )
+Signals       :    39   RoutingGrid: 6 mil  Layers: 1
+Connections   :    65   predefined:  59 ( 0 Vias )
 
-Router memory :   19278656
+Router memory :   4164672
 
-Job has been interrupted!
+Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
 
-Passname          :     Route Optimize1
+Time per pass     :  00:00:00  00:00:02  00:00:02  00:00:01  00:00:01
+Number of Ripups  :         0         0         0         0         0
+max. Level        :         0         0         0         0         0
+max. Total        :         0         0         0         0         0
 
-Time per pass     :  00:00:08  00:00:47
-Number of Ripups  :         0         0
-max. Level        :         1         0
-max. Total        :         0         0
+Routed            :         6         6         6         6         6
+Vias              :         0         0         0         0         0
+Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
 
-Routed            :         0        11
-Vias              :         0         6
-Resolution        :    64.0 %    72.1 %
-
-Final             : interrupted
+Final             : 100.0% finished
