@@ -261,7 +261,7 @@ class Gui(gtk.Window):
 	def _on_open_info(self, widget, data=None):
 		dialog = gtk.AboutDialog()
 	
-		dialog.set_name("PyAcqua 1.0")
+		dialog.set_name("PyAcqua 1.0.1")
 		dialog.set_copyright("\302\251 Copyright (C) 2005, 2007 PyAcqua")
 		dialog.set_website("http://www.pyacqua.net")
 		
