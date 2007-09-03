@@ -1,19 +1,10 @@
 #!/bin/sh 
+clear
 . init_env
 cd apps
 cd py
 make clean
-make cris-axis-linux-gnu
+make cris-axis-linux-gnu -Wall
 make
 cris-strip --strip-unneeded py
-scp py root@192.168.0.90:/mnt/flash
-(sleep 3; echo root; sleep 3; echo pass; \
-   sleep 1;echo cd ..;  sleep 1; echo cd mnt/flash; sleep 1; echo chmod +x py; sleep 1; echo reboot; sleep 1; ) | telnet 192.168.0.90
-
-
-exit 0
-
-
-
-
-
+scp py root@192.168.1.90:/usr/local/bin
