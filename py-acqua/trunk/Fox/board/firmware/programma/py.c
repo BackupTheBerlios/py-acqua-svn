@@ -179,10 +179,6 @@ int  main (int argc, char *argv[]) {
 				y_pos(12,2);
 				strftime ( buff, sizeof buff, "%d/%m/%y", tm_now );
   				lcd_printf( "%s", buff );
-
-
-
-
 				//----match tra rtc e timer vari----
 		
 				//controlla se un delle 10 prese ha un timer attivo

@@ -30,11 +30,11 @@
 //1,20  riga4*/
 
 //#inline
-void sk_clear(){
+inline void sk_clear(){
 	lcd_clear();
 }
-//#inline
-void sk_init(){
+
+inline void sk_init(){
  	y_pos(7,0);
 
 lcd_printf("VISITA");
@@ -54,8 +54,7 @@ lcd_printf("VISITA");
 
 
 
-//#inline
-void sk_menu_1_3_1(){
+inline void sk_menu_1_3_1(){
 unsigned char sonda;
 	y_pos(1,0);
 
@@ -65,8 +64,7 @@ unsigned char sonda;
 	assegna_nome(3,2,sonda); //x,y
 }
 
-//#inline
-void sk_menu_1_3_2(){
+inline void sk_menu_1_3_2(){
 
 unsigned char sonda;
 
@@ -81,8 +79,7 @@ sk_clear();
 
 }
 
-//#inline
-void sk_menu_1_2_1(){
+inline void sk_menu_1_2_1(){
 unsigned char presa;
 	y_pos(1,0);
    lcd_printf("<<  ASSEGNA NOMI");
@@ -90,8 +87,7 @@ unsigned char presa;
 	assegna_nome(3,2,presa); //x,y
 }
 
-//#inline
-void sk_menu_1_2_2(){
+inline void sk_menu_1_2_2(){
 unsigned char scelta,stato;
 	y_pos(1,0);
    lcd_printf("<<  CAMBIA STATO");
@@ -199,7 +195,7 @@ void mod_timer(int presa,int timer){ // e se uno lo vuole eliminare???
       delay_ms(2000);
 }
 
-void sk_menu_1_2_3_2(){
+inline void sk_menu_1_2_3_2(){
    int presa,i,j,num,scelta;
    y_pos(1,0);
    lcd_printf("<< GESTIONE TIMER ");//,numero del timer
@@ -253,7 +249,7 @@ void sk_menu_1_2_3_2(){
 }
 
 
-void sk_menu_1_2_3_3(){
+inline void sk_menu_1_2_3_3(){
 unsigned char presa,i;
 	y_pos(1,0);
    lcd_printf("<< ELIMINA TIMER ");//,numero del timer
@@ -278,8 +274,7 @@ unsigned char presa,i;
 
 
 
-//#inline
-void sk_menu_1_2_3(){
+inline void sk_menu_1_2_3(){
    unsigned char scelta;
 	y_pos(1,0);
    lcd_printf("<<    TIMER");
@@ -305,8 +300,7 @@ void sk_menu_1_2_3(){
 
 
 
-//#inline
-void sk_menu_1_3b(){
+inline void sk_menu_1_3b(){
 
 	y_pos(1,0);
    lcd_printf("<<     INFO");
@@ -319,8 +313,7 @@ void sk_menu_1_3b(){
 	aggiorna_cursore_opz(0,0);//min,max quindi solo ritornare indietro
 
 }
-//#inline
-void sk_menu_1_2b(){
+inline void sk_menu_1_2b(){
 unsigned char level;
 	y_pos(1,0);
    lcd_printf("<<  PERISTALTICA");
@@ -330,8 +323,8 @@ unsigned char level;
 	peristaltica_set_level(level);
 
 }
-//#inline
-void sk_menu_1_1b(){
+
+inline void sk_menu_1_1b(){
 
 
 	y_pos(1,0);
@@ -358,8 +351,7 @@ void sk_menu_1_1b(){
       }
    }
 }
-//#inline
-void sk_menu_1_3(){
+inline void sk_menu_1_3(){
 unsigned char scelta;
 	y_pos(1,0);
 
@@ -378,8 +370,9 @@ unsigned char scelta;
 	else if (scelta==2) sk_menu_1_3_2();
 
 }
-//#inline
-void sk_menu_1_2(){
+
+
+inline void sk_menu_1_2(){
 unsigned char scelta;
 	y_pos(1,0);
 
@@ -401,8 +394,8 @@ unsigned char scelta;
 	else if (scelta==3) sk_menu_1_2_3();//timer
 
 }
-//#inline
-void sk_menu_1_1(){
+
+inline void sk_menu_1_1(){
 	unsigned char min=0,hr=0,gg=0,mese=0,anno=0;
 	char buff[50];
 	char conv[5];
@@ -459,8 +452,7 @@ time_t now;
   	delay_ms(1000);
 }
 
-//#inline
-unsigned char sk_menu_1a(){
+inline unsigned char sk_menu_1a(){
 	unsigned char scelta;
 	y_pos(1,0);
    lcd_printf("<<     MENU ");
@@ -484,8 +476,7 @@ unsigned char sk_menu_1a(){
 
 }
 
-//#inline
-unsigned char  sk_menu_1b(){
+inline unsigned char  sk_menu_1b(){
 	unsigned char scelta;
 	y_pos(1,0);
    lcd_printf("<<     MENU ");
@@ -509,8 +500,7 @@ unsigned char  sk_menu_1b(){
 	else return 0;
 	}
 
-//#inline
-void sk_menu_1(){
+inline void sk_menu_1(){
 
 	if (sk_menu_1a()==1) sk_menu_1b();
       //else ritorna
