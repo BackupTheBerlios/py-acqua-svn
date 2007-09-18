@@ -1,25 +1,27 @@
 EAGLE AutoRouter Statistics:
 
-Job           : /home/gio/py-acqua/py-acqua/trunk/Fox/board/sonde/sonda4.brd
+Job           : /home/gio/py-acqua/py-acqua/py-acqua/trunk/Fox/board/sonde/sonda4.brd
 
-Start at      :   21:58:55  ( 4/15/2007)
-End at        :   21:59:00  ( 4/15/2007)
-Elapsed time  :   00:00:04
+Start at      :   02:56:15  ( 9/20/2007)
+End at        :   02:58:04  ( 9/20/2007)
+Elapsed time  :   00:01:49
 
-Signals       :     4   RoutingGrid: 8 mil  Layers: 2
-Connections   :     8   predefined:  0 ( 0 Vias )
+Signals       :     4   RoutingGrid: 4 mil  Layers: 2
+Connections   :     8   predefined:  2 ( 0 Vias )
 
-Router memory :   1590000
+Router memory :   19220900
 
-Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
+Job has been interrupted!
 
-Time per pass     :  00:00:02  00:00:00  00:00:00  00:00:00  00:00:02
-Number of Ripups  :         4         0         0         0         0
-max. Level        :         1         0         0         0         0
-max. Total        :         3         0         0         0         0
+Passname          :     Route
 
-Routed            :         8         8         8         8         8
-Vias              :         2         2         2         2         2
-Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
+Time per pass     :  00:01:49
+Number of Ripups  :        23
+max. Level        :         1
+max. Total        :         2
 
-Final             : 100.0% finished
+Routed            :         2
+Vias              :         1
+Resolution        :    50.0 %
+
+Final             : interrupted
