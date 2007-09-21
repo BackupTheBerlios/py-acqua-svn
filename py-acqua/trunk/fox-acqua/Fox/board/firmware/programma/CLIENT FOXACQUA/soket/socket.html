@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- ================================================================================  --><!-- This HTML file was created by AbiWord.                                            --><!-- AbiWord is a free, Open Source word processor.                                    --><!-- You may obtain more information about AbiWord at www.abisource.com                --><!-- ================================================================================  -->
+
+
+
+
+
+
+
+<link rel="shortcut icon" href="http://www.marcopagnanini.it/images/mp.ico">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="socket_files/style_mp.css"><title>I socket di Berkeley</title></head><body>
+
+<a href="http://www.marcopagnanini.it/" class="normal_link" title="Vai alla Home Page"><span style="color: navy; font-size: 18px;"><i><b>Sito Web di Marco Pagnanini</b></i></span></a>
+
+<br>
+<br>
+
+<center>
+<h3><b>Breve introduzione ai socket di Berkeley</b></h3>
+</center>
+<br>
+<br>
+<br>
+<br>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-weight: bold; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+Introduzione al livello di rete in Internet</span></p>
+
+<br>
+<br>
+ 
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">La
+grande rete Internet e' formata da un certo insieme di sottoreti,
+secondo una struttura ad albero; semplificando al massimo abbiamo a
+che fare con un grafo in cui i nodi sono rappresentati da</span>
+<span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+router</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">(un router e'
+un sistema che "instrada" i pacchetti nella giusta direzione
+operando a livello di rete) ed i rami costituiscono i collegamenti
+ad alta velocita', i cosiddetti</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+backbone</span><span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">, realizzati
+perlopiu' mediante fibre ottiche. Collegate ai router possiamo
+trovare poi le reti LAN (le Local Area Network, ovvero le reti
+locali). In definitiva Internet e' definita come
+un'interconnessione di reti eterogenee.<br>
+</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Per
+completezza di esposizione e' bene fare una distinzione tra
+Internet scritto con la i maiuscola ed internet scritto con la i
+minuscola: nel primo caso si intende l'insieme mondiale di reti e
+gateway che comunicano per mezzo dei protocolli TCP/IP, &nbsp;nel
+secondo caso si intende il collegamento di reti informatiche per
+mezzo di</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+gateway</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">utilizzando un
+qualsiasi protocollo ( abbreviazione di internetwork ).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Un
+gateway e' un sistema che collega reti diverse (eterogenee) o
+uguali (omogenee) a livello di trasporto, operando quindi "sopra"
+il livello in cui opera il router, anche se poi la definizione non
+e' cosi' netta; a volte si possono trovare router che fungono anche
+da gateway, bisogna anche dire che la terminologia e' ambigua al
+riguardo, non c'e' un determinato standard di
+definizione.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+<br>
+Per cio' che riguarda la parte software, la colla che tiene insieme
+l'intera rete Internet e' il protocollo IP ( Internet Protocol )
+che implementa il livello di rete del modello ISO/OSI. Si tratta di
+un protocollo</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+non connesso</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">i cui
+pacchetti sono chiamati</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+datagrammi</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">(un protocollo
+non connesso e' modellato sul sistema postale, ovvero i pacchetti
+sono spediti ai destinatari senza attenderne l'avvenuta ricezione,
+proprio come avviene quando inviamo una lettera semplice, per cui
+qualche pacchetto puo' anche perdersi durante il suo tragitto);
+abbiamo quindi a che fare con un protocollo inaffidabile; e'
+compito poi del livello di trasporto, per mezzo del protocollo TCP,
+che invece e' un protocollo</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+connesso</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">(modellato sul
+sistema telefonico, ovvero si attende l'avvenuata ricezione e poi
+si inviano i dati) di rendere affidabile la comunicazione ai
+processi che si trovano al livello superiore ( livello applicazione
+).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Tutti i router
+e gli altri sistemi collegati in rete devono essere identificati da
+un indirizzo univoco denominato indirizzo IP, composto da 32
+bit.</span></p>
+
+<br>
+<br>
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-weight: bold; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+Introduzione alla storia ed ai principi del protocollo
+ISO/OSI</span></p>
+
+<br>
+<br>
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Nei primi anni
+'80 l'ISO ( International Standard Organization ) ha voluto
+definire un modello di riferimento nella comunicazione di sistemi
+aperti denominato OSI ( Open System Interconnection ).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+modello nasce dall'esigenza di semplificare il processo di
+comunicazione di sistemi diversi; il principio utilizzato e' quello
+classico dell'Ingegneria per cui un problema di grosse dimensioni
+viene scomposto in tanti problemi di piccole dimensioni. Difatti il
+modello ISO/OSI prevede una architettura a livelli, precisamente 7
+livelli.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Tuttavia
+questo modello, che non trattiamo in questo articolo, e' puramente
+accademico, nel senso non e' mai stato sviluppato, si tratta in
+effetti di uno standard</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+de jure.</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Lo
+standard</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+de facto</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">per quanto
+riguarda il livello di trasporto</span> 
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">e'
+rappresentato dal protocollo TCP, per quanto riguarda invece il
+livello di rete lo standard</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+de facto</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">e' il
+protocollo IP.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Per gli altri
+livelli esistono molti altri protocolli specifici.</span></p>
+
+<br>
+<br>
+<p style="margin: 0in 0in 0in 0.5in; text-align: left; text-indent: -0.5in;">
+<span style="font-weight: bold; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+Il livello di trasporto</span></p>
+
+<br>
+<br>
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Nei sistemi
+*nix il livello di trasporto e' implementato per mezzo di un
+processo che gira in kernel-space, con il quale e' possibile
+interfacciasi per mezzo delle primitive socket (vedere sezione
+"Networking options" del kernel). Per completezza occorre
+aggiungere che il protocollo TCP, protocollo connesso, non e'
+l'unico a livello di trasporto, esiste anche un protocollo non
+connesso, il protocollo UDP.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+protocollo UDP e' utilizzato ad esempio nelle applicazioni
+multimediali, nelle quali e' preferibile seguire la politica</span>
+<span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+milk</span> <span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">invece della
+politica</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+wine</span><span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">, ovverro "il
+nuovo e' meglio del vecchio": un pacchetto vecchio ricevuto in
+mezzo a tanti pacchetti nuovi potrebbe compromettere la
+comunicazione, quindi vengono scartati eventuali pacchetti vecchi a
+favore di quelli nuovi. Non importa poi se qualche pacchetto sia
+perso ma e' di fondamentale importanza che tutti i
+pacchetti arrivino con la stessa sequenza in cui sono stati
+inviati. Inoltre con UDP non si perde tempo ad aprire e chiudere
+connessioni, il che velocizza di molto la comunicazione,
+comportando tuttavia l'introduzione di una certa percentuale di
+errore.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Nella posta
+elettronica al contrario e' importante che sia mantenuta
+l'integrita' dei dati, dunque si utilizza il protocollo TCP: i vari
+pacchetti sono inviati indipendentemente,</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">a
+seguito della connessione tra client e server. Siamo sicuri che il
+destinatario riceva il messaggio nella sua integrita' in quanto il
+protocollo e' connesso, infatti anche una errata sequenza di
+ricezione non danneggia la comunicazione perche' il server potra'
+riordinare i pacchetti in un suo buffer locale prima di inviare il
+messaggio di posta elettronica a destinazione. Nessun pacchetto in
+questo caso viene scartato.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Nel livello di trasporto i pacchetti utilizzati nella comunicazione
+sono chiamati</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+segmenti</span><span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">, invece nel
+livello di rete abbiamo visto che sono chiamati</span> <span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+datagrammi</span><span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Il protocollo TCP segue il modello client/server per cui una
+connessione tra due applicazioni avviene secondo la modalita' del
+3-hand shaking (stretta di mano tripla).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+client invia una richiesta di connessione al server (SYN) e questo
+gli risponde con un segnale di richiesta ricevuta (SYN/ACK). A questo
+punto il client invia al server un messaggio di ACK ricevuto (ACK)
+e la connessione viene instaurata. Da questo momento in poi client
+e server possono scambiare messaggi.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Per terminare
+la comunicazione il client invia al server un messaggio di fine
+connessione (FIN).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Naturalmente
+il protocollo e' molto piu' complesso di quanto abbiamo fin qui
+trattato, infatti a livello di trasporto e' necessario anche
+controllare la presenza di eventuali errori e di controllare il
+flusso dei dati, ma per i nostri scopi questa introduzione e' piu'
+che sufficiente.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Le primitive socket consentono di creare un canale di comunicazione
+in cui i processi client e server scrivono i messaggi, proprio come
+avviene in locale con la pipe o con la fifo ( named pipe
+).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+programmatore puo' avvalersi del protocollo TCP utilizzando, come
+abbiamo gia' visto, le primitive socket per mezzo delle quali crea
+i descrittori di socket ed assegna ai socket stessi degli
+identificatori a 16 bit univoci detti porte; per mezzo poi di
+un'altra primitiva socket il programmatore dovra' creare una
+connessione esplicita, come vedremo nei sorgenti che seguono, tra
+il descrittore di socket della macchina client ed il descrittore di
+socket della macchina server.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+numero massimo di porte che si possono avere e' 65.536 ( essendo
+2^16=65536 ), le porte inferiori alla 1024 (da 0 a 1023) sono dette
+"</span><span style="font-style: italic; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+well known ports</span><span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">" e sono
+riservate a servizi standard quali SMTP (25) oppure FTP (21), per
+ogni porta poi possono essere usati sia il protocollo TCP che il
+protocollo UDP ( vedi /etc/services ed /etc/protocols ).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Il
+livello di trasporto e' il primo livello punto-punto, dunque non e'
+possibile effettuare collegamenti multicasting o broadcasting (con
+piu' destinatari contemporaneamente), tutti i livelli sottostanti
+del modello ISO/OSI sono livelli collegati, per i quali quindi e'
+ammesso il broadcasting (lo stesso pacchetto puo' essere inviato a
+piu' destinatari).</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Si
+pensi ad esempio al sottolivello MAC del livello data-link ed al
+protocollo IEEE 802.3 (ethernet) che ne e' una implementazione, e
+che tutti noi (o quasi) utilizziamo, il quale e' fortemente basato
+sui concetti di multicasting e broadcasting.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-weight: bold; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+<br>
+<br>
+Il programma "chat"<br>
+<br>
+</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Vengono ora esposti due semplici sorgenti in C che utilizzano le
+primitive socket e che permettono di implementare un sistema di
+chat minimale testuale. Dei due sorgenti sock_client.c rappresenta
+il client e sock_server.c rappresenta il server. Ho inserito molti
+commenti nei sorgenti al fine di rendere chiaro il funzionamento
+dei due programmi.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Ringrazio
+Andrea Paternesi del Gruppo Linux Macerata
+(http://glm.gulp.linux.it) per aver corredato i file sorgente di un
+comodo Makefile.</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-weight: bold; font-size: 14pt; font-family: 'Nimbus Roman No9 L';">
+<br>
+<br>
+Istruzioni sulla compilazione ed utilizzo del programma "chat"<br>
+<br>
+</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Compilazione:<br>
+<br>
+</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Spostarsi nella directory contenente i sorgenti e digitare:</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">$
+make</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">otterrete due
+file eseguibili: "Client" e "Server"</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';"><br>
+Uso:<br>
+<br>
+</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-size: 14pt; font-family: 'Nimbus Roman No9 L';">Eseguire
+"Server", da questo momento il server rimane in ascolto sulla porta
+15.000, eseguire poi "Client" sulla macchina client indicando
+l'indirizzo IP del server; ora potete comunicare, buon
+divertimento!</span></p>
+
+<p style="text-align: left; margin-bottom: 0in; margin-top: 0in; margin-right: 0in;">
+<span style="font-style: italic; font-family: 'Nimbus Roman No9 L';"><br>
+<br>
+Per eventuali errori o commenti inviate il vostro feedback a:
+<a href="mailto:mp@marcopagnanini.it">mp (at) marcopagnanini.it</a><br>
+<br>
+</span></p>
+
+<br>
+ <b>Qui potete scaricare i sorgenti:
+ <a href="http://www.marcopagnanini.it/articoli/socket.tar.gz">socket.tar.gz</a></b> <br>
+<br>
+<br>
+
+  <!-- Indice articoli -->
+  <p>Vai all'<a href="http://www.marcopagnanini.it/articoli/index.php">indice</a> degli articoli.</p>  
+
+<br>
+<center>
+ <a href="http://www.marcopagnanini.it/">.: HOME :.</a> <br>
+<br>
+</center>
+<br>
+</body></html>
