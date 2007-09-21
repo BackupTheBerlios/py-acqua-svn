@@ -1,4 +1,0 @@
-la scheda board è in fase di ridisegnamento.
-conterrà:rtc,sd, modem telit porta seriale 1,2,3 e altro eventualmente da definirsi
-
-nella cartella espansioni ci sono le varie schede con cui la board comunicherà.
