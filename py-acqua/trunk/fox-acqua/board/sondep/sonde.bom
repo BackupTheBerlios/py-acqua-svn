@@ -1,0 +1,10 @@
+Partlist exported from /home/gio/py-acqua/py-acqua/trunk/Fox/board/sonde/sonda0.sch at  4/15/2007 21:48:54 
+
+Qty Value     Device    Parts
+1             MA03-2    SV1  
+8   24LC16BSN 24LC16BSN IC1  
+
+
+
+-------------------
+MA03-2 realizzarlo con una stripline da 40 pin
