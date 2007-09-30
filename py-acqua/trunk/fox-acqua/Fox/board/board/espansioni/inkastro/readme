@@ -1,4 +1,0 @@
-progettate per essere collegate tra loro. a bard mnonta il pic che può colloquiare con fox tramite seriale. la comunicazione con la schede schede digit e analogiche avvengono in i2c. si possono collegare fino a 7 schede digigit impostando i dip switch. l'indirizo della scheda analog+pwm va fatto via sw nel pic. 
-
-sono realizzate monolato x cui dove ci sono le iste nn collegate (abilitare tutti i layer e vedere i collegamenti unruted) vanno forate le piste e messi dei ponticelli.
-la scheda board è stata testata, le altre non ancora.
