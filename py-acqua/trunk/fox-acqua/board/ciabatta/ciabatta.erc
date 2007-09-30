@@ -1,0 +1,10 @@
+EAGLE Version 4.16r1 Copyright (c) 1988-2006 CadSoft
+
+Electrical Rule Check for /root/py-acqua/trunk/Fox/board/ciabatta/ciabatta.sch at  5/26/2007 03:57:27 
+
+WARNING: Sheet 1/1: POWER Pin U$1 VCC connected to N$2
+
+Board and schematic are consistent
+
+    0 errors
+    1 warnings

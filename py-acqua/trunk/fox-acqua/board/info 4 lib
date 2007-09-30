@@ -1,0 +1,11 @@
+Istruzioni per poter usufruire dei componenti in libreria:
+
+1 -  Aggiungere il file aggiunte.lbr nella cartella delle librerie di eagle, 
+	di default :	/opt/eagle/lib
+
+2 - Lanciare Eagle, aprire l'albero delle librerie (liccare su Libraries ) e
+	cliccare sul pallino grigio della libbreria aggiunte.lbr per abilitarla.
+	Il pallino diventerà verde.
+
+3 - Cliccare sulla libbreria per visionare i componenti presenti, 
+	link al sito del produttore e altre utili informazioni.
