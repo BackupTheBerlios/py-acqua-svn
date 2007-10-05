@@ -14,7 +14,7 @@
 
 
 #define I2C_DATA_LINE       1<<24
-#define I2C_CLOCK_LINE      1<<25
+#define I2C_CLOCK_LINE      1<<17
 
 #ifndef IO_SETGET_INPUT
 #define IO_SETGET_INPUT   0x12

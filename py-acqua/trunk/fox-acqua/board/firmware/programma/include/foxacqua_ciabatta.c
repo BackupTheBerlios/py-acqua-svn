@@ -20,7 +20,7 @@
 
 
 
-unsigned char prese_nomi[7][10];//7 nomi da 10 caratterri
+unsigned char prese_nomi[7][10];//7 nomi da 10 caratteri
 
 
 //99 sar� il valore x far capire ke quell'ora nn � attiva la sveglia

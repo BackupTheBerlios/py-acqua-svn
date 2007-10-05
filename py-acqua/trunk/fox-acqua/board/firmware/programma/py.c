@@ -182,7 +182,7 @@ int  main (int argc, char *argv[]) {
 				//----match tra rtc e timer vari----
 		
 				//controlla se un delle 10 prese ha un timer attivo
-				for (presa=1;presa<8;presa++){            //sfoglia le prese
+				for (presa=0;presa<8;presa++){            //sfoglia le prese
 					for(timer=0;timer<10;timer++){         //sfoglia i 10 timer di questa presa
 						if (presa_timer_stato[presa][timer]<99){
 						//allora c'� un timer impostato x questa presa
@@ -193,7 +193,7 @@ int  main (int argc, char *argv[]) {
 						// dopo l'evento di un timer.
 							if (presa_timer[presa][timer][0]==hr){
 								if (presa_timer[presa][timer][1]==min){//ok, allora imposta la presa.
-									presa_set_level(presa,presa_timer_stato[presa][timer]);
+									presa_set_level(presa+1,presa_timer_stato[presa][timer]);
 								}
 							}
 						}

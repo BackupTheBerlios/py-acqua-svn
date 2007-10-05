@@ -10,7 +10,7 @@
 #define lcdMcp_id	0x20
 
 void aspetta(){
-  while(27==mcp230xx_regLeggi(lcdMcp_id,mcp23016GP1));//aspettta il pulsante ok rilasciato
+  while(27==mcp230xx_regLeggi(lcdMcp_id,mcp23016GP1));//aspetta il pulsante ok rilasciato
 }
 
 
@@ -25,7 +25,7 @@ int p_status(){
 	else if (valore==27) return (P_OK);
 	else if (valore==23) return (P_UP);
 	else if (valore==15) return (P_LEFT);
-   msDelay(10);
+   msDelay(2);
    
    
 }
