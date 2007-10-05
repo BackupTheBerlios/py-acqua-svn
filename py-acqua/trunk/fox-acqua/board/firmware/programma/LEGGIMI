@@ -11,3 +11,6 @@ in seguto si riconnette tramite telnet e rende il file eseguibile.
 
 
 si aspetta che sia presente la memoria sd o mmc montata in usr/local e che contenga la cartella bin
+
+5/10/07 ** Sistemato la gestione dei timer in quanto impostando il timer 2 si accendeva 1
+5/10/07 ** Diminuito il tempo di comunicazione al bus i2c 
