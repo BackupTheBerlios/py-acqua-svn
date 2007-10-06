@@ -93,7 +93,7 @@ def moon_walk (root_dir, repl):
 
 opts = {
 "py2exe": {
-	"includes": "pangocairo,gtk,pango,atk,gobject,cairo,win32api",
+	"includes": "pangocairo,gtk,pango,atk,gobject,cairo,win32api,pysqlite2",
 	"dll_excludes": [
 	"iconv.dll","intl.dll","libatk-1.0-0.dll",
 	"libgdk_pixbuf-2.0-0.dll","libgdk-win32-2.0-0.dll",

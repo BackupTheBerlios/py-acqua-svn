@@ -36,6 +36,7 @@ LIST_FILE = None
 
 if os.name == 'nt':
 	REPOSITORY_ADDRESS = "www.pyacqua.net"
+	REPOSITORY_ADDRESS = "localhost"
 	BASE_DIR = "/update/windows/"
 	LIST_FILE = "/update/win32-list.xml"
 else:
@@ -191,6 +192,11 @@ class WebUpdate (gtk.Window):
 		current_dict_object = self.xml_util.create_dict_from_file (os.path.join (utils.DHOME_DIR, "list.xml"))
 		
 		self.diff_object = self.xml_util.make_diff (new_dict_object, current_dict_object)
+
+		join_nix = lambda x, y: os.path.join(x[2:], y)
+		join_win32 = lambda x, y: os.path.join(x[2:],y).replace("\\", "/")
+
+		join = (os.name == 'nt') and (join_win32) or (join_nix)
 		
 		for root in self.diff_object:
 			for node in self.diff_object[root]:
@@ -199,13 +205,13 @@ class WebUpdate (gtk.Window):
 				if node == ".": continue
 				if root[0:2] == "$$" and root[-2:] == "$$":
 					
-					self.store.append ([self.icon_del, os.path.join (root[2:-2], node),
+					self.store.append ([self.icon_del, join (root[2:-2], node),
 						0, 0, "0",
 						tmp[0], int (tmp[1]), tmp[2], 0, False,
 						self.color_del
 					])
 				else:
-					self.store.append ([self.icon_add, os.path.join (root, node),
+					self.store.append ([self.icon_add, join (root, node),
 						tmp[0], int (tmp[1]), tmp[2],
 						tmp[3], int (tmp[4]), tmp[5], 0, True,
 						self.color_add
@@ -296,18 +302,12 @@ class WebUpdate (gtk.Window):
 					
 					if md5 != self.tree.get_model ().get_value (self.it, 4) or int (bytes) != self.tree.get_model ().get_value (self.it, 3):
 						os.remove (tmp)
-						if os.name == 'nt':
-							self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file.replace (os.path.sep, "/")))
-						else:
-							self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 					else:
 						self._update_percentage ()
 						self._go_with_next_iter ()
 				else:
-					if os.name == 'nt':
-						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file.replace (os.path.sep, "/")))
-					else:
-						self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
+					self._thread (self._update_file, utils.url_encode (BASE_DIR + self.file))
 			else:
 				self._update_percentage ()
 				self._go_with_next_iter ()
