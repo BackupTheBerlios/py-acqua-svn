@@ -319,23 +319,3 @@ class DatabaseUpdater(DatabaseWrapper):
 	def update(self):
 		id = self.updateProgramTable()
 		self.scanPath(id)
-
-if __name__ == "__main__":
-	parser = OptionParser("%s <program> <path> <database>" % sys.argv[0])
-
-	parser.add_option("-m", "--main", dest="main_version", type="int",
-		help="the main version for program")
-	parser.add_option("-v", "--version", dest="version", type="int",
-		help="the second version for program")
-	parser.add_option("-r", "--revision", dest="revision", type="int",
-		help="the revision for program")
-	
-	(options, args) = parser.parse_args()
-
-	if len(args) != 3:
-		parser.print_help()
-	else:
-		DatabaseUpdater(
-			args[0], args[1], args[2],
-			options.main_version, options.version, options.revision
-		).update()

@@ -212,13 +212,3 @@ class ListCreator(object):
 					t.appendChild(x)
 
 		doc.writexml (sys.stdout, "", "", "")
-
-if __name__ == "__main__":
-	parser = OptionParser("%s makelist <program> <database> <info-file> <output-xml>" % sys.argv[0])
-	
-	(options, args) = parser.parse_args()
-
-	if len(args) != 5:
-		parser.print_help()
-	else:
-		ListCreator(args[1], args[2], args[3], args[4]).create()
