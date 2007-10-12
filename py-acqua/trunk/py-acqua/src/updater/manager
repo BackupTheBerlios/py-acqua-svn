@@ -29,6 +29,8 @@ __author__    = "Francesco Piccinno <stack.box@gmail.com>"
 __version__   = "$Revision$"
 __copyright__ = "Copyright (c) 2007 Francesco Piccinno"
 
+import sys
+
 from xmlreport import ListCreator
 from database import DatabaseUpdater
 
@@ -45,20 +47,33 @@ if __name__ == "__main__":
 	db_parser.add_option("-r", "--revision", dest="revision", type="int",
 		help="the revision for program")
 	
-	if sys.argv[1] == "mklist":
-		(options, args) = db_parser.parse_args(sys.argv[2:])
+	if len(sys.argv) < 2:
+		list_parser.print_help()
+		print
+		print "OR"
+		print
+		db_parser.print_help()
+	else:
+		if sys.argv[1] == "mklist":
+			(options, args) = db_parser.parse_args(sys.argv[2:])
 
-		if len(args) != 4:
+			if len(args) != 4:
+				list_parser.print_help()
+			else:
+				ListCreator(args[0], args[1], args[2], args[3]).create()
+		elif sys.argv[1] == "mkdb":
+			(options, args) = list_parser.parse_args(sys.argv[2:])
+
+			if len(args) != 3:
+				db_parser.print_help()
+			else:
+				DatabaseUpdater(
+					args[0], args[1], args[2],
+					options.main_version, options.version, options.revision
+				).update()
+		else:
 			list_parser.print_help()
-		else:
-			ListCreator(args[0], args[1], args[2], args[3]).create()
-	elif sys.argv[1] == "mkdb":
-		(options, args) = list_parser.parse_args(sys.argv[2:])
-
-		if len(args) != 3:
+			print
+			print "OR"
+			print
 			db_parser.print_help()
-		else:
-			DatabaseUpdater(
-				args[0], args[1], args[2],
-				options.main_version, options.version, options.revision
-			).update()

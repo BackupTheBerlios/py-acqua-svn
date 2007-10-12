@@ -33,7 +33,7 @@ import base64
 import ConfigParser
 
 from optparse import OptionParser
-from updater import DatabaseWrapper
+from database import DatabaseWrapper
 from xml.dom.minidom import parse, parseString, getDOMImplementation
 
 class ListCreator(object):
