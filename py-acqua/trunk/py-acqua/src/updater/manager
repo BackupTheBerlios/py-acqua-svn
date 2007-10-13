@@ -37,7 +37,7 @@ from database import DatabaseUpdater
 from optparse import OptionParser
 
 if __name__ == "__main__":
-	list_parser = OptionParser("%s mklist <program> <database> <info-file> <output-xml>" % sys.argv[0])
+	list_parser = OptionParser("%s mklist <database> <info-file>" % sys.argv[0])
 	db_parser = OptionParser("%s mkdb <program> <path> <database>" % sys.argv[0])
 
 	db_parser.add_option("-m", "--main", dest="main_version", type="int",
@@ -55,14 +55,14 @@ if __name__ == "__main__":
 		db_parser.print_help()
 	else:
 		if sys.argv[1] == "mklist":
-			(options, args) = db_parser.parse_args(sys.argv[2:])
+			(options, args) = list_parser.parse_args(sys.argv[2:])
 
-			if len(args) != 4:
+			if len(args) != 2:
 				list_parser.print_help()
 			else:
-				ListCreator(args[0], args[1], args[2], args[3]).create()
+				ListCreator(args[0], args[1]).create()
 		elif sys.argv[1] == "mkdb":
-			(options, args) = list_parser.parse_args(sys.argv[2:])
+			(options, args) = db_parser.parse_args(sys.argv[2:])
 
 			if len(args) != 3:
 				db_parser.print_help()
