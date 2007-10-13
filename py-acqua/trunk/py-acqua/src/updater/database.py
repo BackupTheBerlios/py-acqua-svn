@@ -79,6 +79,7 @@ class DatabaseUpdater(DatabaseWrapper):
 		self.v_ver = ver
 		self.v_rev = rev
 
+		self.getVersions()
 		self.checkDatabaseSchema()
 	
 	def checkDatabaseSchema(self):
@@ -108,7 +109,7 @@ class DatabaseUpdater(DatabaseWrapper):
 					print i[4]
 					print " .. should be .."
 					print schemas[tables.index(i[2])]
-
+ 
 				sys.exit(0)
 			else:
 				unused.append(schemas.index(i[4]))
@@ -121,6 +122,17 @@ class DatabaseUpdater(DatabaseWrapper):
 			if i not in unused:
 				self.execute(schemas[i])
 	
+	def getVersions(self):
+		ret = self.select("SELECT * FROM program WHERE name=\"%s\"" % self.sanitize(self.program))
+
+		if len(ret) == 1:
+			if self.v_main == None:
+				self.v_main = ret[0][2]
+			if self.v_ver == None:
+				self.v_ver  = ret[0][3]
+			if self.v_rev == None:
+				self.v_rev  = ret[0][4]
+
 	def checkArgs(self):
 		if self.v_main == None or self.v_ver == None or self.v_rev == None:
 			print "Error in parameters: main, version and revision cannot be None"
@@ -193,6 +205,9 @@ class DatabaseUpdater(DatabaseWrapper):
 	def updateDirectoryFileN(self, dirid, nfiles):
 		self.execute("UPDATE directory SET filenum=%d WHERE id=%d" % (nfiles, dirid))
 	
+	def updateProgramDirectoryN(self, p_id, ndir):
+		self.execute("UPDATE program SET dirnum=%d WHERE id=%d" % (ndir, p_id))
+	
 	def md5sum(self, file):
 		fobj = open(file, 'rb')
 		m = md5.new()
@@ -239,10 +254,9 @@ class DatabaseUpdater(DatabaseWrapper):
 						)
 					)
 
-					self.updateDirectoryTable(dirname, dirid)
+					return True
 
-
-			return id
+			return False
 		else:
 
 			self.checkArgs()
@@ -253,45 +267,41 @@ class DatabaseUpdater(DatabaseWrapper):
 				)
 			)
 
-			return self.updateFileTable(file, p_id, dirid, dirname, noupdate=True)
+			return False
 	
 	def scanPath(self, programid):
-		# Facciamo uno scan nella path in modo ricorsivo
-
 		os.chdir(self.path)
 		
+		ndir = 1
 		stack = ["."]
 
-		ndir = 1
-		nfiles = 0
-
-		dirid = 0
-		isfirst = True
-
 		while stack:
-			
-			if isfirst:
-				self.updateDirectoryFileN(dirid, nfiles)
-				nfiles = 0
-				
 			dir = stack.pop()
 
-			# Non aggiorniamo la revision. Se i file cambiano verra propagata.
+			nfiles = 0; to_update = False
 			dirid = self.updateDirectoryTable(dir, programid, True)
-
-			isfirst = False
 
 			for file in os.listdir(dir):
 				fullname = os.path.join(dir, file)
 
 				if not os.path.isdir(fullname):
-					self.updateFileTable(fullname, programid, dirid, dir)
+					
+					if self.updateFileTable(fullname, programid, dirid, dir):
+						to_update = True
+
 					nfiles += 1
 				
 				elif not os.path.islink(fullname):
+
 					if file != ".svn":
 						stack.append(fullname)
 						ndir +=1
+			if nfiles > 0:
+				self.updateDirectoryFileN(dirid, nfiles)
+			if to_update:
+				self.updateDirectoryTable(dir, dirid)
+		
+		self.updateProgramDirectoryN(programid, ndir)
 		
 		print
 		print "Id\tmain\tversion\trev\tdirnum\tname"
