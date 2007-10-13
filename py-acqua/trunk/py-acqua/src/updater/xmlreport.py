@@ -251,5 +251,11 @@ class ListCreator(object):
 					
 					x.appendChild(doc.createTextNode(option[2](program.get(option[0]))))
 					t.appendChild(x)
-
-		doc.writexml (sys.stdout, "", "", "")
+		try:
+			f = open("%s-update.xml" % name, "w")
+			doc.writexml (f, "", "", "")
+			f.close()
+			
+			print "%s-update.xml written." % name
+		except:
+			print "Cannot write to %s-update.xml ... ignoring." % name
