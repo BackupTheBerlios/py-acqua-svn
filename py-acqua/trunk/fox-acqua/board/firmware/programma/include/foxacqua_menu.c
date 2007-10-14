@@ -108,6 +108,7 @@ void sk_menu_1_2_3_1(){//IMPOSTA TIMER
 	char buff[10];
 
 	int presa,stato,timer,i,hr=0,min=0;
+	int fp;
 	presa=scegli_presa();//1..7
 	presa--;//0..6
 	sk_clear();
@@ -140,6 +141,22 @@ SKIP:
 	
 		//la salva nel timer
 		
+		 //la salva nel timer
+		printf("salvo i timer\n");
+		printf("%d\n", presa_timer[presa][timer][0]=hr);
+		printf("print hr");
+		printf("%d\n", hr);
+		printf("%d\n", presa_timer[presa][timer][1]=min);
+		printf("%d\n", presa_timer_stato[presa][i]=stato);
+		fp = fopen("/usr/local/foxacqua/timer","w");
+		fprintf(fp, "%d", hr);
+		fprintf(fp, "\n");
+		fprintf(fp, "%d", min);
+		fprintf(fp, "\n");
+		fprintf(fp, "%d", presa);
+		fclose(fp);
+	
+		
 		presa_timer[presa][timer][0]=hr;// 8 prese x 10 eventi l'una x [0]ora e [1]min
 		presa_timer[presa][timer][1]=min;// 8 prese x 10 eventi l'una x [0]ora e [1]min
 		presa_timer_stato[presa][i]=stato;
@@ -165,6 +182,7 @@ SKIP:
 void mod_timer(int presa,int timer){ // e se uno lo vuole eliminare???
 //presa arriva nel range 0..6
 //timer arriva nel range 0..9
+	
    unsigned char stato,hr,min;
 	y_pos(1,0);
    lcd_printf("<< MODIFICA TIMER %d",timer);
@@ -184,8 +202,8 @@ void mod_timer(int presa,int timer){ // e se uno lo vuole eliminare???
       stato=imposta_stato(presa+1);//1..7
 
 
-      //la salva nel timer
-
+     
+	
       presa_timer[presa][timer][0]=hr;// 8 prese x 10 eventi l'una x [0]ora e [1]min
       presa_timer[presa][timer][1]=min;// 8 prese x 10 eventi l'una x [0]ora e [1]min
       presa_timer_stato[presa][timer]=stato;

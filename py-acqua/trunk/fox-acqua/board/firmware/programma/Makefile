@@ -1,22 +1,24 @@
-AXIS_USABLE_LIBS = GLIBC
+AXIS_USABLE_LIBS = UCLIBC GLIBC
 include $(AXIS_TOP_DIR)/tools/build/Rules.axis
 
-PROGS     = py
-INSTDIR   = $(prefix)/mnt/flash/
-INSTMODE  = 0755
-INSTOWNER = root
-INSTGROUP = root
-OBJS      = py.o
-OPTIONS   = -static
+CC = gcc-cris
 
-all: $(PROGS)
 
-$(PROGS): $(OBJS)
-	$(CXX)	$(OPTIONS)	$(LDFLAGS)	$^ $(LDLIBS)	-o	$@
+OUTPUTFILE = py
 
-install:	$(PROGS)
-	$(INSTALL)	-d	$(INSTDIR)
-	$(INSTALL)	-m	$(INSTMODE)	-o	$(INSTOWNER)	-g	$(INSTGROUP)	$(PROGS)	$(INSTDIR)
-   
-clean: 
-	rm	-f	$(PROGS)	*.o core
+
+LFLAGS = -isystem ${AXIS_TOP_DIR}/target/cris-axis-linux-gnu/include -mlinux -mno-mul-bug-workaround -Wall -Wshadow -O2 -c
+
+
+all:
+	$(CC) $(LFLAGS) py.c -o py.o
+
+	$(CC) -isystem ${AXIS_TOP_DIR}/target/cris-axis-linux-gnu/include -mlinux -mno-mul-bug-workaround -s -L${AXIS_TOP_DIR}/target/cris-axis-linux-gnu/lib  py.o  -o $(OUTPUTFILE) 
+#-L. -lsqlite
+
+run:
+	./$(OUTPUTFILE)
+
+clean:
+	rm -rf $(OUTPUTFILE)
+	rm -rf *.o
