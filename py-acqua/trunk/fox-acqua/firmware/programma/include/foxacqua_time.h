@@ -19,22 +19,27 @@
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //#
 //#    Gestione timer tramite file
+#ifndef FOXACQUA_TIME_H
+#define FOXACQUA_TIME_H
+
+#include <stdio.h> 
+#include <string.h> 
+
 
 #define TIMER_FILE "/usr/local/var/fox-acqua/fox_timer.lst"
 
 #define N_SONDE 7
 #define N_TIMER 10
 
-#define RECORD sizeof(char)+sizeof(char)+sizeof(int)+sizeof(char)
+#define RECORD (sizeof(char)+sizeof(char)+sizeof(int)+sizeof(char))
 
-FILE timer_fd=NULL;
 
-struct v_timer {
+typedef struct {
 	char num;		//numero del timer, un numero tra 0 e N_SONDE * N_TIMER
 	char pin;
 	int ora;
 	char stato;
-} typedef s_timer *;
+} s_timer ;
 
 
 //Legge l'n-essimo time e salva i valori nella struttura passata per puntatore
@@ -46,5 +51,7 @@ int set_timer(s_timer *);
 //Salva tutti i time su file
 int set_timers(s_timer **);
 //Resetta il timer n-essimo
-int del_timer(int)
-static int timer_file(int );
+int del_timer(int);
+int timer_file(int );
+
+#endif

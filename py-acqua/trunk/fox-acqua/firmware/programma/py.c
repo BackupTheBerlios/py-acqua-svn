@@ -92,6 +92,7 @@ const char alfabeto[37][2]={" ","a","b","c","d","e","f","g","h","i","j","k","l",
 
 #include "include/socket.c" 		// socket
 
+#include "include/foxacqua_time.h"
 
 //*****************
 //	MAIN
