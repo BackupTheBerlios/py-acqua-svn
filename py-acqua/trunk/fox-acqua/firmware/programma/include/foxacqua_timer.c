@@ -22,7 +22,7 @@
 
 #include "foxacqua_time.h"
 
-FILE *timer_fd=NULL;
+int timer_fd=0;
 
 int
 read_timer (s_timer * ret, int num)
@@ -41,11 +41,11 @@ read_timer (s_timer * ret, int num)
 		return 0;
 	}
 
-	fseek (timer_fd, num * RECORD, SEEK_SET);
+	lseek (timer_fd, num * RECORD, SEEK_SET);
 
 	char buffer[RECORD];
 
-	fread (buffer, RECORD, 1, timer_fd);
+	read (timer_fd, buffer, RECORD);
 
 	memcpy (&(ret->num), &buffer[0], sizeof (char));
 	memcpy (&(ret->pin), &buffer[sizeof (char)], sizeof (char));
@@ -85,7 +85,7 @@ set_timer (s_timer * ret)
 		return 0;
 	}
 
-	fseek (timer_fd, ret->num * RECORD, SEEK_SET);
+	lseek (timer_fd, ret->num * RECORD, SEEK_SET);
 
 	char buffer[RECORD];
 
@@ -96,7 +96,7 @@ set_timer (s_timer * ret)
 	memcpy (&buffer[2 * sizeof (char) + sizeof (int)], &(ret->stato),
 		sizeof (char));
 
-	fwrite (buffer, RECORD, 1, timer_fd);
+	write (timer_fd, &buffer[0], RECORD);
 
 	return 1;
 }
@@ -125,9 +125,9 @@ del_timer (int num)
 		perror ("Uscita da errore precedente ");
 		return 0;
 	}
-	fseek (timer_fd, num * RECORD, SEEK_SET);
-	char a =0;
-	fwrite (&a, 1,RECORD, timer_fd);
+	lseek (timer_fd, num * RECORD, SEEK_SET);
+	char a[RECORD]={0};
+	write (timer_fd, &a, RECORD);
 
 	return 1;
 
@@ -141,27 +141,29 @@ timer_file (int status)
 	switch (status)
 	{
 	case 1:
-		timer_fd = fopen (TIMER_FILE, "r+");
-		if (timer_fd == NULL)
-		{
-			perror ("Impossibile aprire file timer ");
-			return 0;
-		}
-
-		//portati all'ultimo byte
-		if (fseek (timer_fd, N_TIMER * N_SONDE * RECORD - 1, SEEK_SET)!=0)
-		{
-			//il file nn esisteva o è stato dannegiato
-			char a=0;
-			if (fwrite(&a, 1 , N_TIMER * N_SONDE*RECORD, timer_fd)==0)
+		if (timer_fd == 0) {
+			timer_fd = open (TIMER_FILE, O_CREAT | O_RDWR );
+			if (timer_fd == -1)
 			{
-				perror ("Impossibile ripristinare file timer ");
+				perror ("Impossibile aprire file timer ");
 				return 0;
 			}
+
+			//portati all'ultimo byte
+			if (lseek (timer_fd, N_TIMER * N_SONDE * RECORD - 1, SEEK_SET)==-1)
+			{
+				//il file nn esisteva o è stato dannegiato
+				char a[N_TIMER * N_SONDE*RECORD]={0};
+				if (write(timer_fd, &a, N_TIMER * N_SONDE*RECORD)==-1)
+				{
+					perror ("Impossibile ripristinare file timer ");
+					return 0;
+				}
+			}	
 		}
 		break;
 	case 2:
-		fclose (timer_fd);
+		close (timer_fd);
 		break;
 
 	}

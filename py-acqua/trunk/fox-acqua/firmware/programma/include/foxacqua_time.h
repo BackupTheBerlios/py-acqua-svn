@@ -22,11 +22,13 @@
 #ifndef FOXACQUA_TIME_H
 #define FOXACQUA_TIME_H
 
-#include <stdio.h> 
-#include <string.h> 
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
 
-
-#define TIMER_FILE "./fox_timer.lst"
+#define TIMER_FILE "/usr/local/var/fox-acqua/fox_timer.lst"
 
 #define N_SONDE 7
 #define N_TIMER 10
@@ -41,6 +43,7 @@ typedef struct {
 	char stato;
 } s_timer ;
 
+//extern int timer_fd;
 
 //Legge l'n-essimo time e salva i valori nella struttura passata per puntatore
 int read_timer(s_timer *, int );
