@@ -38,7 +38,7 @@ read_timer (s_timer * ret, int num)
 	if (!timer_file (1))
 	{
 		perror ("Uscita da errore precedente");
-		return -1;
+		return 0;
 	}
 
 	fseek (timer_fd, num * RECORD, SEEK_SET);
@@ -53,7 +53,7 @@ read_timer (s_timer * ret, int num)
 	memcpy (&(ret->stato), &buffer[2 * sizeof (char) + sizeof (int)],
 		sizeof (char));
 
-	return 0;
+	return 1;
 }
 
 int
@@ -65,7 +65,7 @@ read_timers (s_timer ** ret)
 	perror ("non implementata");
 
 
-	return 1;
+	return 0;
 
 }
 
@@ -82,7 +82,7 @@ set_timer (s_timer * ret)
 	if (!timer_file (1))
 	{
 		perror ("Uscita da errore precedente");
-		return -1;
+		return 0;
 	}
 
 	fseek (timer_fd, ret->num * RECORD, SEEK_SET);
@@ -98,7 +98,7 @@ set_timer (s_timer * ret)
 
 	fwrite (buffer, RECORD, 1, timer_fd);
 
-	return 0;
+	return 1;
 }
 
 
@@ -109,7 +109,7 @@ set_timers (s_timer ** ret)
 
 	perror ("non implementata");
 
-	return 1;
+	return 0;
 }
 
 int
@@ -123,16 +123,17 @@ del_timer (int num)
 	if (!timer_file (1))
 	{
 		perror ("Uscita da errore precedente ");
-		return -1;
+		return 0;
 	}
 	fseek (timer_fd, num * RECORD, SEEK_SET);
-	fwrite (NULL, RECORD, 1, timer_fd);
+	char a =0;
+	fwrite (&a, 1,RECORD, timer_fd);
 
 	return 1;
 
 }
 
-static int
+int
 timer_file (int status)
 {
 	//apre (status =1); chiude (status =0) il file dei timer
@@ -140,22 +141,22 @@ timer_file (int status)
 	switch (status)
 	{
 	case 1:
-		timer_fd = fopen (TIMER_FILE, "rw+");
+		timer_fd = fopen (TIMER_FILE, "r+");
 		if (timer_fd == NULL)
 		{
 			perror ("Impossibile aprire file timer ");
-			return -1;
+			return 0;
 		}
 
 		//portati all'ultimo byte
-		if (!fseek
-		    (timer_fd, N_TIMER * N_SONDE * RECORD - 1, SEEK_SET))
+		if (fseek (timer_fd, N_TIMER * N_SONDE * RECORD - 1, SEEK_SET)!=0)
 		{
 			//il file nn esisteva o è stato dannegiato
-			if (!fwrite(NULL, N_TIMER * N_SONDE, RECORD, timer_fd))
+			char a=0;
+			if (fwrite(&a, 1 , N_TIMER * N_SONDE*RECORD, timer_fd)==0)
 			{
 				perror ("Impossibile ripristinare file timer ");
-				return -1;
+				return 0;
 			}
 		}
 		break;
@@ -165,5 +166,5 @@ timer_file (int status)
 
 	}
 	
-	return 0;
+	return 1;
 }

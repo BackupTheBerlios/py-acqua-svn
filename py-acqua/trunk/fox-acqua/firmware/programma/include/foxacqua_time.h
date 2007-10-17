@@ -26,7 +26,7 @@
 #include <string.h> 
 
 
-#define TIMER_FILE "/usr/local/var/fox-acqua/fox_timer.lst"
+#define TIMER_FILE "./fox_timer.lst"
 
 #define N_SONDE 7
 #define N_TIMER 10
