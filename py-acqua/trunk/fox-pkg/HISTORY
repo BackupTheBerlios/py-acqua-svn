@@ -1,0 +1,38 @@
+2/9/2007 ver 2.1.1 (Claudyus)
+	* Modify option name
+	* Rewrite remove function
+	* Better support for DEBUG
+	* (BUG Fix) Packages format error
+	* (Bug Fix) Fixed bug reported in mailing list 4/8/2007 by Luca
+	* Adding full description support
+	* Adding list of installed apps
+
+8/4/2007 ver 2.1.0 (Claudyus)
+	* Default file extension fpk  
+	* Log feature
+	* Remove packages
+	* (BUG Fix) Packages format error
+
+6/4/2007 ver 2.0.3 (Claudyus)  
+	* Adding dependences features
+
+21/2/2007 ver 2.0.2 (Claudyus)
+	* Adding support for post installation script
+	* (BUG Fix) Error downloading generic file
+	* Modify -l option
+	* Removing unused library
+	
+13/2/2007 ver 2.0.1 (Claudyus) (May be compliant with ver 1.0)
+	* Adding support for .fpk
+	* Adding -v option
+	* Unlink downloaded files
+	* Info: http://claudyus.altervista.org/dokuwiki/doku.php?id=foxboard:foxpkg
+
+
+11/2/2007 ver 2.0 (Claudyus) (NOT compliant with ver 1.0)
+	* Aggiunto supporto file tar (obsoleto)
+	* Download in /var/tmp
+	* Riorganizzato archivio web in base a nuove specifiche (obsoleto)
+	* Info: http://claudyus.altervista.org/dokuwiki/doku.php?id=foxboard:foxpkg
+ 
+
