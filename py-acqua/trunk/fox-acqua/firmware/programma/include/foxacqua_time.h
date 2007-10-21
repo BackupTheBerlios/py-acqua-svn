@@ -27,6 +27,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdio.h> 
+#include <errno.h> 
 
 #define TIMER_FILE "/usr/local/var/fox-acqua/fox_timer.lst"
 
