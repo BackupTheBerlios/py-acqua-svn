@@ -18,28 +18,28 @@
 //#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /*************************************************/
 
-#include <stdio.h>     
-#include <string.h>    
-#include <unistd.h>    
-#include <fcntl.h>     
-#include <errno.h>     
-#include <termios.h>   
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <signal.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <time.h>
-#include <sys/ioctl.h>
-#include <asm/etraxgpio.h>
-#include <syslog.h> 
-#include <stdarg.h>
-#include <net/if.h>
-#include "linux/gpio_syscalls.h"
-#include <netdb.h>
+//#include "stdio.h"   
+#include "string.h"   
+//#include "unistd.h"   
+#include "fcntl.h"    
+#include "errno.h"    
+//#include "termios.h"   
+#include "sys/types.h"
+#include "sys/stat.h"
+//#include "netinet/in.h"
+//#include "sys/socket.h"
+//#include "netdb.h"
+#include "signal.h"
+//#include "arpa/inet.h"
+#include "stdlib.h"
+#include "time.h"
+//#include "sys/ioctl.h"
+//#include "asm/etraxgpio.h"
+//#include "syslog.h"
+#include "stdarg.h"
+//#include "net/if.h"
+//#include "linux/gpio_syscalls.h"
+//#include "netdb.h"
 
 
 
@@ -90,7 +90,7 @@ const char alfabeto[37][2]={" ","a","b","c","d","e","f","g","h","i","j","k","l",
 // menu
 #include "include/foxacqua_menu.c"	//schermate dei menu
 
-#include "include/socket.c" 		// socket
+//#include "include/socket.c" 		// socket
 
 #include "include/foxacqua_time.h"
 
@@ -123,7 +123,7 @@ int  main (int argc, char *argv[]) {
 	board_init();		printf("--Init board					[PASS]\n"); 
 	lcd_init();		printf("--Init lcd					[PASS]\n"); 
 	ciabatta_init();	printf("--Init ciabatta					[PASS]\n"); 
-	socket_init();		printf("--Init socket on 15000				[PASS]\n"); 
+//	socket_init();		printf("--Init socket on 15000				[PASS]\n"); 
 	board_init();
 	ciabatta_init();
 	sk_init();
@@ -210,6 +210,6 @@ int  main (int argc, char *argv[]) {
 		}//for
 	}//fork
 
-	else  sok();   //eseguito dal figlio
+	else  printf("ciao");//sok();   //eseguito dal figlio
 
 }

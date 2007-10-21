@@ -1,5 +1,6 @@
-// 02/09/07 - manzoni: ho modificato le routine eliminando i ritardi molto + veloxce !!!!!!
-//cambiata l routin itoa, molto + performante ora. prima convertiva solo numeri a 2 cifre e lasciava una variabile globale come variabile in cui andava salvato il risultato !!!
+// 02/09/07 - manzoni: ho modificato le routine eliminando i ritardi molto + veloce !!!!!!
+//cambiata la routin itoa, molto + performante ora. prima convertiva solo numeri a 2 cifre e 
+//lasciava una variabile globale come variabile in cui andava salvato il risultato !!!
 
 #define CLOCK_LOW_TIME            8
 #define CLOCK_HIGH_TIME           8
