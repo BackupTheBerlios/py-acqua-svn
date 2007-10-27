@@ -160,22 +160,7 @@ sk_menu_1_2_3_1 ()
 		stato = imposta_stato (presa + 1);	//1..7
 
 
-		//la salva nel timer
-
-		//la salva nel timer
-		printf ("salvo i timer\n");
-		printf ("%d\n", presa_timer[presa][timer][0] = hr);
-		printf ("print hr");
-		printf ("%d\n", hr);
-		printf ("%d\n", presa_timer[presa][timer][1] = min);
-		printf ("%d\n", presa_timer_stato[presa][i] = stato);
-		/*fp = fopen ("/usr/local/foxacqua/timer", "w");
-		fprintf (fp, "%d", hr);
-		fprintf (fp, "\n");
-		fprintf (fp, "%d", min);
-		fprintf (fp, "\n");
-		fprintf (fp, "%d", presa);
-		fclose (fp);*/
+		// salvo i timer in un file
 		s_timer a;
 		a.num=presa*timer;
 		a.pin=presa;

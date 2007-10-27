@@ -183,8 +183,12 @@ int  main (int argc, char *argv[]) {
 				//----match tra rtc e timer vari----
 		
 				//controlla se un delle 10 prese ha un timer attivo
-				for (presa=0;presa<8;presa++){            //sfoglia le prese
-					for(timer=0;timer<10;timer++){         //sfoglia i 10 timer di questa presa
+				
+				s_timer timer[70];
+				for (a=0; a<70; a++)
+        			read_timer(&timer[a], a);
+				//for (presa=0;presa<8;presa++){            //sfoglia le prese
+					//for(timer=0;timer<10;timer++){         //sfoglia i 10 timer di questa presa
 						if (presa_timer_stato[presa][timer]<99){
 						//allora c'� un timer impostato x questa presa
 						//controlla se deve scattare in questo momento
