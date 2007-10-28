@@ -185,8 +185,7 @@ class ListCreator(object):
 
 		doc = getDOMImplementation().createDocument(None, "%s-update" % name, None)
 		
-		element = doc.createElement("update")
-		doc.documentElement.appendChild(element)
+		element = doc.documentElement
 
 		def temp(x):
 			try:
@@ -204,7 +203,7 @@ class ListCreator(object):
 			['revision', 		'info', 	str],
 			['message', 		'info', 	str],
 
-			['changelog', 		'changelog',	temp],
+			['changelog', 		'info',	temp],
 			
 			['database', 		None, 		str],
 
