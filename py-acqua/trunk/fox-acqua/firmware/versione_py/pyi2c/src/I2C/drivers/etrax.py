@@ -81,13 +81,6 @@ class Driver:
         self.port = serial.Serial(int(name[len(InterfaceName):])-1)
 # iniziamo con l i2c di fox
 
-##Get the SDA line state
-	def i2c_getbit():
-		value=ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
-		if ((value&(I2C_DATA_LINE))==0) 
-			return 0;
-		else 
-			return 1;
 
 ##Set the SDA line state
 	def i2c_data():
@@ -102,84 +95,6 @@ class Driver:
 			ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
 		else 
 			ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE);
-
-##Set the SDA line as output
-	def i2c_dir_out():
-		iomask = I2C_DATA_LINE;
-		ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), &iomask);
-
-##Set the SDA line as input
-	def i2c_dir_in():
-		iomask = I2C_DATA_LINE
-		ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), &iomask);
-
-##Open the GPIOG dev 
-	def i2c_open():
-		i2c_fd = open("/dev/gpiog", O_RDWR);
-		i2c_data(I2C_DATA_HIGH);
-		i2c_dir_out();
-		i2c_clk(I2C_CLOCK_HIGH);
-		i2c_data(I2C_DATA_HIGH);
-		i2c_delay(100);
-		return i2c_fd;
-
-##Read a byte from I2C bus and send the ack sequence
-	def i2c_inbyte():
-		value = 0;
-##Read data byte
-			i2c_dir_in();
-			for (i=0;i<8;i++)
-			i2c_clk(1)
-			bitvalue = i2c_getbit()
-			value |= bitvalue
-			if (i<7) value <<= 1
-				i2c_clk(0)
-##Send Ack
-		if(ack):
-			i2c_dir_out()
-			i2c_data(0)
-			i2c_clk(1)
-			i2c_clk(0)
-		return value;
-
-##Send a start sequence to I2C bus
-	def i2c_start():
-		i2c_dir_out()
-		i2c_clk(1)
-		i2c_data(1)
-		i2c_data(0)
-##Send a stop sequence to I2C bus
-	def i2c_stop():
-		i2c_dir_out()
-		i2c_clk(1)
-		i2c_data(0)
-		i2c_data(1)
-
-##Send a byte to the I2C bus and return the ack sequence from slave
-	def i2c_outbyte():
-		i2c_clk(0)
-		for (i=0;i<8;i++):
-			if (x & 0x80):
-				i2c_data(1)
-			else:
-				i2c_data(0)
-				i2c_clk(1)
-				i2c_clk(0)
-				x <<= 1
-		i2c_data(0)
-		i2c_dir_in()
-		i2c_clk(1)
-		ack=i2c_getbit()
-		i2c_clk(0)
-		i2c_dir_out()
-		if (ack==0):
-			return 1
-		else:
-			return 0
-
-
-
-
 
     def close(self):
         self.os.close(p)
