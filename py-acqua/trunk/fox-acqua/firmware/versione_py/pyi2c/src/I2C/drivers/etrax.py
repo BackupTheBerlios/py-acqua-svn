@@ -148,6 +148,37 @@ class Driver:
 		i2c_clk(1)
 		i2c_data(1)
 		i2c_data(0)
+##Send a stop sequence to I2C bus
+	def i2c_stop():
+		i2c_dir_out()
+		i2c_clk(1)
+		i2c_data(0)
+		i2c_data(1)
+
+##Send a byte to the I2C bus and return the ack sequence from slave
+	def i2c_outbyte():
+		i2c_clk(0)
+		for (i=0;i<8;i++):
+			if (x & 0x80):
+				i2c_data(1)
+			else:
+				i2c_data(0)
+				i2c_clk(1)
+				i2c_clk(0)
+				x <<= 1
+		i2c_data(0)
+		i2c_dir_in()
+		i2c_clk(1)
+		ack=i2c_getbit()
+		i2c_clk(0)
+		i2c_dir_out()
+		if (ack==0):
+			return 1
+		else:
+			return 0
+
+
+
 
 
     def close(self):
