@@ -1,0 +1,2 @@
+Version 0.1     6 oct 2006
+    create pyI2C

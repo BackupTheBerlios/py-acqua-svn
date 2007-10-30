@@ -1,0 +1,146 @@
+<html>
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon"> 
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+<style type="text/css" media="all">
+	@import url('pyi2c.css');
+</style>
+<meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
+<TITLE> Pure python I2C protocol </TITLE>
+</head>
+<body>
+
+<table width=100%><tr>
+<td width=80%><img src="images/logo.png" ALT="pyI2C"></td>
+<td><a href="http://www.python.org"><img src="images/python-logo.gif" border="0"></a></td>
+<td><img src="images/i2c-logo.png" ALT="I2C"></td>
+</tr></table>
+
+<H1>Pure <A HREF="http://www.python.org/">Python</A> I2C : access to I2C components through serial or parallel interface.</H1>
+
+
+<H2>Download</H2>
+Note : no warranty, no liability, project is provided 'as is' but I hope you will enjoy it !<br>
+
+<ul>
+<li> binaries : <a href="http://sourceforge.net/project/showfiles.php?group_id=179066">download</a> <br>
+<li> source code : <a href="http://svn.sourceforge.net/viewvc/pyi2c/">browse files (<i>Subversion</i>)</a>
+<li> checkout source code :  svn co <a href="https://svn.sourceforge.net/svnroot/pyi2c/trunk">https://svn.sourceforge.net/svnroot/pyi2c/trunk</a> 
+pyi2c
+</ul>
+
+
+<H2>Why ?</H2>
+
+Access to I2C components from a very low cost interface, in pure python, over serial, parallel (maybe more in the future) interfaces, with a minimum hardware.
+This implementation is intended to be fast but simple and minimalist.
+
+
+
+<H2>Features (0.3)</H2>
+
+<p>
+<ul>
+  <li> handle SDA and SCL pins
+  <li> handle your own hardware interface simply adding your puthon driver in drivers directory,
+  <li> auto-detect available interfaces (COM1, COM2, LPT1, etc...) 
+  <li> LM75/DS75 I2C sensors,
+  <li> analyse SCL/SDA signals with pyScope : <br><br> <center><img src="images/pyScope.png" ALT="pyScope"></center></li>
+</ul>
+
+<H2>Future features</H2>
+
+<ul>
+  <li> add more I2C components,
+  <li> add your own driver if you send it to me,
+</ul>
+
+<br>
+
+
+
+<H2>Example </H2>
+<pre>
+>>> import I2C
+>>> import I2C.sensors
+
+>>> i2c = I2C.BusI2C('COM2')
+>>> i2c.bus.setSpeed(2000)  # you can set i2c speed adapted to your hardware
+>>> sonde = I2C.sensors.LM75('Room 1', i2c)
+>>> print "T =  %02.03f C" % sonde.getTemperature()
+</pre>
+
+get more examples <a href="http://svn.sourceforge.net/viewvc/pyi2c/trunk/src/examples/"> here </a>
+
+<H2>Example minimal serial port I2C interface</H2>
+<table>
+<tr><td rowspan=2><img src="images/serial/schema.png"></td>
+<td><img src="images/serial/implantation.png"></tr>
+<tr><td><img src="images/serial/cuivre.png"></td></tr>
+</table>
+
+This interface is really low speed and minimalist, it's based on specific optos. You can find better also better solutions : <a href="http://www.standardics.nxp.com/support/documents/i2c/pdf/optoisolation.pdf">http://www.standardics.nxp.com/support/documents/i2c/pdf/optoisolation.pdf</a>
+
+
+<H2>Example minimal parallel port I2C interface </H2>
+<table>
+<tr><td rowspan=2><img src="images/parallel/schema.png"></td>
+</table>
+
+It-s possible to select SDA input signal, python driver can be easily adapted to you choice.
+
+
+<H2>Python packages required </H2>
+
+<ul>
+  <li> <a href="http://pyserial.sourceforge.net">pySerial</a> if you plan to use I2C over serial port
+  <li> <a href="http://pyserial.sourceforge.net/pyparallel.html">pyParallel</a> if you plan to use I2C over parallel port
+</ul>
+
+
+<H3>Win32 platform </H3>
+pyParallel need you install and start <b><i>giveio.sys</i></b> driver 
+
+<H3>Linuxes</H3>
+pyParallel on linux is based on ppdev module, make sure  <b><i>ppdev</i></b> module is loaded and not <b><i>lp</i></b>.
+add change device access rights to make non root users or add users in right group (<b>lp</b> group on most systems).
+On most systems, ppdev is not the default parallel port handler, you must make sure module ppdev is loaded :
+<pre>
+sudo modprobe ppde
+sudo rmmod lp
+sudo chmod go+rw /dev/parport0
+</pre>
+
+
+
+<H2>Install from tarball</H2>
+<pre>
+tar -xvzf pyI2C-0.3.tar.gz
+cd pyI2C
+python setup.py install
+</pre>
+
+
+
+</p>
+<br>
+<br>
+<br>
+<br>
+<HR>
+<table width=100%>
+<tr>
+ <td>
+  <a href="http://sourceforge.net/projects/pyi2c">
+    <img src="http://sourceforge.net/sflogo.php?group_id=179066&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo">
+  </a>
+ </td>
+ <td>
+  <A HREF="mailto:pnomblot@users.sourceforge.net">Project source code protected by PYTHON licence, Patrick Nomblot 2006</a>
+ </td>
+ <td><A HREF="http://www.python.org/"><IMG SRC="images/PythonPowered.gif" WIDTH="110" HEIGHT="44" ALIGN="right" BORDER="0" ALT="PythonPowered Logo"></A>
+ </td>
+</tr>
+</table>
+</body>
+</html>
