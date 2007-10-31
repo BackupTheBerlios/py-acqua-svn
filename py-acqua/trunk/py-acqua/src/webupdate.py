@@ -31,6 +31,7 @@ import os.path
 import sys
 
 from xml.dom.minidom import parseString, getDOMImplementation
+from updater.database import DatabaseWrapper
 
 REPOSITORY_ADDRESS = None
 BASE_DIR = None
@@ -45,6 +46,9 @@ else:
 	REPOSITORY_ADDRESS = "www.pyacqua.net"
 	BASE_DIR = "/update/source/"
 	LIST_FILE = "/update/source-list.xml"
+
+DB_FILE = "pyacqua.db"
+XML_FILE = "pyacqua.xml"
 
 #REPOSITORY_ADDRESS = r"localhost"
 #BASE_DIR = r"/~stack/update/source/"
@@ -253,9 +257,17 @@ class WebUpdate(gtk.Window):
 		self.color_done = gtk.gdk.color_parse('#bcfffc')
 		self.color_error = gtk.gdk.color_parse('#ff9060')
 
+		# Dobbiamo inserire una checklist per scegliere quali componenti aggiornare.
+		# Quindi facciamo un for sulle entry del database locale per creare la lista
+		# dei vari programmi.
+
+
 	def _on_get_list(self, widget):
 		widget.set_sensitive(False)
 		self.store.clear()
+
+		# TODO: program_list
+
 		self._thread(self._populate_tree, LIST_FILE)
 	
 	def _thread(self, callback, url):
@@ -330,13 +342,30 @@ class WebUpdate(gtk.Window):
 
 		self.__diffDatabase(data)
 	
-	def __diffDatabase(self, data):
+	def __diffDatabase(self, data, programs_list):
 		f = open(os.path.join(utils.UPDT_DIR, self.file), 'wb')
 		f.write(data)
 		f.close()
 
+		new_db = DatabaseReader(os.path.join(utils.UPDT_DIR, self.file))
+		old_db = DatabaseReader(os.path.join(utils.DHOME_DIR, DB_FILE))
 
+		# Bisogna fare un diff sulle row e controllare le entry delle revisioni
+		# Possiamo avere un update tra revision differenti e tra
+		# revision e secondversion differenti
 
+		if new_db.v_main != old_db.v_main:
+			return False
+
+		if new_db.v_ver != old_db.v_ver:
+			# Full update di tutti i file..
+			pass
+		
+		if new_db.v_rev == old_db.v_rev:
+			return True
+
+		return True
+		
 	def _on_start_update(self, widget):
 		self.it = self.tree.get_model().get_iter_first()
 		self._update_from_iter()

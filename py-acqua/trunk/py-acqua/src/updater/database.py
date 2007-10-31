@@ -65,15 +65,10 @@ class DatabaseWrapper(object):
 		if commit:
 			self.connection.commit()
 
-class DatabaseUpdater(DatabaseWrapper):
-	def __init__(self, program, path, database, main=None, ver=None, rev=None):
-
+class DatabaseReader(DatabaseWrapper):
+	def __init__(self, program, database, main=None, ver=None, rev=None):
 		DatabaseWrapper.__init__(self, database)
-
 		self.program = program
-		self.path = path
-		
-		self.database = database
 
 		self.v_main = main
 		self.v_ver = ver
@@ -109,7 +104,7 @@ class DatabaseUpdater(DatabaseWrapper):
 					print i[4]
 					print " .. should be .."
 					print schemas[tables.index(i[2])]
- 
+
 				sys.exit(0)
 			else:
 				unused.append(schemas.index(i[4]))
@@ -132,6 +127,11 @@ class DatabaseUpdater(DatabaseWrapper):
 				self.v_ver  = ret[0][3]
 			if self.v_rev == None:
 				self.v_rev  = ret[0][4]
+		
+class DatabaseUpdater(DatabaseReader):
+	def __init__(self, program, path, database, main=None, ver=None, rev=None):
+		self.path = path
+		DatabaseReader.__init__(self, program, database, main, ver, rev)
 
 	def checkArgs(self):
 		if self.v_main == None or self.v_ver == None or self.v_rev == None:
