@@ -12,63 +12,7 @@ import sys
 import thread
 import time
 import logging
-import struct
-import fcntl
-#import drivers
-def sizeof(type): return struct.calcsize(type)
-def _IOC(dir, type, nr, size):  return int((dir << _IOC_DIRSHIFT ) | (type << _IOC_TYPESHIFT ) | (nr << _IOC_NRSHIFT ) | (size << _IOC_SIZESHIFT))
-def _IO(type, nr):      return _IOC(_IOC_NONE,  type, nr, 0)
-def _IOR(type,nr,size): return _IOC(_IOC_READ,  type, nr, sizeof(size))
-def _IOW(type,nr,size): return _IOC(_IOC_WRITE, type, nr, sizeof(size))
-
-_IOC_SIZEBITS   = 14
-_IOC_SIZEMASK   = (1L << _IOC_SIZEBITS ) - 1
-_IOC_NRSHIFT    = 0
-_IOC_NRBITS     = 8
-_IOC_TYPESHIFT  = _IOC_NRSHIFT + _IOC_NRBITS
-_IOC_TYPEBITS   = 8
-_IOC_SIZESHIFT  = _IOC_TYPESHIFT + _IOC_TYPEBITS
-IOCSIZE_MASK    = _IOC_SIZEMASK << _IOC_SIZESHIFT
-IOCSIZE_SHIFT   = _IOC_SIZESHIFT
-
-# Python 2.2 uses a signed int for the ioctl() call, so ...
-if ( sys.version_info[0] < 3 ) or ( sys.version_info[1] < 3 ):
- _IOC_WRITE      =  1L
- _IOC_READ       = -2L
- _IOC_INOUT      = -1L
-else:
- _IOC_WRITE      =  1L
- _IOC_READ       =  2L
- _IOC_INOUT      =  3L
-
-_IOC_DIRSHIFT   = _IOC_SIZESHIFT + _IOC_SIZEBITS
-IOC_INOUT       = _IOC_INOUT << _IOC_DIRSHIFT
-IOC_IN          = _IOC_WRITE << _IOC_DIRSHIFT
-IOC_OUT         = _IOC_READ << _IOC_DIRSHIFT
-
-_IOC_NONE       = 0
-
-_IOC_DIRBITS    = 2
-_IOC_DIRMASK    = (1 << _IOC_DIRBITS) - 1
-_IOC_NRMASK     = (1 << _IOC_NRBITS) - 1
-_IOC_TYPEMASK   = (1 << _IOC_TYPEBITS ) - 1
-
-def _IOC_DIR(nr):       return (nr >> _IOC_DIRSHIFT)  & _IOC_DIRMASK
-def _IOC_NR(nr):        return (nr >> _IOC_NRSHIFT)   & _IOC_NRMASK
-def _IOC_SIZE(nr):      return (nr >> _IOC_SIZESHIFT) & _IOC_SIZEMASK
-def _IOC_TYPE(nr):      return (nr >> _IOC_TYPESHIFT) & _IOC_TYPEMASK
-def _IOWR(type, nr, size): return _IOC(_IOC_READ | _IOC_WRITE, type, nr , sizeof(size))
-
-
-MODEM_POWER_LINE        = 1<<28
-ETRAXGPIO_IOCTYPE       = 43
-IO_READBITS             = 0x1
-IO_SETBITS              = 0x2
-IO_CLRBITS              = 0x3
-
-IO_HIGHALARM            = 0x4
-IO_LOWALARM             = 0x5
-IO_CLRALARM             = 0x6
+import drivers
 
 I2C_REGISTER_WRITE = 0
 I2C_REGISTER_READ = 1
@@ -147,26 +91,26 @@ class I2Cbits:
 #---------------------------------------------------------------------------------
 class BusI2C(I2Cbits):
     """ I2C bus """
-#i2c_fd = open("/dev/gpiog", O_RDWR);
-#def __init__(self, pport='LPT1'):
-    def __init__(self, pport = os.open("/dev/gpiog" , os.O_RDWR)):
-		self.bus = _DRIVER_FACTORY.create(pport)
-		self.protocolError = False
-		log.info('I2C started on [%s]'%pport)
+
+    def __init__(self, pport='LPT1'):
+	self.bus = _DRIVER_FACTORY.create(pport)
+        self.protocolError = False
+        log.info('I2C started on [%s]'%pport)
+
     def scan(self, I2C_start_address):
-		addressOK = None
-		for address in range(I2C_start_address, I2C_start_address+0x10, 2):
-			log.info("Scanning address : %02X"%address) 
-			self._start() 
-			self._send(address)  
-			if self._ack():
-				addressOK=address
-				self._read()
-				self._sendNack() 
-				self._stop() 
-			if addressOK:
-				return addressOK
-		self.error("no I2C component found !")
+        addressOK = None
+        for address in range(I2C_start_address, I2C_start_address+0x10, 2):
+            log.info("Scanning address : %02X"%address) 
+            self._start() 
+            self._send(address)  
+            if self._ack():
+		addressOK=address
+            self._read()
+            self._sendNack() 
+            self._stop() 
+            if addressOK:
+                return addressOK
+        self.error("no I2C component found !")
 
     def error(self, error=None):
         raise ProtocolError        
@@ -221,7 +165,7 @@ class BusI2C(I2Cbits):
 
 
 #---------------------------------------------------------------------------------
-#class DriversFactory:
+class DriversFactory:
     """ this class scan for available drivers, available interfaces 
         and build a list for driver factory.
 
@@ -241,25 +185,25 @@ class BusI2C(I2Cbits):
 
     """  
 
- #   def __init__(self):
- #       self._drivers = {}
+    def __init__(self):
+        self._drivers = {}
 
- #   def register(self, driver, name):
- #       log.debug('registering driver %s'%name)
- #       self._drivers[name] = driver
+    def register(self, driver, name):
+        log.debug('registering driver %s'%name)
+        self._drivers[name] = driver
 
-#    def create(self, name, *args, **kw):
-  #      driverFactory = self._drivers.get(name)
-    #    if driverFactory is None:
-       #     raise RuntimeError("No driver for %s or ressource busy" % name)
-       # driver = driverFactory(name, *args, **kw)
-      #  return driver
+    def create(self, name, *args, **kw):
+        driverFactory = self._drivers.get(name)
+        if driverFactory is None:
+            raise RuntimeError("No driver for %s or ressource busy" % name)
+        driver = driverFactory(name, *args, **kw)
+        return driver
 
-   # def getDrivers(self):
-     #   return self._drivers
+    def getDrivers(self):
+        return self._drivers
 
 
-#_DRIVER_FACTORY = DriversFactory()
+_DRIVER_FACTORY = DriversFactory()
 
 
 
@@ -267,12 +211,12 @@ class BusI2C(I2Cbits):
 #
 
 
-#import drivers
-#for driverName in dir(drivers):
-  #  if not driverName.startswith('_'):
-    #    driver=getattr(drivers,driverName)
-      #  for device in driver.getDevices():
-         #   _DRIVER_FACTORY.register(getattr(driver, 'Driver'), device)
+import drivers
+for driverName in dir(drivers):
+    if not driverName.startswith('_'):
+        driver=getattr(drivers,driverName)
+        for device in driver.getDevices():
+            _DRIVER_FACTORY.register(getattr(driver, 'Driver'), device)
 
 #for file in [ file[:-3] for file in os.listdir(os.path.join(installDir, 'drivers')) if file[-3:] == '.py' and file != "__init__.py" ]:
 #    driverPath='I2C.drivers.'+file
@@ -280,6 +224,7 @@ class BusI2C(I2Cbits):
 #    for device in driver.getDevices():
 #        _DRIVER_FACTORY.register(getattr(getattr(__import__(driverPath).drivers,file), 'Driver'), device)
 
-
-#interfaces = _DRIVER_FACTORY.getDrivers().keys()
-#interfaces.sort()
+   
+		
+interfaces = _DRIVER_FACTORY.getDrivers().keys()
+interfaces.sort()

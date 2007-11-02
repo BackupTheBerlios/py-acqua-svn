@@ -99,6 +99,10 @@ DTR (4/DB9)                 DEL
         return not self.port.getCTS()
 
 
+
+
+
+
 def getDevices():
     # Gives back availables interfaces names
     available = []
