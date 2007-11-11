@@ -18,7 +18,7 @@
 #    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-from i2c import *
+from i2c_py import *
  
 def main ():
         i2c_fixed = 0x09
