@@ -71,6 +71,8 @@ IO_CLRALARM             = 0x6
 
 IO_SETGET_INPUT		= 0x12
 IO_SETGET_OUTPUT	= 0x13
+IO_SETINPUT   = 0x9
+IO_SETOUTPUT  = 0xA
 
 leggi = 1<<2
 leggi_2 = 1<<4
@@ -79,10 +81,13 @@ leggi_2 = 1<<4
 I2C_DATA_LINE  = 1<<24
 I2C_CLOCK_LINE = 1<<17
 
+device = "/dev/gpiog"
+i2c_fd = os.open(device, os.O_RDWR)
+
 #Get the SDA line state
 
 def i2c_getbit():
-	value=ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
+	value=fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
 	if ((value&(I2C_DATA_LINE))==0):
 		return 0
 	else:
@@ -93,18 +98,18 @@ def i2c_getbit():
 
 def i2c_dir_out():
 	iomask = I2C_DATA_LINE
-	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), iomask);
+	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), iomask);
 
 
 # Set the SDA line as input
 
 def i2c_dir_in():
 	iomask = I2C_DATA_LINE
-	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), iomask);
+	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETINPUT), iomask);
 
 # Set the SDA line state
 
-def i2c_data():
+def i2c_data(state):
 	if (state==1):
 		i2c_dir_in()
 	else:
@@ -115,7 +120,7 @@ def i2c_data():
 
 # Set the SCL line state
 
-def i2c_clk():
+def i2c_clk(state):
 	if (state==1):
 		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
 	else:
@@ -155,15 +160,15 @@ def i2c_inbyte():
 # Open the GPIOB dev 
 
 def i2c_open():
-	device = "/dev/gpiog"
-	i2c_fd = os.open(device, os.O_RDWR)
-	print i2c_fd
+	#device = "/dev/gpiog"
+	#i2c_fd = os.open(device, os.O_RDWR)
+	#print i2c_fd
 	iomask = I2C_CLOCK_LINE
-	print iomask
-	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_OUTPUT), iomask)
+	#print iomask
+	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), iomask)
 	iomask = I2C_DATA_LINE
-	print iomask
-	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETGET_INPUT), iomask)
+	#print iomask
+	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETINPUT), iomask)
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_DATA_LINE)
 	i2c_dir_in()
 	i2c_clk(1)
@@ -197,7 +202,7 @@ def i2c_stop():
 # rtc
 #  0 = Nack, 1=Ack
 
-def i2c_outbyte():
+def i2c_outbyte(x):
 	i2c_clk(0)
 	for i in range(0, 8):
 		if (x & 0x80):
