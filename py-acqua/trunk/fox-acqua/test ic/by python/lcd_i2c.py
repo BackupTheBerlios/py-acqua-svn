@@ -26,6 +26,8 @@
 #
 #***********************************************************************************
 
+import time
+from i2c_py import *
 
 
 
@@ -201,7 +203,7 @@ I2C_DATA_LOW = 0
 #-----------------------------
 
 #*********************
-#  MCP23008 ROUTINES
+#  MCP23016 ROUTINES
 #*********************
 def mcp23016_regLeggi(reg):
 	i2c_start()
@@ -256,10 +258,10 @@ def lcdMcpInit():
 
 #RS line
 def lcd_rs(level) :
-	mcp23016_pinWriteLevel(0,RS,level)
+	mcp23016_pinWriteLevel(0,lcd_RS,level)
 #E line
 def lcd_e(level):
-	mcp23016_pinWriteLevel(0,E,level)
+	mcp23016_pinWriteLevel(0,lcd_E,level)
 #D4..7
 def lcdD4(level):
 	mcp23016_pinWriteLevel(0,lcd_D4,level)
@@ -298,7 +300,7 @@ def lcd_put_nibble(value):
 # data: Ascii char or instruction to send
 # mode: 0 = Instruction, 1 = Data
 def  lcd_putc(data, mode):
-	if (!mode):
+	if (mode==1):
 		lcd_rs(0)
 	else:
 		lcd_rs(1)
@@ -315,25 +317,25 @@ def  lcd_init():
 #SETTA IO DELL'MCP
 	lcd_rs(0)
 	lcd_e(0)
-	msDelay(15)
+	time.sleep(15)
 	lcd_put_nibble(0x03)
 	lcd_e_strobe()
-	msDelay(4)
+	time.sleep(4)
 	lcd_e_strobe()
-	msDelay(2)
+	time.sleep(2)
 	lcd_e_strobe()
-	msDelay(2)
+	time.sleep(2)
 	lcd_put_nibble(0x02)
 	lcd_e_strobe()
-	msDelay(1)
+	time.sleep(2)
 	lcd_putc(0x28,0)
-	msDelay(1)
+	time.sleep(1)
 	lcd_putc(0x06,0)
-	msDelay(1)
+	time.sleep(1)
 	lcd_putc(0x0C,0)
-	msDelay(1)
+	time.sleep(1)
 	lcd_putc(0x01,0)
-	msDelay(2)
+	time.sleep(1)
 
 
 # Locate cursor on LCD
@@ -341,51 +343,52 @@ def  lcd_init():
 # col (1-39)
 def  lcd_locate(row, col):
 	lcd_putc(0x80+row*0x40+col,0)
-	usDelay(35)
+	time.sleep(35)
 
 # Clear LCD
 def  lcd_clear(fd):
   lcd_putc(0x01,0)
-  msDelay(2)
+  time.sleep(2)
 
 # Lcd version of printf
-def lcd_printf(format, ...):
-  va_list argptr;
-  char buffer[1024];
-  
-  va_start(argptr,format);
-  vsprintf(buffer,format,argptr);
-  va_end(argptr);
-  
-  for (i=0;i<strlen(buffer);i++):
-    lcd_putc(buffer[i],1);
-
-
-
-
+def lcd_printf(format):#, ...):
+ #va_list argptr
+#char buffer[1024]
+	print format
+	va_start(argptr,format)
+	print va_start
+	vsprintf(buffer,format,argptr)
+	va_end(argptr)
+	for i in range (0, strlen(buffer)):
+		lcd_putc(buffer[i],1)
+		print("eccomi")
+	
 #*****************
 #		MAIN
 #*****************
 
 if (i2c_open()<0):
 	print("Apertura del bus I2C fallita\n")
-	return 1
-for(;;):
+	#return 1
+while 1:
 	print("GESTIONE MCP23016\n")
 	print("Operazioni possibili:\n")
 	print("1:TEST\n")
 	print("2:Esci\n\n")
-	print("Scelta = ")
-	scanf ("%X",&scelta)
-	if (scelta==1):
+	#print("Scelta = ")
+	scelta = raw_input("Scelta =")
+	if (scelta=="1"):
 		lcd_locate(0,0)
 		lcd_printf("Ciao");
 		printf("Frase  di prova scritta\n");	
-	else if  (scelta==2):
-		 return 1
+	else:
+		pass		
+#(scelta==2)
+		 #return 1
 
 
-
+#risp = raw_input("Come ti chiami? ")
+#print "Ciao, %s, piacere di conoscerti" % risp 
 
 
 
