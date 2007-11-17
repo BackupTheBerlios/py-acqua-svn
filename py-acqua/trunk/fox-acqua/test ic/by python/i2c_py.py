@@ -121,23 +121,25 @@ def i2c_data(state):
 # Set the SCL line state
 
 def i2c_clk(state):
+	#print state
 	if (state==1):
-		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE);
+		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE)
 	else:
-		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE);
+		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE)
 
 
 #Read a byte from I2C bus and send the ack sequence
 #Put islast = 1 is this is the last byte to receive from the slave
 
-def i2c_inbyte():
+def i2c_inbyte(islast):
 #Read data byte
 	i2c_clk(0)
 	i2c_dir_in()
 	for i in range (0, 8):
 		i2c_clk(1)
 		bitvalue = i2c_getbit()
-		value |= bitvalue;
+		value = bitvalue
+		value = value | bitvalue
 		if (i<7):
 			value <<= 1
 			i2c_clk(0)
@@ -205,13 +207,13 @@ def i2c_stop():
 def i2c_outbyte(x):
 	i2c_clk(0)
 	for i in range(0, 8):
-		if (x & 0x80):
+		if (int(x) & 0x80):
 			 i2c_data(1)
 		else:
 			i2c_data(0)
 		i2c_clk(1)
 		i2c_clk(0)
-		x <<= 1
+		x = int(x) << 1
 	i2c_dir_in()
 	i2c_clk(1)
 	ack=i2c_getbit()
@@ -220,3 +222,26 @@ def i2c_outbyte(x):
 		 return 1
 	else:
 		return 0
+
+#def pin_uscita():
+#	if (i2c_open()<0):
+#		sys.exit(0)
+#		print "bus in2 fallita"
+#	else:
+#1<<16 | 1<<17 | 1<<18 | 1<<19 | 1<<20 | 1<<21 | 1<<22 | 1<<23;
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<16)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<17)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<18)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<19)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<20)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<21)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<22)
+#		time.sleep(1)
+#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<23)
+#		i2c_close()

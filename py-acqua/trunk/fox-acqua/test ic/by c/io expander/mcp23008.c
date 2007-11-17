@@ -51,7 +51,7 @@ RESET A VCC
 #include "asm/etraxgpio.h"
 
 
-#define myMcp23008_id	0x20
+#define myMcp23008_id	0x27
 
 //REGISTRI
 //x impostare direzione
@@ -208,7 +208,7 @@ RESET A VCC
 
 
 #define I2C_DATA_LINE       1<<24
-#define I2C_CLOCK_LINE      1<<25
+#define I2C_CLOCK_LINE      1<<17
 
 #ifndef IO_SETGET_INPUT
 #define IO_SETGET_INPUT   0x12
