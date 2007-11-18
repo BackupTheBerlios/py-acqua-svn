@@ -237,7 +237,6 @@ def mcp23008_scrivi(registro, value):
 	i2c_outbyte(value)
 	i2c_stop()
 
-
 def mcp23008_ttOut():
 	mcp23008_scrivi(IODIR,0)
 
@@ -279,16 +278,25 @@ while 1:
 			value = raw_input("Valore=")
 			#controllare che sia impostato tt in uscita.
 			mcp23008_scrivi(GPIO,value)
+			print "tutti i pin"
 			print GPIO
 			print value
 		if (scelta=="2"):
 			print("Inserisci il numero del pin (0..7) e il valore (0..FF) a cui si dovrà portare\n")
 			pin = raw_input("Pin =\n")
 			level = raw_input("level=\n")
+			#ping = raw_input("inserisci il ping=\n")
 			# controllare che il pin sia impostato in uscita.
 			value=mcp23008_leggiGpio()
+			print "value 1 %s\n" %value
 			value = int(level)<<int(pin)
-			mcp23008_scrivi(GPIO,value)
+			print "stampo value %s\n" %value
+			#print "stampo ping %s\n" %ping
+			mcp23008_scrivi(GPIO,pin)
+			print "un pin"
+			print GPIO
+			print value
+
 	else:
 		pass
 	if (scelta=="5"):

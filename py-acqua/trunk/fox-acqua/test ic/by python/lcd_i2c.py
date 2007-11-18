@@ -242,7 +242,7 @@ def mcp23016_scriviGpio(GP,value):
 
 
 def mcp23016_leggiGpio(GP):
-	gpio_level=mcp23016_leggi(GPIO0+GP)
+	gpio_level=mcp23016_leggiGpio(GPIO0+GP)
 	return gpio_level
 
 
@@ -342,7 +342,7 @@ def  lcd_init():
 # row (0-2)
 # col (1-39)
 def  lcd_locate(row, col):
-	lcd_putc(0x80+row*0x40+col,0)
+	lcd_putc((0x80+row*0x40+col),0)
 	time.sleep(35)
 
 # Clear LCD
@@ -383,7 +383,9 @@ while 1:
 		printf("Frase  di prova scritta\n");	
 	else:
 		pass		
-#(scelta==2)
+	if (scelta=="2"):
+		i2c_close()
+		sys.exit(0)
 		 #return 1
 
 
