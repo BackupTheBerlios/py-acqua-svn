@@ -382,8 +382,8 @@ while 1:
 	scelta = raw_input("Scelta =")
 	if (scelta=="1"):
 		lcd_locate(0,0)
-		lcd_printf("Ciao");
-		printf("Frase  di prova scritta\n");	
+		lcd_printf("Ciao")
+		print("Frase  di prova scritta\n");
 	else:
 		pass		
 	if (scelta=="2"):
