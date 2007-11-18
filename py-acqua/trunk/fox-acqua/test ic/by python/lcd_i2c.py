@@ -353,7 +353,7 @@ def  lcd_clear(fd):
 # Lcd version of printf
 def lcd_printf(stringa): 
 	for i in stringa: 
-		lcd_putc(i, 1)
+		lcd_putc(ord(i), 1)
 #def lcd_printf(format):#, ...):
  #va_list argptr
 #char buffer[1024]
