@@ -235,14 +235,14 @@ def mcp23016_ttIn():
 def mcp23016_pinWriteLevel(GP,pin,level):
 	value=mcp23016_leggiGpio(GP)
 	value = level<<pin
-	mcp23008_scrivi(GP,value)
+	mcp23016_regScrivi(GP,value)
 
 def mcp23016_scriviGpio(GP,value):
 	mcp23016_scrivi(IODIR0+GP,value)
 
 
 def mcp23016_leggiGpio(GP):
-	gpio_level=mcp23016_leggiGpio(GPIO0+GP)
+	gpio_level=mcp23016_regLeggi(GPIO0+GP)
 	return gpio_level
 
 
@@ -304,7 +304,7 @@ def  lcd_putc(data, mode):
 		lcd_rs(0)
 	else:
 		lcd_rs(1)
-	
+	print data, type(data)
 	a=(data>>4)&0x000F
 	lcd_put_nibble(a)
 	lcd_e_strobe()
@@ -317,7 +317,7 @@ def  lcd_init():
 #SETTA IO DELL'MCP
 	lcd_rs(0)
 	lcd_e(0)
-	time.sleep(15)
+	time.sleep(5)
 	lcd_put_nibble(0x03)
 	lcd_e_strobe()
 	time.sleep(4)
@@ -343,7 +343,7 @@ def  lcd_init():
 # col (1-39)
 def  lcd_locate(row, col):
 	lcd_putc((0x80+row*0x40+col),0)
-	time.sleep(35)
+	time.sleep(3)
 
 # Clear LCD
 def  lcd_clear(fd):
@@ -351,17 +351,20 @@ def  lcd_clear(fd):
   time.sleep(2)
 
 # Lcd version of printf
-def lcd_printf(format):#, ...):
+def lcd_printf(stringa): 
+	for i in stringa: 
+		lcd_putc(i, 1)
+#def lcd_printf(format):#, ...):
  #va_list argptr
 #char buffer[1024]
-	print format
-	va_start(argptr,format)
-	print va_start
-	vsprintf(buffer,format,argptr)
-	va_end(argptr)
-	for i in range (0, strlen(buffer)):
-		lcd_putc(buffer[i],1)
-		print("eccomi")
+	#print format
+	#va_start(argptr,format)
+#	print va_start
+#	vsprintf(buffer,format,argptr)
+#	va_end(argptr)
+#	for i in range (0, strlen(buffer)):
+#		lcd_putc(buffer[i],1)
+	#	print("eccomi")
 	
 #*****************
 #		MAIN
