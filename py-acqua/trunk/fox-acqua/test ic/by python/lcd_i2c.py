@@ -44,8 +44,7 @@ from i2c_py import *
 
 #****************************************************
 
-lcdMcp23016_id	= 0x20
-
+id = 0x20
 # RIFLETTE IL LIVELLO LOGICO DEL PIN
 # 1 = livello logico alto
 # 0 = livelLo logico basso
@@ -234,19 +233,19 @@ I2C_DATA_LOW = 0
 #*********************
 #  MCP23016 ROUTINES
 #*********************
-def mcp23016_regLeggi(reg):
+def mcp23016_regLeggi(id , reg):
 	i2c_start()
-	i2c_outbyte(lcdMcp23016_id<<1)# accoda uno zero x dire scrivi
+	i2c_outbyte(id)# accoda uno zero x dire scrivi
 	i2c_outbyte(reg)
 	i2c_start()
-	i2c_outbyte((lcdMcp23016_id<<1)+1)# accoda un uno  x dire leggi 
+	i2c_outbyte(id+1)# accoda un uno  x dire leggi 
 	data=i2c_inbyte(0)
 	i2c_stop()
 	return data
 
-def mcp23016_regScrivi(registro, value):
+def mcp23016_regScrivi(id, registro, value):
 	i2c_start()
-	i2c_outbyte(lcdMcp23016_id<<1)
+	i2c_outbyte(id)
 	i2c_outbyte(registro)
 	i2c_outbyte(value)
 	i2c_stop()
@@ -260,20 +259,21 @@ def mcp23016_ttIn():
 	mcp23016_regScrivi(IODIR1,255)
 
 
-def mcp23016_pinWriteLevel(GP,pin,level):
+def mcp23016_pinWriteLevel(id, GP,pin,level):
+	
 	#value=mcp23016_leggiGpio(GP)
 #	value = level<<pin
 #	mcp23016_regScrivi(GP,value)
 
-	value=mcp23016_regLeggi(GP)
+	value=mcp23016_regLeggi(id, GP)
 	if (level==1):
 		 value=value | (1 << pin )
 	else:
 		value=value & ( 0xff -(1 << pin ))
-		mcp23016_regScrivi(GP,value)
+		mcp23016_regScrivi(id, GP,value)
 
-def mcp23016_pinReadLevel(GP,pin,level):
-	value=mcp23016_regLeggi(GP)
+def mcp23016_pinReadLevel(id, GP,pin,level):
+	value=mcp23016_regLeggi(id, GP)
 	value=value & (1 << pin )
 	if (value==(1 << pin )):
 		 return 1
@@ -292,9 +292,9 @@ def mcp23016_pinReadLevel(GP,pin,level):
 
 def lcdMcpInit():
 	#pass
-	mcp23016_regScrivi(mcp23016IODIR0,0)#DISPLAY, TT OUT
-	mcp23016_regScrivi(mcp23016IODIR1,0xff)#pulsanti, tt in
-	mcp23016_regScrivi(mcp23016GP0,0)#us
+	mcp23016_regScrivi(id, mcp23016IODIR0,0)#DISPLAY, TT OUT
+	mcp23016_regScrivi(id, mcp23016IODIR1,0xff)#pulsanti, tt in
+	mcp23016_regScrivi(id, mcp23016GP0,0)#us
 #init input x 5 pulsanti
 #init output x fili al display
 
@@ -305,19 +305,19 @@ def lcdMcpInit():
 
 #RS line
 def lcd_rs(level) :
-	mcp23016_pinWriteLevel(0,lcd_RS,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_RS,level)
 #E line
 def lcd_e(level):
-	mcp23016_pinWriteLevel(0,lcd_E,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_E,level)
 #D4..7
 def lcdD4(level):
-	mcp23016_pinWriteLevel(0,lcd_D4,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_D4,level)
 def lcdD5(level):
-	mcp23016_pinWriteLevel(0,lcd_D5,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_D5,level)
 def lcdD6(level):
-	mcp23016_pinWriteLevel(0,lcd_D6,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_D6,level)
 def lcdD7(level):
-	mcp23016_pinWriteLevel(0,lcd_D7,level)
+	mcp23016_pinWriteLevel(id, 0,lcd_D7,level)
 
 def lcd_e_strobe():
 	lcd_e(1)
@@ -348,11 +348,12 @@ def lcd_put_nibble(value):
 # mode: 0 = Instruction, 1 = Data
 def  lcd_putc(data, mode):
 	print "mode %s\n" %mode
-	if (mode==1):
+	#if (mode==1):
+	if not mode:
 		lcd_rs(0)
 	else:
 		lcd_rs(1)
-	print data, type(data)
+	#print data, type(data)
 	a=(data>>4)&0x000F
 	lcd_put_nibble(a)
 	lcd_e_strobe()
@@ -366,36 +367,37 @@ def  lcd_init():
 	lcdMcpInit()
 	lcd_rs(0)
 	lcd_e(0)
-	time.sleep(0.15)
+	time.sleep(0.30)
 	lcd_put_nibble(0x03)
+	lcd_e_strobe()
+	time.sleep(0.8)
 	lcd_e_strobe()
 	time.sleep(0.4)
 	lcd_e_strobe()
-	time.sleep(0.2)
-	lcd_e_strobe()
-	time.sleep(0.2)
+	time.sleep(0.4)
 	lcd_put_nibble(0x02)
 	lcd_e_strobe()
-	time.sleep(0.1)
-	lcd_putc(0x28,0)
-	time.sleep(0.1)
-	lcd_putc(0x06,0)
-	time.sleep(0.1)
-	lcd_putc(0x0C,0)
-	time.sleep(0.1)
-	lcd_putc(0x01,0)
 	time.sleep(0.2)
+	lcd_putc(0x28,0)
+	time.sleep(0.2)
+	lcd_putc(0x06,0)
+	time.sleep(0.2)
+	lcd_putc(0x0C,0)
+	time.sleep(0.2)
+	lcd_putc(0x01,0)
+	time.sleep(0.4)
 
 
 # Locate cursor on LCD
 # row (0-2)
 # col (1-39)
 def  lcd_locate(row, col):
-	lcd_putc((0x80+row*0x40+col),0)
-	time.sleep(0.35)
+	lcd_putc(0x80+row*0x40+col,0)
+	#lcd_putc((0x80+row*0x40+col),0)
+	time.sleep(1)
 
 # Clear LCD
-def  lcd_clear(fd):
+def  lcd_clear():
   lcd_putc(0x01,0)
   time.sleep(1)
 
@@ -403,8 +405,8 @@ def  lcd_clear(fd):
 def lcd_printf(stringa): 
 	for i in stringa: 
 		lcd_putc(ord(i), 1)
-		print "stringa %s\n" %stringa
-		print "i %s\n" %i
+		#print "stringa %s\n" %stringa
+		#print "i %s\n" %i
 #def lcd_printf(format):#, ...):
  #va_list argptr
 #char buffer[1024]
@@ -428,17 +430,26 @@ while 1:
 	print("GESTIONE MCP23016\n")
 	print("Operazioni possibili:\n")
 	print("1:TEST\n")
-	print("2:Esci\n\n")
+	print("2:Pulsanti\n")
+	print("3:Esci\n\n")
 	#print("Scelta = ")
 	scelta = raw_input("Scelta =")
 	if (scelta=="1"):
+		lcd_clear()
 		lcd_init()
-		lcd_locate(0,0)
+		lcd_locate(7,0)
 		lcd_printf("Ciao")
+	#	lcd_locate(1,1)
+	#	lcd_printf("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
 		print("Frase  di prova scritta\n");
 	else:
-		pass		
+		pass	
 	if (scelta=="2"):
+		print("GPIOA = %s\n" %mcp23016_regLeggi(id, 0))
+		print("GPIOB = %s\n" %mcp23016_regLeggi(id, 1))
+	else:
+		pass
+	if (scelta=="3"):
 		i2c_close()
 		sys.exit(0)
 		 #return 1
