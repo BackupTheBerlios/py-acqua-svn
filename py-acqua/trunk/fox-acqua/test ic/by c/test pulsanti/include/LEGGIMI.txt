@@ -1,0 +1,10 @@
+I2C CON IOCTL
+
+
+copiare il contenuto della cartella IOCTL dento include
+
+
+
+I2C CON SYSCALL
+
+copiare il contenuto della cartella SYSCALL dento include
