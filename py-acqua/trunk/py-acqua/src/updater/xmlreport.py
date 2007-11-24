@@ -73,6 +73,83 @@ class ProgramInterface(object):
 	def set(self, option, value):
 		self.options['%s.%s' % (self.name, option)] = value
 
+class ReportReader(ProgramInterface):
+	def __init__(self, data):
+		try:
+			doc = parseString(data)
+		except:
+			raise Exception("Cannot parse xml-report")
+		
+		if doc.documentElement.tagName.endswith("-update"):
+			
+			ProgramInterface.__init__(self, doc.documentElement.tagName[:-7])
+			
+			for node in doc.documentElement.childNodes:
+				if node.nodeName == "info": self.parseInfo(node)
+				if node.nodeName == "database": self.set("database", node.firstChild.data)
+				if node.nodeName == "mirrors":
+					self.parseArray(node, ("mirrors", "url"))
+				if node.nodeName == "actions":
+					self.parseArray(node, ("actions-pre", "pre"))
+					self.parseArray(node, ("actions-post", "post"))
+				if node.nodeName == "downloads":
+					self.parseArray(node, ("downloads-windows", "windows"))
+					self.parseArray(node, ("downloads-tarball", "tarball"))
+					self.parseArray(node, ("downloads-svn", "svn"))
+	
+	def parseInfo(self, noderoot):
+		prop = [
+			'uselast',
+			'mainversion',
+			'secondversion',
+			'revision',
+			'changelog',
+			'message'
+		]
+		
+		for node in noderoot.childNodes:
+			if node.nodeName in prop:
+				if node.firstChild: self.set(node.nodeName, node.firstChild.data)
+	
+	def parseArray(self, noderoot, obj):
+		lst = []
+		
+		for node in noderoot.childNodes:
+			if node.nodeName == obj[1]:
+				if node.firstChild: lst.append(node.firstChild.data)
+		
+		self.set(obj[0], lst)
+
+if __name__ == "__main__":
+	ReportReader("""<?xml version="1.0" ?>
+<pyacqua-update>
+	<info>
+		<mainversion>1</mainversion>
+		<secondversion>0</secondversion>
+		<revision>0</revision>
+		<message></message>
+		<changelog>YXNkYWQK</changelog>
+		<message-pre>messaggio pre installazione</message-pre>
+		<message-post>messaggio post installazione</message-post>
+	</info>
+	<database>database/pyacqua.db</database>
+	<mirrors>
+		<url>secondo</url>
+		<url>ultimo?</url>
+		<url>terzo</url>
+		<url>primo</url>
+	</mirrors>
+	<actions>
+		<pre>miao</pre>
+		<post>bau</post>
+	</actions>
+	<downloads>
+		<svn>svn://developer.berlios.de/...</svn>
+		<tarball>http://www.pyacqua.net/downloads/pyacqua.tgz</tarball>
+		<windows>http://www.pyacqua.net/downloads/pyacqua.exe</windows>
+	</downloads>
+</pyacqua-update>""")
+
 class ListCreator(object):
 	def __init__(self, database, info):
 		self.db = DatabaseWrapper(database)

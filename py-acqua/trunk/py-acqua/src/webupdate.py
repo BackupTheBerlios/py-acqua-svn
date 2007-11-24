@@ -1,24 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: iso-8859-15 -*- 
-#Copyright(C) 2005, 2007 Py-Acqua
-#http://www.pyacqua.net
-#email: info@pyacqua.net  
-#
-#   
-#Py-Acqua is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 2 of the License, or
-#   (at your option) any later version.
-#
-#Py-Acqua is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with Py-Acqua; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
 import gtk
 import gobject
 import httplib
@@ -31,7 +10,8 @@ import os.path
 import sys
 
 from xml.dom.minidom import parseString, getDOMImplementation
-from updater.database import DatabaseWrapper
+from updater.database import DatabaseWrapper, DatabaseReader
+from updater.xmlreport import ReportReader
 
 REPOSITORY_ADDRESS = None
 BASE_DIR = None
@@ -50,7 +30,7 @@ else:
 DB_FILE = "pyacqua.db"
 XML_FILE = "pyacqua.xml"
 
-#REPOSITORY_ADDRESS = r"localhost"
+REPOSITORY_ADDRESS = r"localhost"
 #BASE_DIR = r"/~stack/update/source/"
 #LIST_FILE = r"/~stack/update/source-list.xml"
 
@@ -148,10 +128,11 @@ class SchemaUpdateInterface(object):
 
 class Fetcher(threading.Thread):
 	
-	def __init__(self, callback, url):
+	def __init__(self, callback, url, args=None):
 		self.data = None
 		self.callback = callback
 		self.url = url
+		self.args = args
 		threading.Thread.__init__(self, name="Fetcher")
 
 	def run(self):
@@ -171,11 +152,14 @@ class Fetcher(threading.Thread):
 		gtk.gdk.threads_enter()
 		
 		try:
-			self.callback(self.data, self.response)
+			self.callback(self.data, self.response, self.args)
 		finally:
 			gtk.gdk.threads_leave()
 		
 		return False
+
+if not _:
+	_ = lambda x: x
 
 class WebUpdate(gtk.Window):
 	def __init__(self):
@@ -187,7 +171,19 @@ class WebUpdate(gtk.Window):
 		
 		vbox = gtk.VBox(False, 2)
 		
-		self.store = gtk.ListStore(
+		self.nb = gtk.Notebook()
+		vbox.pack_start(self.nb)
+		
+		self.status = gtk.Statusbar()
+		vbox.pack_start(self.status, False, False, 0)
+		
+		self.add(vbox)
+		
+		self.connect('delete-event', self._on_delete_event)
+		
+		# ---------------------------------------------------------------------------------------
+		
+		self.store = gtk.TreeStore(
 			gtk.gdk.Pixbuf, # icona
 			str, # nome file
 			int, # new_revision
@@ -197,28 +193,33 @@ class WebUpdate(gtk.Window):
 			int, # old bytes
 			str, # old_md5
 			int, # percentuale scaricamento
-			bool, #il bool finale: to_add?
-			gtk.gdk.Color) # colre di background
-		
+			bool, # da scaricare
+			gtk.gdk.Color # colre di background
+		)
 		self.tree = gtk.TreeView(self.store)
-		
 		self.tree.append_column(gtk.TreeViewColumn("", gtk.CellRendererPixbuf(), pixbuf=0))
 
 		rend = gtk.CellRendererText(); id = 1
+		
 		for i in(_("File"), _("Rev"), _("Bytes"), _("MD5"), _("oldRev"), _("oldBytes"), _("oldMD5")):
 			col = gtk.TreeViewColumn(i, rend, text=id)
 			self.tree.append_column(col)
 			id += 1
-
+			
+		# Colonna percentuale
 		rend = gtk.CellRendererProgress()
 		col = gtk.TreeViewColumn(_("%"), rend, value=8)
+		
 		self.tree.append_column(col)
 		
+		# Background su tutte le celle
 		for i in self.tree.get_columns():
 			i.add_attribute(i.get_cell_renderers()[0], 'cell_background-gdk', 10)
-			
+		
 		sw = gtk.ScrolledWindow()
 		sw.add(self.tree)
+		
+		vbox = gtk.VBox(False, 2)
 		vbox.pack_start(sw)
 		
 		bb = gtk.HButtonBox()
@@ -231,63 +232,195 @@ class WebUpdate(gtk.Window):
 		btn.set_sensitive(False)
 
 		self.get_btn = btn = utils.new_button(_("Controlla Aggiornamenti"), gtk.STOCK_APPLY)
-		btn.connect('clicked', self._on_get_list)
+		btn.connect('clicked', self.onGetList)
 		bb.pack_start(btn)
 		
 		vbox.pack_start(bb, False, False, 0)
-
-		self.status = gtk.Statusbar()
-		vbox.pack_start(self.status, False, False, 0)
-
-		self.add(vbox)
-		self.show_all()
 		
-		self.connect('delete-event', self._on_delete_event)
+		self.nb.append_page(vbox)
 		
 		self.file = None
 		self.it = None
+		
+		self.program_list = None
 		
 		self.icon_add = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "add.png"))
 		self.icon_del = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "del.png"))
 		self.icon_done = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "done.png"))
 		self.icon_error = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "error.png"))
+		self.icon_program = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "error.png"))
 		
 		self.color_add = gtk.gdk.color_parse('#70ef70')
 		self.color_del = gtk.gdk.color_parse('#ff8080')
 		self.color_done = gtk.gdk.color_parse('#bcfffc')
 		self.color_error = gtk.gdk.color_parse('#ff9060')
+		
+		# ---------------------------------------------------------------------------------------
 
 		# Dobbiamo inserire una checklist per scegliere quali componenti aggiornare.
 		# Quindi facciamo un for sulle entry del database locale per creare la lista
 		# dei vari programmi.
+		
+		vbox = gtk.VBox(False, 2)
+		
+		self.choice_store = gtk.ListStore(
+			gtk.gdk.Pixbuf, # icona
+			str, # nome programma
+			bool, # checked
+		)
+		
+		self.choice_tree = gtk.TreeView(self.choice_store)
+		
+		col = gtk.TreeViewColumn("", gtk.CellRendererPixbuf(), pixbuf=0)
+		col.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+		col.set_fixed_width(50)
+		
+		self.choice_tree.append_column(col)
+		
+		col = gtk.TreeViewColumn(_("Program"), gtk.CellRendererText(), text=1)
+		col.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+		
+		self.choice_tree.append_column(col)
+		
+		rend = gtk.CellRendererToggle()
+		rend.connect('toggled', self.onToggled, self.choice_tree.get_model())
+		
+		col = gtk.TreeViewColumn("", rend, active=2)
+		col.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+		col.set_fixed_width(50)
+		
+		self.choice_tree.append_column(col)
+		
+		sw = gtk.ScrolledWindow()
+		sw.add(self.choice_tree)
+		
+		vbox.pack_start(sw)
 
-
-	def _on_get_list(self, widget):
-		widget.set_sensitive(False)
-		self.store.clear()
-
-		# TODO: program_list
-
-		self._thread(self._populate_tree, LIST_FILE)
+		self.program_db = DatabaseWrapper(os.path.join(utils.DHOME_DIR, DB_FILE))
+		self.program_iters = []
+		
+		self.populateChoiceStore()
+		
+		bb = gtk.HButtonBox()
+		bb.set_layout(gtk.BUTTONBOX_END)
+		
+		btn = utils.new_button(_("Procedi con l'aggiornamento"), gtk.STOCK_GO_FORWARD)
+		btn.connect('clicked', self.onGoForward)
+		bb.pack_start(btn)
+		
+		vbox.pack_start(bb, False, False, 0)
+		
+		self.nb.append_page(vbox)
+		
+		self.show_all()
 	
-	def _thread(self, callback, url):
+	def populateChoiceStore(self):
+		for i in self.program_db.select("SELECT name FROM program")[0]:
+			self.choice_store.append([self.icon_program, i, False])
+	
+	def populateUpdateTree(self, p_list):
+		for i in p_list:
+			self.store.append(None,
+				[
+					self.icon_program,
+					i,
+					0,
+					0,
+					"",
+					0,
+					0,
+					"",
+					0,
+					False,
+					self.color_done
+				]
+			)
+		
+		self.program_list = p_list
+	
+	def onToggled(self, cell, path, model):
+		iter = model.get_iter((int(path),))
+		fixed = model.get_value(iter, 2)
+		fixed = not fixed
+		model.set(iter, 2, fixed)
+	
+	def onGoForward(self, widget):
+		# Facciamo un for sugli iter e controlliamo quali sottoprogrammi abbiamo abilitato
+		
+		model = self.choice_tree.get_model()
+		it = self.choice_tree.get_model().get_iter_first()
+		
+		p_list = []
+		
+		while it:
+			if model.get_value(it, 2):
+				p_list.append(model.get_value(it, 1))
+			it = model.iter_next(it)
+		
+		if len(p_list) == 0:
+			self.status.push(0, _("Seleziona almeno un componente per l'aggiornamento."))
+		else:
+			self.choice_store.clear()
+			self.nb.set_current_page(0)
+			self.populateUpdateTree(p_list)
+	
+	def onGetList(self, widget):
+		widget.set_sensitive(False)
+
+		idx = 0
+	
+		for i in self.program_list:
+			self.startThread(
+				self.populateProgramIter,
+				BASE_DIR + i + "-update.xml",
+				idx
+			)
+			idx += 1
+	
+	def startThread(self, callback, url, args=None):
 		print _(">> Creo un thread per %s") % url
-		f = Fetcher(callback, url)
+		f = Fetcher(callback, url, args)
 		f.setDaemon(True)
 		f.start()
+	
+	def getIterFromIndex(self, idx):
+		prog = self.program_list[idx]
+		
+		model = self.tree.get_model()
+		it = self.tree.get_model().get_iter_first()
+		
+		while it:
+			if model.get_value(it, 1) == prog:
+				return it
+			
+			it = model.iter_next(it)
+		
+		raise "ARGHHH No Iter!"
 
-	def _populate_tree(self, data, response):
+	def populateProgramIter(self, data, response, index):
 		self.get_btn.set_sensitive(True)
+		
+		it = self.getIterFromIndex(index)
+		model = self.tree.get_model()
+		
+		print response.status, data
 
 		if data == None:
-			self.status.push(0, _("Impossibile recuperare la lista dei file dal server."))
+			#self.status.push(0, _("Impossibile recuperare la lista dei file dal server."))
+			model.set_value(it, 10, self.color_error)
 			return
 
 		if response.status != 200:
-			self.status.push(0, _("Errore durante lo scaricamento della lista dei file(HTTP %d)") % response.status)
+			#self.status.push(0, _("Errore durante lo scaricamento della lista dei file(HTTP %d)") % response.status)
+			model.set_value(it, 10, self.color_error)
 			return
-		
+	
 		try:
+			# TODO: in pratica qui dovremmo leggere la revisione e piazzarla nella colonna
+			# infatti suggerisco di modificare il nome delle colonne eliminando la col per l'md5
+			# e inserirne solo 2 una per la revision nuova e una per la vecchia
+			# NOTA: una sola colonna contenente revision tipo 1.2-r2
+			report = ReportReader(data)
 			new_schema = SchemaUpdateInterface(parseString(data))
 			old_schema = SchemaUpdateInterface.getCurrentSchema()
 			
@@ -468,3 +601,7 @@ class WebUpdate(gtk.Window):
 			# La list.xml la si becca dal sito.. ergo no problem
 	def _on_delete_event(self, *w):
 		app.App.p_window["update"] = None
+
+if __name__ == "__main__":
+	WebUpdater()
+	gtk.main()

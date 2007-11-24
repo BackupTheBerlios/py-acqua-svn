@@ -46,6 +46,8 @@ DPLUG_DIR = os.path.join (DHOME_DIR, "plugins")
 DSKIN_DIR = os.path.join (DHOME_DIR, "skins")
 DPIXM_DIR = os.path.join (DHOME_DIR, "pixmaps")
 
+LOGO_PIXMAP = gtk.gdk.pixbuf_new_from_file(os.path.join(DPIXM_DIR, "logopyacqua.jpg"))
+
 def c_warn (x):
 	if os.name == 'posix': print " \033[1;33m***\033[1;0m", x
 	else: print " ***", x
@@ -485,22 +487,27 @@ def new_button (txt, stock=None, toggle=False):
 	else:
 		button = gtk.Button ()
 		
-	hb = gtk.HBox (0, False)
+	hb = gtk.HBox (False, 8)
 	
 	if stock:
 		img = gtk.Image()
 		img.set_from_stock (stock, gtk.ICON_SIZE_MENU)
 		#img.set_size_request (8, 6)
-		hb.add (img)
+		hb.pack_start(img, False, True, 0)
 		
 	if txt:
-		hb.add (gtk.Label (txt))
+		hb.pack_start(gtk.Label (txt), False, True, 0)
 		
 	button.add (hb)
 	
 	return button
 
-def set_icon (window):
+def align(widget, x, y=0.5):
+	al = gtk.Alignment(x, y)
+	al.add(widget)
+	return al
+
+def set_icon(window):
 	window.set_icon_from_file (os.path.join (DPIXM_DIR, "logopyacqua.jpg"))
 
 def make_thumb (twh, w, h):

@@ -67,6 +67,12 @@ class DatabaseWrapper(object):
 
 class DatabaseReader(DatabaseWrapper):
 	def __init__(self, program, database, main=None, ver=None, rev=None):
+		"""
+		program = nome del programma da cui leggere la version o None per nessuno
+		database = percorso del database
+		main, ver, rev = None se dobbiamo fare una read altrimenti si possono settare
+		"""
+		
 		DatabaseWrapper.__init__(self, database)
 		self.program = program
 
@@ -118,6 +124,9 @@ class DatabaseReader(DatabaseWrapper):
 				self.execute(schemas[i])
 	
 	def getVersions(self):
+		if not self.program:
+			return
+		
 		ret = self.select("SELECT * FROM program WHERE name=\"%s\"" % self.sanitize(self.program))
 
 		if len(ret) == 1:
