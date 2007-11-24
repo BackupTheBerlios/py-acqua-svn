@@ -90,6 +90,7 @@ void lcd_putc(unsigned char data, unsigned char mode) {
 	a=data&0x000F;
 	lcd_put_nibble(a);
 	lcd_e_strobe();
+	printf("a= %d", a);
 } 
 // Lcd initialization
 void lcdMcpInit(){

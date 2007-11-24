@@ -36,6 +36,7 @@
 #****************************************************
 
 from i2c_py import *
+from mcp23016 import *
 
 #include "stdio.h"
 #include "stdlib.h"

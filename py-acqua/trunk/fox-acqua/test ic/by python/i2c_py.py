@@ -1,5 +1,5 @@
 #I2C user space bit banging example
-#See: http://www.acmesystems.it/?id=10
+
 import sys
 import struct
 import fcntl
@@ -74,8 +74,17 @@ IO_SETGET_OUTPUT	= 0x13
 IO_SETINPUT   = 0x9
 IO_SETOUTPUT  = 0xA
 
-leggi = 1<<2
-leggi_2 = 1<<4
+I2C_CLOCK_HIGH = 1
+I2C_CLOCK_LOW = 0
+I2C_DATA_HIGH = 1
+I2C_DATA_LOW = 0
+
+CLOCK_LOW_TIME     =       8
+CLOCK_HIGH_TIME     =      8
+START_CONDITION_HOLD_TIME = 8
+STOP_CONDITION_HOLD_TIME  = 8
+ENABLE_OUTPUT = 0x01
+ENABLE_INPUT = 0x00
 
 
 I2C_DATA_LINE  = 1<<24
@@ -85,6 +94,11 @@ device = "/dev/gpiog"
 i2c_fd = os.open(device, os.O_RDWR)
 
 #Get the SDA line state
+def i2c_init():
+	if (i2c_open()<0):
+		printf("Apertura del bus I2C fallita\n")
+	else:
+		pass
 
 def i2c_getbit():
 	value=fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_READBITS));
@@ -93,22 +107,17 @@ def i2c_getbit():
 	else:
 		return 1
 
-
 # Set the SDA line as output
-
 def i2c_dir_out():
 	iomask = I2C_DATA_LINE
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), iomask);
 
-
 # Set the SDA line as input
-
 def i2c_dir_in():
 	iomask = I2C_DATA_LINE
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETINPUT), iomask);
 
 # Set the SDA line state
-
 def i2c_data(state):
 	if (state==1):
 		i2c_dir_in()
@@ -116,21 +125,15 @@ def i2c_data(state):
 		i2c_dir_out()
 		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_DATA_LINE);
 
-
-
 # Set the SCL line state
-
 def i2c_clk(state):
-	#print state
 	if (state==1):
 		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_CLOCK_LINE)
 	else:
 		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_CLRBITS), I2C_CLOCK_LINE)
 
-
 #Read a byte from I2C bus and send the ack sequence
 #Put islast = 1 is this is the last byte to receive from the slave
-
 def i2c_inbyte(islast):
 #Read data byte
 	i2c_clk(0)
@@ -143,8 +146,8 @@ def i2c_inbyte(islast):
 		if (i<7):
 			value <<= 1
 			i2c_clk(0)
-	if (islast==0):
 #Send Ack if is not the last byte to read
+	if (islast==0):
 		i2c_dir_out()
 		i2c_data(0)
 		i2c_clk(1)
@@ -155,37 +158,28 @@ def i2c_inbyte(islast):
 		i2c_dir_in()
 		i2c_clk(1)
 		i2c_clk(0)
-	return value;
+	return value
 
 
 
 # Open the GPIOB dev 
-
 def i2c_open():
-	#device = "/dev/gpiog"
-	#i2c_fd = os.open(device, os.O_RDWR)
-	#print i2c_fd
 	iomask = I2C_CLOCK_LINE
-	#print iomask
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), iomask)
 	iomask = I2C_DATA_LINE
-	#print iomask
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETINPUT), iomask)
 	fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETBITS), I2C_DATA_LINE)
 	i2c_dir_in()
 	i2c_clk(1)
 	return i2c_fd
 
-
 # Close the GPIOB dev 
-
 def i2c_close():
 	i2c_dir_in()
 	os.close(i2c_fd)
 
 
 # Send a start sequence to I2C bus
-
 def i2c_start():
 	i2c_clk(0)
 	i2c_data(1)
@@ -193,7 +187,6 @@ def i2c_start():
 	i2c_data(0)
 
 # Send a stop sequence to I2C bus
-
 def i2c_stop():
 	i2c_clk(0)
 	i2c_data(0)
@@ -203,7 +196,6 @@ def i2c_stop():
 # Send a byte to the I2C bus and return the ack sequence from slave
 # rtc
 #  0 = Nack, 1=Ack
-
 def i2c_outbyte(x):
 	i2c_clk(0)
 	for i in range(0, 8):
@@ -211,9 +203,9 @@ def i2c_outbyte(x):
 			 i2c_data(1)
 		else:
 			i2c_data(0)
-		i2c_clk(1)
-		i2c_clk(0)
-		x = int(x) << 1
+		i2c_clk(1)#
+		i2c_clk(0)#
+		x = int(x) << 1#
 	i2c_dir_in()
 	i2c_clk(1)
 	ack=i2c_getbit()
@@ -222,26 +214,3 @@ def i2c_outbyte(x):
 		 return 1
 	else:
 		return 0
-
-#def pin_uscita():
-#	if (i2c_open()<0):
-#		sys.exit(0)
-#		print "bus in2 fallita"
-#	else:
-#1<<16 | 1<<17 | 1<<18 | 1<<19 | 1<<20 | 1<<21 | 1<<22 | 1<<23;
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<16)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<17)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<18)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<19)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<20)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<21)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<22)
-#		time.sleep(1)
-#		fcntl.ioctl(i2c_fd, _IO(ETRAXGPIO_IOCTYPE, IO_SETOUTPUT), 1<<23)
-#		i2c_close()
