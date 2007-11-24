@@ -1,0 +1,27 @@
+# EESchema Netlist Version 1.1 created  24/11/2007-11:30:46
+(
+ ( 4748078F $noname  P1 CONN_2 {Lib=CONN_2}
+  (    1  ? )
+  (    2  ? )
+ )
+ ( 4748076E $noname  P2 CONN_14 {Lib=CONN_14}
+  (    1  ? )
+  (    2  ? )
+  (    3  ? )
+  (    4  ? )
+  (    5  ? )
+  (    6  ? )
+  (    7  ? )
+  (    8  ? )
+  (    9  ? )
+  (   10  ? )
+  (   11  ? )
+  (   12  ? )
+  (   13  ? )
+  (   14  ? )
+ )
+)
+*
+{ Pin List by Nets
+}
+#End

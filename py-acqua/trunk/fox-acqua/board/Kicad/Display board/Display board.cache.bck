@@ -1,0 +1,13 @@
+EESchema-DOCLIB  Version 2.0  24/11/2007-11:37:14
+#
+$CMP CONN_14
+D Symbole general de connexion
+K CONN
+$ENDCMP
+#
+$CMP CONN_2
+D Symbole general de connecteur
+K CONN
+$ENDCMP
+#
+#End Doc Library
