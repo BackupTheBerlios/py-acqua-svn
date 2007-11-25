@@ -1,0 +1,58 @@
+Idea di base (possibili evoluzioni)
+|-> Enter (o nome che si vuol dare al tasto)
+	|
+	|-> Prese
+	| 	|-> Impostazione presa 1 ( da considerarsi ripetutto per tutte le prese )
+	|	|		|-> Timer 
+	|	|		|-> Accensione manuale
+	|	|		|-> Attivazione/Disattivazione
+	|	|		|-> Nome a presa (questa va riportata ogni volta che viene visualizzato un elenco di prese) 
+	||	||		
+	|	|-> Installazione altra ciabatta
+	|	|		|-> Abilitazione abilitazione/disabilitazione seconda ciabatta
+	|	|		
+	|
+	|-> Sonde
+	|	|-> Sonda (Nome della sonda, i sottomenù vanno considerati per tutte le sonde che si installano) 
+	|	|	|-> Impostazione sonda
+	|	|	|		|-> valore di feedback
+	|	|	|		|-> Presa da attivare/Disattivare
+	|	|	|		|-> tempo limite per allarme
+	|	|	|		|-> valore limite per allarme
+	|	|	|		|			|->Max
+	|	|	|		|			|->Min
+	|	|	|		|-> Device per allarme
+	|	|	|		|		|-> SMS ( inserire i parametri per sms)
+	|	|	|		|		|-> E-Mail ( inserire i parametri per e-mail)
+	|	|	|		|-> Calibrazione sonda (questo dipende dal tipo di sonda)
+	||	||
+	|	|-> Abilitazione/Disattivazione sonda X
+	|-> Dati
+	|	|-> Trasmissioni dati
+	|	|		|-> E-mail
+	|	|		|-> SMS
+	|	|-> Device di archiviazione dati
+	|	|		|-> Memoria interna
+	|	|				|-> Cancellazione dati memorizzati
+	|	|		|-> Memoria USB memory
+	|	|		|-> Collegamento diretto con Py-Acqua
+	|	|-> Frequenza di archiviazione dati sonde
+	|	|		|-> Giornaliero/Settimanale
+	|	|		|-> 3 rivelazioni giornaliere
+	|	|		|-> Intervalli regolari (espresso in minuti)
+	|	|-> Archiviazione eventi 
+	|	|		|-> Attiva/Disattiva (default disattivata)
+	|-> Impostazioni 
+	|	|-> Data e ora
+	|	|-> Rete
+	|	|	|-> Ip
+	|	|	|-> Gateway
+	|	|	|-> DNS
+	|	|	|-> Ip Py-Acqua
+	|	|-> SMS 
+	|	|	|-> Numeri telefonici per allarme
+	|	|	|-> Numero telefonico per trasmissione dati
+	|	|	|-> Controllo da remoto via sms
+	|	|				|-> Numero da cui accettare comandi
+	|	|				|-> Attivazione/Disattivazione
+	|	|-> Reset sistema
