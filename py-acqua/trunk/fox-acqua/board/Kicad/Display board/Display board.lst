@@ -1,3 +1,23 @@
-ref	value	sheet number	sheet name	footprint
-P1	CONN_2	1;Principale	
-P2	CONN_14	1;Principale	
+EESchema (2007-07-09)  >> Creation date: 26/11/2007-13:33:06
+
+#Componenti (ordinati per riferimento)
+| C1         C           
+| R1         RES_VERTICALE
+| RN1        RN05        
+| SL1        M16         
+| SL2        M05         
+| SL3        M06         
+| U1         MCP23016    
+#Fine componenti
+
+#Componenti (ordinati per valore)
+| C            C1        
+| M05          SL2       
+| M06          SL3       
+| M16          SL1       
+| MCP23016     U1        
+| RES_VERTICALE R1        
+| RN05         RN1       
+#Fine componenti
+
+#Fine lista

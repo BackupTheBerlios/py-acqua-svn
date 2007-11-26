@@ -1,27 +1,106 @@
-# EESchema Netlist Version 1.1 created  24/11/2007-11:30:46
+# EESchema Netlist Version 1.1 created  26/11/2007-15:44:34
 (
- ( 4748078F $noname  P1 CONN_2 {Lib=CONN_2}
-  (    1  ? )
-  (    2  ? )
+ ( 474ACA86 C1-1 C1 C
+  ( 1 GND_1 )
+  ( 2 N-000025 )
  )
- ( 4748076E $noname  P2 CONN_14 {Lib=CONN_14}
-  (    1  ? )
-  (    2  ? )
-  (    3  ? )
-  (    4  ? )
-  (    5  ? )
-  (    6  ? )
-  (    7  ? )
-  (    8  ? )
-  (    9  ? )
-  (   10  ? )
-  (   11  ? )
-  (   12  ? )
-  (   13  ? )
-  (   14  ? )
+ ( 474ACE15 C1.5V8H C2 CAPAPOL
+  ( 1 VCC_1 )
+  ( 2 GND_1 )
+ )
+ ( 474ACE22 C1 C3 C
+  ( 1 GND_1 )
+  ( 2 VCC_1 )
+ )
+ ( 474AE6E3 SOT23GDS MOS1 NTR450NT1G
+  ( D N-000024 )
+  ( G N-000023 )
+  ( S GND_1 )
+ )
+ ( 474ACA5D C1 R1 RES_VERTICALE
+  ( 1 N-000025 )
+  ( 2 VCC_1 )
+ )
+ ( 474AAFE5 resistor-net-RN-6 RN1 RN05
+  ( 1 VCC_1 )
+  ( 2 N-000005 )
+  ( 3 N-000004 )
+  ( 4 N-000006 )
+  ( 5 N-000003 )
+  ( 6 N-000007 )
+ )
+ ( 474A9CA0 con-amp-quick-16P SL1 M16
+  ( 1 ? )
+  ( 2 VCC_1 )
+  ( 3 N-000012 )
+  ( 4 N-000021 )
+  ( 5 ? )
+  ( 6 N-000008 )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 ? )
+  ( 10 ? )
+  ( 11 N-000020 )
+  ( 12 N-000009 )
+  ( 13 N-000019 )
+  ( 14 N-000010 )
+  ( 15 VCC_1 )
+  ( 16 N-000024 )
+ )
+ ( 474A9DD3 con-amp-quick-05P SL2 M05
+  ( 1 GND_1 )
+  ( 2 N-000022 )
+  ( 3 VCC_1 )
+  ( 4 N-000011 )
+  ( 5 N-000012 )
+ )
+ ( 474AADD5 con-amp-quick-06P SL3 M06
+  ( 1 N-000005 )
+  ( 2 N-000004 )
+  ( 3 N-000006 )
+  ( 4 N-000003 )
+  ( 5 N-000007 )
+  ( 6 GND_1 )
+ )
+ ( 474AA535 28dip300 U1 MCP23016
+  ( 1 GND_1 )
+  ( 2 N-000007 )
+  ( 3 N-000003 )
+  ( 4 N-000006 )
+  ( 5 N-000004 )
+  ( 6 ? )
+  ( 7 N-000005 )
+  ( 8 GND_1 )
+  ( 9 N-000025 )
+  ( 10 ? )
+  ( 11 GND_1 )
+  ( 12 GND_1 )
+  ( 13 GND_1 )
+  ( 14 N-000022 )
+  ( 15 N-000011 )
+  ( 16 VCC_1 )
+  ( 17 VCC_1 )
+  ( 18 VCC_1 )
+  ( 19 GND_1 )
+  ( 20 VCC_1 )
+  ( 21 N-000023 )
+  ( 22 ? )
+  ( 23 N-000021 )
+  ( 24 N-000008 )
+  ( 25 N-000020 )
+  ( 26 N-000009 )
+  ( 27 N-000019 )
+  ( 28 N-000010 )
  )
 )
 *
-{ Pin List by Nets
+{ Allowed footprints by component:
+$component C2
+ CP*
+ SM*
+$endlist
+$component MOS1
+ SOT23GDS
+$endlist
+$endfootprintlist
 }
-#End

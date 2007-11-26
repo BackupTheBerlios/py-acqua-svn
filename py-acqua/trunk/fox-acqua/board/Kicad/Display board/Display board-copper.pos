@@ -1,0 +1,7 @@
+### Module positions - created on 26/11/2007-16:26:48 ###
+### Printed by PcbNew version PCBNEW (2007-07-09)
+## Unit = inches, Angle = deg.
+## Side : Copper
+# Ref    Val                  PosX       PosY        Rot     Side
+MOS1     NTR450NT1G           0.7100    -1.7600     270.0    Cu
+## End

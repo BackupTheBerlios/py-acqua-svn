@@ -1,13 +1,27 @@
-EESchema-DOCLIB  Version 2.0  24/11/2007-11:37:14
+EESchema-DOCLIB  Version 2.0  26/11/2007-16:29:57
 #
-$CMP CONN_14
-D Symbole general de connexion
-K CONN
+$CMP C
+D condensatore
+K cap
 $ENDCMP
 #
-$CMP CONN_2
-D Symbole general de connecteur
-K CONN
+$CMP CP
+D Condensateur polarise
+$ENDCMP
+#
+$CMP MCP23016
+D I2C Expander
+K MCP23016
+$ENDCMP
+#
+$CMP NTR450NT1G
+D MOSFET SMD TTL
+K NTR4501N
+$ENDCMP
+#
+$CMP RES_VERTICALE
+D resistenza verticale 1/4w
+K res vert
 $ENDCMP
 #
 #End Doc Library
