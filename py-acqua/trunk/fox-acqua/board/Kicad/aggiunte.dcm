@@ -1,0 +1,28 @@
+EESchema-DOCLIB  Version 2.0  Date: 26/11/2007-19:21:54
+#
+$CMP C
+D condensatore
+K cap
+$ENDCMP
+#
+$CMP FOXBOARD
+D Foxboard by Acme System
+K fox
+$ENDCMP
+#
+$CMP MCP23016
+D I2C Expander
+K MCP23016
+$ENDCMP
+#
+$CMP NTR450NT1G
+D MOSFET SMD TTL
+K NTR4501N
+$ENDCMP
+#
+$CMP RES_VERTICALE
+D resistenza verticale 1/4w
+K res vert
+$ENDCMP
+#
+#End Doc Library
