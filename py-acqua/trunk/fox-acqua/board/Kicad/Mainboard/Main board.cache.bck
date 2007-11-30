@@ -1,8 +1,42 @@
-EESchema-DOCLIB  Version 2.0  26/11/2007-19:22:20
+EESchema-DOCLIB  Version 2.0  30/11/2007-23:02:31
+#
+$CMP C
+D condensatore
+K cap
+$ENDCMP
+#
+$CMP CP
+D Condensateur polarise
+$ENDCMP
+#
+$CMP CR2032
+D 3V3
+K CR2032
+$ENDCMP
+#
+$CMP DS1302
+D I2C RTC
+K DS1302
+$ENDCMP
 #
 $CMP FOXBOARD
 D Foxboard by Acme System
 K fox
+$ENDCMP
+#
+$CMP LM2596-5V
+D 5V 3A 150KHZ SWITCHING
+K LM2596S-5V
+$ENDCMP
+#
+$CMP P82B96TD
+D Buffer bidirezionale
+K buffer
+$ENDCMP
+#
+$CMP RES_VERTICALE
+D resistenza verticale 1/4w
+K res vert
 $ENDCMP
 #
 #End Doc Library

@@ -1,3 +1,164 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 26/11/2007-18:28:27
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 30/11/2007-22:29:01
+
+BeginCmp
+TimeStamp = 474BF82B;
+Reference = BATT1;
+ValeurCmp = CR2032;
+IdModule  = R5;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BD436;
+Reference = C1;
+ValeurCmp = 100nF;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BD89D;
+Reference = C2;
+ValeurCmp = 1000uF;
+IdModule  = CPR10X16;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BD8A1;
+Reference = C3;
+ValeurCmp = 100nF;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BD8A7;
+Reference = C4;
+ValeurCmp = 220uF;
+IdModule  = QMONTRE;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BECAF;
+Reference = CONN1;
+ValeurCmp = SD;
+IdModule  = SD;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF0F7;
+Reference = D1;
+ValeurCmp = 1N4148;
+IdModule  = diode-DO35-10;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF118;
+Reference = D2;
+ValeurCmp = 1N4007;
+IdModule  = diode-DO41-10;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BEB63;
+Reference = D3;
+ValeurCmp = 1N5820;
+IdModule  = diode-DO201-15;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BD410;
+Reference = J1;
+ValeurCmp = JACK_2P;
+IdModule  = connect-PAD-02;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BE6E8;
+Reference = L1;
+ValeurCmp = LQH55DN330M03;
+IdModule  = SELF-WE-PD3S;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF6EA;
+Reference = R1;
+ValeurCmp = 3K9;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF6F3;
+Reference = R2;
+ValeurCmp = 3K9;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF6AE;
+Reference = R3;
+ValeurCmp = 1K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF6B4;
+Reference = R4;
+ValeurCmp = 1K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF776;
+Reference = R5;
+ValeurCmp = 1K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BE7A1;
+Reference = SL1;
+ValeurCmp = M04;
+IdModule  = con-amp-quick-04P;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF617;
+Reference = SL2;
+ValeurCmp = M04;
+IdModule  = con-amp-quick-04P;
+EndCmp
+
+BeginCmp
+TimeStamp = 474B1CE4;
+Reference = U1;
+ValeurCmp = FOXBOARD;
+IdModule  = foxboard;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BDA61;
+Reference = U2;
+ValeurCmp = LM2596-5V;
+IdModule  = DPAK5;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF012;
+Reference = U3;
+ValeurCmp = DS1302;
+IdModule  = 8DIP-ELL300;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF572;
+Reference = U4;
+ValeurCmp = P82B96TD;
+IdModule  = SO8E;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF0BD;
+Reference = X1;
+ValeurCmp = QUARTZCMS4;
+IdModule  = QMONTRE;
+EndCmp
 
 EndListe
