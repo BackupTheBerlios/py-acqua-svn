@@ -1,0 +1,24 @@
+ref	value	sheet number	sheet name	footprint
+BATT1	CR2032	
+C1	100nF	
+C2	1000uF	
+C3	100nF	
+C4	220uF	
+CONN1	SD	
+D1	LL1N4148	diode-DO35-10
+D2	1N4007	diode-DO41-10
+D3	1N5820	diode-DO201-15
+J1	JACK_2P	
+L1	LQH55DN330M03	
+R1	3K9	
+R2	3K9	
+R3	1K	
+R4	1K	
+R5	1K	
+SL1	M04	con-amp-quick-04P
+SL2	M04	con-amp-quick-04P
+U1	FOXBOARD	
+U2	LM2596-5V	
+U3	DS1302	
+U4	P82B96TD	
+X1	32768	

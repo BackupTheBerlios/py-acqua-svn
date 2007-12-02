@@ -5,7 +5,7 @@ EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title "Main board"
-Date "30 nov 2007"
+Date "2 dec 2007"
 Rev "1.0"
 Comp "py-acqua"
 Comment1 ""
@@ -13,88 +13,36 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Kmarq B 3850 5350 "Attenzione: il pin BiDi non è connesso" F=1
-Kmarq B 2700 6650 "Attenzione: il pin power_in non è connesso" F=1
-Kmarq B 5150 2450 "Warning Pin power_in not driven (Net 82)" F=1
-Kmarq B 2350 1650 "Warning Pin power_in not driven (Net 79)" F=1
-Kmarq B 5150 4200 "Warning Pin power_in not driven (Net 77)" F=1
-Kmarq B 5150 4300 "Warning Pin power_in not driven (Net 76)" F=1
-Kmarq B 6150 5050 "Warning Pin passive not driven (Net 74)" F=1
-Kmarq B 3800 6750 "Warning Pin power_in not driven (Net 71)" F=1
-Kmarq B 5150 4400 "Warning Pin power_in not driven (Net 65)" F=1
-Kmarq B 2350 2400 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 2350 2600 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 3200 6950 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 5800 5900 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 5700 5900 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 5150 2550 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-Kmarq B 6850 4950 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
-NoConn ~ 3850 1850
-NoConn ~ 3850 1750
-NoConn ~ 3850 1550
-NoConn ~ 3850 1950
-NoConn ~ 3850 2050
-NoConn ~ 3850 2150
-NoConn ~ 3850 2250
-NoConn ~ 3850 2350
-NoConn ~ 3850 2450
-NoConn ~ 3850 2550
-NoConn ~ 3850 2650
-NoConn ~ 3850 2850
-NoConn ~ 3850 2950
-NoConn ~ 3850 3050
-NoConn ~ 3850 3150
-NoConn ~ 3850 3250
-NoConn ~ 3850 3350
-NoConn ~ 3850 3450
-NoConn ~ 3850 4350
-NoConn ~ 3850 4250
-NoConn ~ 3850 4150
-NoConn ~ 3850 4050
-NoConn ~ 3850 3950
-NoConn ~ 3850 3850
-NoConn ~ 3850 3750
-NoConn ~ 3850 3650
-NoConn ~ 3850 4450
-NoConn ~ 3850 4550
-NoConn ~ 3850 4650
-NoConn ~ 3850 4750
-NoConn ~ 3850 4850
-NoConn ~ 3850 4950
-NoConn ~ 3850 5050
-NoConn ~ 3850 5150
-NoConn ~ 3850 5850
-NoConn ~ 3850 5950
-NoConn ~ 3850 6050
-NoConn ~ 3850 6150
-NoConn ~ 2400 4700
-NoConn ~ 2400 4800
-NoConn ~ 2400 4900
-NoConn ~ 2400 5000
-NoConn ~ 2400 5150
-NoConn ~ 2400 5250
-NoConn ~ 2400 5350
-NoConn ~ 2400 5450
-NoConn ~ 2400 4500
-NoConn ~ 2400 4400
-NoConn ~ 2400 4300
-NoConn ~ 2400 4200
-NoConn ~ 2400 4100
-NoConn ~ 2400 4000
-NoConn ~ 2400 3650
-NoConn ~ 2400 3550
-NoConn ~ 2400 3450
-NoConn ~ 2400 3350
-NoConn ~ 2400 3250
-NoConn ~ 2400 3150
-NoConn ~ 2400 3050
-NoConn ~ 2400 2950
-Text Label 6650 4950 0    60   ~
-GND
 Wire Wire Line
-	6850 4950 6650 4950
+	7250 4300 7250 4400
 Wire Wire Line
-	6400 5050 6350 5050
+	5550 2100 5550 1950
+Wire Wire Line
+	5900 2000 5700 2000
+Wire Wire Line
+	5700 2000 5700 1500
+Wire Wire Line
+	5150 3300 4600 3300
+Wire Wire Line
+	5150 3100 4600 3100
+Wire Wire Line
+	5950 4250 6150 4250
+Wire Wire Line
+	5850 3850 5600 3850
+Wire Wire Line
+	5600 3850 5600 3650
+Wire Wire Line
+	5950 3250 6200 3250
+Wire Wire Line
+	5850 5050 5500 5050
+Wire Wire Line
+	5900 2200 5150 2200
+Wire Wire Line
+	7750 4300 7750 4400
+Wire Wire Line
+	8000 4900 7800 4900
+Wire Wire Line
+	7550 5000 7500 5000
 Wire Wire Line
 	4250 900  4250 850 
 Wire Wire Line
@@ -106,18 +54,14 @@ Wire Wire Line
 	4000 1300 4000 2750
 Connection ~ 5550 2100
 Wire Wire Line
-	5550 2100 5550 1950
-Wire Wire Line
 	4400 2200 4400 2750
 Wire Wire Line
 	4400 2200 4500 2200
 Connection ~ 5250 2050
 Wire Wire Line
-	5700 2100 5250 2100
+	5250 1950 5250 2100
 Wire Wire Line
-	5250 2100 5250 1950
-Wire Wire Line
-	5700 2300 5700 2550
+	5700 2550 5700 2300
 Wire Wire Line
 	5700 2550 5150 2550
 Wire Wire Line
@@ -141,8 +85,6 @@ Wire Wire Line
 Wire Wire Line
 	2000 6650 1800 6650
 Wire Wire Line
-	6100 4250 5950 4250
-Wire Wire Line
 	5850 4950 5600 4950
 Wire Wire Line
 	5600 4950 5600 4750
@@ -165,10 +107,6 @@ Wire Wire Line
 Connection ~ 3900 7200
 Wire Wire Line
 	3900 7050 3900 7200
-Wire Wire Line
-	2350 1650 2250 1650
-Wire Wire Line
-	2250 1650 2250 1550
 Wire Wire Line
 	5500 7300 5350 7300
 Wire Wire Line
@@ -246,9 +184,6 @@ Wire Wire Line
 	5350 6750 5350 7300
 Connection ~ 5350 7000
 Wire Wire Line
-	2150 1550 2350 1550
-Connection ~ 2250 1550
-Wire Wire Line
 	3900 6750 3900 6850
 Wire Wire Line
 	5700 6000 5950 6000
@@ -266,17 +201,9 @@ Wire Wire Line
 Wire Wire Line
 	5700 4850 5850 4850
 Wire Wire Line
-	5500 4750 5500 5050
+	5500 5050 5500 4750
 Wire Wire Line
-	5500 5050 6150 5050
-Wire Wire Line
-	5950 4350 5950 4450
-Wire Wire Line
-	5950 4450 6750 4450
-Wire Wire Line
-	6750 4450 6750 4250
-Wire Wire Line
-	6750 4250 6700 4250
+	7300 5000 6650 5000
 Wire Wire Line
 	2650 6650 2200 6650
 Wire Wire Line
@@ -293,8 +220,6 @@ Wire Wire Line
 	5250 2300 5150 2300
 Wire Wire Line
 	5150 2450 5250 2450
-Wire Wire Line
-	5700 2200 5150 2200
 Connection ~ 5250 2200
 Wire Wire Line
 	5400 2200 5400 1950
@@ -307,28 +232,185 @@ Wire Wire Line
 	4250 1300 4250 1650
 Connection ~ 4250 1650
 Wire Wire Line
-	5700 2000 5700 1500
-Wire Wire Line
-	5700 1500 5400 1500
+	5400 1500 5700 1500
 Connection ~ 5550 1500
 Wire Wire Line
-	6850 5050 6800 5050
+	8000 5000 7950 5000
+Wire Wire Line
+	7150 4300 7000 4300
+Wire Wire Line
+	5700 2300 5900 2300
+Wire Wire Line
+	5950 3150 6200 3150
+Wire Wire Line
+	5700 3650 5700 3750
+Wire Wire Line
+	5700 3750 5850 3750
+Wire Wire Line
+	5500 3650 5500 3950
+Wire Wire Line
+	5950 4350 6150 4350
+Wire Wire Line
+	5150 3200 4600 3200
+Wire Wire Line
+	5500 3950 5850 3950
+Wire Wire Line
+	5250 2100 5900 2100
+Wire Wire Line
+	2350 1650 2050 1650
+Wire Wire Line
+	7250 4400 7000 4400
+$Comp
+L M02 SL3
+U 1 1 47532E91
+P 7150 4000
+F 0 "SL3" H 7050 4230 50  0000 L B
+F 1 "XT" H 7050 3800 50  0000 L B
+F 2 "con-amp-quick-02P" H 7150 4150 50  0001 C C
+	1    7150 4000
+	0    1    1    0   
+$EndComp
+NoConn ~ 2350 1550
+Text Label 4600 3300 0    60   ~
+RTC-SDA
+Text Label 4600 3200 0    60   ~
+RTC-RST
+Text Label 4600 3100 0    60   ~
+RTC-SCL
+Text Label 6150 4350 0    60   ~
+X2
+Text Label 6150 4250 0    60   ~
+X1
+Text Label 5850 3950 0    60   ~
+BATT
+Text Label 5850 3850 0    60   ~
+3V3
+Text Label 5850 3750 0    60   ~
+GND
+Text Label 6200 3250 0    60   ~
+X2
+Text Label 6200 3150 0    60   ~
+X1
+Text Label 7000 4400 0    60   ~
+X2
+Text Label 7000 4300 0    60   ~
+X1
+Text Label 6650 5000 0    60   ~
+BATT
+Text Label 5850 5050 0    60   ~
+BATT
+$Comp
+L DS1302 U5
+U 1 1 4753187C
+P 4900 3650
+F 0 "U5" H 5300 4400 60  0000 C C
+F 1 "DS1302" H 5450 4300 60  0000 C C
+	1    4900 3650
+	1    0    0    -1  
+$EndComp
+$Comp
+L JACK_2P J1
+U 1 1 474BD410
+P 1350 6750
+F 0 "J1" H 1000 6550 60  0000 C C
+F 1 "JACK_2P" H 1200 7000 60  0000 C C
+	1    1350 6750
+	1    0    0    1   
+$EndComp
+Kmarq B 3850 5350 "Attenzione: il pin BiDi non è connesso" F=1
+Kmarq B 2700 6650 "Attenzione: il pin power_in non è connesso" F=1
+Kmarq B 5150 2450 "Warning Pin power_in not driven (Net 82)" F=1
+Kmarq B 2350 1650 "Warning Pin power_in not driven (Net 79)" F=1
+Kmarq B 5150 4200 "Warning Pin power_in not driven (Net 77)" F=1
+Kmarq B 5150 4300 "Warning Pin power_in not driven (Net 76)" F=1
+Kmarq B 7300 5000 "Warning Pin passive not driven (Net 74)" F=1
+Kmarq B 3800 6750 "Warning Pin power_in not driven (Net 71)" F=1
+Kmarq B 5150 4400 "Warning Pin power_in not driven (Net 65)" F=1
+Kmarq B 2350 2400 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 2350 2600 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 3200 6950 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 5800 5900 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 5700 5900 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 5150 2550 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+Kmarq B 8000 4900 "Errore: pin power_out connesso al pin power_out (net 61)" F=2
+NoConn ~ 3850 1850
+NoConn ~ 3850 1750
+NoConn ~ 3850 1550
+NoConn ~ 3850 1950
+NoConn ~ 3850 2050
+NoConn ~ 3850 2150
+NoConn ~ 3850 2250
+NoConn ~ 3850 2350
+NoConn ~ 3850 2450
+NoConn ~ 3850 2550
+NoConn ~ 3850 2650
+NoConn ~ 3850 2850
+NoConn ~ 3850 2950
+NoConn ~ 3850 3050
+NoConn ~ 3850 3150
+NoConn ~ 3850 3250
+NoConn ~ 3850 3350
+NoConn ~ 3850 3450
+NoConn ~ 3850 4350
+NoConn ~ 3850 4250
+NoConn ~ 3850 4150
+NoConn ~ 3850 4050
+NoConn ~ 3850 3950
+NoConn ~ 3850 3850
+NoConn ~ 3850 3750
+NoConn ~ 3850 3650
+NoConn ~ 3850 4450
+NoConn ~ 3850 4550
+NoConn ~ 3850 4650
+NoConn ~ 3850 4750
+NoConn ~ 3850 4850
+NoConn ~ 3850 4950
+NoConn ~ 3850 5050
+NoConn ~ 3850 5150
+NoConn ~ 3850 5850
+NoConn ~ 3850 5950
+NoConn ~ 3850 6050
+NoConn ~ 3850 6150
+NoConn ~ 2400 4700
+NoConn ~ 2400 4800
+NoConn ~ 2400 4900
+NoConn ~ 2400 5000
+NoConn ~ 2400 5150
+NoConn ~ 2400 5250
+NoConn ~ 2400 5350
+NoConn ~ 2400 5450
+NoConn ~ 2400 4500
+NoConn ~ 2400 4400
+NoConn ~ 2400 4300
+NoConn ~ 2400 4200
+NoConn ~ 2400 4100
+NoConn ~ 2400 4000
+NoConn ~ 2400 3650
+NoConn ~ 2400 3550
+NoConn ~ 2400 3450
+NoConn ~ 2400 3350
+NoConn ~ 2400 3250
+NoConn ~ 2400 3150
+NoConn ~ 2400 3050
+NoConn ~ 2400 2950
+Text Label 7800 4900 0    60   ~
+GND
 $Comp
 L CR2032 BATT1
 U 1 1 474BF82B
-P 7100 4750
-F 0 "BATT1" H 7100 4750 60  0000 C C
-F 1 "CR2032" H 7100 4750 60  0000 C C
-	1    7100 4750
+P 8250 4700
+F 0 "BATT1" H 7950 4900 60  0000 C C
+F 1 "CR2032" H 7900 5000 60  0000 C C
+	1    8250 4700
 	-1   0    0    1   
 $EndComp
 $Comp
 L RES_VERTICALE R5
 U 1 1 474BF776
-P 6600 5200
-F 0 "R5" H 6600 5200 60  0000 C C
-F 1 "1K" H 6600 5200 60  0000 C C
-	1    6600 5200
+P 7750 5150
+F 0 "R5" H 7750 5200 60  0000 C C
+F 1 "1K" H 7750 5100 60  0000 C C
+	1    7750 5150
 	1    0    0    -1  
 $EndComp
 Text Label 4150 850  0    60   ~
@@ -337,8 +419,8 @@ $Comp
 L RES_VERTICALE R2
 U 1 1 474BF6F3
 P 4100 1100
-F 0 "R2" H 4100 1100 60  0000 C C
-F 1 "3K9" H 4100 1100 60  0000 C C
+F 0 "R2" V 4050 1400 60  0000 C C
+F 1 "3K9" V 4150 1450 60  0000 C C
 	1    4100 1100
 	0    1    1    0   
 $EndComp
@@ -346,8 +428,8 @@ $Comp
 L RES_VERTICALE R1
 U 1 1 474BF6EA
 P 3850 1100
-F 0 "R1" H 3850 1100 60  0000 C C
-F 1 "3K9" H 3850 1100 60  0000 C C
+F 0 "R1" V 3800 1100 60  0000 C C
+F 1 "3K9" V 3900 1100 60  0000 C C
 	1    3850 1100
 	0    1    1    0   
 $EndComp
@@ -357,8 +439,8 @@ $Comp
 L RES_VERTICALE R4
 U 1 1 474BF6B4
 P 5700 1750
-F 0 "R4" V 5700 1750 60  0000 C C
-F 1 "1K" H 5700 1750 60  0000 C C
+F 0 "R4" V 5750 1650 60  0000 C C
+F 1 "1K" V 5650 1650 60  0000 C C
 	1    5700 1750
 	0    -1   -1   0   
 $EndComp
@@ -366,8 +448,8 @@ $Comp
 L RES_VERTICALE R3
 U 1 1 474BF6AE
 P 5250 1750
-F 0 "R3" H 5250 1750 60  0000 C C
-F 1 "1K" V 5250 1750 60  0000 C C
+F 0 "R3" V 5200 1750 60  0000 C C
+F 1 "1K" V 5300 1750 60  0000 C C
 	1    5250 1750
 	0    1    1    0   
 $EndComp
@@ -376,11 +458,11 @@ I2C
 $Comp
 L M04 SL2
 U 1 1 474BF617
-P 5900 2100
-F 0 "SL2" H 5700 2430 50  0000 L B
-F 1 "M04" H 5700 1800 50  0000 L B
-F 2 "con-amp-quick-04P" H 5900 2250 50  0001 C C
-	1    5900 2100
+P 6100 2100
+F 0 "SL2" H 5900 2430 50  0000 L B
+F 1 "M04" H 5900 1800 50  0000 L B
+F 2 "con-amp-quick-04P" H 6100 2250 50  0001 C C
+	1    6100 2100
 	-1   0    0    1   
 $EndComp
 Text Label 5250 2450 0    60   ~
@@ -391,8 +473,8 @@ $Comp
 L P82B96TD U4
 U 1 1 474BF572
 P 4400 1800
-F 0 "U4" H 4400 1800 60  0000 C C
-F 1 "P82B96TD" H 4400 1800 60  0000 C C
+F 0 "U4" H 4600 1900 60  0000 C C
+F 1 "P82B96TD" H 4800 1800 60  0000 C C
 	1    4400 1800
 	1    0    0    -1  
 $EndComp
@@ -412,8 +494,8 @@ $Comp
 L 1N4004 D2
 U 1 1 474BF118
 P 2100 6650
-F 0 "D2" H 2200 6669 50  0000 L B
-F 1 "1N4007" H 2200 6559 50  0000 L B
+F 0 "D2" H 2050 6850 50  0000 L B
+F 1 "1N4007" H 2050 6750 50  0000 L B
 F 2 "diode-DO41-10" H 2100 6800 50  0001 C C
 	1    2100 6650
 	1    0    0    -1  
@@ -421,21 +503,12 @@ $EndComp
 $Comp
 L 1N4148 D1
 U 1 1 474BF0F7
-P 6250 5050
-F 0 "D1" H 6350 5069 50  0000 L B
-F 1 "1N4148" H 6350 4959 50  0000 L B
-F 2 "diode-DO35-10" H 6250 5200 50  0001 C C
-	1    6250 5050
+P 7400 5000
+F 0 "D1" H 7500 5019 50  0000 L B
+F 1 "LL1N4148" H 7300 5100 50  0000 L B
+F 2 "diode-DO35-10" H 7400 5150 50  0001 C C
+	1    7400 5000
 	-1   0    0    1   
-$EndComp
-$Comp
-L QUARTZCMS4 X1
-U 1 1 474BF0BD
-P 6400 4250
-F 0 "X1" H 6400 4400 60  0000 C C
-F 1 "QUARTZCMS4" H 6400 4100 60  0000 C C
-	1    6400 4250
-	1    0    0    -1  
 $EndComp
 Text Label 5850 4950 0    60   ~
 3V3
@@ -445,8 +518,8 @@ $Comp
 L DS1302 U3
 U 1 1 474BF012
 P 4900 4750
-F 0 "U3" H 4900 4750 60  0000 C C
-F 1 "DS1302" H 4900 4750 60  0000 C C
+F 0 "U3" H 4900 4950 60  0000 C C
+F 1 "DS1302" H 5000 4850 60  0000 C C
 	1    4900 4750
 	1    0    0    -1  
 $EndComp
@@ -474,8 +547,8 @@ $Comp
 L SD CONN1
 U 1 1 474BECAF
 P 5100 5350
-F 0 "CONN1" H 5100 5350 60  0000 C C
-F 1 "SD" H 5100 5350 60  0000 C C
+F 0 "CONN1" H 5600 5400 60  0000 C C
+F 1 "SD" H 5300 5400 60  0000 C C
 	1    5100 5350
 	1    0    0    -1  
 $EndComp
@@ -483,15 +556,15 @@ $Comp
 L DIODE-DO201-15 D3
 U 1 1 474BEB63
 P 3900 6950
-F 0 "D3" H 4000 6969 50  0000 L B
-F 1 "1N5820" H 4000 6859 50  0000 L B
+F 0 "D3" H 3750 6850 50  0000 L B
+F 1 "1N5820" H 3700 6750 50  0000 L B
 F 2 "diode-DO201-15" H 3900 7100 50  0001 C C
 	1    3900 6950
 	0    -1   -1   0   
 $EndComp
 Text Notes 6000 7200 0    60   ~
 ALIM FOX
-Text Label 2150 1550 0    60   ~
+Text Label 2050 1650 0    60   ~
 5V
 Text Label 3550 7200 0    60   ~
 GND
@@ -518,8 +591,8 @@ $Comp
 L LM2596-5V U2
 U 1 1 474BDA61
 P 2600 6450
-F 0 "U2" H 2600 6450 60  0000 C B
-F 1 "LM2596-5V" H 2600 6450 60  0000 C C
+F 0 "U2" H 2850 6500 60  0000 C B
+F 1 "LM2596-5V" H 3100 6450 60  0000 C C
 	1    2600 6450
 	1    0    0    -1  
 $EndComp
@@ -536,8 +609,8 @@ $Comp
 L C C3
 U 1 1 474BD8A1
 P 4500 6900
-F 0 "C3" H 4500 6900 60  0000 C C
-F 1 "100nF" V 4500 6900 60  0000 C C
+F 0 "C3" V 4550 6700 60  0000 C C
+F 1 "100nF" V 4650 6800 60  0000 C C
 	1    4500 6900
 	0    1    1    0   
 $EndComp
@@ -554,19 +627,10 @@ $Comp
 L C C1
 U 1 1 474BD436
 P 2400 6900
-F 0 "C1" V 2400 6900 60  0000 C C
-F 1 "100nF" V 2400 6900 60  0000 C C
+F 0 "C1" V 2400 6750 60  0000 C C
+F 1 "100nF" V 2500 6800 60  0000 C C
 	1    2400 6900
 	0    1    1    0   
-$EndComp
-$Comp
-L JACK_2P J1
-U 1 1 474BD410
-P 1350 6750
-F 0 "J1" H 1000 6550 60  0000 C C
-F 1 "JACK_2P" H 1200 7000 60  0000 C C
-	1    1350 6750
-	1    0    0    1   
 $EndComp
 Text Label 2050 2400 0    60   ~
 GND
@@ -576,8 +640,8 @@ $Comp
 L FOXBOARD U1
 U 1 1 474B1CE4
 P 3100 3550
-F 0 "U1" H 3100 3550 60  0000 C C
-F 1 "FOXBOARD" H 3100 3550 60  0000 C C
+F 0 "U1" H 2600 5900 60  0000 C C
+F 1 "FOXBOARD" H 2800 5750 60  0000 C C
 	1    3100 3550
 	1    0    0    -1  
 $EndComp

@@ -1,70 +1,70 @@
-Cmp-Mod V01 Genere par PcbNew le 26/11/2007-16:14:28
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 1/12/2007-14:19:04
 
 BeginCmp
-TimeStamp = 474A9CA0
-Reference = SL1;
-ValeurCmp = M16;
-IdModule  = con-amp-quick-16P;
-EndCmp
-
-BeginCmp
-TimeStamp = 474A9DD3
-Reference = SL2;
-ValeurCmp = M05;
-IdModule  = con-amp-quick-05P;
-EndCmp
-
-BeginCmp
-TimeStamp = 474AADD5
-Reference = SL3;
-ValeurCmp = M06;
-IdModule  = con-amp-quick-06P;
-EndCmp
-
-BeginCmp
-TimeStamp = 474AAFE5
-Reference = RN1;
-ValeurCmp = RN05;
-IdModule  = resistor-net-RN-6;
-EndCmp
-
-BeginCmp
-TimeStamp = 474ACE22
-Reference = C3;
-ValeurCmp = C;
-IdModule  = C1;
-EndCmp
-
-BeginCmp
-TimeStamp = 474ACE15
-Reference = C2;
-ValeurCmp = CAPAPOL;
-IdModule  = C1.5V8H;
-EndCmp
-
-BeginCmp
-TimeStamp = 474ACA86
+TimeStamp = 474ACA86;
 Reference = C1;
 ValeurCmp = C;
-IdModule  = C1-1;
+IdModule  = SM0805;
 EndCmp
 
 BeginCmp
-TimeStamp = 474ACA5D
-Reference = R1;
-ValeurCmp = RES_VERTICALE;
-IdModule  = C1;
+TimeStamp = 474ACE15;
+Reference = C2;
+ValeurCmp = CAPAPOL;
+IdModule  = SM1206POL;
 EndCmp
 
 BeginCmp
-TimeStamp = 474AE6E3
+TimeStamp = 474ACE22;
+Reference = C3;
+ValeurCmp = C;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474AE6E3;
 Reference = MOS1;
 ValeurCmp = NTR450NT1G;
 IdModule  = SOT23GDS;
 EndCmp
 
 BeginCmp
-TimeStamp = 474AA535
+TimeStamp = 474ACA5D;
+Reference = R1;
+ValeurCmp = RES_VERTICALE;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 474AAFE5;
+Reference = RN1;
+ValeurCmp = RN05;
+IdModule  = resistor-net-RN-6;
+EndCmp
+
+BeginCmp
+TimeStamp = 474A9CA0;
+Reference = SL1;
+ValeurCmp = M16;
+IdModule  = con-amp-quick-16P;
+EndCmp
+
+BeginCmp
+TimeStamp = 474A9DD3;
+Reference = SL2;
+ValeurCmp = M05;
+IdModule  = con-amp-quick-05P;
+EndCmp
+
+BeginCmp
+TimeStamp = 474AADD5;
+Reference = SL3;
+ValeurCmp = M06;
+IdModule  = con-amp-quick-06P;
+EndCmp
+
+BeginCmp
+TimeStamp = 474AA535;
 Reference = U1;
 ValeurCmp = MCP23016;
 IdModule  = 28dip300;

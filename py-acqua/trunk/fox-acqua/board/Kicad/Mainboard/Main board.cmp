@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 30/11/2007-22:29:01
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 2/12/2007-22:13:22
 
 BeginCmp
 TimeStamp = 474BF82B;
@@ -45,8 +45,8 @@ EndCmp
 BeginCmp
 TimeStamp = 474BF0F7;
 Reference = D1;
-ValeurCmp = 1N4148;
-IdModule  = diode-DO35-10;
+ValeurCmp = LL1N4148;
+IdModule  = diode-MINIMELF;
 EndCmp
 
 BeginCmp
@@ -67,7 +67,7 @@ BeginCmp
 TimeStamp = 474BD410;
 Reference = J1;
 ValeurCmp = JACK_2P;
-IdModule  = connect-PAD-02;
+IdModule  = con-conrad-733989-5;
 EndCmp
 
 BeginCmp
@@ -155,10 +155,17 @@ IdModule  = SO8E;
 EndCmp
 
 BeginCmp
+TimeStamp = 4753187C;
+Reference = U5;
+ValeurCmp = DS1302;
+IdModule  = SO8E;
+EndCmp
+
+BeginCmp
 TimeStamp = 474BF0BD;
 Reference = X1;
-ValeurCmp = QUARTZCMS4;
-IdModule  = QMONTRE;
+ValeurCmp = 32768;
+IdModule  = con-amp-quick-02PA;
 EndCmp
 
 EndListe
