@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 2/12/2007-22:13:22
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 5/12/2007-20:52:56
 
 BeginCmp
 TimeStamp = 474BF82B;
@@ -52,7 +52,7 @@ EndCmp
 BeginCmp
 TimeStamp = 474BF118;
 Reference = D2;
-ValeurCmp = 1N4007;
+ValeurCmp = 1N5408;
 IdModule  = diode-DO41-10;
 EndCmp
 
@@ -73,22 +73,22 @@ EndCmp
 BeginCmp
 TimeStamp = 474BE6E8;
 Reference = L1;
-ValeurCmp = LQH55DN330M03;
-IdModule  = SELF-WE-PD3S;
+ValeurCmp = 3631B330LL;
+IdModule  = tyco_coil;
 EndCmp
 
 BeginCmp
 TimeStamp = 474BF6EA;
 Reference = R1;
 ValeurCmp = 3K9;
-IdModule  = SM0805;
+IdModule  = SM0603;
 EndCmp
 
 BeginCmp
 TimeStamp = 474BF6F3;
 Reference = R2;
 ValeurCmp = 3K9;
-IdModule  = SM0805;
+IdModule  = SM0603;
 EndCmp
 
 BeginCmp
@@ -127,6 +127,13 @@ IdModule  = con-amp-quick-04P;
 EndCmp
 
 BeginCmp
+TimeStamp = 47532E91;
+Reference = SL3;
+ValeurCmp = XT;
+IdModule  = con-amp-quick-02P;
+EndCmp
+
+BeginCmp
 TimeStamp = 474B1CE4;
 Reference = U1;
 ValeurCmp = FOXBOARD;
@@ -159,13 +166,6 @@ TimeStamp = 4753187C;
 Reference = U5;
 ValeurCmp = DS1302;
 IdModule  = SO8E;
-EndCmp
-
-BeginCmp
-TimeStamp = 474BF0BD;
-Reference = X1;
-ValeurCmp = 32768;
-IdModule  = con-amp-quick-02PA;
 EndCmp
 
 EndListe
