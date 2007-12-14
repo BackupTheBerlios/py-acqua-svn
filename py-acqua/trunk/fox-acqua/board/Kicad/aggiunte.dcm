@@ -1,4 +1,4 @@
-EESchema-DOCLIB  Version 2.0  Date: 30/11/2007-22:55:28
+EESchema-DOCLIB  Version 2.0  Date: 14/12/2007-22:45:40
 #
 $CMP C
 D condensatore
@@ -43,6 +43,11 @@ $ENDCMP
 $CMP RES_VERTICALE
 D resistenza verticale 1/4w
 K res vert
+$ENDCMP
+#
+$CMP TRANSZORB_SMD
+D transzorb smd
+K transzorb
 $ENDCMP
 #
 #End Doc Library

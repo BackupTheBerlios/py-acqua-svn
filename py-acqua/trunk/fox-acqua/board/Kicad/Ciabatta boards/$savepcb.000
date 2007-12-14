@@ -1,0 +1,103 @@
+PCBNEW-BOARD Version 1 date 14/12/2007-21:19:14
+
+$GENERAL
+LayerCount 2
+Ly 1FFF8001
+Links 0
+NoConn 0
+Di -4075 -3075 4275 3275
+Ndraw 0
+Ntrack 0
+Nzone 0
+Nmodule 1
+Nnets 0
+$EndGENERAL
+
+$SHEETDESCR
+Sheet A4 11700 8267
+Title ""
+Date "14 dec 2007"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndSHEETDESCR
+
+$SETUP
+InternalUnit 0.000100 INCH
+GridSize 200 200
+UserGridSize 0.010000 0.010000 mm
+ZoneGridSize 250
+Layers 2
+TrackWidth 170
+TrackWidthHistory 170
+TrackClearence 60
+ZoneClearence 150
+DrawSegmWidth 150
+EdgeSegmWidth 150
+ViaSize 450
+ViaDrill 250
+ViaSizeHistory 450
+TextPcbWidth 120
+TextPcbSize 600 800
+EdgeModWidth 150
+TextModSize 600 600
+TextModWidth 120
+PadSize 797 797
+PadDrill 512
+AuxiliaryAxisOrg 0 0
+$EndSETUP
+
+$MODULE PB1164006
+Po 0 0 0 15 4762F111 4762EF95 ~~
+Li PB1164006
+Sc 4762EF95
+Op 0 0 0
+T0 3500 -6500 600 600 0 120 N V 21 "PB1164006"
+T1 2000 -5000 600 600 0 120 N V 21 "VAL**"
+DS -4000 0 -4000 -3000 150 21
+DS -4000 -3000 0 -3000 150 21
+DS 0 -3000 4200 3200 150 21
+$PAD
+Sh "1" C 797 797 0 0 0
+Dr 512 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -2000 1475
+$EndPAD
+$PAD
+Sh "2" C 797 797 0 0 0
+Dr 512 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -1975 -1475
+$EndPAD
+$PAD
+Sh "3" C 797 797 0 0 0
+Dr 512 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 500 2000
+$EndPAD
+$PAD
+Sh "4" C 797 797 0 0 0
+Dr 512 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 0 0
+$EndPAD
+$PAD
+Sh "5" C 797 797 0 0 0
+Dr 512 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 500 -2000
+$EndPAD
+$EndMODULE  PB1164006
+$TRACK
+$EndTRACK
+$ZONE
+$EndZONE
+$EndBOARD

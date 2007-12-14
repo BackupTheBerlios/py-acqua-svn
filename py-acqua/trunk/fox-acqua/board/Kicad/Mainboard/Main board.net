@@ -1,231 +1,359 @@
-# EESchema Netlist Version 1.1 created  5/12/2007-20:52:56
+# EESchema Netlist Version 1.1 created  14/12/2007-22:48:01
 (
- ( 474BF82B R5 BATT1 CR2032
-  ( 1 GND_1 )
-  ( 2 N-000019 )
+ ( 47630809 $noname  D4 TRANSZORB_SMD {Lib=TRANSZORB_SMD}
+  (    A  ? )
+  (    C  ? )
  )
- ( 474BD436 SM0805 C1 100nF
-  ( 1 GND_1 )
-  ( 2 N-000012 )
+ ( 47532E91 con-amp-quick-02P  SL3 XT {Lib=M02}
+  (    1 X1_1 )
+  (    2 X2_1 )
  )
- ( 474BD89D CPR10X16 C2 1000uF
-  ( 1 N-000012 )
-  ( 2 GND_1 )
+ ( 4753187C $noname  U5 DS1302 {Lib=DS1302}
+  (    1 3V3_1 )
+  (    2 X1_1 )
+  (    3 X2_1 )
+  (    4 GND_1 )
+  (    5 RTC-RST_1 )
+  (    6 RTC-SDA_1 )
+  (    7 RTC-SCL_1 )
+  (    8 BATT_1 )
  )
- ( 474BD8A1 SM0805 C3 100nF
-  ( 1 GND_1 )
-  ( 2 N-000086 )
+ ( 474BD410 $noname  J1 JACK_2P {Lib=JACK_2P}
+  (    1 N-000011 )
+  (    2 N-000011 )
+  (    3 GND_1 )
  )
- ( 474BD8A7 QMONTRE C4 220uF
-  ( 1 N-000086 )
-  ( 2 GND_1 )
+ ( 474BF82B $noname  BATT1 CR2032 {Lib=CR2032}
+  (    1 GND_1 )
+  (    2 N-000005 )
  )
- ( 474BECAF SD CONN1 SD
-  ( 1 CS_1 )
-  ( 2 DI_1 )
-  ( 3 GND_1 )
-  ( 4 3V3_1 )
-  ( 5 CLK_1 )
-  ( 6 GND_1 )
-  ( 7 DO_1 )
+ ( 474BF776 $noname  R5 1K {Lib=RES_VERTICALE}
+  (    1 N-000018 )
+  (    2 N-000005 )
  )
- ( 474BF0F7 diode-MINIMELF D1 LL1N4148
-  ( A N-000006 )
-  ( C BATT_1 )
+ ( 474BF6F3 $noname  R2 3K9 {Lib=RES_VERTICALE}
+  (    1 3V3_1 )
+  (    2 N-000015 )
  )
- ( 474BF118 diode-DO41-10 D2 1N5408
-  ( A N-000009 )
-  ( C N-000012 )
+ ( 474BF6EA $noname  R1 3K9 {Lib=RES_VERTICALE}
+  (    1 3V3_1 )
+  (    2 N-000017 )
  )
- ( 474BEB63 diode-DO201-15 D3 1N5820
-  ( A GND_1 )
-  ( C N-000013 )
+ ( 474BF6B4 $noname  R4 1K {Lib=RES_VERTICALE}
+  (    1 N-000016 )
+  (    2 5V_1 )
  )
- ( 474BD410 con-conrad-733989-5 J1 JACK_2P
-  ( 1 N-000009 )
-  ( 2 N-000009 )
-  ( 3 GND_1 )
+ ( 474BF6AE $noname  R3 1K {Lib=RES_VERTICALE}
+  (    1 5V_1 )
+  (    2 N-000007 )
  )
- ( 474BE6E8 tyco_coil L1 3631B330LL
-  ( 1 N-000013 )
-  ( 2 N-000086 )
+ ( 474BF617 con-amp-quick-04P  SL2 M04 {Lib=M04}
+  (    1 5V_1 )
+  (    2 N-000016 )
+  (    3 N-000007 )
+  (    4 GND_1 )
  )
- ( 474BF6EA SM0603 R1 3K9
-  ( 1 3V3_1 )
-  ( 2 N-000007 )
+ ( 474BF572 $noname  U4 P82B96TD {Lib=P82B96TD}
+  (    1 N-000015 )
+  (    2 N-000016 )
+  (    3 N-000016 )
+  (    4 GND_1 )
+  (    5 N-000007 )
+  (    6 N-000007 )
+  (    7 N-000017 )
+  (    8 3V3_1 )
  )
- ( 474BF6F3 SM0603 R2 3K9
-  ( 1 3V3_1 )
-  ( 2 N-000018 )
+ ( 474BF118 diode-DO41-10  D2 1N5408 {Lib=1N4004}
+  (    C N-000012 )
+  (    A N-000011 )
  )
- ( 474BF6AE SM0805 R3 1K
-  ( 1 5V_1 )
-  ( 2 N-000016 )
+ ( 474BF0F7 diode-DO35-10  D1 LL1N4148 {Lib=1N4148}
+  (    C BATT_1 )
+  (    A N-000018 )
  )
- ( 474BF6B4 SM0805 R4 1K
-  ( 1 N-000008 )
-  ( 2 5V_1 )
+ ( 474BF012 $noname  U3 DS1302 {Lib=DS1302}
+  (    1 3V3_1 )
+  (    2 X1_1 )
+  (    3 X2_1 )
+  (    4 GND_1 )
+  (    5 RTC-RST_1 )
+  (    6 RTC-SDA_1 )
+  (    7 RTC-SCL_1 )
+  (    8 BATT_1 )
  )
- ( 474BF776 SM0805 R5 1K
-  ( 1 N-000006 )
-  ( 2 N-000019 )
+ ( 474BECAF $noname  CONN1 SD {Lib=SD}
+  (    1 CS_1 )
+  (    2 DI_1 )
+  (    3 GND_1 )
+  (    4 3V3_1 )
+  (    5 CLK_1 )
+  (    6 GND_1 )
+  (    7 DO_1 )
  )
- ( 474BE7A1 con-amp-quick-04P SL1 M04
-  ( 1 N-000086 )
-  ( 2 GND_1 )
-  ( 3 GND_1 )
-  ( 4 N-000086 )
+ ( 474BEB63 diode-DO201-15  D3 1N5820 {Lib=DIODE-DO201-15}
+  (    C N-000010 )
+  (    A GND_1 )
  )
- ( 474BF617 con-amp-quick-04P SL2 M04
-  ( 1 5V_1 )
-  ( 2 N-000008 )
-  ( 3 N-000016 )
-  ( 4 GND_1 )
+ ( 474BE7A1 con-amp-quick-04P  SL1 M04 {Lib=M04}
+  (    1 N-000086 )
+  (    2 GND_1 )
+  (    3 GND_1 )
+  (    4 N-000086 )
  )
- ( 47532E91 con-amp-quick-02P SL3 XT
-  ( 1 X1_1 )
-  ( 2 X2_1 )
+ ( 474BE6E8 $noname  L1 3631B330LL {Lib=INDUCTOR}
+  (    1 N-000010 )
+  (    2 N-000086 )
  )
- ( 474B1CE4 foxboard U1 FOXBOARD
-  ( 1j6 3V3_1 )
-  ( 1j7 GND_1 )
-  ( 2j6 3V3_1 )
-  ( 2j7 GND_1 )
-  ( 3J6 ? )
-  ( 3J7 ? )
-  ( 4J6 ? )
-  ( 4J7 ? )
-  ( 5J6 ? )
-  ( 5J7 ? )
-  ( 6J6 ? )
-  ( 6J7 ? )
-  ( 7J6 ? )
-  ( 7J7 ? )
-  ( 8J6 ? )
-  ( 8J7 ? )
-  ( 9J6 ? )
-  ( 9J7 ? )
-  ( 10J6 ? )
-  ( 10J7 N-000007 )
-  ( 11J6 ? )
-  ( 11J7 ? )
-  ( 12j6 ? )
-  ( 12J7 ? )
-  ( 13J6 ? )
-  ( 13J7 ? )
-  ( 14J6 ? )
-  ( 14J7 ? )
-  ( 15J6 ? )
-  ( 15J7 ? )
-  ( 16J6 ? )
-  ( 16J7 ? )
-  ( 17J6 ? )
-  ( 17J7 ? )
-  ( 18J6 ? )
-  ( 18J7 ? )
-  ( 19J6 ? )
-  ( 19J7 ? )
-  ( 20J6 ? )
-  ( 20J7 ? )
+ ( 474BDA61 $noname  U2 LM2596-5V {Lib=LM2596-5V}
+  (    1 N-000012 )
+  (    2 N-000010 )
+  (    3 GND_1 )
+  (    4 N-000086 )
+  (    5 GND_1 )
+ )
+ ( 474BD8A7 $noname  C4 220uF {Lib=CAPAPOL}
+  (    1 N-000086 )
+  (    2 GND_1 )
+ )
+ ( 474BD8A1 $noname  C3 100nF {Lib=C}
+  (    1 GND_1 )
+  (    2 N-000086 )
+ )
+ ( 474BD89D $noname  C2 1000uF {Lib=CAPAPOL}
+  (    1 N-000012 )
+  (    2 GND_1 )
+ )
+ ( 474BD436 $noname  C1 100nF {Lib=C}
+  (    1 GND_1 )
+  (    2 N-000012 )
+ )
+ ( 474B1CE4 $noname  U1 FOXBOARD {Lib=FOXBOARD}
+  (  1j7 GND_1 )
+  (  1j6 3V3_1 )
+  (  2j7 GND_1 )
+  (  2j6 3V3_1 )
+  (  3J6  ? )
+  (  3J7  ? )
+  (  4J6  ? )
+  (  4J7  ? )
+  (  5J6  ? )
+  (  5J7  ? )
+  (  6J6  ? )
+  (  6J7  ? )
+  (  7J6  ? )
+  (  7J7  ? )
+  (  8J6  ? )
+  (  8J7  ? )
+  (  9J6  ? )
+  (  9J7  ? )
+  ( 10J6  ? )
+  ( 10J7 N-000017 )
+  ( 11J7  ? )
+  ( 11J6  ? )
+  ( 12J7  ? )
+  ( 12j6  ? )
+  ( 13J6  ? )
+  ( 13J7  ? )
+  ( 14J6  ? )
+  ( 14J7  ? )
+  ( 15J6  ? )
+  ( 15J7  ? )
+  ( 16J6  ? )
+  ( 16J7  ? )
+  ( 17J6  ? )
+  ( 17J7  ? )
+  ( 18J6  ? )
+  ( 18J7  ? )
+  ( 19J6  ? )
+  ( 19J7  ? )
+  ( 20J6  ? )
+  ( 20J7  ? )
   ( 21J6 RTC-RST_1 )
-  ( 21J7 N-000018 )
-  ( 22J6 ? )
-  ( 22J7 ? )
+  ( 21J7 N-000015 )
+  ( 22J6  ? )
+  ( 22J7  ? )
   ( 23J6 CLK_1 )
-  ( 23j7 ? )
+  ( 23j7  ? )
   ( 24J6 DO_1 )
-  ( 24j7 ? )
+  ( 24j7  ? )
   ( 25J6 DI_1 )
-  ( 25j7 ? )
+  ( 25j7  ? )
   ( 26J6 CS_1 )
-  ( 26j7 ? )
-  ( 27J6 ? )
-  ( 27j7 ? )
-  ( 28J6 ? )
-  ( 28J7 ? )
-  ( 29J6 ? )
+  ( 26j7  ? )
+  ( 27J6  ? )
+  ( 27j7  ? )
+  ( 28J6  ? )
+  ( 28J7  ? )
+  ( 29J6  ? )
   ( 29j7 5V_1 )
-  ( 30J6 ? )
-  ( 30J7 ? )
+  ( 30J6  ? )
+  ( 30J7  ? )
   ( 31J6 RTC-SCL_1 )
-  ( 31J7 ? )
+  ( 31J7  ? )
   ( 32J6 RTC-SDA_1 )
-  ( 32J7 ? )
-  ( 33J6 ? )
-  ( 33J7 ? )
-  ( 34J6 ? )
-  ( 34J7 ? )
-  ( 35J6 ? )
-  ( 35J7 ? )
-  ( 36J6 ? )
-  ( 36J7 ? )
-  ( 37J6 ? )
-  ( 37J7 ? )
-  ( 38J6 ? )
-  ( 38J7 ? )
+  ( 32J7  ? )
+  ( 33J6  ? )
+  ( 33J7  ? )
+  ( 34J6  ? )
+  ( 34J7  ? )
+  ( 35J6  ? )
+  ( 35J7  ? )
+  ( 36J6  ? )
+  ( 36J7  ? )
+  ( 37J6  ? )
+  ( 37J7  ? )
+  ( 38J6  ? )
+  ( 38J7  ? )
   ( 39j6 GND_1 )
   ( 39j7 3V3_1 )
   ( 40j6 GND_1 )
   ( 40j7 3V3_1 )
  )
- ( 474BDA61 DPAK5 U2 LM2596-5V
-  ( 1 ? )
-  ( 2 N-000013 )
-  ( 3 GND_1 )
-  ( 4 N-000086 )
-  ( 5 GND_1 )
- )
- ( 474BF012 8DIP-ELL300 U3 DS1302
-  ( 1 3V3_1 )
-  ( 2 X1_1 )
-  ( 3 X2_1 )
-  ( 4 GND_1 )
-  ( 5 RTC-RST_1 )
-  ( 6 RTC-SDA_1 )
-  ( 7 RTC-SCL_1 )
-  ( 8 BATT_1 )
- )
- ( 474BF572 SO8E U4 P82B96TD
-  ( 1 N-000018 )
-  ( 2 N-000008 )
-  ( 3 N-000008 )
-  ( 4 GND_1 )
-  ( 5 N-000016 )
-  ( 6 N-000016 )
-  ( 7 N-000007 )
-  ( 8 3V3_1 )
- )
- ( 4753187C SO8E U5 DS1302
-  ( 1 3V3_1 )
-  ( 2 X1_1 )
-  ( 3 X2_1 )
-  ( 4 GND_1 )
-  ( 5 RTC-RST_1 )
-  ( 6 RTC-SDA_1 )
-  ( 7 RTC-SCL_1 )
-  ( 8 BATT_1 )
- )
 )
 *
 { Allowed footprints by component:
-$component C2
- CP*
- SM*
-$endlist
-$component C4
- CP*
- SM*
-$endlist
-$component U2
- TO263
-$endlist
-$component U3
- DIL8
- SO8
+$component D4
+ SMAJ
 $endlist
 $component U5
  DIL8
  SO8
 $endlist
+$component U3
+ DIL8
+ SO8
+$endlist
+$component U2
+ TO263
+$endlist
+$component C4
+ CP*
+ SM*
+$endlist
+$component C2
+ CP*
+ SM*
+$endlist
 $endfootprintlist
 }
+{ Pin List by Nets
+Net 1 "BATT_1"
+ U5 8
+ D1 C
+ U3 8
+Net 2 "RTC-RST_1"
+ U5 5
+ U3 5
+ U1 21J6
+Net 3 "X2_1"
+ SL3 2
+ U5 3
+ U3 3
+Net 4 "GND_1"
+ U5 4
+ J1 3
+ BATT1 1
+ SL2 4
+ U4 4
+ U3 4
+ CONN1 3
+ CONN1 6
+ D3 A
+ SL1 2
+ SL1 3
+ U2 5
+ U2 3
+ C4 2
+ C3 1
+ C2 2
+ C1 1
+ U1 2j7
+ U1 1j7
+ U1 40j6
+ U1 39j6
+Net 5 ""
+ BATT1 2
+ R5 2
+Net 6 "5V_1"
+ R4 2
+ R3 1
+ SL2 1
+ U1 29j7
+Net 7 ""
+ R3 2
+ SL2 3
+ U4 6
+ U4 5
+Net 8 "DI_1"
+ CONN1 2
+ U1 25J6
+Net 9 "DO_1"
+ CONN1 7
+ U1 24J6
+Net 10 ""
+ D3 C
+ L1 1
+ U2 2
+Net 11 ""
+ J1 1
+ J1 2
+ D2 A
+Net 12 ""
+ D2 C
+ U2 1
+ C2 1
+ C1 2
+Net 13 "CLK_1"
+ CONN1 5
+ U1 23J6
+Net 14 "CS_1"
+ CONN1 1
+ U1 26J6
+Net 15 ""
+ R2 2
+ U4 1
+ U1 21J7
+Net 16 ""
+ R4 1
+ SL2 2
+ U4 3
+ U4 2
+Net 17 ""
+ R1 2
+ U4 7
+ U1 10J7
+Net 18 ""
+ R5 1
+ D1 A
+Net 19 "3V3_1"
+ U5 1
+ R2 1
+ R1 1
+ U4 8
+ U3 1
+ CONN1 4
+ U1 40j7
+ U1 39j7
+ U1 2j6
+ U1 1j6
+Net 20 "X1_1"
+ SL3 1
+ U5 2
+ U3 2
+Net 21 "RTC-SCL_1"
+ U5 7
+ U3 7
+ U1 31J6
+Net 22 "RTC-SDA_1"
+ U5 6
+ U3 6
+ U1 32J6
+Net 86 ""
+ SL1 1
+ SL1 4
+ L1 2
+ U2 4
+ C4 1
+ C3 2
+}
+#End

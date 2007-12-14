@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 5/12/2007-20:52:56
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 14/12/2007-22:40:49
 
 BeginCmp
 TimeStamp = 474BF82B;
@@ -61,6 +61,13 @@ TimeStamp = 474BEB63;
 Reference = D3;
 ValeurCmp = 1N5820;
 IdModule  = diode-DO201-15;
+EndCmp
+
+BeginCmp
+TimeStamp = 476305B6;
+Reference = D4;
+ValeurCmp = TRANSZORB_SMD;
+IdModule  = diode-SMBJ;
 EndCmp
 
 BeginCmp

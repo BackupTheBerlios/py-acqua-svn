@@ -1,0 +1,45 @@
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 14/12/2007-21:34:33
+
+BeginCmp
+TimeStamp = 4762F64B;
+Reference = RELAY1;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+BeginCmp
+TimeStamp = 4762F650;
+Reference = RELAY2;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+BeginCmp
+TimeStamp = 4762F652;
+Reference = RELAY3;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+BeginCmp
+TimeStamp = 4762F65C;
+Reference = RELAY4;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+BeginCmp
+TimeStamp = 4762F65F;
+Reference = RELAY5;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+BeginCmp
+TimeStamp = 4762F682;
+Reference = RELAY6;
+ValeurCmp = PB114006;
+IdModule  = PB1164006;
+EndCmp
+
+EndListe
