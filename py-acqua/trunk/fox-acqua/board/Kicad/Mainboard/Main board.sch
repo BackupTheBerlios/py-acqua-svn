@@ -5,7 +5,7 @@ EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title "Main board"
-Date "14 dec 2007"
+Date "16 dec 2007"
 Rev "1.0"
 Comp "py-acqua"
 Comment1 ""
@@ -13,6 +13,20 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
+Connection ~ 5600 2100
+Wire Wire Line
+	5600 2300 5600 2100
+Connection ~ 5700 2750
+Wire Wire Line
+	5850 2750 5200 2750
+Wire Wire Line
+	5200 2750 5200 2550
+Wire Wire Line
+	5200 2550 5150 2550
+Connection ~ 4250 3100
+Connection ~ 4100 2750
+Wire Wire Line
+	4100 2850 4100 2750
 Connection ~ 2300 6650
 Wire Wire Line
 	2300 6700 2300 6650
@@ -49,14 +63,10 @@ Wire Wire Line
 	5400 1500 5700 1500
 Connection ~ 4250 1650
 Wire Wire Line
-	4250 1300 4250 1650
-Wire Wire Line
 	5550 1500 5550 1550
 Wire Wire Line
 	5400 1500 5400 1550
 Connection ~ 5400 2200
-Wire Wire Line
-	5400 2200 5400 1950
 Connection ~ 5250 2200
 Wire Wire Line
 	5150 2450 5250 2450
@@ -212,10 +222,6 @@ Wire Wire Line
 Wire Wire Line
 	5250 2050 5150 2050
 Wire Wire Line
-	5150 2550 5700 2550
-Wire Wire Line
-	5700 2550 5700 2300
-Wire Wire Line
 	5250 1950 5250 2100
 Connection ~ 5250 2050
 Wire Wire Line
@@ -263,6 +269,46 @@ Wire Wire Line
 Wire Wire Line
 	2300 7100 2300 7200
 Connection ~ 2300 7200
+Wire Wire Line
+	4250 1850 4250 1300
+Wire Wire Line
+	4250 3100 4100 3100
+Wire Wire Line
+	4250 3350 4250 2100
+Wire Wire Line
+	5700 2300 5700 2750
+Connection ~ 5500 2750
+Wire Wire Line
+	5400 2300 5400 1950
+$Comp
+L BAT54A D5
+U 1 1 47659D86
+P 5500 2600
+F 0 "D5" H 5800 2600 60  0000 C C
+F 1 "BAT54A" H 5900 2700 60  0000 C C
+	1    5500 2600
+	1    0    0    -1  
+$EndComp
+Text Label 4250 3350 1    60   ~
+GND
+$Comp
+L C C6
+U 1 1 47659C2C
+P 4200 2000
+F 0 "C6" H 4200 1900 60  0000 C C
+F 1 "220pF" H 4200 2150 60  0000 C C
+	1    4200 2000
+	0    1    1    0   
+$EndComp
+$Comp
+L C C5
+U 1 1 47659C20
+P 4050 3000
+F 0 "C5" H 4050 3150 60  0000 C C
+F 1 "220pF" H 4050 3250 60  0000 C C
+	1    4050 3000
+	0    1    1    0   
+$EndComp
 $Comp
 L TRANSZORB_SMD D4
 U 1 1 47630809
@@ -427,7 +473,7 @@ L RES_VERTICALE R2
 U 1 1 474BF6F3
 P 4100 1100
 F 0 "R2" V 4050 1400 60  0000 C C
-F 1 "3K9" V 4150 1450 60  0000 C C
+F 1 "1K" V 4150 1450 60  0000 C C
 	1    4100 1100
 	0    1    1    0   
 $EndComp
@@ -436,7 +482,7 @@ L RES_VERTICALE R1
 U 1 1 474BF6EA
 P 3850 1100
 F 0 "R1" V 3800 1100 60  0000 C C
-F 1 "3K9" V 3900 1100 60  0000 C C
+F 1 "1K" V 3900 1100 60  0000 C C
 	1    3850 1100
 	0    1    1    0   
 $EndComp
@@ -447,7 +493,7 @@ L RES_VERTICALE R4
 U 1 1 474BF6B4
 P 5700 1750
 F 0 "R4" V 5750 1650 60  0000 C C
-F 1 "1K" V 5650 1650 60  0000 C C
+F 1 "330" V 5650 1650 60  0000 C C
 	1    5700 1750
 	0    -1   -1   0   
 $EndComp
@@ -456,7 +502,7 @@ L RES_VERTICALE R3
 U 1 1 474BF6AE
 P 5250 1750
 F 0 "R3" V 5200 1750 60  0000 C C
-F 1 "1K" V 5300 1750 60  0000 C C
+F 1 "330" V 5300 1750 60  0000 C C
 	1    5250 1750
 	0    1    1    0   
 $EndComp
@@ -473,8 +519,8 @@ F 2 "con-amp-quick-04P" H 6100 2250 50  0001 C C
 	-1   0    0    1   
 $EndComp
 Text Label 5250 2450 0    60   ~
-3V3
-Text Label 5250 2550 0    60   ~
+5V
+Text Label 5850 2750 0    60   ~
 GND
 $Comp
 L P82B96TD U4

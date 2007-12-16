@@ -1,4 +1,9 @@
-EESchema-DOCLIB  Version 2.0  2/12/2007-19:49:24
+EESchema-DOCLIB  Version 2.0  15/12/2007-16:55:26
+#
+$CMP BAT54A
+D Schottky Barrier Diodes
+K BAT54
+$ENDCMP
 #
 $CMP C
 D condensatore
@@ -17,6 +22,11 @@ $ENDCMP
 $CMP NTR450NT1G
 D MOSFET SMD TTL
 K NTR4501N
+$ENDCMP
+#
+$CMP P82B96TD
+D Buffer bidirezionale
+K buffer
 $ENDCMP
 #
 $CMP RES_VERTICALE

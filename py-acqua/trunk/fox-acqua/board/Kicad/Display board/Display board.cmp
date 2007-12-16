@@ -1,24 +1,45 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 1/12/2007-14:19:04
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 15/12/2007-16:48:47
 
 BeginCmp
 TimeStamp = 474ACA86;
 Reference = C1;
-ValeurCmp = C;
+ValeurCmp = 33pF;
 IdModule  = SM0805;
 EndCmp
 
 BeginCmp
 TimeStamp = 474ACE15;
 Reference = C2;
-ValeurCmp = CAPAPOL;
+ValeurCmp = 100uF;
 IdModule  = SM1206POL;
 EndCmp
 
 BeginCmp
 TimeStamp = 474ACE22;
 Reference = C3;
-ValeurCmp = C;
+ValeurCmp = 100nF;
 IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47640475;
+Reference = C4;
+ValeurCmp = 220pF;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4764047A;
+Reference = C5;
+ValeurCmp = 220pF;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 476402A5;
+Reference = D1;
+ValeurCmp = BAT54A;
+IdModule  = SOT23EBC;
 EndCmp
 
 BeginCmp
@@ -31,14 +52,42 @@ EndCmp
 BeginCmp
 TimeStamp = 474ACA5D;
 Reference = R1;
-ValeurCmp = RES_VERTICALE;
+ValeurCmp = 3k9;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4764034D;
+Reference = R2;
+ValeurCmp = 330;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47640353;
+Reference = R3;
+ValeurCmp = 330;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4764033F;
+Reference = R4;
+ValeurCmp = 1K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4764032A;
+Reference = R5;
+ValeurCmp = 1K;
 IdModule  = SM0805;
 EndCmp
 
 BeginCmp
 TimeStamp = 474AAFE5;
 Reference = RN1;
-ValeurCmp = RN05;
+ValeurCmp = RN05_X_10K;
 IdModule  = resistor-net-RN-6;
 EndCmp
 
@@ -68,6 +117,13 @@ TimeStamp = 474AA535;
 Reference = U1;
 ValeurCmp = MCP23016;
 IdModule  = 28dip300;
+EndCmp
+
+BeginCmp
+TimeStamp = 47640293;
+Reference = U2;
+ValeurCmp = P82B96TD;
+IdModule  = SO8E;
 EndCmp
 
 EndListe

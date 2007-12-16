@@ -1,4 +1,9 @@
-EESchema-DOCLIB  Version 2.0  14/12/2007-22:48:27
+EESchema-DOCLIB  Version 2.0  16/12/2007-21:53:42
+#
+$CMP BAT54A
+D Schottky Barrier Diodes
+K BAT54
+$ENDCMP
 #
 $CMP C
 D condensatore
