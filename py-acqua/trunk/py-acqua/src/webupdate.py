@@ -11,7 +11,7 @@ import sys
 
 from xml.dom.minidom import parseString, getDOMImplementation
 from updater.database import DatabaseWrapper, DatabaseReader
-from updater.xmlreport import ReportReader
+from updater.xmlreport import ReportReader, Indexer
 
 REPOSITORY_ADDRESS = None
 BASE_DIR = None
@@ -33,98 +33,6 @@ XML_FILE = "pyacqua.xml"
 REPOSITORY_ADDRESS = r"localhost"
 #BASE_DIR = r"/~stack/update/source/"
 #LIST_FILE = r"/~stack/update/source-list.xml"
-
-class SchemaUpdateInterface(object):
-	def __init__(self, data):
-		doc = parseString(data)
-		
-		self.info = {
-			"mainversion" : 	[None, int],
-			"secondversion" : 	[None, int],
-			"revision" : 		[None, int],
-			"message" : 		[None, str]
-		}
-		
-		self.arrays = {
-			"downloads" : {
-				"svn" : 	[],
-				"windows" : 	[],
-				"tarball" : 	[]
-			},
-			"actions" : {
-				"pre" : 	[],
-				"post" : 	[]
-			},
-			"mirrors" : {
-				"url" : 	[]
-			}
-		}
-		
-		self.program = None # il database sara' => "%s/%s-update.db" % (mirrors[0], self.program)
-
-		if doc.documentElement.tagName.lower().endswith("-update"):
-			self.program = doc.documentElement.tagName[:-7]
-
-		if self.program == None:
-			raise Exception("No such program")
-		
-		for node in doc.documentElement.childNodes:
-			if node.nodeName.lower() == "info":
-				self.__parseInfo(node)
-			elif node.nodeName.lower() == "mirrors" or node.nodeName.lower() == "actions" or node.nodeName.lower() == "downloads":
-				self.__parseArray(node, node.nodeName.lower())
-	
-	def __parseInfo(self, node):
-		for i in node.childNodes:
-			if i.nodeName.lower() in self.info.keys():
-				converter = self.info[i.nodeName.lower()][1]
-				self.info[i.nodeName.lower()][0] = converter((i.lastChild) and(i.lastChild.data) or(None))
-	
-	def __parseArray(self, node, category):
-		kittie_cat = self.arrays[category]
-		print kittie_cat, category
-		
-		for i in node.childNodes:
-			print i.nodeName, kittie_cat.keys()
-			
-			if i.nodeName.lower() in kittie_cat.keys():
-				kittie_cat[i.nodeName.lower()].append(i.lastChild.data)
-	
-	def getInfo(self, id):
-		if id in self.info:
-			return self.info[id]
-		return None
-	
-	def getList(self, cat, subcat):
-		if cat in self.arrays:
-			if subcat in self.arrays[cat]:
-				return self.arrays[cat][subcat]
-		return None
-	
-	def getProgramName(self):
-		return self.program
-	
-	def checkDiff(self, other):
-		"""
-		Ritorna:
-			3 se le versioni sono incompatibili
-			2 se le versioni sono potenzialmente compatibile
-			1 se le verrsioni sono compatibili
-			0 se le versioni sono identiche
-		"""
-		o_m, o_s, o_r = other.getInfo("mainversion"), other.getInfo("secondversion"), other.getInfo("revision")
-		c_m, c_s, c_r = self.getInfo("mainversion"), self.getInfo("secondversion"), self.getInfo("revision")
-		
-		if o_m == m and o_s == s and o_r == r: return 0
-		if o_m != m: return 3
-		else:
-			if o_s != s: return 2
-			if o_r != r: return 1
-	
-	def getCurrentSchema():
-		return SchemaUpdate(os.path.join(utils.DHOME_DIR, "pyacqua.xml"))
-	
-	getCurrentSchema = staticmethod(getCurrentSchema)
 
 class Fetcher(threading.Thread):
 	
@@ -158,8 +66,135 @@ class Fetcher(threading.Thread):
 		
 		return False
 
-if not _:
-	_ = lambda x: x
+
+_ = lambda x: x
+
+COL_ICON = 0
+COL_FILE = 1
+COL_NREV = 2
+COL_OREV = 3
+COL_BYTE = 4
+COL_PERC = 5
+COL_TOGG = 6
+COL_COLO = 7
+
+import time
+
+class Update(object):
+	def __init__(self):
+		self.new_db = None
+		self.old_db = DatabaseReader(None, "old.db")
+		self.startThread(self.dumpDB, "/~stack/pyupdate/pyacqua.db")
+		self.startThread(self.listInfo, "/~stack/pyupdate/index.xml")
+	
+	def startThread(self, callback, url, args=None):
+		print _(">> Creo un thread per %s") % url
+		f = Fetcher(callback, url, args)
+		f.setDaemon(True)
+		f.start()
+	
+	def listInfo(self, data, response, args):
+		report = Indexer(data)
+		
+		print "Components:"
+		
+		for i in report.programs:
+			print "-> %s" % i
+			self.startThread(self.dumpXml, "/~stack/pyupdate/%s-update.xml" % i, i)
+	
+	def getVersion(self, schema):
+		a = (schema.get("mainversion"), schema.get("secondversion"), schema.get("revision"))
+		return "-r".join((".".join(map(str,a[:2])), str(a[2])))
+	
+	def dumpXml(self, data, response, args):
+		new_schema = ReportReader(data)
+		old_schema = ReportReader(None, os.path.join(utils.DHOME_DIR, "%s.xml" % args))
+		
+		ret = old_schema.checkDiff(new_schema)
+		
+		if ret == 0: print "NO_UPDATE"
+		elif ret == 1: print "UPDATE"
+		elif ret == 2: print "UNSECURE_UPDATE"
+		elif ret == 3: print "IMPOSSIBLE"
+		
+		print "LOCAL version:  %s" % self.getVersion(old_schema)
+		print "REMOTE version: %s" % self.getVersion(new_schema)
+		
+		self.updateProgram(args)
+	
+	def updateProgram(self, program):
+		if not self.new_db: raise "No db."
+		
+		pid = self.new_db.select("SELECT id FROM program WHERE name='%s'" % self.new_db.sanitize(program))[0][0]
+		for dir_entry in self.new_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(pid)):
+			# dir_entry => (idx, name, revision, filenum, pid)
+			
+			did, dname, drev, dfilenum, pid = dir_entry
+			
+			# @update standard@ - second pass - soggetto new_db
+			# Controlliamo l'esistenza della stessa dir
+			# -> se nn c'e' aggiungiamo tutti i file
+			# Se esiste
+			#    -> controlliamo la revision (se la nuova e' maggiore altrimenti ignore (custom update precedente))
+			#       -> for sui file
+			#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
+			
+			# @update standard@ - removing - soggetto old_db
+			# Controlliamo se la dir non esiste
+			#   -> Rimuoviamo la dir con tutti i file all'interno
+			# se esiste
+			#   -> for sui file
+			#      se esite controlla md5 e bytes (versione minore | se maggiore non far nulla)
+			#        -> se non ok riscarica (o errore di update sul server)
+			#      se non esiste
+			#        -> elimina file
+			
+			# @update forzato@ clone (update standard)
+			# Controlliamo l'esistenza della stessa dir
+			# -> se nn c'e' aggiungiamo tutti i file
+			# Se esiste
+			#    -> controlliamo la revision (se uguale ignore)
+			#       -> for sui file
+			#          controlla revision (se diversa riscarica | se uguale controlla consistenza in caso riscarica)
+			
+			# @update forzato@ - removing - soggetto old_db
+			# Controlliamo se la dir non esiste
+			#   -> Rimuoviamo la dir con tutti i file all'interno
+			# se esiste
+			#   -> for sui file
+			#      se esite controlla md5 e bytes (sempre)
+			#        -> se non ok riscarica
+			#      se non esiste
+			#        -> elimina file
+			
+			
+			for file_entry in self.new_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((pid, did))):
+				# file_entry => (idx, name, revision, bytes, md5, did, pid)
+				
+				fid, fname, frev, fbytes, fmd5, did, pid = file_entry
+				
+				sys.stdout.write("                                                 \r")
+				sys.stdout.write("Checking: %s\r" % fmd5)
+				sys.stdout.flush()
+				time.sleep(0.3)
+			
+	
+	def dumpDB(self, data, response, args):
+		f = open("tmp.database", "wb")
+		f.write(data)
+		f.close()
+		
+		self.new_db = DatabaseReader(None, "tmp.database")
+		print "Database downloaded."
+
+
+if __name__ == "__main__":
+	import gobject
+	gobject.threads_init ()
+	gtk.gdk.threads_enter ()	
+	Update()
+	gtk.main()
+	gtk.gdk.threads_leave ()
 
 class WebUpdate(gtk.Window):
 	def __init__(self):
@@ -186,35 +221,33 @@ class WebUpdate(gtk.Window):
 		self.store = gtk.TreeStore(
 			gtk.gdk.Pixbuf, # icona
 			str, # nome file
-			int, # new_revision
+			str, # new_revision
+			str, # old_revision
 			int, # bytes
-			str, # md5
-			int, # old_revision
-			int, # old bytes
-			str, # old_md5
 			int, # percentuale scaricamento
 			bool, # da scaricare
 			gtk.gdk.Color # colre di background
 		)
+		
 		self.tree = gtk.TreeView(self.store)
 		self.tree.append_column(gtk.TreeViewColumn("", gtk.CellRendererPixbuf(), pixbuf=0))
 
 		rend = gtk.CellRendererText(); id = 1
 		
-		for i in(_("File"), _("Rev"), _("Bytes"), _("MD5"), _("oldRev"), _("oldBytes"), _("oldMD5")):
+		for i in (_("File"), _("New"), _("Current"), _("Bytes")):
 			col = gtk.TreeViewColumn(i, rend, text=id)
 			self.tree.append_column(col)
 			id += 1
 			
 		# Colonna percentuale
 		rend = gtk.CellRendererProgress()
-		col = gtk.TreeViewColumn(_("%"), rend, value=8)
+		col = gtk.TreeViewColumn(_("%"), rend, value=COL_PERC)
 		
 		self.tree.append_column(col)
 		
 		# Background su tutte le celle
 		for i in self.tree.get_columns():
-			i.add_attribute(i.get_cell_renderers()[0], 'cell_background-gdk', 10)
+			i.add_attribute(i.get_cell_renderers()[0], 'cell_background-gdk', COL_COLO)
 		
 		sw = gtk.ScrolledWindow()
 		sw.add(self.tree)
@@ -248,12 +281,13 @@ class WebUpdate(gtk.Window):
 		self.icon_del = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "del.png"))
 		self.icon_done = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "done.png"))
 		self.icon_error = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "error.png"))
-		self.icon_program = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "error.png"))
+		self.icon_program = gtk.gdk.pixbuf_new_from_file(os.path.join(utils.DPIXM_DIR, "program.png"))
 		
 		self.color_add = gtk.gdk.color_parse('#70ef70')
 		self.color_del = gtk.gdk.color_parse('#ff8080')
 		self.color_done = gtk.gdk.color_parse('#bcfffc')
 		self.color_error = gtk.gdk.color_parse('#ff9060')
+		self.color_wait = gtk.gdk.color_parse('#ebebeb')
 		
 		# ---------------------------------------------------------------------------------------
 
@@ -318,21 +352,25 @@ class WebUpdate(gtk.Window):
 		for i in self.program_db.select("SELECT name FROM program")[0]:
 			self.choice_store.append([self.icon_program, i, False])
 	
+	def getVersionFromDatabase(self, program):
+		a = self.program_db.select("SELECT mainversion,version,revision FROM program WHERE name='%s'" % self.program_db.sanitize(program))[0]
+		return self.versionize(a)
+	
+	def versionize(self, a):
+		return "-r".join((".".join(map(str,a[:2])), str(a[2])))
+	
 	def populateUpdateTree(self, p_list):
 		for i in p_list:
 			self.store.append(None,
 				[
 					self.icon_program,
 					i,
+					"...", # FIXME
+					self.getVersionFromDatabase(i),
 					0,
-					0,
-					"",
-					0,
-					0,
-					"",
 					0,
 					False,
-					self.color_done
+					self.color_wait
 				]
 			)
 		
@@ -395,7 +433,7 @@ class WebUpdate(gtk.Window):
 			
 			it = model.iter_next(it)
 		
-		raise "ARGHHH No Iter!"
+		raise Exception("ARGHHH No Iter!")
 
 	def populateProgramIter(self, data, response, index):
 		self.get_btn.set_sensitive(True)
@@ -403,46 +441,49 @@ class WebUpdate(gtk.Window):
 		it = self.getIterFromIndex(index)
 		model = self.tree.get_model()
 		
-		print response.status, data
+		#print response.status, data
 
 		if data == None:
 			#self.status.push(0, _("Impossibile recuperare la lista dei file dal server."))
-			model.set_value(it, 10, self.color_error)
+			model.set_value(it, COL_COLO, self.color_error)
 			return
 
 		if response.status != 200:
 			#self.status.push(0, _("Errore durante lo scaricamento della lista dei file(HTTP %d)") % response.status)
-			model.set_value(it, 10, self.color_error)
+			model.set_value(it, COL_COLO, self.color_error)
 			return
 	
-		try:
-			# TODO: in pratica qui dovremmo leggere la revisione e piazzarla nella colonna
-			# infatti suggerisco di modificare il nome delle colonne eliminando la col per l'md5
-			# e inserirne solo 2 una per la revision nuova e una per la vecchia
-			# NOTA: una sola colonna contenente revision tipo 1.2-r2
-			report = ReportReader(data)
-			new_schema = SchemaUpdateInterface(parseString(data))
-			old_schema = SchemaUpdateInterface.getCurrentSchema()
-			
-			ret = old_schema.checkDiff(new_schema)
-			
-			if ret == 0:
-				# messaggio nessun aggiornamento disponibile ecc...
-				utils.info(_("Nessun aggiornamento disponibile"))
-			if ret == 1:
-				# versioni compatibili possiamo aggiornare
-				self.__checkFileToUpdate(new_schema)
-			if ret == 2:
-				# TODO: Una choice ..
-				# come una clean install
-				utils.warning(_("Le versioni sono potenzialmente compatibili\nma _NON_ viene garantito il perfetto aggiornamento"))
-				pass
-			if ret == 3:
-				utils.error(_("Versioni incompatibili per procedere con l'aggiornamento"))
-				pass
-		except:
-			self.status.push(0, _("Impossibile interpretare il file xml"))
-			return
+		#try:
+		# TODO: in pratica qui dovremmo leggere la revisione e piazzarla nella colonna
+		# infatti suggerisco di modificare il nome delle colonne eliminando la col per l'md5
+		# e inserirne solo 2 una per la revision nuova e una per la vecchia
+		# NOTA: una sola colonna contenente revision tipo 1.2-r2
+		
+		new_schema = ReportReader(data)
+		old_schema = ReportReader(None, os.path.join(utils.DHOME_DIR, "pyacqua.xml"))
+		
+		a = (new_schema.get("mainversion"), new_schema.get("secondversion"), new_schema.get("revision"))
+		model.set_value(it, COL_NREV, self.versionize(a))
+		
+		ret = old_schema.checkDiff(new_schema)
+		
+		if ret == 0:
+			# messaggio nessun aggiornamento disponibile ecc...
+			utils.info(_("Nessun aggiornamento disponibile"))
+		if ret == 1:
+			# versioni compatibili possiamo aggiornare
+			self.__checkFileToUpdate(new_schema)
+		if ret == 2:
+			# TODO: Una choice ..
+			# come una clean install
+			utils.warning(_("Le versioni sono potenzialmente compatibili\nma _NON_ viene garantito il perfetto aggiornamento"))
+			pass
+		if ret == 3:
+			utils.error(_("Versioni incompatibili per procedere con l'aggiornamento"))
+			pass
+		#except:
+		#	self.status.push(0, _("Impossibile interpretare il file xml"))
+		#	return
 		
 		self.update_btn.set_sensitive(True)
 	
@@ -451,9 +492,9 @@ class WebUpdate(gtk.Window):
 		self.program = schema.getProgramName()
 
 		if self.program == None or self.mirrors == None:
-				utils.error(_("Impossibile procedere con l'aggiornamento. Nessun mirror trovato o nome programma assente"))
-				self.status.push(0, _("Nessun mirror fornito o nome programma assente"))
-				return
+			utils.error(_("Impossibile procedere con l'aggiornamento. Nessun mirror trovato o nome programma assente"))
+			self.status.push(0, _("Nessun mirror fornito o nome programma assente"))
+			return
 
 		self._thread(self.__markFileForUpdate, utils.url_encode("%s/%s-update.db" % (self.mirrors[0], self.program)))
 	
@@ -462,7 +503,7 @@ class WebUpdate(gtk.Window):
 		# Finche non abbiamo scaricato il database proviamo con il mirror successivo
 
 		if not data or response.status != 200:
-
+			
 			if len(self.mirrors) == 0:
 				utils.error(_("Impossibile scaricare il database delle revisioni"))
 				self.status.push(0, _("Impossibile scaricare il database delle revisioni"))
@@ -601,7 +642,3 @@ class WebUpdate(gtk.Window):
 			# La list.xml la si becca dal sito.. ergo no problem
 	def _on_delete_event(self, *w):
 		app.App.p_window["update"] = None
-
-if __name__ == "__main__":
-	WebUpdater()
-	gtk.main()

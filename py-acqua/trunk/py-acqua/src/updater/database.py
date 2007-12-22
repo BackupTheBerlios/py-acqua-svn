@@ -32,6 +32,8 @@ import os
 import md5
 import sys
 
+from os.path import basename, split
+
 from optparse import OptionParser
 from pysqlite2 import dbapi2 as sqlite
 from os.path import getsize
@@ -41,19 +43,23 @@ class DatabaseWrapper(object):
 		self.connection = sqlite.connect(database)
 		self.cursor = self.connection.cursor()
 	
-	def sanitize(self, str):
+	def sanitize(self, val):
 		# TODO: more check?
 
-		if type(str) == tuple:
+		if type(val) == tuple:
 			t = []
-			for i in str:
-				if t and type(t) == str:
+			for i in val:
+				if i and (type(i) == str or type(i) == unicode):
 					t.append(i.replace("'", "''"))
 				else:
 					t.append(i)
 			return tuple(t)
+		elif type(val) == str or type(val) == unicode:
+			return val.replace("'", "''")
+		elif type(val) == int:
+			return val
 		else:
-			return str.replace("'", "''")
+			raise Exception("Unknown cast. Please define it :)")
 	
 	def select(self, req):
 		self.cursor.execute(req)
@@ -79,9 +85,9 @@ class DatabaseReader(DatabaseWrapper):
 		self.v_main = main
 		self.v_ver = ver
 		self.v_rev = rev
-
-		self.getVersions()
+		
 		self.checkDatabaseSchema()
+		self.getVersions()
 	
 	def checkDatabaseSchema(self):
 
@@ -96,7 +102,7 @@ class DatabaseReader(DatabaseWrapper):
 		]
 
 		unused = []
-
+		
 		ret = self.select("select * from sqlite_master")
 
 		for i in ret:
@@ -184,7 +190,9 @@ class DatabaseUpdater(DatabaseReader):
 		# 	altrimenti forzare sui valori passati
 		# se non esiste inserire i valori passati
 		# 	se non ci sono errore ed esci -1
-		
+
+		dir = split(dir)[1]
+
 		ret = self.select("SELECT * FROM directory WHERE name=\"%s\" AND program_id=%d" % self.sanitize((dir, p_id)))
 
 		if len(ret) > 1:
@@ -272,7 +280,7 @@ class DatabaseUpdater(DatabaseReader):
 
 			self.execute("INSERT INTO file VALUES(NULL, \"%s\", %d, %d, \"%s\", %d, %d)" % self.sanitize
 				(
-					(file, self.v_rev, getsize(file), self.md5sum(file), dirid, p_id)
+					(os.path.basename(file), self.v_rev, getsize(file), self.md5sum(file), dirid, p_id)
 				)
 			)
 

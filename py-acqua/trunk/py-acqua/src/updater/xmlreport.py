@@ -28,6 +28,7 @@ __author__    = "Francesco Piccinno <stack.box@gmail.com>"
 __version__   = "$Revision$"
 __copyright__ = "Copyright (c) 2007 Francesco Piccinno"
 
+import os
 import sys
 import base64
 import ConfigParser
@@ -72,11 +73,19 @@ class ProgramInterface(object):
 
 	def set(self, option, value):
 		self.options['%s.%s' % (self.name, option)] = value
+	
+	def dump(self):
+		print self.options
 
 class ReportReader(ProgramInterface):
-	def __init__(self, data):
+	def __init__(self, data, path=None):
 		try:
-			doc = parseString(data)
+			if data != None:
+				doc = parseString(data)
+			elif data == None and path != None:
+				doc = parse(path)
+			else:
+				raise Exception("uh. :o")
 		except:
 			raise Exception("Cannot parse xml-report")
 		
@@ -119,36 +128,77 @@ class ReportReader(ProgramInterface):
 				if node.firstChild: lst.append(node.firstChild.data)
 		
 		self.set(obj[0], lst)
+	
+	def checkDiff(self, other):
+		"""
+		Ritorna:
+			3 se le versioni sono incompatibili
+			2 se le versioni sono potenzialmente compatibile
+			1 se le verrsioni sono compatibili
+			0 se le versioni sono identiche
+		"""
+		o_m, o_s, o_r = other.get("mainversion"), other.get("secondversion"), other.get("revision")
+		c_m, c_s, c_r = self.get("mainversion"), self.get("secondversion"), self.get("revision")
+		
+		if o_m == c_m and o_s == c_s and o_r == c_r: return 0
+		if o_m != c_m: return 3
+		else:
+			if o_s != c_s: return 2
+			if o_r != c_r: return 1
 
-if __name__ == "__main__":
-	ReportReader("""<?xml version="1.0" ?>
-<pyacqua-update>
-	<info>
-		<mainversion>1</mainversion>
-		<secondversion>0</secondversion>
-		<revision>0</revision>
-		<message></message>
-		<changelog>YXNkYWQK</changelog>
-		<message-pre>messaggio pre installazione</message-pre>
-		<message-post>messaggio post installazione</message-post>
-	</info>
-	<database>database/pyacqua.db</database>
-	<mirrors>
-		<url>secondo</url>
-		<url>ultimo?</url>
-		<url>terzo</url>
-		<url>primo</url>
-	</mirrors>
-	<actions>
-		<pre>miao</pre>
-		<post>bau</post>
-	</actions>
-	<downloads>
-		<svn>svn://developer.berlios.de/...</svn>
-		<tarball>http://www.pyacqua.net/downloads/pyacqua.tgz</tarball>
-		<windows>http://www.pyacqua.net/downloads/pyacqua.exe</windows>
-	</downloads>
-</pyacqua-update>""")
+class Indexer(object):
+	
+	programs = property(lambda x: x.__programs)
+	
+	def __init__(self, data=None):
+		self.__programs = []
+		
+		if data != None:
+			try:
+				doc = parseString(data)
+			except:
+				raise Exception("Cannot parse index file.")
+			
+			if doc.documentElement.tagName == "pyacqua-index":
+				for node in doc.documentElement.childNodes:
+					if node.nodeName == "content" and node.firstChild:
+						self.addContent(node.firstChild.data)
+			else:
+				raise Exception("Unknown file format for index file.")
+	
+	def addContent(self, program):
+		self.__programs.append(program)
+	
+	def saveToFile(self, file):
+		doc = getDOMImplementation().createDocument(None, "pyacqua-index", None)
+		element = doc.documentElement
+		
+		for i in self.__programs:
+			t = doc.createElement("content")
+			t.appendChild(doc.createTextNode(i))
+			element.appendChild(t)
+		
+		try:
+			f = open(file, "w")
+			doc.writexml (f, "", "", "")
+			f.close()
+			
+			print "%s written." % file
+		except:
+			print "Cannot write to %s ... ignoring." % file
+
+class IndexMaker(object):
+	def __init__(self, db, out):
+		self.db = DatabaseWrapper(db)
+		self.idx = Indexer()
+		self.out = out
+	
+	def create(self):
+		for i in self.db.select("SELECT name FROM program")[0]:
+			print "-> %s added." % i
+			self.idx.addContent(i)
+		
+		self.idx.saveToFile(self.out)
 
 class ListCreator(object):
 	def __init__(self, database, info):
@@ -166,7 +216,7 @@ class ListCreator(object):
 			t = map(
 				int, self.db.select("SELECT mainversion, version, revision FROM program WHERE name=\"%s\"" % self.db.sanitize(name))[0]
 			)
-     
+			
 			program.set("mainversion", t[0])
 			program.set("secondversion", t[1])
 			program.set("revision", t[2])
