@@ -78,6 +78,42 @@ COL_PERC = 5
 COL_TOGG = 6
 COL_COLO = 7
 
+# @update standard@ - second pass - soggetto new_db
+# Controlliamo l'esistenza della stessa dir
+# -> se nn c'e' aggiungiamo tutti i file
+# Se esiste
+#    -> controlliamo la revision (se la nuova e' maggiore altrimenti ignore (custom update precedente))
+#       -> for sui file
+#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
+
+# @update standard@ - removing - soggetto old_db
+# Controlliamo se la dir non esiste
+#   -> Rimuoviamo la dir con tutti i file all'interno
+# se esiste
+#   -> for sui file
+#      se esite controlla md5 e bytes (versione minore | se maggiore non far nulla)
+#        -> se non ok riscarica (o errore di update sul server)
+#      se non esiste
+#        -> elimina file
+
+# @update forzato@ clone (update standard)
+# Controlliamo l'esistenza della stessa dir
+# -> se nn c'e' aggiungiamo tutti i file
+# Se esiste
+#    -> controlliamo la revision (se uguale ignore)
+#       -> for sui file
+#          controlla revision (se diversa riscarica | se uguale controlla consistenza in caso riscarica)
+
+# @update forzato@ - removing - soggetto old_db
+# Controlliamo se la dir non esiste
+#   -> Rimuoviamo la dir con tutti i file all'interno
+# se esiste
+#   -> for sui file
+#      se esite controlla md5 e bytes (sempre)
+#        -> se non ok riscarica
+#      se non esiste
+#        -> elimina file
+
 import time
 
 class Update(object):
@@ -85,6 +121,7 @@ class Update(object):
 		self.new_db = None
 		self.old_db = DatabaseReader(None, "old.db")
 		self.startThread(self.dumpDB, "/~stack/pyupdate/pyacqua.db")
+		time.sleep(0.3)
 		self.startThread(self.listInfo, "/~stack/pyupdate/index.xml")
 	
 	def startThread(self, callback, url, args=None):
@@ -126,58 +163,85 @@ class Update(object):
 		if not self.new_db: raise "No db."
 		
 		pid = self.new_db.select("SELECT id FROM program WHERE name='%s'" % self.new_db.sanitize(program))[0][0]
+		opid = self.old_db.select("SELECT id FROM program WHERE name='%s'" % self.old_db.sanitize(program))[0][0]
+		
+		print "Pid: old -> %d new -> %d" % (pid, opid)
+		
 		for dir_entry in self.new_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(pid)):
 			# dir_entry => (idx, name, revision, filenum, pid)
 			
 			did, dname, drev, dfilenum, pid = dir_entry
 			
-			# @update standard@ - second pass - soggetto new_db
-			# Controlliamo l'esistenza della stessa dir
-			# -> se nn c'e' aggiungiamo tutti i file
-			# Se esiste
-			#    -> controlliamo la revision (se la nuova e' maggiore altrimenti ignore (custom update precedente))
+			print "Checking %s" % dname
+			dir_id, dir_rev = self.old_db.getDirRevision(dname, opid)
+			
+			if dir_rev >= drev:
+				print "Skipping %d >= %d" % (dir_rev, drev)
+				continue
+			
 			#       -> for sui file
 			#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
-			
-			# @update standard@ - removing - soggetto old_db
-			# Controlliamo se la dir non esiste
-			#   -> Rimuoviamo la dir con tutti i file all'interno
-			# se esiste
-			#   -> for sui file
-			#      se esite controlla md5 e bytes (versione minore | se maggiore non far nulla)
-			#        -> se non ok riscarica (o errore di update sul server)
-			#      se non esiste
-			#        -> elimina file
-			
-			# @update forzato@ clone (update standard)
-			# Controlliamo l'esistenza della stessa dir
-			# -> se nn c'e' aggiungiamo tutti i file
-			# Se esiste
-			#    -> controlliamo la revision (se uguale ignore)
-			#       -> for sui file
-			#          controlla revision (se diversa riscarica | se uguale controlla consistenza in caso riscarica)
-			
-			# @update forzato@ - removing - soggetto old_db
-			# Controlliamo se la dir non esiste
-			#   -> Rimuoviamo la dir con tutti i file all'interno
-			# se esiste
-			#   -> for sui file
-			#      se esite controlla md5 e bytes (sempre)
-			#        -> se non ok riscarica
-			#      se non esiste
-			#        -> elimina file
-			
 			
 			for file_entry in self.new_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((pid, did))):
 				# file_entry => (idx, name, revision, bytes, md5, did, pid)
 				
 				fid, fname, frev, fbytes, fmd5, did, pid = file_entry
 				
-				sys.stdout.write("                                                 \r")
-				sys.stdout.write("Checking: %s\r" % fmd5)
-				sys.stdout.flush()
-				time.sleep(0.3)
+				file_id, file_rev = self.old_db.getFileRevision(fname, dir_id, opid)
+				
+				if (file_rev == frev and not self.old_db.checkConsistence(file_id, frev, fbytes, fmd5)) or (file_rev < frev):
+					self.downloadFile(file_id, fname, frev, fbytes, fmd5)
+		
+		print "On second stage :)"
+		
+		for dir_entry in self.old_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(opid)):
+			did, dname, drev, dfilenum, pid = dir_entry
 			
+			print "Checking %s" % dname
+			dir_id, dir_rev = self.new_db.getDirRevision(dname, pid)
+			
+			if dir_id == -1 and dir_rev == -1:
+				print "Full removing %s (and all contents) ..." % dname
+				continue
+			
+			for file_entry in self.old_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((opid, did))):
+				# file_entry => (idx, name, revision, bytes, md5, did, pid)
+				
+				fid, fname, frev, fbytes, fmd5, did, pid = file_entry
+				
+				file_id, file_rev = self.new_db.getFileRevision(fname, dir_id, pid)
+				
+				if file_id == -1 and file_rev == -1:
+					print "Removing file %s ..." % fname
+				elif file_rev <= frev and not self.new_db.checkConsistence(file_id, frev, fbytes, fmd5):
+					print "Consistence check failed for file %s." % fname
+	
+	def downloadFile(self, file_id, fname, frev, fbytes, fmd5):
+		self.startThread(self.checkConsistence, "/~stack/pyupdate/source/%s" % fname, (file_id, fname, frev, fbytes, fmd5))
+	
+	def checkConsistence(self, data, response, args):
+		file_id, fname, frev, fbytes, fmd5 = args
+		
+		print "%s -> " % fname,
+		
+		if data == None:
+			print "Error in recv."
+			return
+
+		if response.status != 200:
+			print "Error in response."
+			return
+		
+		if len(data) == fbytes and self.MD5(data) == fmd5:
+			print "File is ok. merge."
+			self.old_db.execute("UPDATE file SET revision=%d, bytes=%d, md5=\"%s\" WHERE id=%d" % self.sanitize((frev, fbytes, fmd5, file_id)))
+		else:
+			print "Error in file."
+	
+	def MD5(self, data):
+		m = md5.new()
+		m.update(data)
+		return m.hexdigest()
 	
 	def dumpDB(self, data, response, args):
 		f = open("tmp.database", "wb")

@@ -61,9 +61,15 @@ class DatabaseWrapper(object):
 		else:
 			raise Exception("Unknown cast. Please define it :)")
 	
-	def select(self, req):
+	def select(self, req, dump=False):
 		self.cursor.execute(req)
-		return self.cursor.fetchall()
+		ret = self.cursor.fetchall()
+		
+		if dump:
+			print req
+			print ret
+		
+		return ret
 	
 	def execute(self, req, commit=True):
 		self.cursor.execute(req)
@@ -88,6 +94,27 @@ class DatabaseReader(DatabaseWrapper):
 		
 		self.checkDatabaseSchema()
 		self.getVersions()
+	
+	def getDirRevision(self, dirname, pid):
+		"""
+		Return -1 se non trovata altrimenti la revision
+		"""
+		ret = self.select("SELECT id, revision FROM directory WHERE name='%s' AND program_id=%d" % self.sanitize((dirname, pid)))
+		if len(ret) > 1: raise Exception("ugh .. Colliding directory :<")
+		elif len(ret) == 0: return (-1, -1)
+		else: return ret[0]
+	
+	def getFileRevision(self, fname, dirid, pid):
+		ret = self.select("SELECT id, revision FROM file WHERE name='%s' AND directory_id=%d AND program_id=%d" % self.sanitize((fname, dirid, pid)))
+		if len(ret) > 1: raise Exception("ugh .. Colliding files :> .. you are very lucky man!")
+		elif len(ret) == 0: return (-1, -1)
+		else: return ret[0]
+	
+	def checkConsistence(self, file_id, frev, fbytes, fmd5):
+		print self.select("SELECT id, revision, bytes, md5 FROM file WHERE id=%d" % self.sanitize(file_id))
+		if len(ret) > 1: raise Exception("ugh .. Colliding files :> .. you are very lucky man!")
+		elif len(ret) == 0: return False
+		else: return (file_id, frev, fbytes, fmd5) == ret[0]
 	
 	def checkDatabaseSchema(self):
 
@@ -190,8 +217,8 @@ class DatabaseUpdater(DatabaseReader):
 		# 	altrimenti forzare sui valori passati
 		# se non esiste inserire i valori passati
 		# 	se non ci sono errore ed esci -1
-
-		dir = split(dir)[1]
+		
+		dir = (dir.startswith("./")) and (dir[2:]) or (dir)
 
 		ret = self.select("SELECT * FROM directory WHERE name=\"%s\" AND program_id=%d" % self.sanitize((dir, p_id)))
 
