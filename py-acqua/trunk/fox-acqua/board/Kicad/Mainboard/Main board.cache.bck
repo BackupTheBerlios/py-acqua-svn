@@ -1,4 +1,4 @@
-EESchema-DOCLIB  Version 2.0  16/12/2007-21:53:42
+EESchema-DOCLIB  Version 2.0  29/12/2007-16:34:06
 #
 $CMP BAT54A
 D Schottky Barrier Diodes
@@ -37,6 +37,11 @@ $ENDCMP
 $CMP P82B96TD
 D Buffer bidirezionale
 K buffer
+$ENDCMP
+#
+$CMP R
+D Resistance
+K R DEV
 $ENDCMP
 #
 $CMP RES_VERTICALE
