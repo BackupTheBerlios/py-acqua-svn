@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  29/12/2007-16:34:04
+# EESchema Netlist Version 1.1 created  29/12/2007-17:14:14
 (
  ( 474BF82B R5 BATT1 CR2032
   ( 1 GND_1 )
@@ -71,11 +71,11 @@
   ( 1 N-000010 )
   ( 2 N-000087 )
  )
- ( 474BF6EA SM0603 R1 1K
+ ( 474BF6EA SM0805 R1 1K
   ( 1 3V3_1 )
   ( 2 N-000021 )
  )
- ( 474BF6F3 SM0603 R2 1K
+ ( 474BF6F3 SM0805 R2 1K
   ( 1 3V3_1 )
   ( 2 N-000015 )
  )
