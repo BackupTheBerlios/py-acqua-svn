@@ -7,59 +7,32 @@ function sbrah {
 	echo -e "\033[01;32mo.O\033[1;37m $1\033[00m"
 }
 
-function info {
-	echo -e " \033[01;32m:\033[1;37m  $1\033[00m"
-}
-
-function cons {
-	echo -e " :  \033[01;34m`basename $PWD` #\033[00m $1"
-}
-
 directory="$1"
 
 if [ "$1" == "" ]; then
 	echo
-	sbrah "::::::::::..-:.     ::-.:::.       .,-::::: .::::::.    ...    :::  :::.     "
-	sbrah " \`;;;\`\`\`.;;;';;.   ;;;;';;\`;;    ,;;;'\`\`\`\`',;;'\`\`\`';;,  ;;     ;;;  ;;\`;;    "
-	sbrah "  \`]]nnn]]'   '[[,[[[' ,[[ '[[,  [[[       [[[     [[[\\[['     [[[ ,[[ '[[,  "
-	sbrah "    \$\$\$\"\"        c\$\$\"  c\$\$\$cc\$\$\$c \$\$\$       \"\$\$c  cc\$\$\$\"\$\$      \$\$\$c\$\$\$cc\$\$\$c "
-	sbrah "    888o       ,8P\"\`    888   888,\`88bo,__,o,\"*8bo,Y88b,88    .d888 888   888,"
-	sbrah "    YMMMb     mM\"       YMM   \"\"\`   \"YUMMMMMP\" \"*YP\" \"M\" \"YmmMMMM\"\" YMM   \"\"\` "
-	sbrah "                                                                              v 1.0"
+	sbrah  " ___        _"
+	sbrah  "| _ \_  _  /_\  __ __ _ _  _ __ _"
+	sbrah  "|  _/ || |/ _ \/ _/ _\` | || / _\` |"
+	sbrah  "|_|  \_, /_/ \_\__\__, |\_,_\__,_|"
+	sbrah  "     |__/            |_|"
+	echo
+	sbrah "ei you! probably you are trying to install pyacqua on your box."
+       	sbrah "I'm sorry, but the task is not so simple. So you must read carefully"
+	sbrah "this warning before proceeding :D"
+	sbrah 
+       	sbrah "In order to install py-acqua you must type as root"
+	sbrah "# ./startup.sh /usr - in order to install pyacqua in /usr"
+        sbrah "or"
+	sbrah "# ./startup.sh /usr/local - in order to install pyacqua in /usr/local"
+	sbrah 
+       	sbrah "mhh..remember! For bugs, insults, porn-photos we have a mail: "
+        sbrah "info@pyacqua.net and also a site http://www.pyacqua.net"
+	sbrah
+	sbrah "ok it's all. Good luck \$USER ;-)"
 
 	echo
-	info "ei you! probably you are trying to install pyacqua on your box. I'm sorry,"
-	info "but the task is not so simple. So you must read carefully this warning before"
-	info "proceeding :D"
-	info ""
-	info "To install py-acqua you must type as root"
-	info ""
-	cons "./startup.sh /usr                                  (to install in /usr) "
-	echo
-	info "--- OR ---"
-	echo
-	cons "./startup.sh /usr/local                      (to install in /usr/local) "
-	info ""
-	info "mhh..remember! For bugs, insults, porn-photos we have a mail and also a website."
-	info ""
-	info "PyAcqua Team:"
-	info "  info@pyacqua.net"
-	info "  http://www.pyacqua.net"
-	info ""
-	info "ok it's all. Good luck $USER ;-)"
-	echo
-	info "Cowsay:"
-	info "                                         ___________________________________ "
-	info "                                        / No animals were harmed during the \\ "
-	info "                                        \ making of this release.           /"
-	info "                                         ----------------------------------- "
-	info "                                                   \   ^__^"
-	info "                                                    \  (oo)\_______"
-	info "                                                       (__)\       )\/\\ "
-	info "                                                           ||----w |"
-	info "                                                           ||     ||"
-
-
+	sbrah "No animals were harmed during the making of this release."
 	echo
 
 	exit 
