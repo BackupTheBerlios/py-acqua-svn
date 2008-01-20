@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  20/1/2008-10:13:04
+# EESchema Netlist Version 1.1 created  20/1/2008-17:24:00
 (
  ( 4793147B $noname  R8 R {Lib=R}
   (    1 3V3_1 )
@@ -92,7 +92,7 @@
   (    7 N-000018 )
   (    8 5V_1 )
  )
- ( 474BF118 diode-DO41-10  D2 1N5408 {Lib=1N4004}
+ ( 474BF118 diode-DO41-10  D2 1N5820 {Lib=1N4004}
   (    C N-000013 )
   (    A N-000012 )
  )
