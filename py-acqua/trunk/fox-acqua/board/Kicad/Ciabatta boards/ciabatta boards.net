@@ -1,265 +1,493 @@
-# EESchema Netlist Version 1.1 created  15/12/2007-17:15:47
+# EESchema Netlist Version 1.1 created  12/1/2008-11:42:30
 (
- ( 4764075B SM0805 C1 220pF
-  ( 1 GND_1 )
-  ( 2 N-000037 )
+ ( 4788A77F $noname  VR6 VR {Lib=VR}
+  (    1 N-000040 )
+  (    2  ? )
  )
- ( 4764075F SM0805 C2 220pF
-  ( 1 GND_1 )
-  ( 2 N-000004 )
+ ( 4788A40F $noname  VR5 VR {Lib=VR}
+  (    1 N-000038 )
+  (    2 N-000039 )
  )
- ( 47640192 LEDV D1 BAT54A
-  ( 1 I2C )
-  ( 2 I2C )
-  ( 3 ? )
+ ( 4788A40B $noname  VR4 VR {Lib=VR}
+  (    1 N-000005 )
+  (    2 N-000039 )
  )
- ( 4763EC07 LEDV D2 LED
-  ( 1 N-000013 )
-  ( 2 O1_1 )
+ ( 4788A407 $noname  VR3 VR {Lib=VR}
+  (    1 N-000004 )
+  (    2 N-000039 )
  )
- ( 4763EC03 LEDV D3 LED
-  ( 1 N-000027 )
-  ( 2 O2_1 )
+ ( 4788A403 $noname  VR2 VR {Lib=VR}
+  (    1 N-000003 )
+  (    2 N-000039 )
  )
- ( 4763EBFE LEDV D4 LED
-  ( 1 N-000014 )
-  ( 2 O3_1 )
+ ( 4788A3FF $noname  VR1 VR {Lib=VR}
+  (    1 N-000002 )
+  (    2 N-000039 )
  )
- ( 4763EBF9 LEDV D5 LED
-  ( 1 N-000026 )
-  ( 2 O4_1 )
+ ( 47640AE9 $noname  R7 1K {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 SDA_1 )
  )
- ( 4763EBF2 LEDV D6 LED
-  ( 1 N-000015 )
-  ( 2 O5_1 )
+ ( 47640AE5 $noname  R6 1K {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 SCL_1 )
  )
- ( 4763EBEB SOT23EBC D7 LED
-  ( 1 N-000025 )
-  ( 2 O6_1 )
+ ( 47640ADF $noname  R2 330 {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 I2C SCL_1 )
  )
- ( 4763E936 $noname$ P1 CONN_2
-  ( 1 N-000024 )
-  ( 2 N-000017 )
+ ( 47640ADA $noname  R1 330 {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 I2C SDA_1 )
  )
- ( 4763E940 $noname$ P2 CONN_2
-  ( 1 N-000018 )
-  ( 2 N-000017 )
+ ( 476408B0 $noname  R5 1K {Lib=RES_VERTICALE}
+  (    1 A0_1 )
+  (    2 VCC_1 )
  )
- ( 4763E946 $noname$ P3 CONN_2
-  ( 1 N-000023 )
-  ( 2 N-000017 )
+ ( 476408AC $noname  R4 1K {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 A1_1 )
  )
- ( 4763E94C $noname$ P4 CONN_2
-  ( 1 N-000019 )
-  ( 2 N-000017 )
+ ( 476408A8 $noname  R3 1K {Lib=RES_VERTICALE}
+  (    1 VCC_1 )
+  (    2 A2_1 )
  )
- ( 4763E953 $noname$ P5 CONN_2
-  ( 1 N-000022 )
-  ( 2 N-000017 )
+ ( 4764083D special-EDG-04  SW1 SW_DIP-4 {Lib=SW_DIP-4}
+  (    1 A0_1 )
+  (    2 A1_1 )
+  (    3 A2_1 )
+  (    4  ? )
+  (    5 GND_1 )
+  (    6 GND_1 )
+  (    7 GND_1 )
+  (    8 GND_1 )
  )
- ( 4763E91D $noname$ P6 CONN_2
-  ( 1 N-000020 )
-  ( 2 N-000017 )
+ ( 4764075F $noname  C2 220pF {Lib=C}
+  (    1 GND_1 )
+  (    2 SDA_1 )
  )
- ( 4763EA56 $noname$ P7 CONN_2
-  ( 1 N-000016 )
-  ( 2 N-000021 )
+ ( 4764075B $noname  C1 220pF {Lib=C}
+  (    1 GND_1 )
+  (    2 SCL_1 )
  )
- ( 4763EA9B $noname$ P8 CONN_2
-  ( 1 N-000017 )
-  ( 2 N-000016 )
+ ( 47640192 $noname  D1 BAT54A {Lib=BAT54A}
+  (    1 I2C SDA_1 )
+  (    2 I2C SCL_1 )
+  (    3  ? )
  )
- ( 47640ADA SM0805 R1 330
-  ( 1 VCC_1 )
-  ( 2 I2C )
+ ( 4763F5D6 con-amp-quick-04P  SL1 M04 {Lib=M04}
+  (    1 VCC_1 )
+  (    2 I2C SCL_1 )
+  (    3 I2C SDA_1 )
+  (    4 GND_1 )
  )
- ( 47640ADF SM0805 R2 330
-  ( 1 VCC_1 )
-  ( 2 I2C )
+ ( 4763F53E $noname  U1 P82B96TD {Lib=P82B96TD}
+  (    1 I2C SDA_1 )
+  (    2 SDA_1 )
+  (    3 SDA_1 )
+  (    4 GND_1 )
+  (    5 SCL_1 )
+  (    6 SCL_1 )
+  (    7 I2C SCL_1 )
+  (    8 VCC_1 )
  )
- ( 476408A8 SM0805 R3 1K
-  ( 1 VCC_1 )
-  ( 2 A2_1 )
+ ( 4763F415 $noname  U3 MCP23008 {Lib=MCP23008}
+  (    1 SCL_1 )
+  (    2 SDA_1 )
+  (    3 A2_1 )
+  (    4 A1_1 )
+  (    5 A0_1 )
+  (    6 RST_1 )
+  (    7  ? )
+  (    8  ? )
+  (    9 GND_1 )
+  (   10  ? )
+  (   11 O1_1 )
+  (   12 O2_1 )
+  (   13 O3_1 )
+  (   14 O4_1 )
+  (   15 O5_1 )
+  (   16 O6_1 )
+  (   17  ? )
+  (   18 VCC_1 )
  )
- ( 476408AC SM0805 R4 1K
-  ( 1 VCC_1 )
-  ( 2 A1_1 )
+ ( 4763F3D8 $noname  U2 MCP23008 {Lib=MCP23008}
+  (    1 SCL_1 )
+  (    2 SDA_1 )
+  (    3 A2_1 )
+  (    4 A1_1 )
+  (    5 A0_1 )
+  (    6 RST_1 )
+  (    7  ? )
+  (    8  ? )
+  (    9 GND_1 )
+  (   10  ? )
+  (   11 O1_1 )
+  (   12 O2_1 )
+  (   13 O3_1 )
+  (   14 O4_1 )
+  (   15 O5_1 )
+  (   16 O6_1 )
+  (   17  ? )
+  (   18 VCC_1 )
  )
- ( 476408B0 SM0805 R5 1K
-  ( 1 A0_1 )
-  ( 2 VCC_1 )
+ ( 4763EF85 $noname  U5 ULN2003 {Lib=ULN2003}
+  (    1 I1_1 )
+  (    2 I2_1 )
+  (    3 I3_1 )
+  (    4 I4_1 )
+  (    5 I5_1 )
+  (    6 I6_1 )
+  (    7  ? )
+  (    8 GND_1 )
+  (    9  ? )
+  (   10  ? )
+  (   11 O6_1 )
+  (   12 O5_1 )
+  (   13 O4_1 )
+  (   14 O3_1 )
+  (   15 O2_1 )
+  (   16 O1_1 )
  )
- ( 47640AE5 SM0805 R6 1K
-  ( 1 VCC_1 )
-  ( 2 N-000037 )
+ ( 4763EF09 $noname  U4 ULN2003 {Lib=ULN2003}
+  (    1 I1_1 )
+  (    2 I2_1 )
+  (    3 I3_1 )
+  (    4 I4_1 )
+  (    5 I5_1 )
+  (    6 I6_1 )
+  (    7  ? )
+  (    8 GND_1 )
+  (    9 VCC_1 )
+  (   10  ? )
+  (   11 O6_1 )
+  (   12 O5_1 )
+  (   13 O4_1 )
+  (   14 O3_1 )
+  (   15 O2_1 )
+  (   16 O1_1 )
  )
- ( 47640AE9 SM0805 R7 1K
-  ( 1 VCC_1 )
-  ( 2 N-000004 )
+ ( 4762F652 $noname  RELAY3 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O3_1 )
+  (    3 N-000039 )
+  (    4 N-000004 )
+  (    5  ? )
  )
- ( 4762F64B PB1164006 RELAY1 PB114006
-  ( 1 VCC_1 )
-  ( 2 O1_1 )
-  ( 3 N-000021 )
-  ( 4 N-000024 )
-  ( 5 ? )
+ ( 4763ECD2 resistor-net-RN-7  RN1 RN06 {Lib=RN06}
+  (    1 VCC_1 )
+  (    2 N-000017 )
+  (    3 N-000024 )
+  (    4 N-000018 )
+  (    5 N-000023 )
+  (    6 N-000019 )
+  (    7 N-000022 )
  )
- ( 4762F650 PB1164006 RELAY2 PB114006
-  ( 1 VCC_1 )
-  ( 2 O2_1 )
-  ( 3 N-000021 )
-  ( 4 N-000018 )
-  ( 5 ? )
+ ( 4763EC07 $noname  D2 LED {Lib=LED}
+  (    1 N-000017 )
+  (    2 O1_1 )
  )
- ( 4762F652 PB1164006 RELAY3 PB114006
-  ( 1 VCC_1 )
-  ( 2 O3_1 )
-  ( 3 N-000021 )
-  ( 4 N-000023 )
-  ( 5 ? )
+ ( 4763EC03 $noname  D3 LED {Lib=LED}
+  (    1 N-000024 )
+  (    2 O2_1 )
  )
- ( 4762F65C PB1164006 RELAY4 PB114006
-  ( 1 VCC_1 )
-  ( 2 O4_1 )
-  ( 3 N-000021 )
-  ( 4 N-000019 )
-  ( 5 ? )
+ ( 4763EBFE $noname  D4 LED {Lib=LED}
+  (    1 N-000018 )
+  (    2 O3_1 )
  )
- ( 4762F65F PB1164006 RELAY5 PB114006
-  ( 1 VCC_1 )
-  ( 2 O5_1 )
-  ( 3 N-000021 )
-  ( 4 N-000022 )
-  ( 5 ? )
+ ( 4763EBF9 $noname  D5 LED {Lib=LED}
+  (    1 N-000023 )
+  (    2 O4_1 )
  )
- ( 4762F682 PB1164006 RELAY6 PB114006
-  ( 1 VCC_1 )
-  ( 2 O6_1 )
-  ( 3 N-000021 )
-  ( 4 N-000020 )
-  ( 5 ? )
+ ( 4763EBF2 $noname  D6 LED {Lib=LED}
+  (    1 N-000019 )
+  (    2 O5_1 )
  )
- ( 4763ECD2 resistor-net-RN-7 RN1 RN06
-  ( 1 VCC_1 )
-  ( 2 N-000013 )
-  ( 3 N-000027 )
-  ( 4 N-000014 )
-  ( 5 N-000026 )
-  ( 6 N-000015 )
-  ( 7 N-000025 )
+ ( 4763EBEB $noname  D7 LED {Lib=LED}
+  (    1 N-000022 )
+  (    2 O6_1 )
  )
- ( 4763F5D6 con-amp-quick-04P SL1 M04
-  ( 1 VCC_1 )
-  ( 2 I2C )
-  ( 3 I2C )
-  ( 4 GND_1 )
+ ( 4763EA9B $noname  P8 CONN_2 {Lib=CONN_2}
+  (    1 N-000021 )
+  (    2 N-000020 )
  )
- ( 4764083D special-EDG-04 SW1 SW_DIP-4
-  ( 1 A0_1 )
-  ( 2 A1_1 )
-  ( 3 A2_1 )
-  ( 4 ? )
-  ( 5 GND_1 )
-  ( 6 GND_1 )
-  ( 7 GND_1 )
-  ( 8 GND_1 )
+ ( 4763EA56 $noname  P7 CONN_2 {Lib=CONN_2}
+  (    1 N-000020 )
+  (    2 N-000039 )
  )
- ( 4763F53E SO8E U1 P82B96TD
-  ( 1 I2C )
-  ( 2 N-000004 )
-  ( 3 N-000004 )
-  ( 4 GND_1 )
-  ( 5 N-000037 )
-  ( 6 N-000037 )
-  ( 7 I2C )
-  ( 8 VCC_1 )
+ ( 4763E953 $noname  P5 CONN_2 {Lib=CONN_2}
+  (    1 N-000038 )
+  (    2 N-000021 )
  )
- ( 4763F3D8 $noname$ U2 MCP23008
-  ( 1 SCL_1 )
-  ( 2 SDA_1 )
-  ( 3 A2_1 )
-  ( 4 A1_1 )
-  ( 5 A0_1 )
-  ( 6 RST_1 )
-  ( 7 ? )
-  ( 8 ? )
-  ( 9 GND_1 )
-  ( 10 ? )
-  ( 11 O1_1 )
-  ( 12 O2_1 )
-  ( 13 O3_1 )
-  ( 14 O4_1 )
-  ( 15 O5_1 )
-  ( 16 O6_1 )
-  ( 17 ? )
-  ( 18 VCC_1 )
+ ( 4763E94C $noname  P4 CONN_2 {Lib=CONN_2}
+  (    1 N-000005 )
+  (    2 N-000021 )
  )
- ( 4763F415 18DIP-ELL300 U3 MCP23008
-  ( 1 SCL_1 )
-  ( 2 SDA_1 )
-  ( 3 A2_1 )
-  ( 4 A1_1 )
-  ( 5 A0_1 )
-  ( 6 RST_1 )
-  ( 7 ? )
-  ( 8 ? )
-  ( 9 GND_1 )
-  ( 10 ? )
-  ( 11 O1_1 )
-  ( 12 O2_1 )
-  ( 13 O3_1 )
-  ( 14 O4_1 )
-  ( 15 O5_1 )
-  ( 16 O6_1 )
-  ( 17 ? )
-  ( 18 VCC_1 )
+ ( 4763E946 $noname  P3 CONN_2 {Lib=CONN_2}
+  (    1 N-000004 )
+  (    2 N-000021 )
  )
- ( 4763EF09 SO16E U4 ULN2003
-  ( 1 I1_1 )
-  ( 2 I2_1 )
-  ( 3 I3_1 )
-  ( 4 I4_1 )
-  ( 5 I5_1 )
-  ( 6 I6_1 )
-  ( 7 ? )
-  ( 8 GND_1 )
-  ( 9 VCC_1 )
-  ( 10 ? )
-  ( 11 O6_1 )
-  ( 12 O5_1 )
-  ( 13 O4_1 )
-  ( 14 O3_1 )
-  ( 15 O2_1 )
-  ( 16 O1_1 )
+ ( 4763E940 $noname  P2 CONN_2 {Lib=CONN_2}
+  (    1 N-000003 )
+  (    2 N-000021 )
  )
- ( 4763EF85 16DIP-ELL300 U5 ULN2003
-  ( 1 I1_1 )
-  ( 2 I2_1 )
-  ( 3 I3_1 )
-  ( 4 I4_1 )
-  ( 5 I5_1 )
-  ( 6 I6_1 )
-  ( 7 ? )
-  ( 8 GND_1 )
-  ( 9 ? )
-  ( 10 ? )
-  ( 11 O6_1 )
-  ( 12 O5_1 )
-  ( 13 O4_1 )
-  ( 14 O3_1 )
-  ( 15 O2_1 )
-  ( 16 O1_1 )
+ ( 4763E936 $noname  P1 CONN_2 {Lib=CONN_2}
+  (    1 N-000002 )
+  (    2 N-000021 )
+ )
+ ( 4763E91D $noname  P6 CONN_2 {Lib=CONN_2}
+  (    1 N-000040 )
+  (    2 N-000021 )
+ )
+ ( 4762F682 $noname  RELAY6 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O6_1 )
+  (    3 N-000039 )
+  (    4 N-000040 )
+  (    5  ? )
+ )
+ ( 4762F65F $noname  RELAY5 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O5_1 )
+  (    3 N-000039 )
+  (    4 N-000038 )
+  (    5  ? )
+ )
+ ( 4762F65C $noname  RELAY4 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O4_1 )
+  (    3 N-000039 )
+  (    4 N-000005 )
+  (    5  ? )
+ )
+ ( 4762F650 $noname  RELAY2 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O2_1 )
+  (    3 N-000039 )
+  (    4 N-000003 )
+  (    5  ? )
+ )
+ ( 4762F64B $noname  RELAY1 PB114006 {Lib=PB114006}
+  (    1 VCC_1 )
+  (    2 O1_1 )
+  (    3 N-000039 )
+  (    4 N-000002 )
+  (    5  ? )
  )
 )
 *
 { Allowed footprints by component:
-$component U2
+$component U3
  DIP18
  SO18
 $endlist
-$component U3
+$component U2
  DIP18
  SO18
 $endlist
 $endfootprintlist
 }
+{ Pin List by Nets
+Net 2 ""
+ VR1 1
+ P1 1
+ RELAY1 4
+Net 3 ""
+ VR2 1
+ P2 1
+ RELAY2 4
+Net 4 ""
+ VR3 1
+ RELAY3 4
+ P3 1
+Net 5 ""
+ VR4 1
+ P4 1
+ RELAY4 4
+Net 6 "A1_1"
+ R4 2
+ SW1 2
+ U3 4
+ U2 4
+Net 7 "I2C SCL_1"
+ R2 2
+ D1 2
+ SL1 2
+ U1 7
+Net 9 "SDA_1"
+ R7 2
+ C2 2
+ U1 3
+ U1 2
+ U3 2
+ U2 2
+Net 10 "O2_1"
+ U3 12
+ U2 12
+ U5 15
+ U4 15
+ D3 2
+ RELAY2 2
+Net 11 "O4_1"
+ U3 14
+ U2 14
+ U5 13
+ U4 13
+ D5 2
+ RELAY4 2
+Net 12 "O6_1"
+ U3 16
+ U2 16
+ U5 11
+ U4 11
+ D7 2
+ RELAY6 2
+Net 13 "I5_1"
+ U5 5
+ U4 5
+Net 14 "I3_1"
+ U5 3
+ U4 3
+Net 15 "I1_1"
+ U5 1
+ U4 1
+Net 17 ""
+ RN1 2
+ D2 1
+Net 18 ""
+ RN1 4
+ D4 1
+Net 19 ""
+ RN1 6
+ D6 1
+Net 20 ""
+ P8 2
+ P7 1
+Net 21 ""
+ P8 1
+ P5 2
+ P4 2
+ P3 2
+ P2 2
+ P1 2
+ P6 2
+Net 22 ""
+ RN1 7
+ D7 1
+Net 23 ""
+ RN1 5
+ D5 1
+Net 24 ""
+ RN1 3
+ D3 1
+Net 25 "I2_1"
+ U5 2
+ U4 2
+Net 26 "I4_1"
+ U5 4
+ U4 4
+Net 27 "I6_1"
+ U5 6
+ U4 6
+Net 28 "O5_1"
+ U3 15
+ U2 15
+ U5 12
+ U4 12
+ D6 2
+ RELAY5 2
+Net 29 "O3_1"
+ U3 13
+ U2 13
+ U5 14
+ U4 14
+ RELAY3 2
+ D4 2
+Net 30 "RST_1"
+ U3 6
+ U2 6
+Net 31 "O1_1"
+ U3 11
+ U2 11
+ U5 16
+ U4 16
+ D2 2
+ RELAY1 2
+Net 32 "I2C SDA_1"
+ R1 2
+ D1 1
+ SL1 3
+ U1 1
+Net 33 "SCL_1"
+ R6 2
+ C1 2
+ U1 6
+ U1 5
+ U3 1
+ U2 1
+Net 34 "GND_1"
+ SW1 8
+ SW1 7
+ SW1 6
+ SW1 5
+ C2 1
+ C1 1
+ SL1 4
+ U1 4
+ U3 9
+ U2 9
+ U5 8
+ U4 8
+Net 35 "A2_1"
+ R3 2
+ SW1 3
+ U3 3
+ U2 3
+Net 36 "A0_1"
+ R5 1
+ SW1 1
+ U3 5
+ U2 5
+Net 37 "VCC_1"
+ R7 1
+ R6 1
+ R2 1
+ R1 1
+ R5 2
+ R4 1
+ R3 1
+ SL1 1
+ U1 8
+ U3 18
+ U2 18
+ U4 9
+ RELAY3 1
+ RN1 1
+ RELAY6 1
+ RELAY5 1
+ RELAY4 1
+ RELAY2 1
+ RELAY1 1
+Net 38 ""
+ VR5 1
+ P5 1
+ RELAY5 4
+Net 39 ""
+ VR5 2
+ VR4 2
+ VR3 2
+ VR2 2
+ VR1 2
+ RELAY3 3
+ P7 2
+ RELAY6 3
+ RELAY5 3
+ RELAY4 3
+ RELAY2 3
+ RELAY1 3
+Net 40 ""
+ VR6 1
+ P6 1
+ RELAY6 4
+}
+#End

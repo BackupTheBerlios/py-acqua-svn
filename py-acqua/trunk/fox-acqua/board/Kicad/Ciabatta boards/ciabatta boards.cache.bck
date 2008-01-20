@@ -1,4 +1,4 @@
-EESchema-DOCLIB  Version 2.0  16/12/2007-05:38:26
+EESchema-DOCLIB  Version 2.0  12/1/2008-11:42:40
 #
 $CMP BAT54A
 D Schottky Barrier Diodes
@@ -28,6 +28,11 @@ $ENDCMP
 $CMP RES_VERTICALE
 D resistenza verticale 1/4w
 K res vert
+$ENDCMP
+#
+$CMP VR
+D VARISTANCE
+K VR  DEV
 $ENDCMP
 #
 #End Doc Library

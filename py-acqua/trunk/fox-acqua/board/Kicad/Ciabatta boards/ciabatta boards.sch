@@ -5,7 +5,7 @@ EELAYER END
 $Descr A4 11700 8267
 Sheet 1 1
 Title ""
-Date "15 dec 2007"
+Date "12 jan 2008"
 Rev ""
 Comp ""
 Comment1 ""
@@ -13,18 +13,33 @@ Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
-Text Notes 10750 7650 0    60   ~
-1.1
-Text Notes 7650 7550 0    60   ~
-CIABATTA
-Text Label 4500 2350 0    60   ~
-SCL
-Text Label 4500 2100 0    60   ~
-SDA
-Text Label 4500 1400 0    60   ~
-VCC
-Text Label 2950 1350 0    60   ~
-VCC
+Wire Wire Line
+	7800 6450 7800 6600
+Wire Wire Line
+	7800 6600 8000 6600
+Connection ~ 8150 2750
+Wire Wire Line
+	8150 2750 8150 2600
+Wire Wire Line
+	8150 2600 8000 2600
+Connection ~ 8145 3450
+Wire Wire Line
+	8145 3450 8145 3300
+Wire Wire Line
+	8145 3300 8000 3300
+Connection ~ 8140 4150
+Wire Wire Line
+	8140 4150 8140 4000
+Wire Wire Line
+	8140 4000 8000 4000
+Connection ~ 8150 4850
+Wire Wire Line
+	8150 4850 8150 4700
+Wire Wire Line
+	8150 4700 8000 4700
+Connection ~ 7805 5900
+Wire Wire Line
+	8000 5900 7805 5900
 Connection ~ 2750 1350
 Wire Wire Line
 	2950 1350 2550 1350
@@ -341,6 +356,94 @@ Wire Wire Line
 Wire Wire Line
 	4050 1400 4500 1400
 Connection ~ 4400 1400
+Wire Wire Line
+	8000 5200 7805 5200
+Connection ~ 7805 5200
+Wire Wire Line
+	8000 5400 8125 5400
+Wire Wire Line
+	8125 5400 8125 5550
+Connection ~ 8125 5550
+Wire Wire Line
+	8000 3800 7805 3800
+Connection ~ 7805 3800
+Wire Wire Line
+	7805 4500 8000 4500
+Connection ~ 7805 4500
+Wire Wire Line
+	8000 3100 7805 3100
+Connection ~ 7805 3100
+Wire Wire Line
+	8000 6100 8150 6100
+Wire Wire Line
+	8150 6100 8150 6250
+Connection ~ 8150 6250
+$Comp
+L VR VR6
+U 1 1 4788A77F
+P 8000 6350
+F 0 "VR6" V 8080 6350 50  0000 C C
+F 1 "VR" V 8000 6350 50  0000 C C
+	1    8000 6350
+	1    0    0    -1  
+$EndComp
+$Comp
+L VR VR5
+U 1 1 4788A40F
+P 8000 5650
+F 0 "VR5" V 8080 5650 50  0000 C C
+F 1 "VR" V 8000 5650 50  0000 C C
+	1    8000 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L VR VR4
+U 1 1 4788A40B
+P 8000 4950
+F 0 "VR4" V 8080 4950 50  0000 C C
+F 1 "VR" V 8000 4950 50  0000 C C
+	1    8000 4950
+	1    0    0    -1  
+$EndComp
+$Comp
+L VR VR3
+U 1 1 4788A407
+P 8000 4250
+F 0 "VR3" V 8080 4250 50  0000 C C
+F 1 "VR" V 8000 4250 50  0000 C C
+	1    8000 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L VR VR2
+U 1 1 4788A403
+P 8000 3550
+F 0 "VR2" V 8080 3550 50  0000 C C
+F 1 "VR" V 8000 3550 50  0000 C C
+	1    8000 3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L VR VR1
+U 1 1 4788A3FF
+P 8000 2850
+F 0 "VR1" V 8080 2850 50  0000 C C
+F 1 "VR" V 8000 2850 50  0000 C C
+	1    8000 2850
+	1    0    0    -1  
+$EndComp
+Text Notes 10750 7650 0    60   ~
+1.1
+Text Notes 7650 7550 0    60   ~
+CIABATTA
+Text Label 4500 2350 0    60   ~
+SCL
+Text Label 4500 2100 0    60   ~
+SDA
+Text Label 4500 1400 0    60   ~
+VCC
+Text Label 2950 1350 0    60   ~
+VCC
 $Comp
 L RES_VERTICALE R7
 U 1 1 47640AE9

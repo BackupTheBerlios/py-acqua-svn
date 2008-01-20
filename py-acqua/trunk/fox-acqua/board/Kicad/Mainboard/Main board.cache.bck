@@ -1,4 +1,4 @@
-EESchema-DOCLIB  Version 2.0  29/12/2007-16:34:06
+EESchema-DOCLIB  Version 2.0  20/1/2008-10:13:07
 #
 $CMP BAT54A
 D Schottky Barrier Diodes
@@ -14,9 +14,9 @@ $CMP CP
 D Condensateur polarise
 $ENDCMP
 #
-$CMP CR2032
-D 3V3
-K CR2032
+$CMP CR2032_FH-LF
+D batteria cr2032 fh-lf
+K cr2032
 $ENDCMP
 #
 $CMP DS1302

@@ -1,10 +1,10 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 29/12/2007-17:14:14
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 20/1/2008-09:57:03
 
 BeginCmp
-TimeStamp = 474BF82B;
+TimeStamp = 4787EA58;
 Reference = BATT1;
 ValeurCmp = CR2032;
-IdModule  = R5;
+IdModule  = cr2032;
 EndCmp
 
 BeginCmp
@@ -32,7 +32,7 @@ BeginCmp
 TimeStamp = 474BD8A7;
 Reference = C4;
 ValeurCmp = 220uF;
-IdModule  = QMONTRE;
+IdModule  = C1V7H;
 EndCmp
 
 BeginCmp
@@ -74,7 +74,7 @@ BeginCmp
 TimeStamp = 474BF118;
 Reference = D2;
 ValeurCmp = 1N5408;
-IdModule  = diode-DO41-10;
+IdModule  = diode-DO201-15;
 EndCmp
 
 BeginCmp
@@ -157,6 +157,13 @@ EndCmp
 BeginCmp
 TimeStamp = 47767696;
 Reference = R7;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4793147B;
+Reference = R8;
 ValeurCmp = R;
 IdModule  = SM0805;
 EndCmp

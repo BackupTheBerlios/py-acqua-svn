@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 15/12/2007-17:15:47
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 12/1/2008-11:30:26
 
 BeginCmp
 TimeStamp = 4764075B;
@@ -264,6 +264,48 @@ TimeStamp = 4763EF85;
 Reference = U5;
 ValeurCmp = ULN2003;
 IdModule  = 16DIP-ELL300;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A3FF;
+Reference = VR1;
+ValeurCmp = VR;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A403;
+Reference = VR2;
+ValeurCmp = VR;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A407;
+Reference = VR3;
+ValeurCmp = VR;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A40B;
+Reference = VR4;
+ValeurCmp = VR;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A40F;
+Reference = VR5;
+ValeurCmp = VR;
+IdModule  = R3-5;
+EndCmp
+
+BeginCmp
+TimeStamp = 4788A414;
+Reference = VR6;
+ValeurCmp = VR;
+IdModule  = R3-5;
 EndCmp
 
 EndListe
