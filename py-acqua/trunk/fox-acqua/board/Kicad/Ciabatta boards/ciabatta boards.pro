@@ -1,9 +1,5 @@
-update=12/1/2008-11:37:15
-last_client=pcbnew
-[general]
-version=1
-RootSch=ciabatta boards.sch
-BoardNm=ciabatta boards.brd
+update=21/1/2008-21:37:45
+last_client=kicad
 [cvpcb]
 version=1
 NetITyp=0
@@ -149,3 +145,7 @@ LibName10=divers
 LibName11=libcms
 LibName12=display
 LibName13=valves
+[general]
+version=1
+RootSch=
+BoardNm=

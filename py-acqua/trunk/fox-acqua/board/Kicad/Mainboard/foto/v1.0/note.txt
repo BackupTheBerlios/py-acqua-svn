@@ -1,0 +1,7 @@
+Ingombri soddisfacenti, per prototipi mettere un pezzettino di scoch isolante sopra usb vicino a j7 x evitare che il via faccia contatto con
+	il case della porta usb
+sostituito riempimento termico con piano di massa
+pontato strip 4 pli x bus i2c
+tagliate piste vicino al buffer i2c x poter usare resistenze da 2x150 ohm invece di 1x330
+spostata posizione diodo x segnali del bus i2c: prima intralciava.
+montata resistenza da 3k sullo switching all'1%: avevo solo quella. alimentazione: 4.96v fissi, non testati a 3A, da provare. testati ad 1A.ripple non misurato

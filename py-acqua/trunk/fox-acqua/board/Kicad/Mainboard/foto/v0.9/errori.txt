@@ -1,0 +1,14 @@
+mancanza pista pin 2 della SD
+mancanza resistenza 4k7 su sda dell'rtc
+montaggio header prima della bobina: difficolta nel montaggio della stessa
+disegnati pin della batteria con il foro invece di una bella piazzola ovale
+vias sotto il buffer i2c. è risultato impossibile poi montare l'integato buffer
+pin dei cavi di alimentazione in ingombro con connettore usb di fox
+pista uscita dello switching reputata troppo sottile
+pista di alimentazione di j6 ch passava proprio sotto il punto di saldatura del porta sd. è risultato necessario troncarlo.
+spazio insufficente per il condensatore elettrolitico in uscita allo switching. sormontava i dido in ingresso da 3A
+montate 2 resistenze da 1k5 invece di una da 3k causa irreperibilità
+montato condensatore in tradizionale anzichè smd causa irreperibilità
+riempimento non collegato alle piste di massa, solo mediante saldature
+
+ke soddisfazione poi vederla andare, sembrava impossibile..

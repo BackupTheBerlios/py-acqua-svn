@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 12/1/2008-11:30:26
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 21/1/2008-21:25:56
 
 BeginCmp
 TimeStamp = 4764075B;
@@ -18,7 +18,7 @@ BeginCmp
 TimeStamp = 47640192;
 Reference = D1;
 ValeurCmp = BAT54A;
-IdModule  = LEDV;
+IdModule  = SOT23EBC;
 EndCmp
 
 BeginCmp
@@ -60,63 +60,63 @@ BeginCmp
 TimeStamp = 4763EBEB;
 Reference = D7;
 ValeurCmp = LED;
-IdModule  = SOT23EBC;
+IdModule  = LEDV;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E936;
 Reference = P1;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E940;
 Reference = P2;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E946;
 Reference = P3;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E94C;
 Reference = P4;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E953;
 Reference = P5;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763E91D;
 Reference = P6;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763EA56;
 Reference = P7;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-SC-02;
 EndCmp
 
 BeginCmp
 TimeStamp = 4763EA9B;
 Reference = P8;
 ValeurCmp = CONN_2;
-IdModule  = ;
+IdModule  = connect-SC-02;
 EndCmp
 
 BeginCmp
@@ -169,6 +169,48 @@ IdModule  = SM0805;
 EndCmp
 
 BeginCmp
+TimeStamp = 47950941;
+Reference = R8;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47950944;
+Reference = R9;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47950946;
+Reference = R10;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47950948;
+Reference = R11;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4795094A;
+Reference = R12;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 4795094C;
+Reference = R13;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
 TimeStamp = 4762F64B;
 Reference = RELAY1;
 ValeurCmp = PB114006;
@@ -211,13 +253,6 @@ IdModule  = PB1164006;
 EndCmp
 
 BeginCmp
-TimeStamp = 4763ECD2;
-Reference = RN1;
-ValeurCmp = RN06;
-IdModule  = resistor-net-RN-7;
-EndCmp
-
-BeginCmp
 TimeStamp = 4763F5D6;
 Reference = SL1;
 ValeurCmp = M04;
@@ -239,13 +274,6 @@ IdModule  = SO8E;
 EndCmp
 
 BeginCmp
-TimeStamp = 4763F3D8;
-Reference = U2;
-ValeurCmp = MCP23008;
-IdModule  = ;
-EndCmp
-
-BeginCmp
 TimeStamp = 4763F415;
 Reference = U3;
 ValeurCmp = MCP23008;
@@ -253,59 +281,10 @@ IdModule  = 18DIP-ELL300;
 EndCmp
 
 BeginCmp
-TimeStamp = 4763EF09;
-Reference = U4;
-ValeurCmp = ULN2003;
-IdModule  = SO16E;
-EndCmp
-
-BeginCmp
 TimeStamp = 4763EF85;
 Reference = U5;
 ValeurCmp = ULN2003;
 IdModule  = 16DIP-ELL300;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A3FF;
-Reference = VR1;
-ValeurCmp = VR;
-IdModule  = R3-5;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A403;
-Reference = VR2;
-ValeurCmp = VR;
-IdModule  = R3-5;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A407;
-Reference = VR3;
-ValeurCmp = VR;
-IdModule  = R3-5;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A40B;
-Reference = VR4;
-ValeurCmp = VR;
-IdModule  = R3-5;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A40F;
-Reference = VR5;
-ValeurCmp = VR;
-IdModule  = R3-5;
-EndCmp
-
-BeginCmp
-TimeStamp = 4788A414;
-Reference = VR6;
-ValeurCmp = VR;
-IdModule  = R3-5;
 EndCmp
 
 EndListe
