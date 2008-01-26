@@ -1,5 +1,5 @@
-update=21/1/2008-21:37:45
-last_client=kicad
+update=26/1/2008-10:43:54
+last_client=pcbnew
 [cvpcb]
 version=1
 NetITyp=0
@@ -76,6 +76,10 @@ LibName29=cypress
 LibName30=siliconi
 LibName31=contrib
 LibName32=valves
+[general]
+version=1
+RootSch=
+BoardNm=
 [pcbnew]
 version=1
 PadDrlX=320
@@ -145,7 +149,3 @@ LibName10=divers
 LibName11=libcms
 LibName12=display
 LibName13=valves
-[general]
-version=1
-RootSch=
-BoardNm=
