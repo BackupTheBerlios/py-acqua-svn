@@ -1,28 +1,28 @@
-# EESchema Netlist Version 1.1 created  26/1/2008-11:09:58
+# EESchema Netlist Version 1.1 created  26/1/2008-12:25:06
 (
  ( 4795094C $noname  R13 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000014 )
+  (    2 N-000020 )
  )
  ( 4795094A $noname  R12 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000024 )
+  (    2 N-000022 )
  )
  ( 47950948 $noname  R11 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000013 )
+  (    2 N-000019 )
  )
  ( 47950946 $noname  R10 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000025 )
+  (    2 N-000023 )
  )
  ( 47950944 $noname  R9 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000012 )
+  (    2 N-000018 )
  )
  ( 47950941 $noname  R8 R {Lib=R}
   (    1 VCC_1 )
-  (    2 N-000026 )
+  (    2 N-000024 )
  )
  ( 47640AE9 $noname  R7 1K {Lib=RES_VERTICALE}
   (    1 VCC_1 )
@@ -34,11 +34,11 @@
  )
  ( 47640ADF $noname  R2 330 {Lib=RES_VERTICALE}
   (    1 VCC_1 )
-  (    2 N-000032 )
+  (    2 N-000030 )
  )
  ( 47640ADA $noname  R1 330 {Lib=RES_VERTICALE}
   (    1 VCC_1 )
-  (    2 N-000033 )
+  (    2 N-000031 )
  )
  ( 476408B0 $noname  R5 1K {Lib=RES_VERTICALE}
   (    1 A0_1 )
@@ -71,24 +71,24 @@
   (    2 SCL_1 )
  )
  ( 47640192 $noname  D1 BAT54A {Lib=BAT54A}
-  (    1 N-000033 )
-  (    2 N-000032 )
+  (    1 N-000031 )
+  (    2 N-000030 )
   (    3 GND_1 )
  )
  ( 4763F5D6 con-amp-quick-04P  SL1 M04 {Lib=M04}
   (    1 VCC_1 )
-  (    2 N-000033 )
-  (    3 N-000032 )
+  (    2 N-000031 )
+  (    3 N-000030 )
   (    4 GND_1 )
  )
  ( 4763F53E $noname  U1 P82B96TD {Lib=P82B96TD}
-  (    1 N-000032 )
+  (    1 N-000030 )
   (    2 SDA_1 )
   (    3 SDA_1 )
   (    4 GND_1 )
   (    5 SCL_1 )
   (    6 SCL_1 )
-  (    7 N-000033 )
+  (    7 N-000031 )
   (    8 VCC_1 )
  )
  ( 4763F415 $noname  U3 MCP23008 {Lib=MCP23008}
@@ -102,22 +102,22 @@
   (    8  ? )
   (    9 GND_1 )
   (   10  ? )
-  (   11 N-000001 )
-  (   12 N-000036 )
-  (   13 N-000002 )
-  (   14 N-000035 )
-  (   15 N-000003 )
-  (   16 N-000034 )
+  (   11 N-000007 )
+  (   12 N-000034 )
+  (   13 N-000008 )
+  (   14 N-000033 )
+  (   15 N-000009 )
+  (   16 N-000032 )
   (   17 VCC_1 )
   (   18  ? )
  )
  ( 4763EF85 $noname  U5 ULN2003 {Lib=ULN2003}
-  (    1 N-000034 )
-  (    2 N-000003 )
-  (    3 N-000035 )
-  (    4 N-000002 )
-  (    5 N-000036 )
-  (    6 N-000001 )
+  (    1 N-000032 )
+  (    2 N-000009 )
+  (    3 N-000033 )
+  (    4 N-000008 )
+  (    5 N-000034 )
+  (    6 N-000007 )
   (    7  ? )
   (    8 GND_1 )
   (    9 VCC_1 )
@@ -125,107 +125,103 @@
   (   11 RL6_1 )
   (   12 RL5_1 )
   (   13 RL4_1 )
-  (   14 RL3_1 )
+  (   14 RL1_1 )
   (   15 RL2_1 )
-  (   16 RL1_1 )
+  (   16 RL3_1 )
  )
  ( 4762F652 $noname  RELAY3 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL3_1 )
-  (    3 N-000018 )
-  (    4 N-000016 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000004 )
+  (    5 N-000037 )
  )
  ( 4763EC07 $noname  D2 LED {Lib=LED}
-  (    1 N-000026 )
+  (    1 N-000024 )
   (    2 RL1_1 )
  )
  ( 4763EC03 $noname  D3 LED {Lib=LED}
-  (    1 N-000012 )
+  (    1 N-000018 )
   (    2 RL2_1 )
  )
  ( 4763EBFE $noname  D4 LED {Lib=LED}
-  (    1 N-000025 )
+  (    1 N-000023 )
   (    2 RL3_1 )
  )
  ( 4763EBF9 $noname  D5 LED {Lib=LED}
-  (    1 N-000013 )
+  (    1 N-000019 )
   (    2 RL4_1 )
  )
  ( 4763EBF2 $noname  D6 LED {Lib=LED}
-  (    1 N-000024 )
+  (    1 N-000022 )
   (    2 RL5_1 )
  )
  ( 4763EBEB $noname  D7 LED {Lib=LED}
-  (    1 N-000014 )
+  (    1 N-000020 )
   (    2 RL6_1 )
  )
- ( 4763EA9B $noname  P8 CONN_2 {Lib=CONN_2}
-  (    1 N-000022 )
-  (    2 N-000023 )
- )
  ( 4763EA56 $noname  P7 CONN_2 {Lib=CONN_2}
-  (    1 N-000018 )
-  (    2 N-000023 )
+  (    1 N-000021 )
+  (    2  ? )
  )
  ( 4763E953 $noname  P5 CONN_2 {Lib=CONN_2}
-  (    1 N-000017 )
-  (    2 N-000022 )
+  (    1 N-000039 )
+  (    2 N-000002 )
  )
  ( 4763E94C $noname  P4 CONN_2 {Lib=CONN_2}
-  (    1 N-000020 )
-  (    2 N-000022 )
+  (    1 N-000038 )
+  (    2 N-000003 )
  )
  ( 4763E946 $noname  P3 CONN_2 {Lib=CONN_2}
-  (    1 N-000016 )
-  (    2 N-000022 )
+  (    1 N-000037 )
+  (    2 N-000004 )
  )
  ( 4763E940 $noname  P2 CONN_2 {Lib=CONN_2}
-  (    1 N-000021 )
-  (    2 N-000022 )
+  (    1 N-000036 )
+  (    2 N-000005 )
  )
  ( 4763E936 $noname  P1 CONN_2 {Lib=CONN_2}
-  (    1 N-000015 )
-  (    2 N-000022 )
+  (    1 N-000035 )
+  (    2 N-000006 )
  )
  ( 4763E91D $noname  P6 CONN_2 {Lib=CONN_2}
-  (    1 N-000019 )
-  (    2 N-000022 )
+  (    1 N-000040 )
+  (    2 N-000001 )
  )
  ( 4762F682 $noname  RELAY6 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL6_1 )
-  (    3 N-000018 )
-  (    4 N-000019 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000001 )
+  (    5 N-000040 )
  )
  ( 4762F65F $noname  RELAY5 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL5_1 )
-  (    3 N-000018 )
-  (    4 N-000017 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000002 )
+  (    5 N-000039 )
  )
  ( 4762F65C $noname  RELAY4 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL4_1 )
-  (    3 N-000018 )
-  (    4 N-000020 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000003 )
+  (    5 N-000038 )
  )
  ( 4762F650 $noname  RELAY2 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL2_1 )
-  (    3 N-000018 )
-  (    4 N-000021 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000005 )
+  (    5 N-000036 )
  )
  ( 4762F64B $noname  RELAY1 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
   (    2 RL1_1 )
-  (    3 N-000018 )
-  (    4 N-000015 )
-  (    5  ? )
+  (    3 N-000021 )
+  (    4 N-000006 )
+  (    5 N-000035 )
  )
 )
 *
@@ -268,15 +264,33 @@ $endfootprintlist
 }
 { Pin List by Nets
 Net 1 ""
+ P6 2
+ RELAY6 4
+Net 2 ""
+ P5 2
+ RELAY5 4
+Net 3 ""
+ P4 2
+ RELAY4 4
+Net 4 ""
+ RELAY3 4
+ P3 2
+Net 5 ""
+ P2 2
+ RELAY2 4
+Net 6 ""
+ P1 2
+ RELAY1 4
+Net 7 ""
  U3 11
  U5 6
-Net 2 ""
+Net 8 ""
  U3 13
  U5 4
-Net 3 ""
+Net 9 ""
  U3 15
  U5 2
-Net 4 "VCC_1"
+Net 10 "VCC_1"
  R13 1
  R12 1
  R11 1
@@ -301,7 +315,7 @@ Net 4 "VCC_1"
  RELAY4 1
  RELAY2 1
  RELAY1 1
-Net 5 "GND_1"
+Net 11 "GND_1"
  SW1 8
  SW1 7
  SW1 6
@@ -313,51 +327,42 @@ Net 5 "GND_1"
  U1 4
  U3 9
  U5 8
-Net 6 "A0_1"
+Net 12 "A0_1"
  R5 1
  SW1 1
  U3 5
-Net 7 "A2_1"
+Net 13 "A2_1"
  R3 2
  SW1 3
  U3 3
-Net 8 "SCL_1"
+Net 14 "SCL_1"
  R6 2
  C1 2
  U1 6
  U1 5
  U3 1
-Net 9 "RL5_1"
+Net 15 "RL5_1"
  U5 12
  D6 2
  RELAY5 2
-Net 10 "RL3_1"
+Net 16 "RL1_1"
  U5 14
- RELAY3 2
- D4 2
-Net 11 "RL1_1"
- U5 16
  D2 2
  RELAY1 2
-Net 12 ""
+Net 17 "RL3_1"
+ U5 16
+ RELAY3 2
+ D4 2
+Net 18 ""
  R9 2
  D3 1
-Net 13 ""
+Net 19 ""
  R11 2
  D5 1
-Net 14 ""
+Net 20 ""
  R13 2
  D7 1
-Net 15 ""
- P1 1
- RELAY1 4
-Net 16 ""
- RELAY3 4
- P3 1
-Net 17 ""
- P5 1
- RELAY5 4
-Net 18 ""
+Net 21 ""
  RELAY3 3
  P7 1
  RELAY6 3
@@ -365,75 +370,73 @@ Net 18 ""
  RELAY4 3
  RELAY2 3
  RELAY1 3
-Net 19 ""
- P6 1
- RELAY6 4
-Net 20 ""
- P4 1
- RELAY4 4
-Net 21 ""
- P2 1
- RELAY2 4
 Net 22 ""
- P8 1
- P5 2
- P4 2
- P3 2
- P2 2
- P1 2
- P6 2
-Net 23 ""
- P8 2
- P7 2
-Net 24 ""
  R12 2
  D6 1
-Net 25 ""
+Net 23 ""
  R10 2
  D4 1
-Net 26 ""
+Net 24 ""
  R8 2
  D2 1
-Net 27 "RL2_1"
+Net 25 "RL2_1"
  U5 15
  D3 2
  RELAY2 2
-Net 28 "RL4_1"
+Net 26 "RL4_1"
  U5 13
  D5 2
  RELAY4 2
-Net 29 "RL6_1"
+Net 27 "RL6_1"
  U5 11
  D7 2
  RELAY6 2
-Net 30 "SDA_1"
+Net 28 "SDA_1"
  R7 2
  C2 2
  U1 3
  U1 2
  U3 2
-Net 31 "A1_1"
+Net 29 "A1_1"
  R4 2
  SW1 2
  U3 4
-Net 32 ""
+Net 30 ""
  R2 2
  D1 2
  SL1 3
  U1 1
-Net 33 ""
+Net 31 ""
  R1 2
  D1 1
  SL1 2
  U1 7
-Net 34 ""
+Net 32 ""
  U3 16
  U5 1
-Net 35 ""
+Net 33 ""
  U3 14
  U5 3
-Net 36 ""
+Net 34 ""
  U3 12
  U5 5
+Net 35 ""
+ P1 1
+ RELAY1 5
+Net 36 ""
+ P2 1
+ RELAY2 5
+Net 37 ""
+ RELAY3 5
+ P3 1
+Net 38 ""
+ P4 1
+ RELAY4 5
+Net 39 ""
+ P5 1
+ RELAY5 5
+Net 40 ""
+ P6 1
+ RELAY6 5
 }
 #End

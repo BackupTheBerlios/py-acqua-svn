@@ -14,6 +14,18 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 Wire Wire Line
+	7575 6250 7925 6250
+Wire Wire Line
+	7575 5550 7925 5550
+Wire Wire Line
+	7575 4850 7925 4850
+Wire Wire Line
+	7575 4150 7925 4150
+Wire Wire Line
+	7575 3450 7925 3450
+Wire Wire Line
+	7575 2750 7925 2750
+Wire Wire Line
 	3650 5500 4050 5500
 Wire Wire Line
 	3650 5300 4050 5300
@@ -120,21 +132,6 @@ Wire Wire Line
 	6600 1700 6600 1600
 Wire Wire Line
 	7000 1700 7000 1600
-Wire Wire Line
-	9050 6500 9050 2750
-Connection ~ 9050 6250
-Connection ~ 9050 4150
-Wire Wire Line
-	8500 4150 9050 4150
-Connection ~ 9050 5550
-Wire Wire Line
-	8500 5550 9050 5550
-Wire Wire Line
-	7575 2750 8300 2750
-Wire Wire Line
-	7575 4150 8300 4150
-Wire Wire Line
-	8300 5550 7575 5550
 Connection ~ 7805 5050
 Wire Wire Line
 	7805 5050 7575 5050
@@ -149,26 +146,6 @@ Connection ~ 7805 4350
 Wire Wire Line
 	7575 5750 7805 5750
 Connection ~ 7805 5750
-Wire Wire Line
-	8300 6250 7575 6250
-Wire Wire Line
-	8300 4850 7575 4850
-Wire Wire Line
-	7575 3450 8300 3450
-Wire Wire Line
-	9050 2750 8500 2750
-Wire Wire Line
-	9050 6250 8500 6250
-Wire Wire Line
-	8500 4850 9050 4850
-Connection ~ 9050 4850
-Wire Wire Line
-	8500 3450 9050 3450
-Connection ~ 9050 3450
-Wire Wire Line
-	9050 6700 8725 6700
-Wire Wire Line
-	8725 6700 8725 6450
 Wire Wire Line
 	6800 1700 6800 1600
 Wire Wire Line
@@ -260,8 +237,6 @@ Wire Wire Line
 Connection ~ 2750 2100
 Connection ~ 2550 2350
 Wire Wire Line
-	8725 6450 8500 6450
-Wire Wire Line
 	7575 6450 8300 6450
 Connection ~ 7805 6450
 Wire Wire Line
@@ -270,17 +245,23 @@ Wire Wire Line
 	3650 5200 4050 5200
 Wire Wire Line
 	3650 5400 4050 5400
+Wire Wire Line
+	7575 2550 7925 2550
+Wire Wire Line
+	7575 3250 7925 3250
+Wire Wire Line
+	7575 3950 7925 3950
+Wire Wire Line
+	7575 4650 7925 4650
+Wire Wire Line
+	7575 5350 7925 5350
+Wire Wire Line
+	7575 6050 7925 6050
 Kmarq B 3500 2600 "Warning Pin power_in not driven (Net 1)" F=1
 Text Label 2400 5300 0    60   ~
 VCC
 Text Label 5050 5700 0    60   ~
 VCC
-NoConn ~ 7575 6050
-NoConn ~ 7575 5350
-NoConn ~ 7575 4650
-NoConn ~ 7575 3950
-NoConn ~ 7575 3250
-NoConn ~ 7575 2550
 Text Label 2850 2950 0    60   ~
 GND
 Text Label 5800 1100 0    60   ~
@@ -535,11 +516,11 @@ RL5
 Text Label 5050 5300 0    60   ~
 RL4
 Text Label 5050 5200 0    60   ~
-RL3
+RL1
 Text Label 5050 5100 0    60   ~
 RL2
 Text Label 5050 5000 0    60   ~
-RL1
+RL3
 Text Notes 4500 4850 0    60   ~
 DHT
 $Comp
@@ -652,17 +633,8 @@ F 1 "LED" H 7000 1800 50  0000 C C
 $EndComp
 Text Notes 8215 7025 0    60   ~
 230 in
-Text Notes 9600 6625 0    60   ~
+Text Notes 9600 6625 1    60   ~
 fusibile da pannello
-$Comp
-L CONN_2 P8
-U 1 1 4763EA9B
-P 9400 6600
-F 0 "P8" V 9350 6600 40  0000 C C
-F 1 "CONN_2" V 9450 6600 40  0000 C C
-	1    9400 6600
-	1    0    0    -1  
-$EndComp
 $Comp
 L CONN_2 P7
 U 1 1 4763EA56
@@ -675,56 +647,56 @@ $EndComp
 $Comp
 L CONN_2 P5
 U 1 1 4763E953
-P 8400 5200
-F 0 "P5" V 8350 5200 40  0000 C C
-F 1 "CONN_2" V 8450 5200 40  0000 C C
-	1    8400 5200
-	0    -1   -1   0   
+P 8275 5450
+F 0 "P5" V 8225 5450 40  0000 C C
+F 1 "CONN_2" V 8325 5450 40  0000 C C
+	1    8275 5450
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P4
 U 1 1 4763E94C
-P 8400 4500
-F 0 "P4" V 8350 4500 40  0000 C C
-F 1 "CONN_2" V 8450 4500 40  0000 C C
-	1    8400 4500
-	0    -1   -1   0   
+P 8275 4750
+F 0 "P4" V 8225 4750 40  0000 C C
+F 1 "CONN_2" V 8325 4750 40  0000 C C
+	1    8275 4750
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P3
 U 1 1 4763E946
-P 8400 3800
-F 0 "P3" V 8350 3800 40  0000 C C
-F 1 "CONN_2" V 8450 3800 40  0000 C C
-	1    8400 3800
-	0    -1   -1   0   
+P 8275 4050
+F 0 "P3" V 8225 4050 40  0000 C C
+F 1 "CONN_2" V 8325 4050 40  0000 C C
+	1    8275 4050
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P2
 U 1 1 4763E940
-P 8400 3100
-F 0 "P2" V 8350 3100 40  0000 C C
-F 1 "CONN_2" V 8450 3100 40  0000 C C
-	1    8400 3100
-	0    -1   -1   0   
+P 8275 3350
+F 0 "P2" V 8225 3350 40  0000 C C
+F 1 "CONN_2" V 8325 3350 40  0000 C C
+	1    8275 3350
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P1
 U 1 1 4763E936
-P 8400 2400
-F 0 "P1" V 8350 2400 40  0000 C C
-F 1 "CONN_2" V 8450 2400 40  0000 C C
-	1    8400 2400
-	0    -1   -1   0   
+P 8275 2650
+F 0 "P1" V 8225 2650 40  0000 C C
+F 1 "CONN_2" V 8325 2650 40  0000 C C
+	1    8275 2650
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_2 P6
 U 1 1 4763E91D
-P 8400 5900
-F 0 "P6" V 8350 5900 40  0000 C C
-F 1 "CONN_2" V 8450 5900 40  0000 C C
-	1    8400 5900
-	0    -1   -1   0   
+P 8275 6150
+F 0 "P6" V 8225 6150 40  0000 C C
+F 1 "CONN_2" V 8325 6150 40  0000 C C
+	1    8275 6150
+	1    0    0    -1  
 $EndComp
 $Comp
 L PB114006 RELAY6
