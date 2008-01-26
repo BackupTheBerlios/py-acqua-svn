@@ -1,0 +1,80 @@
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 26/1/2008-17:53:20
+
+BeginCmp
+TimeStamp = 474BF93C;
+Reference = P1;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF943;
+Reference = P2;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF946;
+Reference = P3;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF949;
+Reference = P4;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 474BF94B;
+Reference = P5;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7178;
+Reference = P6;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7186;
+Reference = P7;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7190;
+Reference = P8;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7195;
+Reference = P9;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7198;
+Reference = P10;
+ValeurCmp = DIN_5;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B72E1;
+Reference = U1;
+ValeurCmp = FOXBOARD;
+IdModule  = foxboard;
+EndCmp
+
+EndListe

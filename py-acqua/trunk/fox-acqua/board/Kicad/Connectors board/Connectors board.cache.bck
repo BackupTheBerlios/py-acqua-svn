@@ -1,8 +1,23 @@
-EESchema-DOCLIB  Version 2.0  27/11/2007-11:07:12
+EESchema-DOCLIB  Version 2.0  26/1/2008-18:11:00
 #
 $CMP DIN_5
 D Connecteur Din 5 broches
 K CONN DIN
+$ENDCMP
+#
+$CMP FOXBOARD
+D Foxboard by Acme System
+K fox
+$ENDCMP
+#
+$CMP MCP23008
+D I2C 8 I/O EXPANDER
+K MCP23008
+$ENDCMP
+#
+$CMP R
+D Resistance
+K R DEV
 $ENDCMP
 #
 #End Doc Library

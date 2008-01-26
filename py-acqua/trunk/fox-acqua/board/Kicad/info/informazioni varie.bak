@@ -1,0 +1,42 @@
+EESchema Schematic File Version 1
+LIBS:power,device,conn,linear,regul,74xx,cmos4000,adc-dac,memory,xilinx,special,microcontrollers,dsp,microchip,analog_switches,motorola,texas,intel,audio,interface,digital-audio,philips,display,cypress,siliconi,contrib,valves
+EELAYER 43  0
+EELAYER END
+$Descr A4 11700 8267
+Sheet 1 1
+Title ""
+Date "26 jan 2008"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+NoConn ~ 4700 3200
+NoConn ~ 4700 3000
+NoConn ~ 5300 2600
+NoConn ~ 5900 3000
+NoConn ~ 5900 3200
+Text Notes 6000 2900 0    60   ~
+SCL
+Text Notes 4450 2950 0    60   ~
+SDA
+Text Notes 3350 3350 0    60   ~
+DALLA SONDA VERSO FOX
+Text Notes 6000 3400 0    60   ~
+DA FOX VERSO LA SONDA
+Text Notes 5250 2450 0    60   ~
+VCC
+Wire Wire Line
+	5300 2600 5500 2600
+$Comp
+L DIN_5 P1
+U 1 1 479B761C
+P 5300 3200
+F 0 "P1" H 5300 3200 70  0000 C C
+F 1 "DIN_5" H 5300 3050 70  0000 C C
+	1    5300 3200
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
