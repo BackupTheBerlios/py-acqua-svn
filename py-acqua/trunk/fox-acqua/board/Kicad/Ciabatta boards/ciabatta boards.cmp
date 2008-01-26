@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 26/1/2008-12:25:00
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 26/1/2008-13:15:27
 
 BeginCmp
 TimeStamp = 4764075B;
@@ -109,14 +109,7 @@ BeginCmp
 TimeStamp = 4763EA56;
 Reference = P7;
 ValeurCmp = CONN_2;
-IdModule  = connect-SC-02;
-EndCmp
-
-BeginCmp
-TimeStamp = 4763EA9B;
-Reference = P8;
-ValeurCmp = CONN_2;
-IdModule  = connect-SC-02;
+IdModule  = connect-PAD-01;
 EndCmp
 
 BeginCmp

@@ -516,11 +516,11 @@ RL5
 Text Label 5050 5300 0    60   ~
 RL4
 Text Label 5050 5200 0    60   ~
-RL1
-Text Label 5050 5100 0    60   ~
-RL2
-Text Label 5050 5000 0    60   ~
 RL3
+Text Label 5050 5100 0    60   ~
+RL1
+Text Label 5050 5000 0    60   ~
+RL2
 Text Notes 4500 4850 0    60   ~
 DHT
 $Comp
@@ -633,17 +633,8 @@ F 1 "LED" H 7000 1800 50  0000 C C
 $EndComp
 Text Notes 8215 7025 0    60   ~
 230 in
-Text Notes 9600 6625 0    60   ~
+Text Notes 9600 6625 1    60   ~
 fusibile da pannello
-$Comp
-L CONN_2 P8
-U 1 1 4763EA9B
-P 9400 6600
-F 0 "P8" V 9350 6600 40  0000 C C
-F 1 "CONN_2" V 9450 6600 40  0000 C C
-	1    9400 6600
-	1    0    0    -1  
-$EndComp
 $Comp
 L CONN_2 P7
 U 1 1 4763EA56

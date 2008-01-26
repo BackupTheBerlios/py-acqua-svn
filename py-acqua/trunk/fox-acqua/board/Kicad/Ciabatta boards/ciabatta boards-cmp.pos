@@ -1,0 +1,23 @@
+### Module positions - created on 26/1/2008-10:39:35 ###
+### Printed by PcbNew version PCBNEW (2007-07-09)
+## Unit = inches, Angle = deg.
+## Side : Components
+# Ref    Val                  PosX       PosY        Rot     Side
+C1       220pF               -0.1800    -0.5900      90.0    Cmp.
+C2       220pF                2.1300    -0.8400       0.0    Cmp.
+D1       BAT54A              -0.5100    -0.9200      90.0    Cmp.
+R1       330                 -0.5500    -0.7900      90.0    Cmp.
+R2       330                 -0.4800    -0.5900     270.0    Cmp.
+R3       1K                   0.3000    -0.7200       0.0    Cmp.
+R4       1K                   0.3000    -0.6200       0.0    Cmp.
+R5       1K                   0.3000    -0.5200     180.0    Cmp.
+R6       1K                  -0.3600    -0.8500       0.0    Cmp.
+R7       1K                   0.7500    -0.9200     180.0    Cmp.
+R8       R                    1.2700    -0.2200     180.0    Cmp.
+R9       R                    1.5200    -0.3200     180.0    Cmp.
+R10      R                    1.2700    -0.4200     180.0    Cmp.
+R11      R                    1.5100    -0.5200     180.0    Cmp.
+R12      R                    1.2700    -0.6200     180.0    Cmp.
+R13      R                    1.5100    -0.7200     180.0    Cmp.
+U1       P82B96TD            -0.3300    -0.6600       0.0    Cmp.
+## End

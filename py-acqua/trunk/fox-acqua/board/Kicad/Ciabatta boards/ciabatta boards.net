@@ -1,4 +1,4 @@
-# EESchema Netlist Version 1.1 created  26/1/2008-12:25:06
+# EESchema Netlist Version 1.1 created  26/1/2008-13:39:43
 (
  ( 4795094C $noname  R13 R {Lib=R}
   (    1 VCC_1 )
@@ -41,7 +41,7 @@
   (    2 N-000031 )
  )
  ( 476408B0 $noname  R5 1K {Lib=RES_VERTICALE}
-  (    1 A0_1 )
+  (    1 A2_1 )
   (    2 VCC_1 )
  )
  ( 476408AC $noname  R4 1K {Lib=RES_VERTICALE}
@@ -50,12 +50,12 @@
  )
  ( 476408A8 $noname  R3 1K {Lib=RES_VERTICALE}
   (    1 VCC_1 )
-  (    2 A2_1 )
+  (    2 A0_1 )
  )
  ( 4764083D special-EDG-04  SW1 SW_DIP-4 {Lib=SW_DIP-4}
-  (    1 A0_1 )
+  (    1 A2_1 )
   (    2 A1_1 )
-  (    3 A2_1 )
+  (    3 A0_1 )
   (    4  ? )
   (    5 GND_1 )
   (    6 GND_1 )
@@ -125,9 +125,9 @@
   (   11 RL6_1 )
   (   12 RL5_1 )
   (   13 RL4_1 )
-  (   14 RL1_1 )
-  (   15 RL2_1 )
-  (   16 RL3_1 )
+  (   14 RL3_1 )
+  (   15 RL1_1 )
+  (   16 RL2_1 )
  )
  ( 4762F652 $noname  RELAY3 PB114006 {Lib=PB114006}
   (    1 VCC_1 )
@@ -327,14 +327,14 @@ Net 11 "GND_1"
  U1 4
  U3 9
  U5 8
-Net 12 "A0_1"
+Net 12 "A2_1"
  R5 1
  SW1 1
- U3 5
-Net 13 "A2_1"
+ U3 3
+Net 13 "A0_1"
  R3 2
  SW1 3
- U3 3
+ U3 5
 Net 14 "SCL_1"
  R6 2
  C1 2
@@ -345,14 +345,14 @@ Net 15 "RL5_1"
  U5 12
  D6 2
  RELAY5 2
-Net 16 "RL1_1"
+Net 16 "RL3_1"
  U5 14
- D2 2
- RELAY1 2
-Net 17 "RL3_1"
- U5 16
  RELAY3 2
  D4 2
+Net 17 "RL2_1"
+ U5 16
+ D3 2
+ RELAY2 2
 Net 18 ""
  R9 2
  D3 1
@@ -379,10 +379,10 @@ Net 23 ""
 Net 24 ""
  R8 2
  D2 1
-Net 25 "RL2_1"
+Net 25 "RL1_1"
  U5 15
- D3 2
- RELAY2 2
+ D2 2
+ RELAY1 2
 Net 26 "RL4_1"
  U5 13
  D5 2

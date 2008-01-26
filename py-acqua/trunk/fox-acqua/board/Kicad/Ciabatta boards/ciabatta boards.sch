@@ -402,11 +402,11 @@ F 1 "1K" H 3300 6050 60  0000 C C
 	0    1    1    0   
 $EndComp
 Text Label 3850 6400 0    60   ~
-A2
+A0
 Text Label 3850 6500 0    60   ~
 A1
 Text Label 3850 6600 0    60   ~
-A0
+A2
 NoConn ~ 3300 6300
 Text Label 2400 6600 0    60   ~
 GND
@@ -516,11 +516,11 @@ RL5
 Text Label 5050 5300 0    60   ~
 RL4
 Text Label 5050 5200 0    60   ~
-RL1
-Text Label 5050 5100 0    60   ~
-RL2
-Text Label 5050 5000 0    60   ~
 RL3
+Text Label 5050 5100 0    60   ~
+RL1
+Text Label 5050 5000 0    60   ~
+RL2
 Text Notes 4500 4850 0    60   ~
 DHT
 $Comp
