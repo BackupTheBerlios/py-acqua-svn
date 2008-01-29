@@ -81,6 +81,13 @@ def main ():
 				os.environ['LANG'] = "en_US"
 				locale.setlocale (locale.LC_MESSAGES, "en_US")
 			except: pass
+		elif impostazioni.get ("lang").lower () == "fr":
+			en = gettext.translation (APP, DIR, ["fr"])
+			en.install ()
+			try:
+				os.environ['LANG'] = "fr_FR"
+				locale.setlocale (locale.LC_MESSAGES, "fr_FR")
+			except: pass
 		else:
 			# In teoria qui risulta inutile settare. Il linguaggio italiano e' di default senza gettext.
 			os.environ['LANG'] = "it_IT"

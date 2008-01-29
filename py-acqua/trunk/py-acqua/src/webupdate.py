@@ -78,51 +78,37 @@ COL_PERC = 5
 COL_TOGG = 6
 COL_COLO = 7
 
-# @update standard@ - second pass - soggetto new_db
-# Controlliamo l'esistenza della stessa dir
-# -> se nn c'e' aggiungiamo tutti i file
-# Se esiste
-#    -> controlliamo la revision (se la nuova e' maggiore altrimenti ignore (custom update precedente))
-#       -> for sui file
-#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
-
-# @update standard@ - removing - soggetto old_db
-# Controlliamo se la dir non esiste
-#   -> Rimuoviamo la dir con tutti i file all'interno
-# se esiste
-#   -> for sui file
-#      se esite controlla md5 e bytes (versione minore | se maggiore non far nulla)
-#        -> se non ok riscarica (o errore di update sul server)
-#      se non esiste
-#        -> elimina file
-
-# @update forzato@ clone (update standard)
-# Controlliamo l'esistenza della stessa dir
-# -> se nn c'e' aggiungiamo tutti i file
-# Se esiste
-#    -> controlliamo la revision (se uguale ignore)
-#       -> for sui file
-#          controlla revision (se diversa riscarica | se uguale controlla consistenza in caso riscarica)
-
-# @update forzato@ - removing - soggetto old_db
-# Controlliamo se la dir non esiste
-#   -> Rimuoviamo la dir con tutti i file all'interno
-# se esiste
-#   -> for sui file
-#      se esite controlla md5 e bytes (sempre)
-#        -> se non ok riscarica
-#      se non esiste
-#        -> elimina file
-
-import time
-
-class Update(object):
-	def __init__(self):
+class UpdateEngine(object):
+	NORMAL_UPDATE = 0
+	FORCED_UPDATE = 1
+	CUSTOM_UPDATE = 2
+	
+	def __init__(self, database="old.db"):
 		self.new_db = None
-		self.old_db = DatabaseReader(None, "old.db")
-		self.startThread(self.dumpDB, "/~stack/pyupdate/pyacqua.db")
-		time.sleep(0.3)
-		self.startThread(self.listInfo, "/~stack/pyupdate/index.xml")
+		self.old_db = DatabaseReader(None, database)
+		
+		self.locked = False
+		
+		#self.startThread(self.dumpDB, "/~stack/pyupdate/pyacqua.db")
+		#self.startThread(self.listInfo, "/~stack/pyupdate/index.xml")
+	
+	def reportError(self, data, response, args, where):
+		"""Ovverride this method"""
+		self.lockInterface(False)
+	
+	def lockInterface(self, lock=True):
+		"""Ovverride this method"""
+		pass
+	
+	def fetchComponents(self, callback):
+		"""
+		callback:
+		
+		for i in report.programs:
+			print "-> %s" % i
+			self.startThread(self.dumpXml, "/~stack/pyupdate/%s-update.xml" % i, i)
+		"""
+		self.startThread(self.__listInfo, "/~stack/pyupdate/index.xml", callback)
 	
 	def startThread(self, callback, url, args=None):
 		print _(">> Creo un thread per %s") % url
@@ -130,14 +116,11 @@ class Update(object):
 		f.setDaemon(True)
 		f.start()
 	
-	def listInfo(self, data, response, args):
-		report = Indexer(data)
+	def __listInfo(self, data, response, args):
+		if data == None or response.status != 200:
+			return self.reportError(data, response, args, STEP_INDEX)
 		
-		print "Components:"
-		
-		for i in report.programs:
-			print "-> %s" % i
-			self.startThread(self.dumpXml, "/~stack/pyupdate/%s-update.xml" % i, i)
+		args(Indexer(data).programs)
 	
 	def getVersion(self, schema):
 		a = (schema.get("mainversion"), schema.get("secondversion"), schema.get("revision"))
@@ -159,62 +142,124 @@ class Update(object):
 		
 		self.updateProgram(args)
 	
-	def updateProgram(self, program):
-		if not self.new_db: raise "No db."
+	def __updateFirstPass(self, program, u_type, new_pid, old_pid):
 		
-		pid = self.new_db.select("SELECT id FROM program WHERE name='%s'" % self.new_db.sanitize(program))[0][0]
-		opid = self.old_db.select("SELECT id FROM program WHERE name='%s'" % self.old_db.sanitize(program))[0][0]
+		# @update standard@ - second pass - soggetto new_db
+		# Controlliamo l'esistenza della stessa dir
+		# -> se nn c'e' aggiungiamo tutti i file
+		# Se esiste
+		#    -> controlliamo la revision (se la nuova e' maggiore altrimenti ignore (custom update precedente))
+		#       -> for sui file
+		#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
 		
-		print "Pid: old -> %d new -> %d" % (pid, opid)
+		# @update forzato@ clone (update standard)
+		# Controlliamo l'esistenza della stessa dir
+		# -> se nn c'e' aggiungiamo tutti i file
+		# Se esiste
+		#    -> controlliamo la revision (se uguale ignore)
+		#       -> for sui file
+		#          controlla revision (se diversa riscarica | se uguale controlla consistenza in caso riscarica)
 		
-		for dir_entry in self.new_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(pid)):
+		for dir_entry in self.new_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(new_pid)):
 			# dir_entry => (idx, name, revision, filenum, pid)
 			
-			did, dname, drev, dfilenum, pid = dir_entry
+			new_did, new_dname, new_drev, new_dfilenum, new_pid = dir_entry
 			
-			print "Checking %s" % dname
-			dir_id, dir_rev = self.old_db.getDirRevision(dname, opid)
+			print "[1] Checking %s" % new_dname
+			old_did, old_drev = self.old_db.getDirRevision(new_dname, old_pid)
 			
-			if dir_rev >= drev:
-				print "Skipping %d >= %d" % (dir_rev, drev)
-				continue
-			
+			if u_type == Update.FORCED_UPDATE:
+				if old_drev == new_drev:
+					continue
+			else: # TODO: add custom
+				# Esiste e la revision e' maggiore o uguale
+				if old_drev >= new_drev:
+					print "[1] Skipping %d >= %d" % (old_drev, new_drev)
+					continue
+				
 			#       -> for sui file
 			#          controlla revision (se la nuova e' maggiore scarica | se minore nulla | se uguale controlla consistenza in caso riscarica)
 			
-			for file_entry in self.new_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((pid, did))):
+			for file_entry in self.new_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((new_pid, new_did))):
 				# file_entry => (idx, name, revision, bytes, md5, did, pid)
 				
-				fid, fname, frev, fbytes, fmd5, did, pid = file_entry
+				new_fid, new_fname, new_frev, new_fbytes, new_fmd5, new_did, new_pid = file_entry
 				
-				file_id, file_rev = self.old_db.getFileRevision(fname, dir_id, opid)
+				old_fid, old_frev = self.old_db.getFileRevision(new_fname, old_did, old_pid)
 				
-				if (file_rev == frev and not self.old_db.checkConsistence(file_id, frev, fbytes, fmd5)) or (file_rev < frev):
-					self.downloadFile(file_id, fname, frev, fbytes, fmd5)
+				if u_type == Update.FORCED_UPDATE:
+					
+					if old_frev == new_frev and self.old_db.checkConsistence(old_fid, new_frev, new_fbytes, new_fmd5):
+						continue # il file e' ok
+					elif old_frev != new_frev:
+						self.downloadFile(old_fid, new_fname, new_frev, new_fbytes, new_fmd5)
+					
+				else: # TODO: add custom
+					
+					if (old_frev == new_frev and not self.old_db.checkConsistence(old_fid, new_frev, new_fbytes, new_fmd5)) or (old_frev < new_frev):
+						self.downloadFile(old_fid, new_fname, new_frev, new_fbytes, new_fmd5)
+	
+	def __updateSecondPass(self, program, u_type, new_pid, old_pid):
+		# @update standard@ - removing - soggetto old_db
+		# Controlliamo se la dir non esiste
+		#   -> Rimuoviamo la dir con tutti i file all'interno
+		# se esiste
+		#   -> for sui file
+		#      se esite controlla md5 e bytes (versione minore | se maggiore non far nulla)
+		#        -> se non ok riscarica (o errore di update sul server)
+		#      se non esiste
+		#        -> elimina file
 		
-		print "On second stage :)"
-		
-		for dir_entry in self.old_db.select("SELECT * FROM directory WHERE program_id=%d" % self.new_db.sanitize(opid)):
-			did, dname, drev, dfilenum, pid = dir_entry
+		# @update forzato@ - removing - soggetto old_db
+		# Controlliamo se la dir non esiste
+		#   -> Rimuoviamo la dir con tutti i file all'interno
+		# se esiste
+		#   -> for sui file
+		#      se esite controlla md5 e bytes (sempre)
+		#        -> se non ok riscarica
+		#      se non esiste
+		#        -> elimina file
+
+		for dir_entry in self.old_db.select("SELECT * FROM directory WHERE program_id=%d" % self.old_db.sanitize(old_pid)):
+			old_did, old_dname, old_drev, old_dfilenum, old_pid = dir_entry
 			
-			print "Checking %s" % dname
-			dir_id, dir_rev = self.new_db.getDirRevision(dname, pid)
+			print "[2] Checking %s" % old_dname
+			new_did, new_drev = self.new_db.getDirRevision(old_dname, new_pid)
 			
-			if dir_id == -1 and dir_rev == -1:
-				print "Full removing %s (and all contents) ..." % dname
+			if new_did == -1 and new_drev == -1:
+				print "[2] Full removing %s (and all contents) ..." % old_dname
 				continue
 			
-			for file_entry in self.old_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((opid, did))):
+			for file_entry in self.old_db.select("SELECT * FROM file WHERE program_id=%d AND directory_id=%d" % self.new_db.sanitize((old_pid, old_did))):
 				# file_entry => (idx, name, revision, bytes, md5, did, pid)
 				
-				fid, fname, frev, fbytes, fmd5, did, pid = file_entry
+				old_fid, old_fname, old_frev, old_fbytes, old_fmd5, old_did, old_pid = file_entry
 				
-				file_id, file_rev = self.new_db.getFileRevision(fname, dir_id, pid)
+				new_fid, new_frev = self.new_db.getFileRevision(old_fname, new_did, new_pid)
 				
-				if file_id == -1 and file_rev == -1:
-					print "Removing file %s ..." % fname
-				elif file_rev <= frev and not self.new_db.checkConsistence(file_id, frev, fbytes, fmd5):
-					print "Consistence check failed for file %s." % fname
+				if new_fid == -1 and new_frev == -1:
+					print "[2] Removing file %s ..." % old_fname
+				else:
+					if u_type == Update.FORCED_UPDATE:
+						if not self.new_db.checkConsistence(new_fid, old_frev, old_fbytes, old_fmd5):
+							print "[2] Consistence check failed for file %s." % old_fname
+							# riscarica
+							
+					else: # TODO: add custom
+						
+						if new_frev <= old_frev and not self.new_db.checkConsistence(new_fid, old_frev, old_fbytes, old_fmd5):
+							print "[2] Consistence check failed for file %s." % old_fname
+	
+	def updateProgram(self, program, u_type=NORMAL_UPDATE):
+		if not self.new_db: raise "No db."
+		
+		new_pid = self.new_db.select("SELECT id FROM program WHERE name='%s'" % self.new_db.sanitize(program))[0][0]
+		old_pid = self.old_db.select("SELECT id FROM program WHERE name='%s'" % self.old_db.sanitize(program))[0][0]
+		
+		print "Pid: old -> %d new -> %d" % (old_pid, new_pid)
+		
+		self.__updateFirstPass(program, u_type, new_pid, old_pid)
+		self.__updateSecondPass(program, u_type, new_pid, old_pid)
 	
 	def downloadFile(self, file_id, fname, frev, fbytes, fmd5):
 		self.startThread(self.checkConsistence, "/~stack/pyupdate/source/%s" % fname, (file_id, fname, frev, fbytes, fmd5))
@@ -222,7 +267,7 @@ class Update(object):
 	def checkConsistence(self, data, response, args):
 		file_id, fname, frev, fbytes, fmd5 = args
 		
-		print "%s -> " % fname,
+		print "\t%s -> " % fname,
 		
 		if data == None:
 			print "Error in recv."
@@ -251,18 +296,10 @@ class Update(object):
 		self.new_db = DatabaseReader(None, "tmp.database")
 		print "Database downloaded."
 
-
-if __name__ == "__main__":
-	import gobject
-	gobject.threads_init ()
-	gtk.gdk.threads_enter ()	
-	Update()
-	gtk.main()
-	gtk.gdk.threads_leave ()
-
-class WebUpdate(gtk.Window):
+class WebUpdate(gtk.Window, UpdateEngine):
 	def __init__(self):
 		gtk.Window.__init__(self)
+		UpdateEngine.__init__(self)
 		
 		utils.set_icon(self)
 		self.set_title(_("Web Update"))
@@ -397,7 +434,8 @@ class WebUpdate(gtk.Window):
 		self.program_db = DatabaseWrapper(os.path.join(utils.DHOME_DIR, DB_FILE))
 		self.program_iters = []
 		
-		self.populateChoiceStore()
+		self.lockInterface()
+		self.fetchComponents(self.populateChoiceStore)
 		
 		bb = gtk.HButtonBox()
 		bb.set_layout(gtk.BUTTONBOX_END)
@@ -412,9 +450,17 @@ class WebUpdate(gtk.Window):
 		
 		self.show_all()
 	
-	def populateChoiceStore(self):
-		for i in self.program_db.select("SELECT name FROM program")[0]:
+	def lockInterface(self, lock=True):
+		print "lockInterface", lock
+	
+	def reportError(self, data, response, args, where):
+		UpdateEngine.reportError(data, response, args, where)
+	
+	def populateChoiceStore(self, programs):
+		for i in programs:
 			self.choice_store.append([self.icon_program, i, False])
+
+		self.lockInterface(False)
 	
 	def getVersionFromDatabase(self, program):
 		a = self.program_db.select("SELECT mainversion,version,revision FROM program WHERE name='%s'" % self.program_db.sanitize(program))[0]
@@ -467,7 +513,8 @@ class WebUpdate(gtk.Window):
 			self.populateUpdateTree(p_list)
 	
 	def onGetList(self, widget):
-		widget.set_sensitive(False)
+		#TODO
+		#self.lockInterface()
 
 		idx = 0
 	
@@ -500,19 +547,15 @@ class WebUpdate(gtk.Window):
 		raise Exception("ARGHHH No Iter!")
 
 	def populateProgramIter(self, data, response, index):
-		self.get_btn.set_sensitive(True)
+		#TODO: unlock interface
 		
 		it = self.getIterFromIndex(index)
 		model = self.tree.get_model()
 		
 		#print response.status, data
 
-		if data == None:
-			#self.status.push(0, _("Impossibile recuperare la lista dei file dal server."))
-			model.set_value(it, COL_COLO, self.color_error)
-			return
-
-		if response.status != 200:
+		if data == None or response.status != 200:
+			self.reportError(data, response, index, STEP_PROGRAM)
 			#self.status.push(0, _("Errore durante lo scaricamento della lista dei file(HTTP %d)") % response.status)
 			model.set_value(it, COL_COLO, self.color_error)
 			return

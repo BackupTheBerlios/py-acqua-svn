@@ -45,11 +45,13 @@ class LangWindow (gtk.Window):
 
 		self.it = it = gtk.RadioButton (None, _("Italiano"))
 		self.en = en = gtk.RadioButton (it, _("Inglese"))
+		self.fr = fr = gtk.RadioButton (it, _("Francese"))
 
-		it_icon = gtk.Image (); en_icon = gtk.Image ()
+		it_icon = gtk.Image (); en_icon = gtk.Image (); fr_icon = gtk.Image ()
 		
 		it_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "it.xpm"))
 		en_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "en.xpm"))
+		fr_icon.set_from_file (os.path.join (utils.DPIXM_DIR, "fr.xpm"))
 
 		box = gtk.HBox ()
 		box.pack_start (it_icon, False, False, 0)
@@ -59,6 +61,11 @@ class LangWindow (gtk.Window):
 		box = gtk.HBox ()
 		box.pack_start (en_icon, False, False, 0)
 		box.pack_start (en)
+		vbox.pack_start (box, False, False, 0)
+
+		box = gtk.HBox ()
+		box.pack_start (fr_icon, False, False, 0)
+		box.pack_start (fr)
 		vbox.pack_start (box, False, False, 0)
 
 		frm = gtk.Frame (_("Seleziona Lingua:"))
@@ -85,6 +92,8 @@ class LangWindow (gtk.Window):
 			it.set_active (True)
 		elif get("lang").lower () == "en":
 			en.set_active (True)
+		elif get("lang").lower () == "fr":
+			fr.set_active (True)
 
 		self.show_all ()
 		
@@ -105,6 +114,8 @@ class LangWindow (gtk.Window):
 	def _on_ok (self, widget):
 		if self.en.get_active ():
 			set ("lang", "en")
+		elif self.fr.get_active ():
+			set ("lang", "fr")
 		elif self.it.get_active ():
 			set ("lang", "it")
 		else:
