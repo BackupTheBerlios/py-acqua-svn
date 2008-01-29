@@ -109,6 +109,8 @@ class LangWindow (gtk.Window):
 		menu.append (self.item)
 		
 	def _on_delete_event (self, *w):
+		self.hide ()
+		del self
 		app.App.p_window["lang"] = None
 	
 	def _on_ok (self, widget):
