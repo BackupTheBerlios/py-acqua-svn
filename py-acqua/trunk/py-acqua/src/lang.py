@@ -31,7 +31,7 @@ class LangWindow (gtk.Window):
 		gtk.Window.__init__ (self)
 
 		self.set_title (_("Selezione Lingua"))
-		self.set_size_request (250, 100)
+		self.set_size_request (320, 170)
 		
 		utils.set_icon (self)
 		
