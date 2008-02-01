@@ -82,8 +82,8 @@ def main ():
 				locale.setlocale (locale.LC_MESSAGES, "en_US")
 			except: pass
 		elif impostazioni.get ("lang").lower () == "fr":
-			en = gettext.translation (APP, DIR, ["fr"])
-			en.install ()
+			fr = gettext.translation (APP, DIR, ["fr"])
+			fr.install ()
 			try:
 				os.environ['LANG'] = "fr_FR"
 				locale.setlocale (locale.LC_MESSAGES, "fr_FR")

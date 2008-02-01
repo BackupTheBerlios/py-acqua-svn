@@ -123,13 +123,13 @@ if [ -f ~/.pyacqua/program/pyacqua/src/acqua.py ]; then
 	python src/acqua.py
 else
 	unz "Making dir structure..."
-	mkdir -p ~/.pyacqua/program/locale/en/LC_MESSAGES/
+	mkdir -p ~/.pyacqua/program/
 
 	unz "Copyng the program..."
 	cp $directory/share/pyacqua ~/.pyacqua/program/ -rf
 
 	unz "Copying the locale dir..."
-	cp $directory/share/locale/en/LC_MESSAGES/acqua.mo ~/.pyacqua/program/locale/en/LC_MESSAGES/
+	cp -rf $directory/share/locale ~/.pyacqua/program/
 
 	unz "Ok. Now we are going to launch pyacqua from home directory..."
 	unz "Good work pyacqua-user ;)"
