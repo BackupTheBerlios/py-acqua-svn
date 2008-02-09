@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 26/1/2008-17:53:20
+Cmp-Mod V01 Created by Cvpcb (2007-07-09) date = 9/2/2008-11:28:35
 
 BeginCmp
 TimeStamp = 474BF93C;
@@ -71,10 +71,122 @@ IdModule  = ;
 EndCmp
 
 BeginCmp
+TimeStamp = 479B7759;
+Reference = R1;
+ValeurCmp = 10K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B775F;
+Reference = R2;
+ValeurCmp = 10K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7762;
+Reference = R3;
+ValeurCmp = 10K;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD8505;
+Reference = R4;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD842F;
+Reference = R5;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD850D;
+Reference = R6;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD8514;
+Reference = R7;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD843B;
+Reference = R8;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD863B;
+Reference = R9;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD8DF9;
+Reference = R10;
+ValeurCmp = R;
+IdModule  = SM0805;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7560;
+Reference = SW1;
+ValeurCmp = SW_DIP-4;
+IdModule  = special-EDG-04;
+EndCmp
+
+BeginCmp
 TimeStamp = 479B72E1;
 Reference = U1;
 ValeurCmp = FOXBOARD;
 IdModule  = foxboard;
+EndCmp
+
+BeginCmp
+TimeStamp = 479B7445;
+Reference = U2;
+ValeurCmp = MCP23008;
+IdModule  = ;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD8289;
+Reference = U3;
+ValeurCmp = PHDARL;
+IdModule  = 6DIP-ELL300;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD82B6;
+Reference = U4;
+ValeurCmp = PHDARL;
+IdModule  = 6DIP-ELL300;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD83FB;
+Reference = U5;
+ValeurCmp = PHDARL;
+IdModule  = 6DIP-ELL300;
+EndCmp
+
+BeginCmp
+TimeStamp = 47AD86D7;
+Reference = U6;
+ValeurCmp = PHDARL;
+IdModule  = 6DIP-ELL300;
 EndCmp
 
 EndListe

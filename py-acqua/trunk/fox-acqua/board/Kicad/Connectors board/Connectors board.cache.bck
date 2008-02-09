@@ -1,4 +1,14 @@
-EESchema-DOCLIB  Version 2.0  26/1/2008-18:11:00
+EESchema-DOCLIB  Version 2.0  9/2/2008-12:06:59
+#
+$CMP CONN_3
+D Symbole general de connecteur
+K CONN
+$ENDCMP
+#
+$CMP CONN_4
+D Symbole general de connecteur
+K CONN
+$ENDCMP
 #
 $CMP DIN_5
 D Connecteur Din 5 broches
@@ -10,9 +20,18 @@ D Foxboard by Acme System
 K fox
 $ENDCMP
 #
+$CMP JUMPER_2_POS
+D jumper
+K jumper
+$ENDCMP
+#
 $CMP MCP23008
 D I2C 8 I/O EXPANDER
 K MCP23008
+$ENDCMP
+#
+$CMP NPN
+F transistors/bipolar/*.*
 $ENDCMP
 #
 $CMP R

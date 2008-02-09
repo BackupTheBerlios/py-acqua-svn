@@ -1,11 +1,11 @@
-# EESchema Netlist Version 1.1 created  26/1/2008-17:53:20
+# EESchema Netlist Version 1.1 created  9/2/2008-11:28:35
 (
  ( 474BF93C $noname$ P1 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 N-000007 )
  )
  ( 474BF943 $noname$ P2 DIN_5
   ( 1 ? )
@@ -15,25 +15,25 @@
   ( 5 ? )
  )
  ( 474BF946 $noname$ P3 DIN_5
-  ( 1 ? )
+  ( 1 N-000003 )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 GAL1_1 )
  )
  ( 474BF949 $noname$ P4 DIN_5
-  ( 1 ? )
+  ( 1 N-000026 )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 GAL2_1 )
  )
  ( 474BF94B $noname$ P5 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 N-000002 )
  )
  ( 479B7178 $noname$ P6 DIN_5
   ( 1 ? )
@@ -70,10 +70,60 @@
   ( 4 SDA_1 )
   ( 5 ? )
  )
+ ( 479B7759 SM0805 R1 10K
+  ( 1 VCC_1 )
+  ( 2 N-000024 )
+ )
+ ( 479B775F SM0805 R2 10K
+  ( 1 VCC_1 )
+  ( 2 N-000008 )
+ )
+ ( 479B7762 SM0805 R3 10K
+  ( 1 VCC_1 )
+  ( 2 N-000023 )
+ )
+ ( 47AD8505 SM0805 R4 R
+  ( 1 N-000006 )
+  ( 2 ? )
+ )
+ ( 47AD842F SM0805 R5 R
+  ( 1 VCC_1 )
+  ( 2 N-000007 )
+ )
+ ( 47AD850D SM0805 R6 R
+  ( 1 N-000028 )
+  ( 2 N-000003 )
+ )
+ ( 47AD8514 SM0805 R7 R
+  ( 1 N-000026 )
+  ( 2 N-000005 )
+ )
+ ( 47AD843B SM0805 R8 R
+  ( 1 VCC_1 )
+  ( 2 GAL1_1 )
+ )
+ ( 47AD863B SM0805 R9 R
+  ( 1 VCC_1 )
+  ( 2 GAL2_1 )
+ )
+ ( 47AD8DF9 SM0805 R10 R
+  ( 1 N-000030 )
+  ( 2 ? )
+ )
+ ( 479B7560 special-EDG-04 SW1 SW_DIP-4
+  ( 1 GND_1 )
+  ( 2 N-000024 )
+  ( 3 N-000008 )
+  ( 4 N-000023 )
+  ( 5 GND_1 )
+  ( 6 GND_1 )
+  ( 7 GND_1 )
+  ( 8 GND_1 )
+ )
  ( 479B72E1 foxboard U1 FOXBOARD
-  ( 1j6 N-000024 )
+  ( 1j6 N-000020 )
   ( 1j7 GND_1 )
-  ( 2j6 N-000024 )
+  ( 2j6 N-000020 )
   ( 2j7 GND_1 )
   ( 3J6 ? )
   ( 3J7 ? )
@@ -148,9 +198,110 @@
   ( 38J6 ? )
   ( 38J7 ? )
   ( 39j6 GND_1 )
-  ( 39j7 N-000024 )
+  ( 39j7 N-000020 )
   ( 40j6 GND_1 )
-  ( 40j7 N-000024 )
+  ( 40j7 N-000020 )
+ )
+ ( 479B7445 $noname$ U2 MCP23008
+  ( 1 GND_1 )
+  ( 2 ? )
+  ( 3 ? )
+  ( 4 VCC_1 )
+  ( 5 N-000024 )
+  ( 6 N-000008 )
+  ( 7 N-000023 )
+  ( 8 SDA_1 )
+  ( 9 SCL_1 )
+  ( 10 VCC_1 )
+  ( 11 GAL1_1 )
+  ( 12 GAL2_1 )
+  ( 13 ? )
+  ( 14 ? )
+  ( 15 ? )
+  ( 16 ? )
+  ( 17 ? )
+  ( 18 ? )
+ )
+ ( 47AD8289 6DIP-ELL300 U3 PHDARL
+  ( 1 N-000006 )
+  ( 2 N-000029 )
+  ( 4 N-000029 )
+  ( 5 N-000007 )
+ )
+ ( 47AD82B6 6DIP-ELL300 U4 PHDARL
+  ( 1 N-000028 )
+  ( 2 N-000029 )
+  ( 4 N-000029 )
+  ( 5 GAL1_1 )
+ )
+ ( 47AD83FB 6DIP-ELL300 U5 PHDARL
+  ( 1 N-000005 )
+  ( 2 N-000029 )
+  ( 4 N-000029 )
+  ( 5 GAL2_1 )
+ )
+ ( 47AD86D7 6DIP-ELL300 U6 PHDARL
+  ( 1 N-000030 )
+  ( 2 N-000029 )
+  ( 4 N-000029 )
+  ( 5 N-000002 )
  )
 )
 *
+{ Allowed footprints by component:
+$component R1
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R2
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R3
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R4
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R5
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R6
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R7
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R8
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R9
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R10
+ R?
+ SM0603
+ SM0805
+$endlist
+$component U2
+ DIP18
+ SO18
+$endlist
+$endfootprintlist
+}
