@@ -1,4 +1,9 @@
-EESchema-DOCLIB  Version 2.0  Date: 11/1/2008-20:49:48
+EESchema-DOCLIB  Version 2.0  Date: 10/2/2008-21:46:38
+#
+$CMP AD7997
+D 8 CH 10 BIT ADC @I2C BUS
+K AD7997
+$ENDCMP
 #
 $CMP BAT54A
 D Schottky Barrier Diodes
@@ -20,6 +25,16 @@ D batteria cr2032 fh-lf
 K cr2032
 $ENDCMP
 #
+$CMP DAC654
+D 4 CH DAC @ I2C BUS
+K DAC6574
+$ENDCMP
+#
+$CMP DAC6574
+D 4 CH DAC @ I2C BUS
+K DAC6574
+$ENDCMP
+#
 $CMP DS1302
 D I2C RTC
 K DS1302
@@ -28,6 +43,11 @@ $ENDCMP
 $CMP FOXBOARD
 D Foxboard by Acme System
 K fox
+$ENDCMP
+#
+$CMP JUMPER_2_POS
+D jumper
+K jumper
 $ENDCMP
 #
 $CMP LM2596-5V
@@ -53,6 +73,11 @@ $ENDCMP
 $CMP P82B96TD
 D Buffer bidirezionale
 K buffer
+$ENDCMP
+#
+$CMP REF19X
+D CHIP REFERENCE
+K REF19X
 $ENDCMP
 #
 $CMP RES_VERTICALE

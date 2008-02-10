@@ -1,53 +1,143 @@
-# EESchema Netlist Version 1.1 created  9/2/2008-11:28:35
+# EESchema Netlist Version 1.1 created  10/2/2008-17:53:07
 (
+ ( 47AD928C LEDV D1 LED
+  ( 1 N-000028 )
+  ( 2 N-000027 )
+ )
+ ( 47AF31EA $noname$ D2 DIODE
+  ( 1 N-000004 )
+  ( 2 AD-ALERT_1 )
+ )
+ ( 47ADC52A SO8E IC1 LM358D
+  ( 1 N-000020 )
+  ( 2 N-000049 )
+  ( 3 N-000050 )
+  ( 5 FILO1A_1 )
+  ( 6 N-000019 )
+  ( 7 N-000019 )
+ )
+ ( 47ADC58C SO8E IC2 LM358D
+  ( 5 N-000016 )
+  ( 6 N-000017 )
+  ( 7 N-000052 )
+ )
+ ( 47ADC59C SO8E IC3 LM358D
+  ( 1 N-000053 )
+  ( 2 N-000053 )
+  ( 3 FILO1B_1 )
+ )
+ ( 47AF2622 SO14E IC4 LM324N
+  ( 1 N-000018 )
+  ( 2 FILO2A_1 )
+  ( 3 N-000051 )
+  ( 4 VCC_1 )
+  ( 5 N-000009 )
+  ( 6 N-000056 )
+  ( 7 N-000056 )
+  ( 8 N-000057 )
+  ( 9 N-000057 )
+  ( 10 N-000009 )
+  ( 11 GND_1 )
+  ( 12 N-000014 )
+  ( 13 FILO2B_1 )
+  ( 14 N-000054 )
+ )
+ ( 47AF260C linear-SO08 IC5 LM358D
+  ( 4 GND_1 )
+  ( 8 VCC_1 )
+ )
+ ( 47AF3379 linear-DIL14 IC6 LM324N
+  ( 1 1AN_1 )
+  ( 2 1AN_1 )
+  ( 3 N-000093 )
+  ( 4 ? )
+  ( 5 ? )
+  ( 6 ? )
+  ( 7 2AN_1 )
+  ( 8 3AN_1 )
+  ( 9 ? )
+  ( 10 ? )
+  ( 11 ? )
+  ( 12 ? )
+  ( 13 ? )
+  ( 14 4AN_1 )
+ )
+ ( 47AD9009 PIN_ARRAY_3X1 JP1 JUMPER_2_POS
+  ( 1 ? )
+  ( 2 ? )
+  ( 3 ? )
+ )
+ ( 47ADB383 PIN_ARRAY_3X1 JP2 JUMPER_2_POS
+  ( 1 ? )
+  ( 2 ? )
+  ( 3 ? )
+ )
+ ( 47AF1CA9 PIN_ARRAY_3X1 JP3 JUMPER_2_POS
+  ( 1 ? )
+  ( 2 ? )
+  ( 3 ? )
+ )
+ ( 47AF1D52 PIN_ARRAY_3X1 JP4 JUMPER_2_POS
+  ( 1 ? )
+  ( 2 ? )
+  ( 3 ? )
+ )
+ ( 47AF2B23 $noname$ JP5 JUMPER
+  ( 1 N-000018 )
+  ( 2 ? )
+ )
+ ( 47AF2B1E $noname$ JP6 JUMPER
+  ( 1 N-000054 )
+  ( 2 ? )
+ )
  ( 474BF93C $noname$ P1 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 N-000007 )
+  ( 5 N-000033 )
  )
  ( 474BF943 $noname$ P2 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 NEON1_1 )
  )
  ( 474BF946 $noname$ P3 DIN_5
-  ( 1 N-000003 )
+  ( 1 N-000032 )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 GAL1_1 )
+  ( 5 ? )
  )
  ( 474BF949 $noname$ P4 DIN_5
-  ( 1 N-000026 )
+  ( 1 N-000031 )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 GAL2_1 )
+  ( 5 ? )
  )
  ( 474BF94B $noname$ P5 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 N-000002 )
+  ( 5 NEON1_1 )
  )
  ( 479B7178 $noname$ P6 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 FILO2A_1 )
  )
  ( 479B7186 $noname$ P7 DIN_5
   ( 1 ? )
   ( 2 SCL_1 )
   ( 3 VCC_1 )
   ( 4 SDA_1 )
-  ( 5 ? )
+  ( 5 FILO2B_1 )
  )
  ( 479B7190 $noname$ P8 DIN_5
   ( 1 ? )
@@ -70,60 +160,204 @@
   ( 4 SDA_1 )
   ( 5 ? )
  )
+ ( 47AD911C connect-CLAMP-04 P11 CONN_4
+  ( 1 GND_1 )
+  ( 2 SDA_1 )
+  ( 3 SCL_1 )
+  ( 4 VCC_1 )
+ )
+ ( 47AD9249 SOT23EBC Q1 NPN
+  ( 1 GND_1 )
+  ( 2 N-000024 )
+  ( 3 N-000044 )
+ )
  ( 479B7759 SM0805 R1 10K
   ( 1 VCC_1 )
-  ( 2 N-000024 )
+  ( 2 N-000034 )
  )
  ( 479B775F SM0805 R2 10K
   ( 1 VCC_1 )
-  ( 2 N-000008 )
+  ( 2 N-000040 )
  )
  ( 479B7762 SM0805 R3 10K
   ( 1 VCC_1 )
-  ( 2 N-000023 )
+  ( 2 N-000035 )
  )
  ( 47AD8505 SM0805 R4 R
-  ( 1 N-000006 )
+  ( 1 N-000041 )
   ( 2 ? )
  )
  ( 47AD842F SM0805 R5 R
   ( 1 VCC_1 )
-  ( 2 N-000007 )
+  ( 2 N-000033 )
  )
  ( 47AD850D SM0805 R6 R
-  ( 1 N-000028 )
-  ( 2 N-000003 )
+  ( 1 N-000030 )
+  ( 2 N-000032 )
  )
  ( 47AD8514 SM0805 R7 R
-  ( 1 N-000026 )
-  ( 2 N-000005 )
+  ( 1 N-000031 )
+  ( 2 N-000042 )
  )
- ( 47AD843B SM0805 R8 R
+ ( 47AD9267 SM0805 R11 R
+  ( 1 N-000043 )
+  ( 2 N-000024 )
+ )
+ ( 47AD92A0 SM0805 R12 R
+  ( 1 VCC_1 )
+  ( 2 N-000028 )
+ )
+ ( 47ADC72D SM0805 R13 R
+  ( 1 FILO1A_1 )
+  ( 2 N-000020 )
+ )
+ ( 47ADCB57 SM0805 R14 R
+  ( 1 FILO1B_1 )
+  ( 2 N-000052 )
+ )
+ ( 47ADC837 SM0805 R15 R
+  ( 1 FILO1A_1 )
+  ( 2 N-000051 )
+ )
+ ( 47ADCCAB SM0805 R16 R
+  ( 1 FILO1B_1 )
+  ( 2 N-000014 )
+ )
+ ( 47ADC6D9 SM0805 R17 R
+  ( 1 N-000049 )
+  ( 2 N-000020 )
+ )
+ ( 47ADCB3B SM0805 R18 R
+  ( 1 N-000017 )
+  ( 2 N-000052 )
+ )
+ ( 47ADC84F SM0805 R19 R
+  ( 1 N-000051 )
+  ( 2 N-000018 )
+ )
+ ( 47ADCCA2 SM0805 R20 R
+  ( 1 N-000014 )
+  ( 2 N-000054 )
+ )
+ ( 47ADC6C4 SM0805 R21 R
+  ( 1 GND_1 )
+  ( 2 N-000049 )
+ )
+ ( 47ADC778 SM0805 R22 R
+  ( 1 N-000019 )
+  ( 2 N-000050 )
+ )
+ ( 47ADCB45 SM0805 R23 R
+  ( 1 GND_1 )
+  ( 2 N-000017 )
+ )
+ ( 47ADCC27 SM0805 R24 R
+  ( 1 N-000053 )
+  ( 2 N-000016 )
+ )
+ ( 47ADC783 SM0805 R25 R
+  ( 1 N-000056 )
+  ( 2 N-000050 )
+ )
+ ( 47ADCC2E SM0805 R26 R
+  ( 1 N-000016 )
+  ( 2 N-000057 )
+ )
+ ( 47AF384C SM0805 R27 R
+  ( 1 N-000093 )
+  ( 2 N-000001 )
+ )
+ ( 47AF385B SM0805 R28 R
+  ( 1 N-000093 )
+  ( 2 N-000001 )
+ )
+ ( 47AF3860 SM0805 R29 R
+  ( 1 N-000093 )
+  ( 2 N-000068 )
+ )
+ ( 47AF3865 SM0805 R30 R
+  ( 1 N-000093 )
+  ( 2 N-000068 )
+ )
+ ( 47AF38D0 SM0805 R31 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38D5 SM0805 R32 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38F2 SM0805 R33 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38F4 SM0805 R34 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38D9 SM0805 R35 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38DC SM0805 R36 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38EF SM0805 R37 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38EC SM0805 R38 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38E0 SM0805 R39 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38E3 SM0805 R40 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38E8 SM0805 R41 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AF38E5 SM0805 R42 R
+  ( 1 ? )
+  ( 2 ? )
+ )
+ ( 47AD959A resistor-net-RN-6 RN1 RN05
   ( 1 VCC_1 )
   ( 2 GAL1_1 )
+  ( 3 GAL2_1 )
+  ( 4 AD-ALERT_1 )
+  ( 5 N-000046 )
+  ( 6 AD-CONV_1 )
  )
- ( 47AD863B SM0805 R9 R
+ ( 47AF1F34 $noname$ RV1 POT
   ( 1 VCC_1 )
-  ( 2 GAL2_1 )
+  ( 2 N-000009 )
+  ( 3 GND_1 )
  )
- ( 47AD8DF9 SM0805 R10 R
-  ( 1 N-000030 )
-  ( 2 ? )
+ ( 47AD9318 $noname$ SP1 SPEAKER
+  ( 1 VCC_1 )
+  ( 2 N-000044 )
  )
  ( 479B7560 special-EDG-04 SW1 SW_DIP-4
   ( 1 GND_1 )
-  ( 2 N-000024 )
-  ( 3 N-000008 )
-  ( 4 N-000023 )
+  ( 2 N-000034 )
+  ( 3 N-000040 )
+  ( 4 N-000035 )
   ( 5 GND_1 )
   ( 6 GND_1 )
   ( 7 GND_1 )
   ( 8 GND_1 )
  )
  ( 479B72E1 foxboard U1 FOXBOARD
-  ( 1j6 N-000020 )
+  ( 1j6 N-000039 )
   ( 1j7 GND_1 )
-  ( 2j6 N-000020 )
+  ( 2j6 N-000039 )
   ( 2j7 GND_1 )
   ( 3J6 ? )
   ( 3J7 ? )
@@ -198,57 +432,86 @@
   ( 38J6 ? )
   ( 38J7 ? )
   ( 39j6 GND_1 )
-  ( 39j7 N-000020 )
+  ( 39j7 N-000039 )
   ( 40j6 GND_1 )
-  ( 40j7 N-000020 )
+  ( 40j7 N-000039 )
  )
- ( 479B7445 $noname$ U2 MCP23008
-  ( 1 GND_1 )
-  ( 2 ? )
-  ( 3 ? )
-  ( 4 VCC_1 )
-  ( 5 N-000024 )
-  ( 6 N-000008 )
-  ( 7 N-000023 )
-  ( 8 SDA_1 )
-  ( 9 SCL_1 )
-  ( 10 VCC_1 )
-  ( 11 GAL1_1 )
-  ( 12 GAL2_1 )
-  ( 13 ? )
-  ( 14 ? )
-  ( 15 ? )
-  ( 16 ? )
-  ( 17 ? )
-  ( 18 ? )
+ ( 479B7445 18DIP-ELL300 U2 MCP23008
+  ( 1 SCL_1 )
+  ( 2 SDA_1 )
+  ( 3 N-000035 )
+  ( 4 N-000040 )
+  ( 5 N-000034 )
+  ( 6 VCC_1 )
+  ( 7 ? )
+  ( 8 ? )
+  ( 9 GND_1 )
+  ( 10 ? )
+  ( 11 N-000043 )
+  ( 12 N-000027 )
+  ( 13 AD-CONV_1 )
+  ( 14 N-000046 )
+  ( 15 AD-ALERT_1 )
+  ( 16 GAL2_1 )
+  ( 17 GAL1_1 )
+  ( 18 VCC_1 )
  )
  ( 47AD8289 6DIP-ELL300 U3 PHDARL
-  ( 1 N-000006 )
-  ( 2 N-000029 )
-  ( 4 N-000029 )
-  ( 5 N-000007 )
+  ( 1 N-000041 )
+  ( 2 GND_1 )
+  ( 4 GND_1 )
+  ( 5 N-000033 )
  )
  ( 47AD82B6 6DIP-ELL300 U4 PHDARL
-  ( 1 N-000028 )
-  ( 2 N-000029 )
-  ( 4 N-000029 )
+  ( 1 N-000030 )
+  ( 2 GND_1 )
+  ( 4 GND_1 )
   ( 5 GAL1_1 )
  )
  ( 47AD83FB 6DIP-ELL300 U5 PHDARL
-  ( 1 N-000005 )
-  ( 2 N-000029 )
-  ( 4 N-000029 )
+  ( 1 N-000042 )
+  ( 2 GND_1 )
+  ( 4 GND_1 )
   ( 5 GAL2_1 )
  )
- ( 47AD86D7 6DIP-ELL300 U6 PHDARL
-  ( 1 N-000030 )
-  ( 2 N-000029 )
-  ( 4 N-000029 )
-  ( 5 N-000002 )
+ ( 47AF20D0 SO8E U6 REF19X
+  ( 1 ? )
+  ( 2 VCC_1 )
+  ( 3 VCC_1 )
+  ( 4 GND_1 )
+  ( 5 ? )
+  ( 6 N-000009 )
+  ( 7 N-000058 )
+  ( 8 N-000058 )
+ )
+ ( 47AF3146 $noname$ U7 AD7997
+  ( 1 GND_1 )
+  ( 2 VDD_1 )
+  ( 3 GND_1 )
+  ( 4 GND_1 )
+  ( 5 VDD_1 )
+  ( 6 VDD_1 )
+  ( 7 1AN_1 )
+  ( 8 3AN_1 )
+  ( 9 ? )
+  ( 10 ? )
+  ( 11 ? )
+  ( 12 ? )
+  ( 13 4AN_1 )
+  ( 14 2AN_1 )
+  ( 16 AD-CONV_1 )
+  ( 17 N-000004 )
+  ( 18 SDA_1 )
+  ( 19 SCL_1 )
+  ( 20 GND_1 )
  )
 )
 *
 { Allowed footprints by component:
+$component D2
+ D?
+ S*
+$endlist
 $component R1
  R?
  SM0603
@@ -284,17 +547,162 @@ $component R7
  SM0603
  SM0805
 $endlist
-$component R8
+$component R11
  R?
  SM0603
  SM0805
 $endlist
-$component R9
+$component R12
  R?
  SM0603
  SM0805
 $endlist
-$component R10
+$component R13
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R14
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R15
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R16
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R17
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R18
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R19
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R20
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R21
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R22
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R23
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R24
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R25
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R26
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R27
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R28
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R29
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R30
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R31
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R32
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R33
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R34
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R35
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R36
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R37
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R38
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R39
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R40
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R41
+ R?
+ SM0603
+ SM0805
+$endlist
+$component R42
  R?
  SM0603
  SM0805
