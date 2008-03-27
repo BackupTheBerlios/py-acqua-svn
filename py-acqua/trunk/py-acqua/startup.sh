@@ -1,17 +1,17 @@
 #!/bin/bash
-function unz {
+unz() {
         echo -e "\033[01;34m[\033[01;32m*\033[01;34m]\033[1;37m $1\033[00m"
 }
 
-function sbrah {
+sbrah() {
 	echo -e "\033[01;32mo.O\033[1;37m $1\033[00m"
 }
 
-function info {
+info() {
 	echo -e " \033[01;32m:\033[1;37m  $1\033[00m"
 }
 
-function cons {
+cons() {
 	echo -e " :  \033[01;34m`basename $PWD` #\033[00m $1"
 }
 
